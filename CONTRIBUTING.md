@@ -1,6 +1,6 @@
 
 # Contributing to MACS-classroom
 
-Want to contribute to MACS-classroom? There are a few things you need to know.  
+Want to contribute to MACS-classroom? There are a few things you need to know.
 
-We wrote a **[contribution guide](https://google.github.io/styleguide/javaguide.html)** to help you get started.
+Changes to MACS-classroom Java code should conform to **[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)**.
