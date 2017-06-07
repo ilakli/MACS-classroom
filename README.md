@@ -1,1 +1,1 @@
-# MACS-classrooom
+# MACS-classroom
