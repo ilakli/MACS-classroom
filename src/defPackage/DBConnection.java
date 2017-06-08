@@ -9,7 +9,10 @@ import java.util.ArrayList;
 
 public class DBConnection {
 
-	// returns new connection
+	/**
+	 * 
+	 * @return new Connection
+	 */
 	private Connection getConnection() {
 		Connection currentConnection = null;
 		try {
@@ -22,7 +25,11 @@ public class DBConnection {
 		return currentConnection;
 	}
 	
-	// returns new Prepared Statement based on passed query string
+	/**
+	 * 
+	 * @param query that PreparedStatement needs to execute
+	 * @return PreparedStatement based on query
+	 */
 	private PreparedStatement getPreparedStatement (String query) {
 		Connection con = getConnection();
 		PreparedStatement stmnt = null;
@@ -34,7 +41,11 @@ public class DBConnection {
 		return stmnt;
 	}
 	
-	// returns single person based on personID
+	/**
+	 * 
+	 * @param personID - ID of person whose information we'd like to get
+	 * @return Person object
+	 */
 	public Person getPerson (String personID) {
 		Person currentPerson = null;
 		String query = "select * from persons where `person_id`=" + personID + ";";
@@ -52,7 +63,11 @@ public class DBConnection {
 		return currentPerson;
 	}
 	
-	// returns persons ArrayList, it can be students, or seminarists, or section leaders
+	/**
+	 * 
+	 * @param query - MySQL query that lists persons
+	 * @return person ArrayList
+	 */
 	private ArrayList <Person> getPersons (String query) {
 		ResultSet rs = null;
 		Connection con = getConnection();
@@ -70,36 +85,55 @@ public class DBConnection {
 		
 		return persons;
 	}
-	
-	// returns students ArrayList
+
+	/**
+	 * 
+	 * @param courseID - ID of students course
+	 * @return students of current classroom
+	 */
 	public ArrayList <Person> getStudents (String courseID) {
 		String query = "select * from classroom_students where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> students = getPersons (query);
 		return students;
 	}
 	
-	// returns section leaders ArrayList
+	/**
+	 * 
+	 * @param courseID - ID of Section Leaders course
+	 * @return section leaders of current course
+	 */
 	public ArrayList <Person> getSectionLeaders (String courseID) {
 		String query = "select * from classroom_section_leaders where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> sectionLeaders = getPersons (query);
 		return sectionLeaders;
 	}
 	
-	// returns seminarists ArrayList
+	/**
+	 * 
+	 * @param courseID - ID of seminarists course
+	 * @return seminarists of current course
+	 */
 	public ArrayList <Person> getSeminarists (String courseID) {
 		String query = "select * from classroom_seminarists where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> seminarists = getPersons(query);
 		return seminarists;
 	}
-	
-	// returns lecturers ArrayList
+
+	/**
+	 * 
+	 * @param courseID - ID of lecturers course
+	 * @return lecturers of current course
+	 */
 	public ArrayList <Person> getLecturers (String courseID) {
 		String query = "select * from classroom_lecturers where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> lecturers = getPersons(query);
 		return lecturers;
 	}
-	
-	// returns courses ArrayList
+
+	/**
+	 * 
+	 * @return returns ArrayList of current courses
+	 */
 	public ArrayList <Course> getCourses() {
 		ArrayList <Course> courses = new ArrayList <Course>();
 		String coursesQuery = "select * from classrooms;";
