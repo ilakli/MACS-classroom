@@ -49,14 +49,14 @@ public class DBConnection {
 	public Person getPerson (String personID) {
 		Person currentPerson = null;
 		String query = "select * from persons where `person_id`=" + personID + ";";
-		PreparedStatement stmnt = getPreparedStatement(query);
 		ResultSet rs;
 		try {
+			PreparedStatement stmnt = getPreparedStatement(query);
 			rs = stmnt.executeQuery();
 			while (rs.next()){
 				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		
