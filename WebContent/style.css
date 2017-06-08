@@ -1,0 +1,29 @@
+.jumbotron {
+	
+	padding: 2% 2%;
+	margin: 0;
+	
+}
+
+.single-classroom{
+	
+	margin: 1%;
+	width: 60%;
+}
+.single-classroom .well {
+	
+	background-color: #842eb2;
+	
+	
+}
+.single-classroom .well a{
+	
+	text-decoration: none;
+	color: white;
+	
+}
+
+#create{
+	float: right;
+	margin: 1%;
+}
