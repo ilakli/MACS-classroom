@@ -72,7 +72,7 @@ public class Course {
 	 * @return - list of a lecturers
 	 */
 	public List <Person> getCourseLecturers(){
-		return this.getCourseLecturers();
+		return this.lecturers;
 	}
 	
 }
