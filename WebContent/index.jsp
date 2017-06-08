@@ -21,6 +21,10 @@
 	<button id="create" type="submit" class="btn btn-danger">Create
 		New</button>
 
+	<%-- 
+		Generates HTML code according to given name. 
+		HTML code consists of section and div which together make up a course display.
+	 --%>
 	<%!private String generateNameHTML(String name) {
 
 		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"#\" class=\"single-classroom-text\">"
@@ -28,12 +32,15 @@
 		return result;
 
 	}%>
-
+	
+	<%-- 
+		Takes DBConnector from servlet context and pulls list of courses out of it. 
+		Then displays every course on the page.
+	--%>
 	<%
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
 
 		ArrayList<Course> courses = connector.getCourses();
-	
 
 		for (Course course : courses) {
 			out.print(generateNameHTML(course.getCourseName()));
