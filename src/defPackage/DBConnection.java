@@ -94,7 +94,7 @@ public class DBConnection {
 	
 	// returns lecturers ArrayList
 	public ArrayList <Person> getLecturers (String courseID) {
-		String query = "select * from classroom_lecturers where `clasroom_id`=" + courseID + ";";
+		String query = "select * from classroom_lecturers where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> lecturers = getPersons(query);
 		return lecturers;
 	}
@@ -104,6 +104,7 @@ public class DBConnection {
 		ArrayList <Course> courses = new ArrayList <Course>();
 		String coursesQuery = "select * from classrooms;";
 		PreparedStatement stmnt = getPreparedStatement(coursesQuery);
+		
 		try {
 			ResultSet coursesTable = stmnt.executeQuery();
 			while (coursesTable.next()) {
