@@ -55,12 +55,14 @@ CREATE TABLE `classroom_section_leaders` (
 CREATE TABLE `sections` (
 	`section_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
+    `section_name` varchar(100) NOT NULL,
 	PRIMARY KEY (`section_id`, `classroom_id`)
 );
 
 CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
+    `seminar_name` varchar(100) NOT NULL,
 	PRIMARY KEY (`seminar_id`, `classroom_id`)
 );
 
