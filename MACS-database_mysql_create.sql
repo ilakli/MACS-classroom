@@ -1,8 +1,6 @@
-
-drop database if exists `final-project`;
-create database `final-project`;
-use `final-project`;
-
+drop schema if exists `final_project`;
+create schema `final_project`;
+use `final_project`;
 
 drop table if exists `seminar-seminarists`;
 drop table if exists `section-section_leader`;
@@ -57,13 +55,15 @@ CREATE TABLE `classroom_section_leaders` (
 CREATE TABLE `sections` (
 	`section_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-	PRIMARY KEY (`section_id`)
+    `section_name` varchar(100) NOT NULL,
+	PRIMARY KEY (`section_id`, `classroom_id`)
 );
 
 CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-	PRIMARY KEY (`seminar_id`)
+    `seminar_name` varchar(100) NOT NULL,
+	PRIMARY KEY (`seminar_id`, `classroom_id`)
 );
 
 CREATE TABLE `classroom_students` (
@@ -124,27 +124,29 @@ ALTER TABLE `classroom_students` ADD CONSTRAINT `classroom_students_fk1` FOREIGN
 
 ALTER TABLE `seminars_timetable` ADD CONSTRAINT `seminars_timetable_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`);
 
-ALTER TABLE `student-seminar` ADD CONSTRAINT `student-seminar_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classroom_students`(`classroom_id`);
 
-ALTER TABLE `student-seminar` ADD CONSTRAINT `student-seminar_fk1` FOREIGN KEY (`student_id`) REFERENCES `classroom_students`(`student_id`);
 
-ALTER TABLE `student-seminar` ADD CONSTRAINT `student-seminar_fk2` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`);
+ALTER TABLE `student-seminar` ADD CONSTRAINT `student-seminar_fk1` FOREIGN KEY (`student_id`, `classroom_id`) REFERENCES `classroom_students`(`student_id`,`classroom_id`);
 
-ALTER TABLE `student-section` ADD CONSTRAINT `student-section_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classroom_students`(`classroom_id`);
+ALTER TABLE `student-seminar` ADD CONSTRAINT `student-seminar_fk2` FOREIGN KEY (`seminar_id`, `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`);
 
-ALTER TABLE `student-section` ADD CONSTRAINT `student-section_fk1` FOREIGN KEY (`student_id`) REFERENCES `classroom_students`(`student_id`);
 
-ALTER TABLE `student-section` ADD CONSTRAINT `student-section_fk2` FOREIGN KEY (`section_id`) REFERENCES `sections`(`section_id`);
 
-ALTER TABLE `seminar-seminarists` ADD CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`);
+ALTER TABLE `student-section` ADD CONSTRAINT `student-section_fk1` FOREIGN KEY (`student_id`, `classroom_id`) REFERENCES `classroom_students`(`student_id`, `classroom_id`);
 
-ALTER TABLE `seminar-seminarists` ADD CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`) REFERENCES `classroom_seminarists`(`classroom_id`);
+ALTER TABLE `student-section` ADD CONSTRAINT `student-section_fk2` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`);
 
-ALTER TABLE `seminar-seminarists` ADD CONSTRAINT `seminar-seminarists_fk2` FOREIGN KEY (`person_id`) REFERENCES `classroom_seminarists`(`person_id`);
 
-ALTER TABLE `section-section_leader` ADD CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classroom_section_leaders`(`classroom_id`);
 
-ALTER TABLE `section-section_leader` ADD CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`person_id`) REFERENCES `classroom_section_leaders`(`person_id`);
+ALTER TABLE `seminar-seminarists` ADD CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id` , `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`);
 
-ALTER TABLE `section-section_leader` ADD CONSTRAINT `section-section_leader_fk2` FOREIGN KEY (`section_id`) REFERENCES `sections`(`section_id`);
+ALTER TABLE `seminar-seminarists` ADD CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`);
+
+
+
+
+ALTER TABLE `section-section_leader` ADD CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`);
+
+
+ALTER TABLE `section-section_leader` ADD CONSTRAINT `section-section_leader_fk2` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`);
 
