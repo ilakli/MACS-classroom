@@ -75,7 +75,8 @@ CREATE TABLE `classroom_students` (
 CREATE TABLE `seminars_timetable` (
 	`seminar_id` INT NOT NULL,
 	`seminar_name` varchar(100) NOT NULL,
-	`seminar_location` varchar(100) NOT NULL
+	`seminar_location` varchar(100) NOT NULL,
+    UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`)
 );
 
 CREATE TABLE `student-seminar` (
