@@ -1,7 +1,6 @@
 package defPackage;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -151,7 +150,7 @@ public class DBConnection {
 	 * 
 	 * @return returns ArrayList of current classrooms
 	 */
-	public ArrayList <Classroom> getclassrooms() {
+	public ArrayList <Classroom> getClassrooms() {
 		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
 		String classroomsQuery = "select * from classrooms;";
 		PreparedStatement stmnt = getPreparedStatement(classroomsQuery);
@@ -176,6 +175,7 @@ public class DBConnection {
 		return classrooms;
 	}
 	
+<<<<<<< HEAD
 	public Classroom getclassroom(String classroomId){
 		String query = String.format("select * from `classrooms` where `classroom_id` = %s", classroomId);
 		Classroom classroom = null;
@@ -191,7 +191,28 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		return classroom;
+=======
+	public Classroom getClassroom(String classroomId){
+		return null;
+>>>>>>> f1d7d7dec4a59ee740c398175dd3a32451343186
 	}
+	
+	//cero
+	public ArrayList <Seminar> getSeminars(String classroomId){
+		return new ArrayList <Seminar>();
+	}
+	
+	//cero
+	public ArrayList <Section> getSections(String classroomId){
+		return new ArrayList <Section>();
+	}
+	
+	//cero
+	public ArrayList <ActiveSeminar> getActiveSeminars(String classroomId){
+		return new ArrayList <ActiveSeminar>();
+	}
+	
+	
 	
 	/**
 	 * 
@@ -432,4 +453,6 @@ public class DBConnection {
 		PreparedStatement stmnt = getPreparedStatement(query);
 		return executeUpdate(stmnt);
 	}
+	
+	
 }

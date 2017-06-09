@@ -16,7 +16,8 @@
 <script type="text/javascript">
 
 function redirect() {
-	window.location = "createclassroom.jsp"
+	
+	window.location = "createClassroom.jsp"
 
 }
 </script>
@@ -50,7 +51,7 @@ function redirect() {
 	<%
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
 
-		ArrayList<Classroom> classrooms = connector.getclassrooms();
+		ArrayList<Classroom> classrooms = connector.getClassrooms();
 
 		for (Classroom classroom : classrooms) {
 			out.print(generateNameHTML(classroom.getClassroomName(),classroom.getClassroomID()));

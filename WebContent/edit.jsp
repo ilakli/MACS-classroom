@@ -12,12 +12,11 @@
 <title>Edit</title>
 </head>
 <body>
-<%
+	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentclassroom = connector.getclassroom(classroomId);
+		Classroom currentClassroom = connector.getClassroom(classroomId);
 	
-		
 	%>
 	
 	<div class="jumbotron">
