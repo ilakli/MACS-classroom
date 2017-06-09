@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Course {
+	
+	public static final String ID_ATTRIBUTE_NAME = "courseID";
+	
 	private ArrayList <Person> sectionLeaders;
 	private ArrayList <Person> seminarists;
 	private ArrayList <Person> students;

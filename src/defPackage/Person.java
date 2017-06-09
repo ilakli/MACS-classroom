@@ -1,6 +1,10 @@
 package defPackage;
 
 public class Person {
+	
+	public static final String ID_ATTRIBUTE_NAME = "personID";
+
+	
 	private String name;
 	private String surname;
 	private String Email;
