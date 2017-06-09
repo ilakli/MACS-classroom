@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
@@ -40,6 +39,29 @@ public class DBConnection {
 		}
 		
 		return currentConnection;
+	}
+
+
+	/**
+	 * 
+	 * @param query
+	 * 			-SQL query
+	 * @return returns ResultSet object of this query
+	 */
+	private ResultSet getResultSet(String query) {
+
+		Connection con = getConnection();
+		ResultSet rs = null;
+
+		try {
+			PreparedStatement stmnt = con.prepareStatement(query);
+			rs = stmnt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return rs;
 	}
 	
 	/**
@@ -196,23 +218,6 @@ public class DBConnection {
 		}
 		return classroom;
 	}
-	
-	//cero
-	public ArrayList <Seminar> getSeminars(String classroomId){
-		return new ArrayList <Seminar>();
-	}
-	
-	//cero
-	public ArrayList <Section> getSections(String classroomId){
-		return new ArrayList <Section>();
-	}
-	
-	//cero
-	public ArrayList <ActiveSeminar> getActiveSeminars(String classroomId){
-		return new ArrayList <ActiveSeminar>();
-	}
-	
-	
 	/**
 	 * 
 	 * @param email
@@ -452,6 +457,71 @@ public class DBConnection {
 		PreparedStatement stmnt = getPreparedStatement(query);
 		return executeUpdate(stmnt);
 	}
-	
-	
+
+	/**
+	 * 
+	 * @param classroomId
+	 *            -Id of seminars classroom
+	 * @return returns ArrayList of seminars associated with given classroom
+	 */
+	public ArrayList<Seminar> getSeminars(String classroomId) {
+		String query = "select * from seminars where `classroom_id`=" + classroomId + ";";
+		ArrayList<Seminar> seminars = new ArrayList<Seminar>();
+		ResultSet rs = getResultSet(query);
+
+		try {
+			while (rs.next()) {
+				seminars.add(new Seminar(rs.getString(1), rs.getString(3), classroomId));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return seminars;
+	}
+
+	/**
+	 * 
+	 * @param classroomId
+	 *            -Id of sections classroom
+	 * @return returns ArrayList of sections associated with given classroom
+	 */
+	public ArrayList<Section> getSections(String classroomId) {
+		String query = "select * from sections where `classroom_id`=" + classroomId + ";";
+		ArrayList<Section> sections = new ArrayList<Section>();
+		ResultSet rs = getResultSet(query);
+
+		try {
+			while (rs.next()) {
+				sections.add(new Section(rs.getString(1), rs.getString(3), classroomId));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return sections;
+	}
+
+	/**
+	 * 
+	 * @param classroomId
+	 *            -Id of active seminars classroom
+	 * @return returns ArrayList of active seminars associated with given classroom
+	 */
+	public ArrayList<ActiveSeminar> getActiveSeminars(String classroomId) {
+		String query = "select * from seminars_timetable where `seminar_id` "
+				+ "in (select seminar_id from seminars where `classroom_id` = " + classroomId + ");";
+		ArrayList<ActiveSeminar> activeSeminars = new ArrayList<ActiveSeminar>();
+		ResultSet rs = getResultSet(query);
+		
+		try {
+			while (rs.next()) {
+				activeSeminars.add(new ActiveSeminar(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return activeSeminars;
+	}
 }
