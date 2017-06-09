@@ -1,4 +1,4 @@
-<%@page import="defPackage.Course"%>
+<%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -12,12 +12,10 @@
 <title>Formation</title>
 </head>
 <body>
-<%
-		String courseId = request.getParameter(Course.ID_ATTRIBUTE_NAME);
+	<%
+		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Course currentCourse = connector.getCourse(courseId);
-	
-		
+		Classroom currentclassroom = connector.getclassroom(classroomId);
 	%>
 	
 	<div class="jumbotron">
@@ -26,14 +24,14 @@
 	<nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<%-- getCourse to be implemented --%>
+					<%-- getclassroom to be implemented --%>
 					<a class="navbar-brand" href="#">Plain Text</a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li><a href=<%= "stream.jsp?" + Course.ID_ATTRIBUTE_NAME + "=" + courseId %>>Stream</a></li>
-					<li><a href=<%= "about.jsp?" + Course.ID_ATTRIBUTE_NAME + "=" + courseId %>  >About</a></li>
-					<li class="active"><a href=<%= "formation.jsp?" + Course.ID_ATTRIBUTE_NAME + "=" + courseId %>>Formation</a></li>
-					<li><a href=<%= "edit.jsp?" + Course.ID_ATTRIBUTE_NAME + "=" + courseId %>>Edit</a></li>
+					<li><a href=<%= "stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Stream</a></li>
+					<li><a href=<%= "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  >About</a></li>
+					<li class="active"><a href=<%= "formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Formation</a></li>
+					<li><a href=<%= "edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Edit</a></li>
 				</ul>
 			</div>
 	</nav>

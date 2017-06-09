@@ -7,7 +7,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
-<title>Create Course</title>
+<title>Create Classroom</title>
 
 </head>
 <body>

@@ -88,78 +88,78 @@ public class DBConnection {
 
 	/**
 	 * 
-	 * @param courseID - ID of students course
+	 * @param classroomID - ID of students classroom
 	 * @return students of current classroom
 	 */
-	public ArrayList <Person> getStudents (String courseID) {
-		String query = "select * from classroom_students where `classroom_id`=" + courseID + ";";
+	public ArrayList <Person> getStudents (String classroomID) {
+		String query = "select * from classroom_students where `classroom_id`=" + classroomID + ";";
 		ArrayList <Person> students = getPersons (query);
 		return students;
 	}
 	
 	/**
 	 * 
-	 * @param courseID - ID of Section Leaders course
-	 * @return section leaders of current course
+	 * @param classroomID - ID of Section Leaders classroom
+	 * @return section leaders of current classroom
 	 */
-	public ArrayList <Person> getSectionLeaders (String courseID) {
-		String query = "select * from classroom_section_leaders where `classroom_id`=" + courseID + ";";
+	public ArrayList <Person> getSectionLeaders (String classroomID) {
+		String query = "select * from classroom_section_leaders where `classroom_id`=" + classroomID + ";";
 		ArrayList <Person> sectionLeaders = getPersons (query);
 		return sectionLeaders;
 	}
 	
 	/**
 	 * 
-	 * @param courseID - ID of seminarists course
-	 * @return seminarists of current course
+	 * @param classroomID - ID of seminarists classroom
+	 * @return seminarists of current classroom
 	 */
-	public ArrayList <Person> getSeminarists (String courseID) {
-		String query = "select * from classroom_seminarists where `classroom_id`=" + courseID + ";";
+	public ArrayList <Person> getSeminarists (String classroomID) {
+		String query = "select * from classroom_seminarists where `classroom_id`=" + classroomID + ";";
 		ArrayList <Person> seminarists = getPersons(query);
 		return seminarists;
 	}
 
 	/**
 	 * 
-	 * @param courseID - ID of lecturers course
-	 * @return lecturers of current course
+	 * @param classroomID - ID of lecturers classroom
+	 * @return lecturers of current classroom
 	 */
-	public ArrayList <Person> getLecturers (String courseID) {
-		String query = "select * from classroom_lecturers where `classroom_id`=" + courseID + ";";
+	public ArrayList <Person> getLecturers (String classroomID) {
+		String query = "select * from classroom_lecturers where `classroom_id`=" + classroomID + ";";
 		ArrayList <Person> lecturers = getPersons(query);
 		return lecturers;
 	}
 
 	/**
 	 * 
-	 * @return returns ArrayList of current courses
+	 * @return returns ArrayList of current classrooms
 	 */
-	public ArrayList <Course> getCourses() {
-		ArrayList <Course> courses = new ArrayList <Course>();
-		String coursesQuery = "select * from classrooms;";
-		PreparedStatement stmnt = getPreparedStatement(coursesQuery);
+	public ArrayList <Classroom> getclassrooms() {
+		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
+		String classroomsQuery = "select * from classrooms;";
+		PreparedStatement stmnt = getPreparedStatement(classroomsQuery);
 		
 		try {
-			ResultSet coursesTable = stmnt.executeQuery();
-			while (coursesTable.next()) {
-				String courseID = coursesTable.getString(1);
-				String courseName = coursesTable.getString(2);
+			ResultSet classroomsTable = stmnt.executeQuery();
+			while (classroomsTable.next()) {
+				String classroomID = classroomsTable.getString(1);
+				String classroomName = classroomsTable.getString(2);
 				
-				ArrayList <Person> students = getStudents(courseID);
-				ArrayList <Person> sectionLeaders = getSectionLeaders(courseID);
-				ArrayList <Person> seminarists = getSeminarists(courseID);
-				ArrayList <Person> lecturers = getLecturers(courseID);
+				ArrayList <Person> students = getStudents(classroomID);
+				ArrayList <Person> sectionLeaders = getSectionLeaders(classroomID);
+				ArrayList <Person> seminarists = getSeminarists(classroomID);
+				ArrayList <Person> lecturers = getLecturers(classroomID);
 				
-				courses.add(new Course(courseName, courseID, sectionLeaders, seminarists, students, lecturers));
+				classrooms.add(new Classroom(classroomName, classroomID, sectionLeaders, seminarists, students, lecturers));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		
-		return courses;
+		return classrooms;
 	}
 	
-	public Course getCourse(String courseId){
+	public Classroom getclassroom(String classroomId){
 		return null;
 	}
 	

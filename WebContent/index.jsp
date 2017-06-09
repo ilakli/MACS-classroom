@@ -1,7 +1,7 @@
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@page import="defPackage.Course"%>
+<%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@ page import="java.util.ArrayList"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,7 +16,7 @@
 <script type="text/javascript">
 
 function redirect() {
-	window.location = "createCourse.jsp"
+	window.location = "createclassroom.jsp"
 
 }
 </script>
@@ -32,27 +32,28 @@ function redirect() {
 
 	<%-- 
 		Generates HTML code according to given name. 
-		HTML code consists of section and div which together make up a course display.
+		HTML code consists of section and div which together make up a classroom display.
 	 --%>
-	<%!private String generateNameHTML(String name,String courseId) {
+	<%!private String generateNameHTML(String name,String classroomId) {
 
-		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?" +Course.ID_ATTRIBUTE_NAME + "=" + courseId + "\" class=\"single-classroom-text\">"
-				+ name + "</a> </div> </section>";
+		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?" +
+						Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" +
+						name + "</a> </div> </section>";
 		return result;
 
 	}%>
 	
 	<%-- 
-		Takes DBConnector from servlet context and pulls list of courses out of it. 
-		Then displays every course on the page.
+		Takes DBConnector from servlet context and pulls list of classrooms out of it. 
+		Then displays every classroom on the page.
 	--%>
 	<%
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
 
-		ArrayList<Course> courses = connector.getCourses();
+		ArrayList<Classroom> classrooms = connector.getclassrooms();
 
-		for (Course course : courses) {
-			out.print(generateNameHTML(course.getCourseName(),course.getCourseID()));
+		for (Classroom classroom : classrooms) {
+			out.print(generateNameHTML(classroom.getClassroomName(),classroom.getClassroomID()));
 		}
 	%>
 </body>
