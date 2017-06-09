@@ -180,6 +180,23 @@ public class DBConnection {
 		return null;
 	}
 	
+	//cero
+	public ArrayList <Seminar> getSeminars(String classroomId){
+		return null;
+	}
+	
+	//cero
+	public ArrayList <Section> getSections(String classroomId){
+		return null;
+	}
+	
+	//cero
+	public ArrayList <ActiveSeminar> getActiveSeminars(String classroomId){
+		return null;
+	}
+	
+	
+	
 	/**
 	 * 
 	 * @param Email
@@ -249,4 +266,6 @@ public class DBConnection {
 	public boolean deleteLecturer(String mail, String classroomId) {
 		return false;
 	}
+	
+	
 }
