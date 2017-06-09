@@ -151,7 +151,7 @@ public class DBConnection {
 	 * 
 	 * @return returns ArrayList of current classrooms
 	 */
-	public ArrayList <Classroom> getclassrooms() {
+	public ArrayList <Classroom> getClassrooms() {
 		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
 		String classroomsQuery = "select * from classrooms;";
 		PreparedStatement stmnt = getPreparedStatement(classroomsQuery);
@@ -176,7 +176,7 @@ public class DBConnection {
 		return classrooms;
 	}
 	
-	public Classroom getclassroom(String classroomId){
+	public Classroom getClassroom(String classroomId){
 		return null;
 	}
 	

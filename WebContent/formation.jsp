@@ -19,7 +19,7 @@
 	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentclassroom = connector.getclassroom(classroomId);
+		Classroom currentClassroom = connector.getClassroom(classroomId);
 		
 		List <Person> lecturers = connector.getLecturers(classroomId);
 		List <Person> seminarists = connector.getSeminarists(classroomId);
