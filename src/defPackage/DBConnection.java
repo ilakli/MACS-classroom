@@ -6,22 +6,40 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public class DBConnection {
-
+	
+	
+	private DataSource dataSource;
+	
+	public DBConnection(){
+		PoolProperties p = new PoolProperties();
+        p.setUrl(DBinfo.MYSQL_DATABASE_SERVER);
+        p.setDriverClassName(DBinfo.JDBC_DRIVER);
+        p.setUsername(DBinfo.MYSQL_USERNAME);
+        p.setPassword(DBinfo.MYSQL_PASSWORD);
+        
+        dataSource = new DataSource();
+        dataSource.setPoolProperties(p);
+	}
+	
 	/**
 	 * 
 	 * @return new Connection
 	 */
 	private Connection getConnection() {
+		
 		Connection currentConnection = null;
+		
 		try {
-			Class.forName(DBinfo.JDBC_DRIVER);
-			currentConnection = DriverManager.getConnection(DBinfo.MYSQL_DATABASE_SERVER, DBinfo.MYSQL_USERNAME, 
-					DBinfo.MYSQL_PASSWORD);
-		} catch (Exception e) {
+			currentConnection = dataSource.getConnection();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return currentConnection;
 	}
 	
