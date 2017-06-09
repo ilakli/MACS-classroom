@@ -12,13 +12,22 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="style.css">
+
+<script type="text/javascript">
+
+function redirect() {
+	window.location = "createCourse.jsp"
+
+}
+</script>
 </head>
 <body>
 	<div class="jumbotron">
 		<h2>Macs Classroom</h2>
 	</div>
-
-	<button id="create" type="submit" class="btn btn-danger">Create
+	
+	
+	<button id="create" type="submit" class="btn btn-danger" onclick="redirect()">Create
 		New</button>
 
 	<%-- 
