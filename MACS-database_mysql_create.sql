@@ -25,7 +25,7 @@ CREATE TABLE `persons` (
 );
 
 CREATE TABLE `classrooms` (
-	`classroom_id` INT NOT NULL,
+	`classroom_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_name` varchar(100) NOT NULL,
 	PRIMARY KEY (`classroom_id`)
 );
@@ -82,11 +82,9 @@ CREATE TABLE `seminars_timetable` (
 	`seminar_id` INT NOT NULL,
 	`seminar_name` varchar(100) NOT NULL,
 	`seminar_location` varchar(100) NOT NULL,
-<<<<<<< HEAD
-    UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`)
-=======
+
+   UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
 	CONSTRAINT `seminars_timetable_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`)
->>>>>>> 16207a0a459897679f201667707c59f052fcb149
 );
 
 CREATE TABLE `student-seminar` (
