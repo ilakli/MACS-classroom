@@ -158,4 +158,9 @@ public class DBConnection {
 		
 		return courses;
 	}
+	
+	public Course getCourse(String courseId){
+		return null;
+	}
+	
 }

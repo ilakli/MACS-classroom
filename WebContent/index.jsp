@@ -25,9 +25,9 @@
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a course display.
 	 --%>
-	<%!private String generateNameHTML(String name) {
+	<%!private String generateNameHTML(String name,String courseId) {
 
-		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"#\" class=\"single-classroom-text\">"
+		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?" +Course.ID_ATTRIBUTE_NAME + "=" + courseId + "\" class=\"single-classroom-text\">"
 				+ name + "</a> </div> </section>";
 		return result;
 
@@ -43,7 +43,7 @@
 		ArrayList<Course> courses = connector.getCourses();
 
 		for (Course course : courses) {
-			out.print(generateNameHTML(course.getCourseName()));
+			out.print(generateNameHTML(course.getCourseName(),course.getCourseID()));
 		}
 	%>
 </body>
