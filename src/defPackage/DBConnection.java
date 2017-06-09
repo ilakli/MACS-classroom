@@ -175,7 +175,6 @@ public class DBConnection {
 		return classrooms;
 	}
 	
-<<<<<<< HEAD
 	public Classroom getclassroom(String classroomId){
 		String query = String.format("select * from `classrooms` where `classroom_id` = %s", classroomId);
 		Classroom classroom = null;
@@ -191,10 +190,8 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		return classroom;
-=======
 	public Classroom getClassroom(String classroomId){
 		return null;
->>>>>>> f1d7d7dec4a59ee740c398175dd3a32451343186
 	}
 	
 	//cero
