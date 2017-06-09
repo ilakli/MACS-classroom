@@ -16,7 +16,8 @@
 <script type="text/javascript">
 
 function redirect() {
-	window.location = "createclassroom.jsp"
+	
+	window.location = "createClassroom.jsp"
 
 }
 </script>
