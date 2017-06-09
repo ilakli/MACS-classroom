@@ -5,11 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public class DBConnection {
-	
 	
 	private DataSource dataSource;
 	
@@ -35,7 +36,6 @@ public class DBConnection {
 		try {
 			currentConnection = dataSource.getConnection();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -63,9 +63,9 @@ public class DBConnection {
 	 * @param personID - ID of person whose information we'd like to get
 	 * @return Person object
 	 */
-	public Person getPerson (String personID) {
+	public Person getPerson (String personId) {
 		Person currentPerson = null;
-		String query = "select * from persons where `person_id`=" + personID + ";";
+		String query = String.format("select * from `persons` where `person_id`=%s;", personId);
 		ResultSet rs;
 		try {
 			PreparedStatement stmnt = getPreparedStatement(query);
@@ -87,16 +87,15 @@ public class DBConnection {
 	 */
 	private ArrayList <Person> getPersons (String query) {
 		ResultSet rs = null;
-		Connection con = getConnection();
 		ArrayList <Person> persons = new ArrayList <Person> ();
 		
 		try {
-			PreparedStatement stmnt = con.prepareStatement(query);
+			PreparedStatement stmnt = getPreparedStatement(query);
 			rs = stmnt.executeQuery();
 			while (rs.next()) {
 				persons.add(getPerson(rs.getString(2)));
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		
@@ -108,8 +107,8 @@ public class DBConnection {
 	 * @param classroomID - ID of students classroom
 	 * @return students of current classroom
 	 */
-	public ArrayList <Person> getStudents (String classroomID) {
-		String query = "select * from classroom_students where `classroom_id`=" + classroomID + ";";
+	public ArrayList <Person> getStudents (String classroomId) {
+		String query = String.format("select * from `classroom_students` where `classroom_id`=%s;", classroomId);
 		ArrayList <Person> students = getPersons (query);
 		return students;
 	}
@@ -119,8 +118,8 @@ public class DBConnection {
 	 * @param classroomID - ID of Section Leaders classroom
 	 * @return section leaders of current classroom
 	 */
-	public ArrayList <Person> getSectionLeaders (String classroomID) {
-		String query = "select * from classroom_section_leaders where `classroom_id`=" + classroomID + ";";
+	public ArrayList <Person> getSectionLeaders (String classroomId) {
+		String query = String.format("select * from `classroom_section_leaders` where `classroom_id`=%s;", classroomId);
 		ArrayList <Person> sectionLeaders = getPersons (query);
 		return sectionLeaders;
 	}
@@ -130,8 +129,8 @@ public class DBConnection {
 	 * @param classroomID - ID of seminarists classroom
 	 * @return seminarists of current classroom
 	 */
-	public ArrayList <Person> getSeminarists (String classroomID) {
-		String query = "select * from classroom_seminarists where `classroom_id`=" + classroomID + ";";
+	public ArrayList <Person> getSeminarists (String classroomId) {
+		String query = String.format("select * from `classroom_seminarists` where `classroom_id`=%s;", classroomId);
 		ArrayList <Person> seminarists = getPersons(query);
 		return seminarists;
 	}
@@ -141,8 +140,8 @@ public class DBConnection {
 	 * @param classroomID - ID of lecturers classroom
 	 * @return lecturers of current classroom
 	 */
-	public ArrayList <Person> getLecturers (String classroomID) {
-		String query = "select * from classroom_lecturers where `classroom_id`=" + classroomID + ";";
+	public ArrayList <Person> getLecturers (String classroomId) {
+		String query = String.format("select * from `classroom_lecturers` where `classroom_id`=%s;", classroomId);
 		ArrayList <Person> lecturers = getPersons(query);
 		return lecturers;
 	}
@@ -176,8 +175,26 @@ public class DBConnection {
 		return classrooms;
 	}
 	
+<<<<<<< HEAD
+	public Classroom getclassroom(String classroomId){
+		String query = String.format("select * from `classrooms` where `classroom_id` = %s", classroomId);
+		Classroom classroom = null;
+		try {
+			PreparedStatement stmnt = getPreparedStatement(query);
+			ResultSet rs = stmnt.executeQuery();
+			if (rs.next()) {
+				String classroomName = rs.getString(2);
+				classroom = new Classroom(classroomName, classroomId, getSectionLeaders(classroomId), getSeminarists(classroomId),
+						getStudents(classroomId), getLecturers(classroomId));
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+		return classroom;
+=======
 	public Classroom getClassroom(String classroomId){
 		return null;
+>>>>>>> f1d7d7dec4a59ee740c398175dd3a32451343186
 	}
 	
 	//cero
@@ -199,72 +216,242 @@ public class DBConnection {
 	
 	/**
 	 * 
-	 * @param Email
-	 * @return personID of person with given Email
+	 * @param email
+	 * @return personId of person with given Email
 	 */
-	public String getPersonId (String Email) {
-		String query = "select `person_id` from `persons` where `person_email`='" + Email + "'";
+	public String getPersonId (String email) {
+		String query = String.format("select `person_id` from `persons` where `person_email`='%s';", email);
 		PreparedStatement stmnt = getPreparedStatement(query);
-		String personId = null;
+		String personId = "";
 		try {
 			ResultSet rs = stmnt.executeQuery();
 			if (rs.next()) personId = rs.getString(1);
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		return personId;
 	}
+	/**
+	 * checks if given PreparedStatement returns empty result after executing
+	 * @param stmnt - statement that has to be executed
+	 * @return whether result set is empty or not
+	 */
+	private boolean isResultEmpty(PreparedStatement stmnt) {		
+		ResultSet rs = null;
+		boolean isEmpty;
+		try {
+			rs = stmnt.executeQuery();
+			isEmpty = !rs.next();
+		} catch (SQLException | NullPointerException e) {
+			isEmpty = true;
+		}
+		
+		return isEmpty;
+	}
+
+	/**
+	 * checks if lecturer with given email exists in given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean lecturerExists (String email, String classroomId) {
+		String personId = getPersonId(email);
+		String query = String.format("select * from `classroom_lecturers` where `classroom_id`=%s and `person_id`=%s;",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return !isResultEmpty(stmnt);
+	}
+
+	/**
+	 * checks if seminarist with given email exists in given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean seminaristExists(String email, String classroomId) {
+		String personId = getPersonId(email);
+		String query = String.format("select * from `classroom_seminarists` where `classroom_id`=%s and `person_id`=%s;",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return !isResultEmpty(stmnt);
+	}
+
+	/**
+	 * checks if section leader with given email exists in given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean sectionLeaderExists(String email, String classroomId) {
+		String personId = getPersonId(email);
+		String query = String.format("select * from `classroom_section_leaders` where `classroom_id`=%s and `person_id`=%s;",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return !isResultEmpty(stmnt);
+	}
+
+	/**
+	 * checks if student with given email exists in given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean studentExists(String email, String classroomId) {
+		String personId = getPersonId(email);
+		String query = String.format("select * from `classroom_students` where `classroom_id`=%s and `person_id`=%s;",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return !isResultEmpty(stmnt);
+	}
 	
-	public boolean lecturerExists (String Email, String classroomId) {
-		return false;
+	/**
+	 * checks if person with given email exists in given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean personExists(String email, String classroomId) {
+		return lecturerExists(email, classroomId) || seminaristExists(email, classroomId)
+				|| sectionLeaderExists(email, classroomId) || studentExists (email, classroomId);
+	}
+	
+	/**
+	 * executes given PreaparedStatement
+	 * @param stmnt
+	 * @return true - if execution was successful, false - otherwise
+	 */
+	private boolean executeUpdate (PreparedStatement stmnt) {
+		try {
+			stmnt.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
-	public boolean seminaristExists(String mail, String classroomId) {
-		return false;
+	/**
+	 * adds lecturer with given email to the given class
+	 * @param email
+	 * @param classroomId
+	 * @return true - if addition was successful, false - if lecturer already exists or there is no such person
+	 */
+	public boolean addLecturer(String email, String classroomId) {
+		String personId = getPersonId(email);
+		if (personId.equals("")) return false;
+		if (lecturerExists(email, classroomId)) return false;
+		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean sectionLeaderExists(String mail, String classroomId) {
-		return false;
+	/**
+	 * adds student with given email to the given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if addition was successful, false - if student already exists or there is no such person
+	 */
+	public boolean addStudent(String email, String classroomId) {
+		String personId = getPersonId(email);
+		if (personId.equals("")) return false;
+		if (studentExists(email, classroomId)) return false;
+		String query = String.format("insert into `classroom_students` (`classroom_id`, `person_id`) values (%s, %s);",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean studentExists(String mail, String classroomId) {
-		return false;
+	/**
+	 * adds section leader with given email to the given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if addition was successful, false - if section leaders already exists or there is no such person
+	 */
+	public boolean addSectionLeader(String email, String classroomId) {
+		String personId = getPersonId(email);
+		if (personId.equals("")) return false;
+		if (sectionLeaderExists(email, classroomId)) return false;
+		String query = String.format("insert into `classroom_section_leaders` (`classroom_id`, `person_id`) values (%s, %s);",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean personExists(String mail, String classroomId) {
-		return false;
+	/**
+	 * adds seminarist with given email to the given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if addition was successful, false - if such seminarist already exists or there is no such person
+	 */
+	public boolean addSeminarist(String email, String classroomId) {
+		String personId = getPersonId(email);
+		if (personId.equals("")) return false;
+		if (seminaristExists(email, classroomId)) return false;
+		String query = String.format("insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);",
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean addLecturer(String mail, String classroomId) {
-		return false;
+	/**
+	 * deletes seminarist with given email from given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such seminarist or database crashed
+	 */
+	public boolean deleteSeminarist(String email, String classroomId) {
+		if (!seminaristExists(email, classroomId)) return false;
+		String personId = getPersonId(email);
+		String query = String.format("delete from `classroom_seminarists` where `classroom_id` = %s and `person_id` = %s;", 
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean addStudent(String mail, String classroomId) {
-		return false;
+	/**
+	 * deletes student with given email from given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such student or database crashed
+	 */
+	public boolean deleteStudent(String email, String classroomId) {
+		if (!studentExists(email, classroomId)) return false;
+		String personId = getPersonId(email);
+		String query = String.format("delete from `classrom_students` where `classroom_id` = %s and `person_id` = %s;", 
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 
-	public boolean addSectionLeader(String mail, String classroomId) {
-		return false;
+	/**
+	 * deletes section leader with given email from given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such section leader or database crashed
+	 */
+	public boolean deleteSectionLeader(String email, String classroomId) {
+		if (!sectionLeaderExists(email, classroomId)) return false;
+		String personId = getPersonId(email);
+		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` =%s;", 
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
-
-	public boolean addSeminarist(String mail, String classroomId) {
-		return false;
-	}
-
-	public boolean deleteSeminarist(String mail, String classroomId) {
-		return false;
-	}
-
-	public boolean deleteStudent(String mail, String classroomId) {
-		return false;
-	}
-
-	public boolean deleteSectionLeader(String mail, String classroomId) {
-		return false;
-	}
-
-	public boolean deleteLecturer(String mail, String classroomId) {
-		return false;
+	
+	/**
+	 * deletes lecturer with given email from given classroom
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such lecturer or database crashed
+	 */
+	public boolean deleteLecturer(String email, String classroomId) {
+		if (!lecturerExists(email, classroomId)) return false;
+		String personId = getPersonId(email);
+		String query = String.format("delete from `classroom_lecturers` where `classroom_id` = %s and `person_id` = %s;", 
+				classroomId, personId);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
 	}
 	
 	
