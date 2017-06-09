@@ -180,4 +180,73 @@ public class DBConnection {
 		return null;
 	}
 	
+	/**
+	 * 
+	 * @param Email
+	 * @return personID of person with given Email
+	 */
+	public String getPersonId (String Email) {
+		String query = "select `person_id` from `persons` where `person_email`='" + Email + "'";
+		PreparedStatement stmnt = getPreparedStatement(query);
+		String personId = null;
+		try {
+			ResultSet rs = stmnt.executeQuery();
+			if (rs.next()) personId = rs.getString(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return personId;
+	}
+	
+	public boolean lecturerExists (String Email, String classroomId) {
+		return false;
+	}
+
+	public boolean seminaristExists(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean sectionLeaderExists(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean studentExists(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean personExists(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean addLecturer(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean addStudent(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean addSectionLeader(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean addSeminarist(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean deleteSeminarist(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean deleteStudent(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean deleteSectionLeader(String mail, String classroomId) {
+		return false;
+	}
+
+	public boolean deleteLecturer(String mail, String classroomId) {
+		return false;
+	}
 }
