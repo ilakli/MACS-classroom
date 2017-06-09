@@ -1,5 +1,9 @@
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
+<%@page import="defPackage.Person"%>
+<%@page import="java.util.List"%>
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -16,6 +20,13 @@
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
 		Classroom currentclassroom = connector.getclassroom(classroomId);
+		
+		List <Person> lecturers = connector.getLecturers(classroomId);
+		List <Person> seminarists = connector.getSeminarists(classroomId);
+		List <Person> sectionLeaders = connector.getSectionLeaders(classroomId);
+		List <Person> students = connector.getStudents(classroomId);
+		System.out.println("roles downloaded successfully!");
+				
 	%>
 	
 	<div class="jumbotron">
@@ -35,5 +46,36 @@
 				</ul>
 			</div>
 	</nav>
+	
+	<h2>Lecturers:</h2>
+		<%
+			for(Person lecturer : lecturers){
+				out.println("<li>" + lecturer.getEmail() + "</li>");
+			}
+		%>
+	
+	<h2>Seminarists:</h2>
+		<%
+			for(Person seminarist : seminarists){
+				out.println("<li>" + seminarist.getEmail() + "</li>");
+			}
+		%>
+	
+	<h2>Section Leaders:</h2>
+		<%
+			for(Person sectionLeader : sectionLeaders){
+				out.println("<li>" + sectionLeader.getEmail() + "</li>");
+			}
+		%>
+	
+	<h2>Students:</h2>
+		<%
+			for(Person student : students){
+				out.println("<li>" + student.getEmail() + "</li>");
+			}
+		%>
+	
+	
+	
 </body>
 </html>
