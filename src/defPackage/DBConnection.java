@@ -174,8 +174,13 @@ public class DBConnection {
 		
 		return classrooms;
 	}
-	
-	public Classroom getclassroom(String classroomId){
+
+	/**
+	 * returns classroom object based on classroomId
+	 * @param classroomId
+	 * @return classroom object
+	 */
+	public Classroom getClassroom(String classroomId){
 		String query = String.format("select * from `classrooms` where `classroom_id` = %s", classroomId);
 		Classroom classroom = null;
 		try {
@@ -190,8 +195,6 @@ public class DBConnection {
 			e.printStackTrace();
 		}
 		return classroom;
-	public Classroom getClassroom(String classroomId){
-		return null;
 	}
 	
 	//cero
@@ -208,7 +211,6 @@ public class DBConnection {
 	public ArrayList <ActiveSeminar> getActiveSeminars(String classroomId){
 		return new ArrayList <ActiveSeminar>();
 	}
-	
 	
 	
 	/**
