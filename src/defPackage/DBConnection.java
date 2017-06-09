@@ -203,51 +203,51 @@ public class DBConnection {
 		return false;
 	}
 
-	public boolean seminaristExists(String mail) {
+	public boolean seminaristExists(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean sectionLeaderExists(String mail) {		
+	public boolean sectionLeaderExists(String mail, String courseId) {		
 		return false;
 	}
 
-	public boolean studentExists(String mail) {
+	public boolean studentExists(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean personExists(String mail) {
+	public boolean personExists(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean addLecturer(String mail) {
+	public boolean addLecturer(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean addStudent(String mail) {
+	public boolean addStudent(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean addSectionLeader(String mail) {
+	public boolean addSectionLeader(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean addSeminarist(String mail) {
+	public boolean addSeminarist(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean deleteSeminarist(String mail) {
+	public boolean deleteSeminarist(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean deleteStudent(String mail) {
+	public boolean deleteStudent(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean deleteSectionLeader(String mail) {
+	public boolean deleteSectionLeader(String mail, String courseId) {
 		return false;
 	}
 
-	public boolean deleteLecturer(String mail) {
+	public boolean deleteLecturer(String mail, String courseId) {
 		return false;
 	}
 }
