@@ -1,6 +1,9 @@
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@page import="defPackage.Person"%>
+<%@page import="defPackage.Seminar"%>
+<%@page import="defPackage.Section"%>
+<%@page import="defPackage.ActiveSeminar"%>
 <%@page import="java.util.List"%>
 
 
@@ -26,7 +29,12 @@
 		List <Person> sectionLeaders = connector.getSectionLeaders(classroomId);
 		List <Person> students = connector.getStudents(classroomId);
 		System.out.println("roles downloaded successfully!");
-				
+		
+		List <Seminar> seminars = connector.getSeminars(classroomId);
+		List <ActiveSeminar> activeSeminars = connector.getActiveSeminars(classroomId);
+		List <Section> sections = connector.getSections(classroomId);
+		System.out.println("seminars, active seminars and sections downloaded successfully!");
+		
 	%>
 	
 	<div class="jumbotron">
@@ -48,32 +56,68 @@
 	</nav>
 	
 	<h2>Lecturers:</h2>
+		<ul>
 		<%
 			for(Person lecturer : lecturers){
-				out.println("<li>" + lecturer.getEmail() + "</li>");
+				out.println("<il>" + lecturer.getEmail() + "</il>");
 			}
+			
 		%>
+		</ul>
 	
 	<h2>Seminarists:</h2>
+		<ul>
 		<%
 			for(Person seminarist : seminarists){
-				out.println("<li>" + seminarist.getEmail() + "</li>");
+				out.println("<il>" + seminarist.getEmail() + "</il>");
 			}
 		%>
+		</ul>
 	
 	<h2>Section Leaders:</h2>
+		<ul>
 		<%
 			for(Person sectionLeader : sectionLeaders){
-				out.println("<li>" + sectionLeader.getEmail() + "</li>");
+				out.println("<il>" + sectionLeader.getEmail() + "</il>");
 			}
 		%>
+		</ul>
 	
 	<h2>Students:</h2>
+		<ul>
 		<%
 			for(Person student : students){
-				out.println("<li>" + student.getEmail() + "</li>");
+				out.println("<il>" + student.getEmail() + "</il>");
 			}
 		%>
+		</ul>
+	
+	<h2>Seminars:</h2>
+		<ul>
+		<%
+			for(Seminar seminar : seminars){
+				out.println("il" + seminar.getSeminarName() + "</il>");
+			}
+		%>
+		</ul>
+	
+	<h2>Active Seminars:</h2>
+		<ul>
+		<%
+			for(ActiveSeminar activeSeminar : activeSeminars){
+				out.println("il" + activeSeminar.getActiveSeminarName() + "</il>");
+			}
+		%>
+		</ul>
+	
+	<h2>Sections:</h2>
+		<ul>
+		<%
+			for(Section section : sections){
+				out.println("il" + section.getSectionName() + "</il>");
+			}
+		%>
+		</ul>
 	
 	
 	

@@ -182,17 +182,17 @@ public class DBConnection {
 	
 	//cero
 	public ArrayList <Seminar> getSeminars(String classroomId){
-		return null;
+		return new ArrayList <Seminar>();
 	}
 	
 	//cero
 	public ArrayList <Section> getSections(String classroomId){
-		return null;
+		return new ArrayList <Section>();
 	}
 	
 	//cero
 	public ArrayList <ActiveSeminar> getActiveSeminars(String classroomId){
-		return null;
+		return new ArrayList <ActiveSeminar>();
 	}
 	
 	
