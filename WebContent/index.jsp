@@ -36,12 +36,10 @@ function redirect() {
 		HTML code consists of section and div which together make up a classroom display.
 	 --%>
 	<%!private String generateNameHTML(String name,String classroomId) {
-
 		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?" +
 						Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" +
 						name + "</a> </div> </section>";
 		return result;
-
 	}%>
 	
 	<%-- 
@@ -50,12 +48,11 @@ function redirect() {
 	--%>
 	<%
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-
 		ArrayList<Classroom> classrooms = connector.getClassrooms();
-
 		for (Classroom classroom : classrooms) {
 			out.print(generateNameHTML(classroom.getClassroomName(),classroom.getClassroomID()));
 		}
 	%>
+	
 </body>
 </html>

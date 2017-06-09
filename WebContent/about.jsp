@@ -24,8 +24,7 @@
 	<nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<%-- getclassroom to be implemented --%>
-					<a class="navbar-brand" href="#">Plain Text</a>
+					<a class="navbar-brand" href="#"><%= currentClassroom.getClassroomName() %></a>
 				</div>
 				<ul class="nav navbar-nav">
 					<li><a href=<%= "stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Stream</a></li>
