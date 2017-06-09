@@ -199,55 +199,55 @@ public class DBConnection {
 		return personId;
 	}
 	
-	public boolean lecturerExists (String Email, String courseId) {
+	public boolean lecturerExists (String Email, String classroomId) {
 		return false;
 	}
 
-	public boolean seminaristExists(String mail, String courseId) {
+	public boolean seminaristExists(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean sectionLeaderExists(String mail, String courseId) {		
+	public boolean sectionLeaderExists(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean studentExists(String mail, String courseId) {
+	public boolean studentExists(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean personExists(String mail, String courseId) {
+	public boolean personExists(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean addLecturer(String mail, String courseId) {
+	public boolean addLecturer(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean addStudent(String mail, String courseId) {
+	public boolean addStudent(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean addSectionLeader(String mail, String courseId) {
+	public boolean addSectionLeader(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean addSeminarist(String mail, String courseId) {
+	public boolean addSeminarist(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean deleteSeminarist(String mail, String courseId) {
+	public boolean deleteSeminarist(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean deleteStudent(String mail, String courseId) {
+	public boolean deleteStudent(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean deleteSectionLeader(String mail, String courseId) {
+	public boolean deleteSectionLeader(String mail, String classroomId) {
 		return false;
 	}
 
-	public boolean deleteLecturer(String mail, String courseId) {
+	public boolean deleteLecturer(String mail, String classroomId) {
 		return false;
 	}
 }
