@@ -12,10 +12,10 @@ public class Course {
 	private ArrayList <Person> students;
 	private ArrayList <Person> lecturers;
 	private String courseName;
-	private int courseID;
+	private String courseID;
 	
 	//Constructor;
-	public Course (String courseName, int courseID, List <Person> sectionLeaders, List <Person> seminarists,
+	public Course (String courseName, String courseID, List <Person> sectionLeaders, List <Person> seminarists,
 			List <Person> students, List <Person> lecturers) {
 		this.courseName = courseName;
 		this.courseID = courseID;
@@ -39,7 +39,7 @@ public class Course {
 	 * This method returns ID of a course.
 	 * @return - ID of a course 
 	 */
-	public int getCourseID(){
+	public String getCourseID(){
 		return this.courseID;
 	}
 	

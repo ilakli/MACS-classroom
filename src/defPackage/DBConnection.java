@@ -91,7 +91,7 @@ public class DBConnection {
 	 * @param courseID - ID of students course
 	 * @return students of current classroom
 	 */
-	public ArrayList <Person> getStudents (int courseID) {
+	public ArrayList <Person> getStudents (String courseID) {
 		String query = "select * from classroom_students where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> students = getPersons (query);
 		return students;
@@ -102,7 +102,7 @@ public class DBConnection {
 	 * @param courseID - ID of Section Leaders course
 	 * @return section leaders of current course
 	 */
-	public ArrayList <Person> getSectionLeaders (int courseID) {
+	public ArrayList <Person> getSectionLeaders (String courseID) {
 		String query = "select * from classroom_section_leaders where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> sectionLeaders = getPersons (query);
 		return sectionLeaders;
@@ -113,7 +113,7 @@ public class DBConnection {
 	 * @param courseID - ID of seminarists course
 	 * @return seminarists of current course
 	 */
-	public ArrayList <Person> getSeminarists (int courseID) {
+	public ArrayList <Person> getSeminarists (String courseID) {
 		String query = "select * from classroom_seminarists where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> seminarists = getPersons(query);
 		return seminarists;
@@ -124,7 +124,7 @@ public class DBConnection {
 	 * @param courseID - ID of lecturers course
 	 * @return lecturers of current course
 	 */
-	public ArrayList <Person> getLecturers (int courseID) {
+	public ArrayList <Person> getLecturers (String courseID) {
 		String query = "select * from classroom_lecturers where `classroom_id`=" + courseID + ";";
 		ArrayList <Person> lecturers = getPersons(query);
 		return lecturers;
@@ -142,7 +142,7 @@ public class DBConnection {
 		try {
 			ResultSet coursesTable = stmnt.executeQuery();
 			while (coursesTable.next()) {
-				int courseID = coursesTable.getInt(1);
+				String courseID = coursesTable.getString(1);
 				String courseName = coursesTable.getString(2);
 				
 				ArrayList <Person> students = getStudents(courseID);

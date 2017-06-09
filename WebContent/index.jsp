@@ -25,7 +25,7 @@
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a course display.
 	 --%>
-	<%!private String generateNameHTML(String name,int courseId) {
+	<%!private String generateNameHTML(String name,String courseId) {
 
 		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?" +Course.ID_ATTRIBUTE_NAME + "=" + courseId + "\" class=\"single-classroom-text\">"
 				+ name + "</a> </div> </section>";
