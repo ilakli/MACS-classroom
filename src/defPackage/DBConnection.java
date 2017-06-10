@@ -12,7 +12,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 public class DBConnection {
 	
 	private DataSource dataSource;
-	private final String DATABASE_ERROR = "DATABASE ERROR";
+	public static final String DATABASE_ERROR = "DATABASE ERROR";
 	
 	public DBConnection(){
 		PoolProperties p = new PoolProperties();

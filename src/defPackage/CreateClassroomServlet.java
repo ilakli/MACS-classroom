@@ -29,30 +29,25 @@ public class CreateClassroomServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-				
-		
-		
-		String className = request.getParameter("newClassroomName");
-		
-		DBConnection db = new DBConnection();
-		//I need method in DBConnection to add classroom into database (); 
-		
-		//db.createClassroom(className);
-		
-		//After it will be created I will go to it's page.
-		//For now i go home-page;
-		
-		
-		RequestDispatcher dispatch = request.getRequestDispatcher("index.jsp");
-		dispatch.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String className = request.getParameter("newClassroomName");
+		DBConnection db = new DBConnection();
+		String classroomID = db.addClassroom(className);
+		
+		if(classroomID .equals( DBConnection.DATABASE_ERROR)){
+			RequestDispatcher dispatch = request.getRequestDispatcher("createClassroom.jsp");
+			dispatch.forward(request, response);
+		} else {
+			RequestDispatcher dispatch = request.getRequestDispatcher("stream.jsp?" +
+					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
+			dispatch.forward(request, response);
+		}
+				
 	}
 
 }

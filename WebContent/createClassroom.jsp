@@ -21,7 +21,7 @@
 		
 		<form action="CreateClassroomServlet" method="post">
 			<input type="text" name="newClassroomName" />
-			<input type="submit" value = "login" />	
+			<input type="submit" value = "create class" />	
 		</form>
 	</div>
 </body>
