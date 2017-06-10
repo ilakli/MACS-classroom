@@ -7,22 +7,15 @@ public class Classroom {
 	
 	public static final String ID_ATTRIBUTE_NAME = "classroomID";
 	
-	private ArrayList <Person> sectionLeaders;
-	private ArrayList <Person> seminarists;
-	private ArrayList <Person> students;
-	private ArrayList <Person> lecturers;
+	
 	private String classroomName;
 	private String classroomID;
 	
 	//Constructor;
-	public Classroom (String classroomName, String classroomID, List <Person> sectionLeaders, List <Person> seminarists,
-			List <Person> students, List <Person> lecturers) {
+	public Classroom (String classroomName, String classroomID) {
 		this.classroomName = classroomName;
 		this.classroomID = classroomID;
-		this.sectionLeaders = new ArrayList<Person>(sectionLeaders);
-		this.seminarists = new ArrayList <Person> (seminarists);
-		this.students = new ArrayList <Person> (students);
-		this.lecturers = new ArrayList <Person> (lecturers);
+		
 	}
 	
 	/**
@@ -46,38 +39,49 @@ public class Classroom {
 	/**
 	 * This method returns section leaders' list from a classroom.
 	 * This method returns only copy of real data, so it can't be changed from outside;
+	 * We use DBConnection to return information from database. 
 	 * @return - section leaders list
 	 */
 	public List <Person> getClassroomSectionLeaders(){
-		return new ArrayList <Person> (this.sectionLeaders);
+		DBConnection db = new DBConnection();
+		return db.getSectionLeaders(this.classroomID);
 	}
 	
 	
 	/**
 	 * This method returns seminarists' list from a classroom;
 	 * This method returns only copy of real data, so it can't be changed from outside;
+	 * We use DBConnection to return information from database. 
 	 * @return - list of a seminarists
 	 */
 	public List <Person> getClassroomSeminarists(){
-		return new ArrayList <Person> (this.seminarists);
+		DBConnection db = new DBConnection();
+		return db.getSeminarists(this.classroomID);
 	}
 	
 	/**
 	 * This method returns students' list from a classroom;
 	 * This method returns only copy of real data, so it can't be changed from outside;
+	 * We use DBConnection to return information from database. 
 	 * @return - list of a students
 	 */
 	public List <Person> getClassroomStudents(){
-		return new ArrayList <Person> (this.students);		
+		DBConnection db = new DBConnection();
+		return db.getStudents(this.classroomID);
 	}
 	
 	/**
 	 * This method returns lecturers' list from a classroom;
 	 * This method returns only copy of real data, so it can't be changed from outside;
+	 * We use DBConnection to return information from database. 
 	 * @return - list of a lecturers
 	 */
 	public List <Person> getClassroomLecturers(){
-		return new ArrayList <Person> (this.lecturers);
+		DBConnection db = new DBConnection();
+		return db.getLecturers(this.classroomID);
 	}
+	
+	
+	
 	
 }

@@ -28,7 +28,10 @@
 	margin: 1%;
 }
 
-
+#header-name{
+	text-decoration: none;
+	color: inherit;
+}
 .person-groups {
   display: flex;
   justify-content: space-between;

@@ -24,7 +24,7 @@ function redirect() {
 </head>
 <body>
 	<div class="jumbotron">
-		<h2>Macs Classroom</h2>
+		<h2><a href="index.jsp" id="header-name">Macs Classroom</a></h2>
 	</div>
 	
 	
