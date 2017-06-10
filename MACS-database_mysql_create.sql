@@ -2,6 +2,7 @@ DROP SCHEMA IF EXISTS `final_project`;
 CREATE SCHEMA `final_project`; 
 USE `final_project`;
 
+DROP TABLE IF EXISTS `lectures`;
 DROP TABLE IF EXISTS `seminar-seminarists`;
 DROP TABLE IF EXISTS `section-section_leader`;
 DROP TABLE IF EXISTS `student-seminar`;
@@ -15,6 +16,7 @@ DROP TABLE IF EXISTS `classroom_seminarists`;
 DROP TABLE IF EXISTS `classroom_lecturers`;
 DROP TABLE IF EXISTS `classrooms`;
 DROP TABLE IF EXISTS `persons`;
+
 
 CREATE TABLE `persons` (
 	`person_id` INT NOT NULL AUTO_INCREMENT,
@@ -39,6 +41,18 @@ CREATE TABLE `classroom_lecturers` (
 	CONSTRAINT `classroom_lecturers_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
 );
 
+
+CREATE TABLE `lectures` (
+	`classroom_id` INT NOT NULL,
+	`lecturer_id` INT NOT NULL,
+	`lecture_time`	varchar(100) NOT NULL,
+	`lecture_location`	varchar(100) NOT NULL,
+	`lecture_name`	varchar(100) NOT NULL,
+	
+	CONSTRAINT `lectures_fk0` FOREIGN KEY (`classroom_id`, `lecturer_id`) REFERENCES 
+					`classroom_lecturers` (`classroom_id`, `person_id`)		
+);
+
 CREATE TABLE `classroom_seminarists` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
@@ -58,7 +72,8 @@ CREATE TABLE `classroom_section_leaders` (
 CREATE TABLE `sections` (
 	`section_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    	`section_name` varchar(100) NOT NULL,
+    `section_name` varchar(100) NOT NULL,
+    
 	PRIMARY KEY (`section_id`, `classroom_id`),
 	CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
@@ -66,7 +81,8 @@ CREATE TABLE `sections` (
 CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    	`seminar_name` varchar(100) NOT NULL,
+    `seminar_name` varchar(100) NOT NULL,
+    
 	PRIMARY KEY (`seminar_id`, `classroom_id`),
 	CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
