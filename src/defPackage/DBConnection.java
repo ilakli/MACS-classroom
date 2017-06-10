@@ -56,7 +56,7 @@ public class DBConnection {
 		try {
 			PreparedStatement stmnt = con.prepareStatement(query);
 			rs = stmnt.executeQuery();
-
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -74,9 +74,11 @@ public class DBConnection {
 		PreparedStatement stmnt = null;
 		try {
 			stmnt = con.prepareStatement(query);
+			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		return stmnt;
 	}
 	
