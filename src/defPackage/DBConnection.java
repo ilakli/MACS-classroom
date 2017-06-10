@@ -67,7 +67,7 @@ public class DBConnection {
 	/**
 	 * 
 	 * @param query that PreparedStatement needs to execute
-	 * @return PreparedStatement based on query
+	 * @return MyConnection object which includes Connection and PreparedStatement
 	 */
 	private MyConnection getMyConnection (String query) {
 		Connection con = getConnection();
@@ -268,8 +268,8 @@ public class DBConnection {
 	}
 	
 	/**
-	 * checks if given PreparedStatement returns empty result after executing
-	 * @param stmnt - statement that has to be executed
+	 * checks if given MyConnection returns empty result after executing
+	 * @param myConnection - object that saves PreparedStatement
 	 * @return whether result set is empty or not
 	 */
 	private boolean isResultEmpty(MyConnection myConnection) {		
