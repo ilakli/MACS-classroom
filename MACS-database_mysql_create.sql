@@ -44,12 +44,12 @@ CREATE TABLE `classroom_lecturers` (
 
 CREATE TABLE `lectures` (
 	`classroom_id` INT NOT NULL,
-	`lecturer_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
 	`lecture_time`	varchar(100) NOT NULL,
 	`lecture_location`	varchar(100) NOT NULL,
 	`lecture_name`	varchar(100) NOT NULL,
 	
-	CONSTRAINT `lectures_fk0` FOREIGN KEY (`classroom_id`, `lecturer_id`) REFERENCES 
+	CONSTRAINT `lectures_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES 
 					`classroom_lecturers` (`classroom_id`, `person_id`)		
 );
 
@@ -89,10 +89,10 @@ CREATE TABLE `seminars` (
 
 CREATE TABLE `classroom_students` (
 	`classroom_id` INT NOT NULL,
-	`student_id` INT NOT NULL,
-	PRIMARY KEY (`classroom_id`,`student_id`),
+	`person_id` INT NOT NULL,
+	PRIMARY KEY (`classroom_id`,`person_id`),
 	CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-	CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`student_id`) REFERENCES `persons`(`person_id`)
+	CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
 );
 
 CREATE TABLE `seminars_timetable` (
@@ -102,23 +102,23 @@ CREATE TABLE `seminars_timetable` (
 	`seminar_time` varchar(100) NOT NULL,
 	
 
-   UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
+   	UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
 	CONSTRAINT `seminars_timetable_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`)
 );
 
 CREATE TABLE `student-seminar` (
 	`classroom_id` INT NOT NULL,
-	`student_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
 	`seminar_id` INT NOT NULL,
-	CONSTRAINT `student-seminar_fk0` FOREIGN KEY (`student_id`, `classroom_id`) REFERENCES `classroom_students`(`student_id`,`classroom_id`),
+	CONSTRAINT `student-seminar_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`,`classroom_id`),
 	CONSTRAINT `student-seminar_fk1` FOREIGN KEY (`seminar_id`, `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`)
 );
 
 CREATE TABLE `student-section` (
 	`classroom_id` INT NOT NULL,
-	`student_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
 	`section_id` INT NOT NULL,
-	CONSTRAINT `student-section_fk0` FOREIGN KEY (`student_id`, `classroom_id`) REFERENCES `classroom_students`(`student_id`, `classroom_id`),
+	CONSTRAINT `student-section_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`, `classroom_id`),
 	CONSTRAINT `student-section_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
 );
 
