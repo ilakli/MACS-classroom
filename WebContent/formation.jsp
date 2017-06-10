@@ -130,6 +130,7 @@
 	
 	<div class='grenevt-groups'>
 		
+		<!-- SEMINARS -->
 		<div class='grevent-seminars'>
 			<div class='display-grevent-button'>Seminars</div>
 			<ul class='grevent-items'>
@@ -145,7 +146,7 @@
 			</ul>
 		</div>
 
-
+		<!-- ACTIVE SEMINARS -->
 		<div class='grevent-active-seminars'>
 			<div class='display-grevent-button'>Active Seminars</div>
 			<ul class='grevent-items'>
@@ -162,28 +163,26 @@
 			%>
 			</ul>
 		</div>	
+
+		<!-- SECTIONS -->
+		<div class='grevent-sections'>
+			<div class='display-grevent-button'>Sections</div>
+			<ul class='grevent-items'>
+			<%	
+				if (sections.isEmpty()){
+					out.println("<li>" + "Empty" + "</li>");
+				} else {
+					for(Section section : sections){
+						out.println("<li>" + section.getSectionName() +  "<li>");
+					}
+				}
+			%>
+			</ul>
+		</div>	
 	
 	
 	
 	</div>
-	
-	<h2>Active Seminars:</h2>
-		<ul>
-		<%
-			for(ActiveSeminar activeSeminar : activeSeminars){
-				out.println("il" + activeSeminar.getActiveSeminarName() + "</il>");
-			}
-		%>
-		</ul>
-	
-	<h2>Sections:</h2>
-		<ul>
-		<%
-			for(Section section : sections){
-				out.println("il" + section.getSectionName() + "</il>");
-			}
-		%>
-		</ul>
 	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/formationJS.js'></script>

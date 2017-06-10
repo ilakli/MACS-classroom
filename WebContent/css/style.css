@@ -63,12 +63,18 @@
 .grevent-active-seminars {
   background-color: #3f0707;
 }
+
+.grevent-sections {
+  background-color: #8c8000;
+}
+
 .group-lecturers,
 .group-seminarists,
 .group-section-leaders,
 .group-students,
 .grevent-seminars,
-.grevent-active-seminars {
+.grevent-active-seminars,
+.grevent-sections {
   width: 100%;
   padding: 1em 3em 2em 2em;
   margin: 0.5em;
