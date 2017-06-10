@@ -1,0 +1,83 @@
+.jumbotron {
+	
+	padding: 2% 2%;
+	margin: 0;
+	
+}
+
+.single-classroom{
+	
+	margin: 1%;
+	width: 60%;
+}
+.single-classroom .well {
+	
+	background-color: #842eb2;
+	
+	
+}
+.single-classroom .well a{
+	
+	text-decoration: none;
+	color: white;
+	
+}
+
+#create{
+	float: right;
+	margin: 1%;
+}
+
+
+.person-groups {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.group-lecturers {
+  background-color: #E55126;
+}
+
+.group-seminarists {
+  background-color: #E5A227;
+}
+
+.group-section-leaders {
+  background-color: #0C73B8;
+}
+
+.group-students {
+  background-color: #76cc1a;
+}
+.group-lecturers,
+.group-seminarists,
+.group-section-leaders,
+.group-students {
+  width: 100%;
+  padding: 1em 3em 2em 2em;
+  margin: 0.5em;
+  color: whitesmoke;
+}
+
+.display-persons-button {
+  padding: 0.75em 1.25em;
+  background-color: whitesmoke;
+  opacity: 0.9;
+  width: 10em;
+  color: black;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.group-persons {
+  margin: 1em 0;
+}
+
+.active {
+  background-color: #333333;
+  color: whitesmoke;
+}

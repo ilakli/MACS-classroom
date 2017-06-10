@@ -12,11 +12,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="style.css">
-<title>Formation</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<link rel="stylesheet" href="css/style.css">
+	
+	<title>Formation</title>
 </head>
 <body>
 	<%
@@ -54,42 +56,61 @@
 			</div>
 	</nav>
 	
-	<h2>Lecturers:</h2>
-		<ul>
-		<%
-			for(Person lecturer : lecturers){
-				out.println("<il>" + lecturer.getEmail() + "</il>");
-			}
+	
+	<div class='person-groups'>
+					
 			
-		%>
-		</ul>
+			<!-- LECTURERS -->
+			<div class='group-lecturers'>
+		    	<div class='display-persons-button'>Lecturers</div>
+		        <ul class='group-persons'>
+		          <%
+		          	for(Person lecturer : lecturers){
+						out.println("<li>" + lecturer.getEmail() + "</li>");
+					}
+		          %>
+		        </ul>
+		    </div>
+		    
+		    <!-- SEMINARISTS -->
+			<div class='group-seminarists'>
+		    	<div class='display-persons-button'>Seminarists</div>
+		        <ul class='group-persons'>
+		          <%
+			  		for(Person seminarist : seminarists){
+						out.println("<li>" + seminarist.getEmail() + "</li>");
+					}
+			      %>
+		        </ul>
+		    </div>
+		    
+		    <!-- SECTION LEADERS -->
+			<div class='group-section-leaders'>
+		    	<div class='display-persons-button'>Section Leaders</div>
+		        <ul class='group-persons'>
+		        <%
+					for(Person sectionLeader : sectionLeaders){
+						out.println("<li>" + sectionLeader.getEmail() + "</li>");
+					}
+		        %>
+		        </ul>
+		    </div>
+		    
+		    <!-- STUDENTS -->
+			<div class='group-students'>
+		    	<div class='display-persons-button'>Students</div>
+		        <ul class='group-persons'>
+		        <%
+					for(Person student : students){
+						out.println("<li>" + student.getEmail() + "</li>");
+					}
+				%>
+		        </ul>
+		    </div>
+    
+    
+    </div>
 	
-	<h2>Seminarists:</h2>
-		<ul>
-		<%
-			for(Person seminarist : seminarists){
-				out.println("<il>" + seminarist.getEmail() + "</il>");
-			}
-		%>
-		</ul>
-	
-	<h2>Section Leaders:</h2>
-		<ul>
-		<%
-			for(Person sectionLeader : sectionLeaders){
-				out.println("<il>" + sectionLeader.getEmail() + "</il>");
-			}
-		%>
-		</ul>
-	
-	<h2>Students:</h2>
-		<ul>
-		<%
-			for(Person student : students){
-				out.println("<il>" + student.getEmail() + "</il>");
-			}
-		%>
-		</ul>
 	
 	<h2>Seminars:</h2>
 		<ul>
@@ -118,7 +139,7 @@
 		%>
 		</ul>
 	
-	
-	
+	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+	<script type="text/javascript" src='js/formationJS.js'></script>
 </body>
 </html>
