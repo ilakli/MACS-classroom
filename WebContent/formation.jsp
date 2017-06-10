@@ -65,9 +65,13 @@
 		    	<div class='display-persons-button'>Lecturers</div>
 		        <ul class='group-persons'>
 		          <%
-		          	for(Person lecturer : lecturers){
-						out.println("<li>" + lecturer.getEmail() + "</li>");
-					}
+		          	if (lecturers.isEmpty()){
+		          		out.println("<li>" + "Empty" + "</li>");
+		          	} else {
+			          	for(Person lecturer : lecturers){
+							out.println("<li>" + lecturer.getEmail() + "</li>");
+						}
+		          	}
 		          %>
 		        </ul>
 		    </div>
@@ -77,9 +81,13 @@
 		    	<div class='display-persons-button'>Seminarists</div>
 		        <ul class='group-persons'>
 		          <%
-			  		for(Person seminarist : seminarists){
-						out.println("<li>" + seminarist.getEmail() + "</li>");
-					}
+		          	if (seminarists.isEmpty()){
+		          		out.println("<li>" + "Empty" + "</li>");
+		          	} else {
+				  		for(Person seminarist : seminarists){
+							out.println("<li>" + seminarist.getEmail() + "</li>");
+						}
+		          	}
 			      %>
 		        </ul>
 		    </div>
@@ -88,11 +96,15 @@
 			<div class='group-section-leaders'>
 		    	<div class='display-persons-button'>Section Leaders</div>
 		        <ul class='group-persons'>
-		        <%
-					for(Person sectionLeader : sectionLeaders){
-						out.println("<li>" + sectionLeader.getEmail() + "</li>");
-					}
-		        %>
+		          <%
+		          	if (sectionLeaders.isEmpty()){
+		          		out.println("<li>" + "Empty" + "</li>");
+		          	} else {
+						for(Person sectionLeader : sectionLeaders){
+							out.println("<li>" + sectionLeader.getEmail() + "</li>");
+						}
+		          	}
+		          %>
 		        </ul>
 		    </div>
 		    
@@ -100,11 +112,15 @@
 			<div class='group-students'>
 		    	<div class='display-persons-button'>Students</div>
 		        <ul class='group-persons'>
-		        <%
-					for(Person student : students){
-						out.println("<li>" + student.getEmail() + "</li>");
-					}
-				%>
+		          <%
+		          	if (students.isEmpty()){
+		          		out.println("<li>" + "Empty" + "</li>");
+		          	} else {
+						for(Person student : students){
+							out.println("<li>" + student.getEmail() + "</li>");
+						}
+		          	}
+				  %>
 		        </ul>
 		    </div>
     
