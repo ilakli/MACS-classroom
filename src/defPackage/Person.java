@@ -4,7 +4,6 @@ public class Person {
 	
 	public static final String ID_ATTRIBUTE_NAME = "personID";
 
-	
 	private String name;
 	private String surname;
 	private String Email;
@@ -31,5 +30,16 @@ public class Person {
 	
 	public String getPersonID() {
 		return personID;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof Person)) return false;
+		
+		Person p = (Person) obj;
+		
+		return p.Email.equals(this.Email);
 	}
 }
