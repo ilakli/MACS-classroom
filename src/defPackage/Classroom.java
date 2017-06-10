@@ -45,35 +45,39 @@ public class Classroom {
 	
 	/**
 	 * This method returns section leaders' list from a classroom.
+	 * This method returns only copy of real data, so it can't be changed from outside;
 	 * @return - section leaders list
 	 */
 	public List <Person> getClassroomSectionLeaders(){
-		return this.sectionLeaders;
+		return new ArrayList <Person> (this.sectionLeaders);
 	}
 	
 	
 	/**
-	 * this method returns seminarists' list from a classroom;
+	 * This method returns seminarists' list from a classroom;
+	 * This method returns only copy of real data, so it can't be changed from outside;
 	 * @return - list of a seminarists
 	 */
 	public List <Person> getClassroomSeminarists(){
-		return this.seminarists;
+		return new ArrayList <Person> (this.seminarists);
 	}
 	
 	/**
 	 * This method returns students' list from a classroom;
+	 * This method returns only copy of real data, so it can't be changed from outside;
 	 * @return - list of a students
 	 */
 	public List <Person> getClassroomStudents(){
-		return this.students;		
+		return new ArrayList <Person> (this.students);		
 	}
 	
 	/**
 	 * This method returns lecturers' list from a classroom;
+	 * This method returns only copy of real data, so it can't be changed from outside;
 	 * @return - list of a lecturers
 	 */
 	public List <Person> getClassroomLecturers(){
-		return this.lecturers;
+		return new ArrayList <Person> (this.lecturers);
 	}
 	
 }

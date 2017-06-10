@@ -14,5 +14,15 @@
 	<div class="jumbotron">
 		<h2>Macs Classroom</h2>
 	</div>
+	
+	<!-- This part let's the user to give new class a name, the information goes to proper servlet -->
+	<div>
+		<label> Please enter a name for the new class  </label>
+		
+		<form action="CreateClassroomServlet" method="post">
+			<input type="text" name="newClassroomName" />
+			<input type="submit" value = "login" />	
+		</form>
+	</div>
 </body>
 </html>
