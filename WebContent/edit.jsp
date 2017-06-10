@@ -45,7 +45,7 @@
 	<form action=<%="AddNewLecturerServlet?" 
 	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Add New Lecturer:</h4>
-		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		<p>Enter Email address, name and surname of the lecturer</p>
 		
 		
 		<input type="text" name="email">
@@ -67,7 +67,7 @@
 	<form action=<%="AddNewSeminaristServlet?"
 	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Add New Seminarist:</h4>
-		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		<p>Enter Email address, name and surname of the seminarist</p>
 		
 		
 		<input type="text" name="email">
@@ -89,7 +89,7 @@
 	<form action=<%="AddNewSectionLeaderServlet?" 
 	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Add New Section Leader:</h4>
-		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		<p>Enter Email address, name and surname of the section leader</p>
 		
 		
 		<input type="text" name="email">
@@ -112,7 +112,7 @@
 	<form action= <%="AddNewStudentServlet?"
 	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Add New Student:</h4>
-		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		<p>Enter Email address, name and surname of the student</p>
 		
 		
 		<input type="text" name="email">
@@ -132,7 +132,7 @@
 	
 	
 	<form action="EditServlet" method="post">
-		<h4>Delete Person By Email:</h4>
+		<h4>Delete person by Email:</h4>
 		<p>Enter Email </p>
 		
 		
@@ -146,7 +146,7 @@
 	
 	<!-- adds existing student to section -->
 	<form action="EditServlet" method="post">
-		<h4>Add Student To Section:</h4>
+		<h4>Add student to section:</h4>
 		<p>enter Email address of the student</p>
 		<input type="text" name="email">
 		
@@ -157,7 +157,7 @@
 	
 	<!-- adds existing student to seminar -->
 	<form action="EditServlet" method="post">
-		<h4>Add Student To Seminar:</h4>
+		<h4>Add student to seminar:</h4>
 		<p>enter Email address of the student</p>
 		<input type="text" name="email">
 		
@@ -214,7 +214,7 @@
 	
 	
 	<form action="EditServlet" method="post">
-		<h4>Edit Classes:</h4>
+		<h4>Edit Student-Group Relations:</h4>
 		<p>Choose wanted options and enter name(s) of the person(s) and name of the group</p>
 		
 		<select>
