@@ -128,14 +128,44 @@
     </div>
 	
 	
-	<h2>Seminars:</h2>
-		<ul>
-		<%
-			for(Seminar seminar : seminars){
-				out.println("il" + seminar.getSeminarName() + "</il>");
-			}
-		%>
-		</ul>
+	<div class='grenevt-groups'>
+		
+		<div class='grevent-seminars'>
+			<div class='display-grevent-button'>Seminars</div>
+			<ul class='grevent-items'>
+			<%
+				if (seminars.isEmpty()){
+					out.println("<li>" + "Empty" + "</li>");
+				} else {
+					for(Seminar seminar : seminars){
+						out.println("<li>" + seminar.getSeminarName() + "<li>");
+					}
+				}
+			%>
+			</ul>
+		</div>
+
+
+		<div class='grevent-active-seminars'>
+			<div class='display-grevent-button'>Active Seminars</div>
+			<ul class='grevent-items'>
+			<%	
+				if (activeSeminars.isEmpty()){
+					out.println("<li>" + "Empty" + "</li>");
+				} else {
+					for(ActiveSeminar activeSeminar : activeSeminars){
+						out.println("<li>" + activeSeminar.getActiveSeminarName() + ".  " + 
+									" Location: " + activeSeminar.getActiveSeminarLocation()  + ".  "+ 
+									" Time: " + activeSeminar.getActiveSeminarTime() + "<li>");
+					}
+				}
+			%>
+			</ul>
+		</div>	
+	
+	
+	
+	</div>
 	
 	<h2>Active Seminars:</h2>
 		<ul>

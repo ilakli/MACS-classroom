@@ -7,7 +7,7 @@ public class ActiveSeminar {
 	private String name;
 	private String time;
 
-	public ActiveSeminar(String seminarId, String location, String name, String time) {
+	public ActiveSeminar(String seminarId, String name, String location, String time) {
 		
 		this.seminarId = seminarId;
 		this.location = location;
