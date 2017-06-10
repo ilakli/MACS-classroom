@@ -40,7 +40,7 @@
 	%>
 	
 	<div class="jumbotron">
-		<h2>Macs Classroom</h2>
+		<h2><a href="index.jsp" id="header-name">Macs Classroom</a></h2>
 	</div>
 	<nav class="navbar navbar-default">
 			<div class="container-fluid">
