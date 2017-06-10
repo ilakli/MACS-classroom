@@ -12,6 +12,7 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 public class DBConnection {
 	
 	private DataSource dataSource;
+	private final String DATABASE_ERROR = "DATABASE ERROR";
 	
 	public DBConnection(){
 		PoolProperties p = new PoolProperties();
@@ -185,12 +186,7 @@ public class DBConnection {
 				String classroomID = classroomsTable.getString(1);
 				String classroomName = classroomsTable.getString(2);
 				
-				ArrayList <Person> students = getStudents(classroomID);
-				ArrayList <Person> sectionLeaders = getSectionLeaders(classroomID);
-				ArrayList <Person> seminarists = getSeminarists(classroomID);
-				ArrayList <Person> lecturers = getLecturers(classroomID);
-				
-				classrooms.add(new Classroom(classroomName, classroomID, sectionLeaders, seminarists, students, lecturers));
+				classrooms.add(new Classroom(classroomName, classroomID));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -212,14 +208,42 @@ public class DBConnection {
 			ResultSet rs = stmnt.executeQuery();
 			if (rs.next()) {
 				String classroomName = rs.getString(2);
-				classroom = new Classroom(classroomName, classroomId, getSectionLeaders(classroomId), getSeminarists(classroomId),
-						getStudents(classroomId), getLecturers(classroomId));
+				classroom = new Classroom(classroomName, classroomId);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 		return classroom;
 	}
+	
+	/**
+	 * adds classroom with given name to the database
+	 * @param classroomName
+	 * @return classromId of newly added classroom
+	 */
+	public String addClassroom (String classroomName) {
+		String classroomId = DATABASE_ERROR;
+		Connection con = getConnection();
+		try {
+			con.setAutoCommit(false);
+
+			PreparedStatement insertClassroom = con.prepareStatement(String.format(
+					"insert into `classrooms` (`classroom_name`) values ('%s');", classroomName));
+			insertClassroom.executeUpdate();
+
+			PreparedStatement selectLastIndex = con.prepareStatement("select last_insert_id();");
+			ResultSet rs = selectLastIndex.executeQuery();
+
+			if (rs.next()) classroomId = rs.getString(1);
+			
+			con.commit();
+			con.close();
+		} catch(SQLException e) {
+		}
+		
+		return classroomId;
+	}
+	
 	/**
 	 * 
 	 * @param email
@@ -237,6 +261,7 @@ public class DBConnection {
 		}
 		return personId;
 	}
+	
 	/**
 	 * checks if given PreparedStatement returns empty result after executing
 	 * @param stmnt - statement that has to be executed
