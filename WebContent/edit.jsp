@@ -1,3 +1,4 @@
+<%@page import="EditingServlets.EditStatusConstants"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -17,6 +18,8 @@
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.getClassroom(classroomId);
 	
+		String status  = request.getParameter(EditStatusConstants.STATUS);
+		
 	%>
 	
 	<div class="jumbotron">
@@ -35,6 +38,208 @@
 				</ul>
 			</div>
 	</nav>
+	
+	
+	
+	<!-- adds new lecturer to the class -->	
+	<form action=<%="AddNewLecturerServlet?" 
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Lecturer:</h4>
+		<p>Choose wanted options and enter Email address, name and surname of the person</p>
 		
+		
+		<input type="text" name="email">
+		<input type="text" name="name">
+		<input type="text" name="surname">
+		
+		<input type="submit" value ="Add">
+		
+		<%	
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_LECTURER_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_LECTURER_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>
+		
+	</form><br>
+	
+	<!-- adds new seminarist to the class -->	
+	<form action=<%="AddNewSeminaristServlet?"
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Seminarist:</h4>
+		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		
+		
+		<input type="text" name="email">
+		<input type="text" name="name">
+		<input type="text" name="surname">
+		
+		<input type="submit" value ="Add">
+		
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_SEMINARIST_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_SEMINARIST_REJ)) out.println(EditStatusConstants.REJECT);	
+			}
+		%>
+	</form><br>
+	
+	
+	<!-- adds new section leader to the class -->	
+	<form action=<%="AddNewSectionLeaderServlet?" 
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Section Leader:</h4>
+		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		
+		
+		<input type="text" name="email">
+		<input type="text" name="name">
+		<input type="text" name="surname">
+		
+		<input type="submit" value ="Add">
+		
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_SECTION_LEADER_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_SECTION_LEADER_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>
+		
+	</form><br>
+	
+	
+	<!-- adds new student to the class -->
+	<form action= <%="AddNewStudentServlet?"
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Student:</h4>
+		<p>Choose wanted options and enter Email address, name and surname of the person</p>
+		
+		
+		<input type="text" name="email">
+		<input type="text" name="name">
+		<input type="text" name="surname">
+		
+		<input type="submit" value ="Add">
+		
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_STUDENT_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_STUDENT_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>
+		
+	</form><br>
+	
+	
+	<form action="EditServlet" method="post">
+		<h4>Delete Person By Email:</h4>
+		<p>Enter Email </p>
+		
+		
+		<input type="text" name="email">
+		
+		
+		<input type="submit" value ="Delete">
+		
+	</form><br>
+	
+	
+	<!-- adds existing student to section -->
+	<form action="EditServlet" method="post">
+		<h4>Add Student To Section:</h4>
+		<p>enter Email address of the student</p>
+		<input type="text" name="email">
+		
+		<input type="submit" value ="Add">
+		
+	</form><br>
+
+	
+	<!-- adds existing student to seminar -->
+	<form action="EditServlet" method="post">
+		<h4>Add Student To Seminar:</h4>
+		<p>enter Email address of the student</p>
+		<input type="text" name="email">
+		
+		<input type="submit" value ="Add">
+		
+	</form><br>	
+	
+	
+	
+	<form action="EditServlet" method="post">
+		<h4>Edit Groups:</h4>
+		<p>Choose wanted options and enter name(s) of the group(s)</p>
+		
+		<select>
+			<option value = "add">Add</option>
+			<option value = "delete">Delete</option>
+		</select>
+		
+		<select>
+			<option value = "seminar">Seminar</option>
+			<option value = "section">Section</option>
+		</select>
+		
+		<input type="text" name="groupName">
+		
+		<input type="submit" value ="Submit">
+	</form><br>
+	
+	
+	<form action="EditServlet" method="post">
+		<h4>Edit Classes:</h4>
+		<p>Choose wanted options and enter name(s), location(s) and time(s) of the class(es)</p>
+		
+		<select>
+			<option value = "add">Add</option>
+			<option value = "delete">Delete</option>
+		</select>
+		
+		<select>
+			<option value = "seminar">Seminar</option>
+			<option value = "lecture">Section</option>
+		</select>
+		
+		
+		<input type="text" name="className">
+		
+		<input type="text" name="classLocation">
+		
+		<input type="text" name="classTime">
+		
+		<input type="submit" value ="Submit">
+	</form><br>
+	
+	
+	
+	<form action="EditServlet" method="post">
+		<h4>Edit Classes:</h4>
+		<p>Choose wanted options and enter name(s) of the person(s) and name of the group</p>
+		
+		<select>
+			<option value = "add">Add</option>
+			<option value = "delete">Delete</option>
+		</select>
+		
+		<select>
+			<option value = "seminar">Seminar</option>
+			<option value = "section">Section</option>
+		</select>
+		
+		
+		<input type="text" name="personName">
+		
+		<input type="text" name="groupName">
+		
+		<input type="submit" value ="Submit">
+	</form>
+		
+
+	
+	
+	
+	
+	
 </body>
 </html>
