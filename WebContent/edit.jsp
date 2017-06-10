@@ -48,10 +48,10 @@
 		<p>Enter Email address, name and surname of the lecturer</p>
 		
 		
-		<input type="text" name="email">
-		<input type="text" name="name">
-		<input type="text" name="surname">
-		
+		<input type="text" name="name" placeholder="First name">
+		<input type="text" name="surname" placeholder="Last name">
+		<input type="text" name="email" placeholder="Email">
+				
 		<input type="submit" value ="Add">
 		
 		<%	
@@ -70,9 +70,9 @@
 		<p>Enter Email address, name and surname of the seminarist</p>
 		
 		
-		<input type="text" name="email">
-		<input type="text" name="name">
-		<input type="text" name="surname">
+		<input type="text" name="name" placeholder="First name">
+		<input type="text" name="surname" placeholder="Last name">
+		<input type="text" name="email" placeholder="Email">
 		
 		<input type="submit" value ="Add">
 		
@@ -92,9 +92,9 @@
 		<p>Enter Email address, name and surname of the section leader</p>
 		
 		
-		<input type="text" name="email">
-		<input type="text" name="name">
-		<input type="text" name="surname">
+		<input type="text" name="name" placeholder="First name">
+		<input type="text" name="surname" placeholder="Last name">
+		<input type="text" name="email" placeholder="Email">
 		
 		<input type="submit" value ="Add">
 		
@@ -115,9 +115,9 @@
 		<p>Enter Email address, name and surname of the student</p>
 		
 		
-		<input type="text" name="email">
-		<input type="text" name="name">
-		<input type="text" name="surname">
+		<input type="text" name="name" placeholder="First name">
+		<input type="text" name="surname" placeholder="Last name">
+		<input type="text" name="email" placeholder="Email">
 		
 		<input type="submit" value ="Add">
 		
@@ -136,7 +136,7 @@
 		<p>Enter Email </p>
 		
 		
-		<input type="text" name="email">
+		<input type="text" name="email" placeholder="Email">
 		
 		
 		<input type="submit" value ="Delete">
@@ -148,7 +148,7 @@
 	<form action="EditServlet" method="post">
 		<h4>Add student to section:</h4>
 		<p>enter Email address of the student</p>
-		<input type="text" name="email">
+		<input type="text" name="email" placeholder = "Email">
 		
 		<input type="submit" value ="Add">
 		
@@ -159,7 +159,7 @@
 	<form action="EditServlet" method="post">
 		<h4>Add student to seminar:</h4>
 		<p>enter Email address of the student</p>
-		<input type="text" name="email">
+		<input type="text" name="email" placeholder = "Email">
 		
 		<input type="submit" value ="Add">
 		
@@ -181,7 +181,7 @@
 			<option value = "section">Section</option>
 		</select>
 		
-		<input type="text" name="groupName">
+		<input type="text" name="groupName" placeholder = "Group Name">
 		
 		<input type="submit" value ="Submit">
 	</form><br>
@@ -202,11 +202,11 @@
 		</select>
 		
 		
-		<input type="text" name="className">
+		<input type="text" name="className" placeholder = "Name">
 		
-		<input type="text" name="classLocation">
+		<input type="text" name="classLocation" placeholder = "Location">
 		
-		<input type="text" name="classTime">
+		<input type="text" name="classTime" placeholder = "Time">
 		
 		<input type="submit" value ="Submit">
 	</form><br>
@@ -228,9 +228,9 @@
 		</select>
 		
 		
-		<input type="text" name="personName">
+		<input type="text" name="personName" placeholder = "Name">
 		
-		<input type="text" name="groupName">
+		<input type="text" name="groupName" placeholder = "Group Name">
 		
 		<input type="submit" value ="Submit">
 	</form>
