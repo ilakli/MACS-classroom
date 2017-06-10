@@ -29,7 +29,7 @@ public class DBConnection {
 	 * 
 	 * @return new Connection
 	 */
-	private Connection getConnection() {
+	public Connection getConnection() {
 		
 		Connection currentConnection = null;
 		
@@ -57,7 +57,6 @@ public class DBConnection {
 		try {
 			PreparedStatement stmnt = con.prepareStatement(query);
 			rs = stmnt.executeQuery();
-			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -70,17 +69,16 @@ public class DBConnection {
 	 * @param query that PreparedStatement needs to execute
 	 * @return PreparedStatement based on query
 	 */
-	private PreparedStatement getPreparedStatement (String query) {
+	private MyConnection getMyConnection (String query) {
 		Connection con = getConnection();
 		PreparedStatement stmnt = null;
 		try {
 			stmnt = con.prepareStatement(query);
-			con.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
-		return stmnt;
+		return new MyConnection(con, stmnt);
 	}
 	
 	/**
@@ -91,15 +89,17 @@ public class DBConnection {
 	public Person getPerson (String personId) {
 		Person currentPerson = null;
 		String query = String.format("select * from `persons` where `person_id`=%s;", personId);
-		ResultSet rs;
+		MyConnection myConnection = null;
 		try {
-			PreparedStatement stmnt = getPreparedStatement(query);
-			rs = stmnt.executeQuery();
+			myConnection = getMyConnection(query);
+			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()){
 				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) myConnection.closeConnection();
 		}
 		
 		return currentPerson;
@@ -111,22 +111,24 @@ public class DBConnection {
 	 * @return person ArrayList
 	 */
 	private ArrayList <Person> getPersons (String query) {
-		ResultSet rs = null;
+
 		ArrayList <Person> persons = new ArrayList <Person> ();
-		
+		MyConnection myConnection = null;
 		try {
-			PreparedStatement stmnt = getPreparedStatement(query);
-			rs = stmnt.executeQuery();
+			myConnection = getMyConnection(query);
+			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
 				persons.add(getPerson(rs.getString(2)));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) myConnection.closeConnection();
 		}
 		
 		return persons;
 	}
-
+	
 	/**
 	 * 
 	 * @param classroomID - ID of students classroom
@@ -178,7 +180,7 @@ public class DBConnection {
 	public ArrayList <Classroom> getClassrooms() {
 		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
 		String classroomsQuery = "select * from classrooms;";
-		PreparedStatement stmnt = getPreparedStatement(classroomsQuery);
+		MyConnection stmnt = getMyConnection(classroomsQuery);
 		
 		try {
 			ResultSet classroomsTable = stmnt.executeQuery();
@@ -203,15 +205,18 @@ public class DBConnection {
 	public Classroom getClassroom(String classroomId){
 		String query = String.format("select * from `classrooms` where `classroom_id` = %s", classroomId);
 		Classroom classroom = null;
+		MyConnection myConnection = null;
 		try {
-			PreparedStatement stmnt = getPreparedStatement(query);
-			ResultSet rs = stmnt.executeQuery();
+			myConnection = getMyConnection(query);
+			ResultSet rs = myConnection.executeQuery();
 			if (rs.next()) {
 				String classroomName = rs.getString(2);
 				classroom = new Classroom(classroomName, classroomId);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) myConnection.closeConnection();
 		}
 		return classroom;
 	}
@@ -251,10 +256,10 @@ public class DBConnection {
 	 */
 	public String getPersonId (String email) {
 		String query = String.format("select `person_id` from `persons` where `person_email`='%s';", email);
-		PreparedStatement stmnt = getPreparedStatement(query);
+		MyConnection myConnection = getMyConnection(query);
 		String personId = "";
 		try {
-			ResultSet rs = stmnt.executeQuery();
+			ResultSet rs = myConnection.executeQuery();
 			if (rs.next()) personId = rs.getString(1);
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -267,14 +272,16 @@ public class DBConnection {
 	 * @param stmnt - statement that has to be executed
 	 * @return whether result set is empty or not
 	 */
-	private boolean isResultEmpty(PreparedStatement stmnt) {		
+	private boolean isResultEmpty(MyConnection myConnection) {		
 		ResultSet rs = null;
 		boolean isEmpty;
 		try {
-			rs = stmnt.executeQuery();
+			rs = myConnection.executeQuery();
 			isEmpty = !rs.next();
 		} catch (SQLException | NullPointerException e) {
 			isEmpty = true;
+		} finally {
+			if (myConnection != null) myConnection.closeConnection();
 		}
 		
 		return isEmpty;
@@ -290,8 +297,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("select * from `classroom_lecturers` where `classroom_id`=%s and `person_id`=%s;",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return !isResultEmpty(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
 	}
 
 	/**
@@ -304,8 +311,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("select * from `classroom_seminarists` where `classroom_id`=%s and `person_id`=%s;",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return !isResultEmpty(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
 	}
 
 	/**
@@ -318,8 +325,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("select * from `classroom_section_leaders` where `classroom_id`=%s and `person_id`=%s;",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return !isResultEmpty(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
 	}
 
 	/**
@@ -332,8 +339,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("select * from `classroom_students` where `classroom_id`=%s and `person_id`=%s;",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return !isResultEmpty(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
 	}
 	
 	/**
@@ -348,20 +355,19 @@ public class DBConnection {
 	}
 	
 	/**
-	 * executes given PreaparedStatement
-	 * @param stmnt
+	 * executes given myConnection
+	 * @param myConnection
 	 * @return true - if execution was successful, false - otherwise
 	 */
-	private boolean executeUpdate (PreparedStatement stmnt) {
+	private boolean executeUpdate (MyConnection myConnection) {
 		try {
-			stmnt.executeUpdate();
+			myConnection.executeUpdate();
 			return true;
 		} catch (SQLException e) {
 			return false;
 		}
 	}
 
-	
 	/**
 	 * adds new person with given name, surname and email address to the persons table
 	 * @param name
@@ -373,8 +379,8 @@ public class DBConnection {
 		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`)"
 				+ " values ('%s', '%s', '%s');",
 				name, surname, email);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 	
 	
@@ -390,8 +396,8 @@ public class DBConnection {
 		if (lecturerExists(email, classroomId)) return false;
 		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -406,8 +412,8 @@ public class DBConnection {
 		if (studentExists(email, classroomId)) return false;
 		String query = String.format("insert into `classroom_students` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -422,8 +428,8 @@ public class DBConnection {
 		if (sectionLeaderExists(email, classroomId)) return false;
 		String query = String.format("insert into `classroom_section_leaders` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -438,8 +444,8 @@ public class DBConnection {
 		if (seminaristExists(email, classroomId)) return false;
 		String query = String.format("insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -453,8 +459,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("delete from `classroom_seminarists` where `classroom_id` = %s and `person_id` = %s;", 
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -466,10 +472,10 @@ public class DBConnection {
 	public boolean deleteStudent(String email, String classroomId) {
 		if (!studentExists(email, classroomId)) return false;
 		String personId = getPersonId(email);
-		String query = String.format("delete from `classrom_students` where `classroom_id` = %s and `person_id` = %s;", 
+		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` = %s;", 
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -481,10 +487,10 @@ public class DBConnection {
 	public boolean deleteSectionLeader(String email, String classroomId) {
 		if (!sectionLeaderExists(email, classroomId)) return false;
 		String personId = getPersonId(email);
-		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` =%s;", 
+		String query = String.format("delete from `classroom_section_leaders` where `classroom_id` = %s and `person_id` =%s;", 
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 	
 	/**
@@ -498,8 +504,8 @@ public class DBConnection {
 		String personId = getPersonId(email);
 		String query = String.format("delete from `classroom_lecturers` where `classroom_id` = %s and `person_id` = %s;", 
 				classroomId, personId);
-		PreparedStatement stmnt = getPreparedStatement(query);
-		return executeUpdate(stmnt);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
 	}
 
 	/**
@@ -567,5 +573,37 @@ public class DBConnection {
 		}
 		
 		return activeSeminars;
+	}
+	/**
+	 * 
+	 * this is class which saves connection and given prepared statement
+	 *
+	 */
+	private class MyConnection {
+		public Connection con;
+		public PreparedStatement stmnt;
+		public MyConnection(Connection con, PreparedStatement stmnt) {
+			this.con = con;
+			this.stmnt = stmnt;
+		}
+		
+		public ResultSet executeQuery() {
+			try {
+				return stmnt.executeQuery();
+			} catch (SQLException e) {
+				return null;
+			}
+		}
+		
+		public void closeConnection() {
+			try {
+				con.close();
+			} catch (SQLException e) {
+			}
+		}
+		
+		public void executeUpdate() throws SQLException {
+			stmnt.executeUpdate();
+		}
 	}
 }
