@@ -361,6 +361,23 @@ public class DBConnection {
 		}
 	}
 
+	
+	/**
+	 * adds new person with given name, surname and email address to the persons table
+	 * @param name
+	 * @param surname
+	 * @param email
+	 * @return	true- if update executed successfully, false - otherwise
+	 */
+	public boolean addPerson(String name, String surname, String email ){
+		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`)"
+				+ " values ('%s', '%s', '%s');",
+				name, surname, email);
+		PreparedStatement stmnt = getPreparedStatement(query);
+		return executeUpdate(stmnt);
+	}
+	
+	
 	/**
 	 * adds lecturer with given email to the given class
 	 * @param email
