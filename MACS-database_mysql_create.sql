@@ -91,7 +91,7 @@ CREATE TABLE `classroom_students` (
 	`classroom_id` INT NOT NULL,
 	`student_id` INT NOT NULL,
 	PRIMARY KEY (`classroom_id`,`student_id`),
-	CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classroom_seminarists`(`classroom_id`),
+	CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
 	CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`student_id`) REFERENCES `persons`(`person_id`)
 );
 
