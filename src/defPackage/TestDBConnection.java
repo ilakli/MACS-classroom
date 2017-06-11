@@ -169,4 +169,110 @@ public class TestDBConnection {
 		ArrayList <Person> sectionLeaders = db.getSectionLeaders(currentClassroom);
 		assertEquals(sectionLeaders, realSectionLeaders);				
 	}
+	
+	@Test
+	public void test6AddSeminar() {
+		String classroomId = db.addClassroom("test6");
+
+		assertTrue(db.addSeminar("test6seminar", classroomId));
+		assertFalse(db.addSeminar("fakeSeminar", "fakeClassroomId"));
+		assertFalse(db.addSeminar("test6seminar", classroomId));
+		assertTrue(db.getSeminarId("test6seminar", classroomId).equals("1"));
+		
+		assertTrue(db.seminarExists("test6seminar", classroomId));
+		assertFalse(db.seminarExists("fakeSeminar", classroomId));
+	}
+	
+	@Test
+	public void test7AddPersonsToSeminar() {
+		String classroomId = db.addClassroom("test7");
+		
+		db.addSeminar("test7seminar", classroomId);
+		db.addPerson("seminaristi1", "seminaristi", "seminaristi1@gmail.com");
+		db.addPerson("seminaristi2", "seminaristi", "seminaristi2@gmail.com");
+		db.addPerson("vigac", "ucnobi", "vigac@gmail.com");
+		db.addPerson("vigacseminarist", "seminaristi", "vigacseminaristi@gmail.com");
+
+		db.addSeminarist("seminaristi1@gmail.com", classroomId);
+		db.addSeminarist("seminaristi2@gmail.com", classroomId);
+		assertFalse(db.addSeminarist("vigacseminaristi@gmail.com", "222"));
+		
+		assertTrue(db.addSeminaristToSeminar("test7seminar", "seminaristi1@gmail.com", classroomId));
+		assertFalse(db.addSeminaristToSeminar("test7seminar", "seminaristi1@gmail.com", classroomId));
+		assertFalse(db.addSeminaristToSeminar("test7seminar", "vigac@gmail.com", classroomId));
+		assertFalse(db.addSeminaristToSeminar("test7seminar", "vigacseminaristi@gmail.com", classroomId));
+		assertFalse(db.addSeminaristToSeminar("fakeSeminar", "fakeemail@fake.com", classroomId));
+	}
+	
+	@Test
+	public void test8AddSection() {
+		String classroomId = db.addClassroom("test8");
+
+		assertTrue(db.addSection("test8section1", classroomId));
+		assertFalse(db.addSection("test8section1", classroomId));
+		assertFalse(db.addSection("test8section2", "fakeclassroom"));
+		
+		assertTrue(db.addSection("test8section2", classroomId));
+		assertTrue(db.getSectionId("test8section1", classroomId).equals("1"));
+
+		assertTrue(db.addSection("test8sec1", classroomId));
+		assertTrue(db.addSection("test8sec2", classroomId));
+		assertTrue(db.addSection("test8sec3", classroomId));
+
+		assertTrue(db.sectionExists("test8sec1", classroomId));
+		assertFalse(db.sectionExists("fakeSection", classroomId));
+		assertFalse(db.sectionExists("fakeSection", "fakeClassroom"));
+		assertFalse(db.addSection("test8sec2", classroomId));
+	}
+	
+	@Test
+	public void test9AddPersonsToSection() {
+		String classroomId = db.addClassroom("test9");
+		
+		db.addPerson("test9per1", "test", "test9per1@gmail.com");
+		db.addPerson("test9per2", "test", "test9per2@gmail.com");
+		db.addPerson("test9per3", "test", "test9per3@gmail.com");
+		
+		assertTrue(db.addSectionLeader("test9per1@gmail.com", classroomId));
+		assertFalse(db.addSectionLeader("test9per1@gmail.com", classroomId));
+		assertFalse(db.addSectionLeader("fakeperson@gmail.com", classroomId));
+		assertTrue(db.addSectionLeader("test9per2@gmail.com", classroomId));
+		assertTrue(db.addSectionLeader("test9per3@gmail.com", classroomId));
+		
+		assertTrue(db.addSection("test9sec1", classroomId));
+		assertTrue(db.addSection("test9sec2", classroomId));
+		assertTrue(db.addSection("test9sec3", classroomId));
+		
+		assertTrue(db.addSectionLeaderToSection("test9sec1", "test9per1@gmail.com", classroomId));
+		assertFalse(db.addSectionLeaderToSection("test9sec1", "test9per1@gmail.com", classroomId));
+		assertTrue(db.addSectionLeaderToSection("test9sec2", "test9per2@gmail.com", classroomId));
+		assertFalse(db.addSectionLeaderToSection("fakeSectionName", "test9per3@gmail.com", classroomId));
+		assertTrue(db.addSectionLeaderToSection("test9sec3", "test9per3@gmail.com", classroomId));
+	}
+	
+	@Test
+	public void test9DeleteSeminar() {
+		String classroomId = db.addClassroom("test9");
+		
+		assertTrue(db.addSeminar("test9seminar", classroomId));
+		assertTrue(db.seminarExists("test9seminar", classroomId));
+		assertFalse(db.addSeminar("test9seminar", classroomId));
+		assertTrue(db.deleteSeminar("test9seminar", classroomId));
+		assertFalse(db.deleteSeminar("fakeSeminar", classroomId));
+		assertFalse(db.seminarExists("test9seminar", classroomId));
+	}
+	
+	@Test
+	public void test910DeleteSection() {
+		String classroomId = db.addClassroom("test10");
+		
+		assertTrue(db.addSection("test10sec1", classroomId));
+		assertFalse(db.addSection("test10sec1", classroomId));
+		assertTrue(db.sectionExists("test10sec1", classroomId));
+		assertTrue(db.deleteSection("test10sec1", classroomId));
+		assertFalse(db.deleteSection("test10sec1", classroomId));
+		assertFalse(db.deleteSection("fakeSection", classroomId));
+		assertTrue(db.addSection("test10sec2", classroomId));
+		assertFalse(db.deleteSection("test10sec2", "fakeClassroom"));
+	}
 }
