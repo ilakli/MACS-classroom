@@ -104,7 +104,7 @@ CREATE TABLE `seminars_timetable` (
 	`seminar_time` varchar(100) NOT NULL,
 	
 
-   	UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
+   UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
 	CONSTRAINT `seminars_timetable_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`)
 );
 
@@ -128,6 +128,7 @@ CREATE TABLE `seminar-seminarists` (
 	`seminar_id` INT NOT NULL,
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
+	UNIQUE KEY `unique_key_seminar-seminarists` (`seminar_id`, `classroom_id`, `person_id`),
 	CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id` , `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`),
 	CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`)
 );
@@ -136,6 +137,7 @@ CREATE TABLE `section-section_leader` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`section_id` INT NOT NULL,
+	UNIQUE KEY `section-section_leader-uk0` (`classroom_id`, `person_id`, `section_id`),
 	CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`),
 	CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
 );
