@@ -367,12 +367,16 @@ public class DBConnection {
 	 * @return true - if execution was successful, false - otherwise
 	 */
 	private boolean executeUpdate (MyConnection myConnection) {
+		boolean result;
 		try {
 			myConnection.executeUpdate();
-			return true;
+			result = true;
 		} catch (SQLException e) {
-			return false;
+			result = false;
+		} finally {
+			myConnection.closeConnection();
 		}
+		return result;
 	}
 
 	/**
@@ -422,6 +426,78 @@ public class DBConnection {
 		MyConnection myConnection = getMyConnection(query);
 		return executeUpdate(myConnection);
 	}
+	/**
+	 * adds section to the database
+	 * @param sectionName
+	 * @param classroomId
+	 * @return - true if section was added successfuly, false otherwise
+	 */
+	public boolean addSection (String sectionName, String classroomId) {
+		String query = String.format("insert into `sections` (`section_name`, `classroom_id`) values ('%s', %s);",
+				sectionName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * 
+	 * @param sectionName
+	 * @param classroomId
+	 * @return sectionId based on classroomId and sectionName
+	 */
+	public String getSectionId (String sectionName, String classroomId) {
+		String query = String.format("select `section_id` from `sections` where `classroom_id` = %s and `section_name` = '%s';", 
+				classroomId, sectionName);
+		MyConnection myConnection = getMyConnection(query);
+		ResultSet rs = myConnection.executeQuery();
+		String sectionId = "";
+		try {
+			if (rs != null && rs.next()) sectionId = rs.getString(1);
+		} catch (SQLException e) {
+		}
+		return sectionId;
+	}
+	/**
+	 * adds student to section in database
+	 * @param sectionName
+	 * @param studentEmail
+	 * @param classroomId
+	 * @return true - if student was successfully added to the given section, flase - otherwise
+	 */
+	public boolean addStudentToSection (String sectionName, String studentEmail, String classroomId) {
+		String sectionId = getSectionId(sectionName, classroomId);
+		String personId = getPersonId(studentEmail);
+		if (sectionId.equals("")) return false;
+		if (personId.equals("")) return false;
+		String query = String.format("insert into `student-section` (`classroom_id`, `person_id`, `section_id`) values(%s, %s, %s);", 
+				classroomId, personId, sectionId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * checks if section with given name exists in given classroom
+	 * @param sectionName
+	 * @param classroomId
+	 * @return true- if exists, false - otherwise
+	 */
+	public boolean sectionExists (String sectionName, String classroomId) {
+		String query = String.format("select * from `sections` where `section_name` = '%s' and `classroom_id` = %s;", 
+				sectionName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
+	}
+	/**
+	 * deletes section from database
+	 * @param sectionName
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - otherwise
+	 */
+	public boolean deleteSection (String sectionName, String classroomId) {
+		if (!sectionExists(sectionName, classroomId)) return false;
+		String query = String.format("delete from `sections` where `section_name` = '%s' and `classroom_id` = %s;", 
+				sectionName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * adds section leader with given email to the given classroom
@@ -438,6 +514,114 @@ public class DBConnection {
 		MyConnection myConnection = getMyConnection(query);
 		return executeUpdate(myConnection);
 	}
+	/**
+	 * adds section leader to given section
+	 * @param sectionName
+	 * @param email
+	 * @param classroomId
+	 * @return true - if section leader was added successfully, false - otherwise
+	 */
+	public boolean addSectionLeaderToSection (String sectionName, String email, String classroomId) {
+		String sectionId = getSectionId(sectionName, classroomId);
+		String personId = getPersonId(email);
+		if (sectionId.equals("") || personId.equals("")) return false;
+		String query = String.format("insert into `section-section_leader` (`classroom_id`, `person_id`, `section_id`) values(%s, %s, %s);", 
+				classroomId, personId, sectionId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	
+	/**
+	 * adds seminar to the database
+	 * @param seminarName
+	 * @param classroomId
+	 * @return - true if seminar was added successfully, false otherwise
+	 */
+	public boolean addSeminar(String seminarName, String classroomId) {
+		String query = String.format("insert into `seminars` (`classroom_id`, `seminar_name`) values (%s, '%s');", 
+				classroomId, seminarName);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * adds given student to given seminar
+	 * @param seminarName
+	 * @param studentEmail
+	 * @param classroomId
+	 * @return true - if student was successfully added, false otherwise
+	 */
+	public boolean addStudentToSeminar (String seminarName, String studentEmail, String classroomId) {
+		String seminarId = getSeminarId(seminarName, classroomId);
+		String personId = getPersonId(studentEmail);
+		if (seminarId.equals("") || personId.equals("")) return false;
+		String query = String.format("insert into `student-seminar` (`classroom_id`, `person_id`, `seminar_id`) values(%s, %s, %s);", 
+				classroomId, personId, seminarId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * 
+	 * @param seminarName
+	 * @param classroomId
+	 * @return seminarId based on classroomId and seminarName
+	 */
+	public String getSeminarId (String seminarName, String classroomId) {
+		String query = String.format("select `seminar_id` from `seminars` where `seminar_name` = '%s' and `classroom_id` = %s;",
+				seminarName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		ResultSet rs = myConnection.executeQuery();
+		String seminarId = "";
+		try {
+			if (rs != null && rs.next()) seminarId = rs.getString(1);
+		} catch (SQLException e) {
+		}
+		myConnection.closeConnection();
+		return seminarId;
+	}
+	/**
+	 * adds row to seminars_timetable in database
+	 * @param activeSeminarName
+	 * @param seminarName
+	 * @param time
+	 * @param location
+	 * @param classroomId
+	 * @return true if it was added successfuly, false otherwise
+	 */
+	public boolean addActiveSeminar(String activeSeminarName, String seminarName, String time, String location, String classroomId) {
+		String seminarId = getSeminarId(seminarName, classroomId);
+		if (seminarId.equals("")) return false;
+		String query = 
+				String.format("insert into `seminars_timetable` (`seminar_id`, `seminar_name`, `seminar_location`, `seminar_time`) "
+						+ "values (%s, '%s', '%s', '%s');", 
+						seminarId, seminarName, location, time);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * checks if seminar in given classroom with given id exists
+	 * @param seminarName
+	 * @param classroomId
+	 * @return true - if seminar exists, false - otherwise
+	 */
+	boolean seminarExists (String seminarName, String classroomId) {
+		String query = String.format("select * from `seminars` where `seminar_name` = '%s' and `classroom_id` = %s;",
+				seminarName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		return !isResultEmpty(myConnection);
+	}
+	/**
+	 * deletes seminar from database
+	 * @param seminarName
+	 * @param classroomId
+	 * @return true - if seminar was successfully deleted, false - otherwise
+	 */
+	public boolean deleteSeminar (String seminarName, String classroomId) {
+		if (!seminarExists(seminarName, classroomId)) return false;
+		String query = String.format("delete from `seminars` where `seminar_name` = '%s' and `classroom_id` = %s;", 
+				seminarName, classroomId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * adds seminarist with given email to the given classroom
@@ -451,6 +635,22 @@ public class DBConnection {
 		if (seminaristExists(email, classroomId)) return false;
 		String query = String.format("insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
+		MyConnection myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
+	/**
+	 * adds seminarist to seminar in database
+	 * @param seminarName
+	 * @param email
+	 * @param classroomId
+	 * @return true - if seminarists was successfully added, false otherwise
+	 */
+	public boolean addSeminaristToSeminar (String seminarName, String email, String classroomId) {
+		String seminarId = getSeminarId(seminarName, classroomId);
+		String personId = getPersonId(email);
+		if (seminarId.equals("") || personId.equals("")) return false;
+		String query = String.format("insert into `seminar-seminarists` (`seminar_id`, `classroom_id`, `person_id`) values(%s, %s, %s);", 
+				seminarId, classroomId, personId);
 		MyConnection myConnection = getMyConnection(query);
 		return executeUpdate(myConnection);
 	}
