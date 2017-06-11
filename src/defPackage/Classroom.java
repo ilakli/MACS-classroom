@@ -284,4 +284,28 @@ public class Classroom {
 	}
 	
 	
+	//mari  sheidzleba saxelis magivrad mtlianad seminari gadmogce not sure
+	/**
+	 * This method deletes seminar from the classroom; 
+	 * @param seminarName - name of the seminar;
+	 * @return - true if a seminar has deleted successfully, false otherwise 
+	 * (if seminar with same name didn't exist in this classroom or some error occurred) 
+	 */
+	public boolean classroomDeleteSeminar(String seminarName){
+		return false;
+	}
+	
+
+	//mari  sheidzleba saxelis magivrad mtlianad seqcia gadmogce not sure
+	/**
+	 * This method deletes section in the classroom; 
+	 * @param sectionName - name of the section;
+	 * @return - true if a section has deleted successfully, false otherwise 
+	 * (if section with same name didn't exist in this classroom or some error occurred) 
+	 */
+	public boolean classroomDeleteSection(String sectionName){
+		return false;
+	}
+	
+	
 }
