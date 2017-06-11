@@ -6,7 +6,7 @@ import java.util.List;
 public class Classroom {
 	
 	public static final String ID_ATTRIBUTE_NAME = "classroomID";
-	
+	public static final String EMAIL_ATTRIBUTE_NAME = "email";
 	
 	private String classroomName;
 	private String classroomID;
@@ -304,6 +304,36 @@ public class Classroom {
 	 * (if section with same name didn't exist in this classroom or some error occurred) 
 	 */
 	public boolean classroomDeleteSection(String sectionName){
+		return false;
+	}
+
+	
+	// UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`)
+	// asea bazashi da mgoni araa maincdamainc logikuri
+	public boolean classroomAddActiveSeminar(String activeSeminarName, String seminarName, String time,
+			String location) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	public boolean classroomAddStudentToSection(String sectionName, String studentEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddStudentToSeminar(String seminarName, String studentEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddSeminaristToSeminar(String seminarName, String seminaristEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddsectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	
