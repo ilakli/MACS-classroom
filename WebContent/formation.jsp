@@ -146,6 +146,24 @@
 			</ul>
 		</div>
 
+
+		<!-- SECTIONS -->
+		<div class='grevent-sections'>
+			<div class='display-grevent-button'>Sections</div>
+			<ul class='grevent-items'>
+			<%	
+				if (sections.isEmpty()){
+					out.println("<li>" + "Empty" + "</li>");
+				} else {
+					for(Section section : sections){
+						out.println("<li>" + section.getSectionName() +  "<li>");
+					}
+				}
+			%>
+			</ul>
+		</div>
+
+
 		<!-- ACTIVE SEMINARS -->
 		<div class='grevent-active-seminars'>
 			<div class='display-grevent-button'>Active Seminars</div>
@@ -164,21 +182,7 @@
 			</ul>
 		</div>	
 
-		<!-- SECTIONS -->
-		<div class='grevent-sections'>
-			<div class='display-grevent-button'>Sections</div>
-			<ul class='grevent-items'>
-			<%	
-				if (sections.isEmpty()){
-					out.println("<li>" + "Empty" + "</li>");
-				} else {
-					for(Section section : sections){
-						out.println("<li>" + section.getSectionName() +  "<li>");
-					}
-				}
-			%>
-			</ul>
-		</div>	
+	
 	
 	
 	
