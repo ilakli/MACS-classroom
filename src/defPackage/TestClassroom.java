@@ -1,0 +1,200 @@
+package defPackage;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.FixMethodOrder;
+import org.junit.Test;
+import org.junit.runners.MethodSorters;
+
+@FixMethodOrder (MethodSorters.NAME_ASCENDING)
+public class TestClassroom {
+	
+	private MockDBConnection db = new MockDBConnection();
+	private  MockClassroom oop ; 
+	private MockClassroom pp;
+	private MockClassroom meth;
+	
+	@Before
+	public void bla(){
+		//creating classes;
+		oop = new MockClassroom ("OOP" , db.addClassroom("OOP"));
+		pp = new MockClassroom ("Paradigms", db.addClassroom("Paradigms"));
+		meth = new MockClassroom ("Methodologies", db.addClassroom("Methodologies"));
+		
+	}
+	
+	
+	@Test
+	public void test1init() {
+		//Just add people into database so we can use them
+		
+		db.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge");
+		db.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge");
+		db.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge");
+		db.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge");
+		db.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge");
+		db.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge");
+		db.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge");
+		
+		//check if class names are correct;
+		assertEquals(oop.getClassroomName(), "OOP");
+		
+		assertEquals(pp.getClassroomName(), "Paradigms");
+			
+		assertEquals(meth.getClassroomName(), "Methodologies");
+		
+	}
+	
+	/**
+	 * Testing add methods of classroom; 
+	 */
+	@Test
+	public void test2AddingToClassrom() {
+		assertTrue(oop.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
+		assertTrue(pp.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
+		assertTrue(meth.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
+		
+		assertTrue(oop.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge"));
+		assertTrue(pp.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge"));
+		
+		assertTrue(meth.classroomAddSectionLeader("ipopk15@freeuni.edu.ge"));
+		assertTrue(meth.classroomAddSectionLeader("gkhos15@freeuni.edu.ge"));
+		assertTrue(meth.classroomAddSectionLeader("acxcx15@freeuni.edu.ge"));
+		
+		assertFalse(meth.classroomAddSectionLeader("ipopk15@freeuni.edu.ge"));
+		assertFalse(meth.classroomAddSectionLeader("gkhos15@freeuni.edu.ge"));
+		
+		assertFalse(pp.classroomAddLecturer("baqara@freeuni.edu.ge"));
+		assertFalse(pp.classroomAddSeminarist("baqara@freeuni.edu.ge"));
+		assertFalse(oop.classroomAddSectionLeader("baquna@freeuni.edu.ge"));
+		assertFalse(meth.classroomAddStudent("xosrika@freeuni.edu.ge"));
+	}
+	
+	/**
+	 * Testing deleting and exist method in classroom;
+	 */
+	@Test
+	public void test3PersonsDelete() {
+		oop.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");
+		pp.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");
+		meth.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");
+		oop.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge");
+		meth.classroomAddSectionLeader("ipopk15@freeuni.edu.ge");
+		meth.classroomAddSectionLeader("gkhos15@freeuni.edu.ge");
+		
+		
+		assertTrue(oop.classroomSeminaristExists("n.begiashvili@freeuni.edu.ge"));
+		assertFalse(oop.classroomDeleteSeminarist("ipopk15@freeuni.edu.ge"));
+		assertTrue(oop.classroomDeleteSeminarist("n.begiashvili@freeuni.edu.ge"));
+		assertFalse(oop.classroomSeminaristExists("n.begiashvili@freeuni.edu.ge"));
+		
+		assertTrue(oop.classroomLecturerExists("s.gvinepadze@freeuni.edu.ge"));
+		assertFalse(oop.classroomDeleteLecturer("n.begiashvili@freeuni.edu.ge"));
+		assertTrue(oop.classroomDeleteLecturer("s.gvinepadze@freeuni.edu.ge"));
+		assertFalse(oop.classroomLecturerExists("s.gvinepadze@freeuni.edu.ge"));
+		assertTrue(pp.classroomLecturerExists("s.gvinepadze@freeuni.edu.ge"));
+		
+		assertTrue(meth.classroomSectionLeaderExists("ipopk15@freeuni.edu.ge"));
+		assertTrue(meth.classroomDeleteSectionLeader("ipopk15@freeuni.edu.ge"));
+		assertTrue(meth.classroomDeleteSectionLeader("gkhos15@freeuni.edu.ge"));
+		assertFalse(meth.classroomSectionLeaderExists("gkhos15@freeuni.edu.ge"));
+		assertFalse(meth.classroomSectionLeaderExists("ipopk15@freeuni.edu.ge"));
+		
+		assertFalse(pp.classroomDeleteSectionLeader("vigaca@freeuni.edu.ge"));
+
+		db.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge");
+		db.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge");
+		db.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge");
+		
+		assertTrue(oop.classroomAddStudent("tpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomAddStudent("kpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomAddStudent("unnamed@freeuni.edu.ge"));
+		
+		assertTrue(oop.classroomStudentExists("tpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomStudentExists("kpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomStudentExists("unnamed@freeuni.edu.ge"));
+		assertTrue(oop.classroomDeleteStudent("tpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomDeleteStudent("kpp@freeuni.edu.ge"));
+		assertTrue(oop.classroomDeleteStudent("unnamed@freeuni.edu.ge"));
+		assertFalse(oop.classroomStudentExists("tpp@freeuni.edu.ge"));
+		assertFalse(oop.classroomStudentExists("kpp@freeuni.edu.ge"));
+		assertFalse(oop.classroomStudentExists("unnamed@freeuni.edu.ge"));
+	}
+	
+	/**
+	 * Testing method of classroom
+	 * which return persons list (like students, section leaders and so on);
+	 */
+	@Test
+	public void test4ListGetters() {
+		String currentClassroom = db.addClassroom("just to test");
+		MockClassroom testClass = new MockClassroom("just to test",currentClassroom);
+				
+		//Testing students' list
+		ArrayList <Person> realStudents = new ArrayList <Person>();
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			String name = String.valueOf(ch);
+			String surname = String.valueOf(ch);
+			String email = String.valueOf(ch) + "@freeuni.edu.ge";
+
+			db.addPerson(name, surname, email);
+			db.addStudent(email, currentClassroom);
+			
+			realStudents.add(new Person(name, surname, email, "3"));
+		}
+		
+		List <Person> students = testClass.getClassroomStudents();
+		assertEquals(students, realStudents);
+		
+		//Testing lecturers' list
+		ArrayList <Person> realLecturers = new ArrayList <Person>(); 
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			String name = "a" + String.valueOf(ch);
+			String surname = "a" + String.valueOf(ch);
+			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
+
+			db.addPerson(name, surname, email);
+			db.addLecturer(email, currentClassroom);
+			
+			realLecturers.add(new Person(name, surname, email, "2"));
+		}
+		List <Person> lecturers = testClass.getClassroomLecturers();
+		assertEquals(lecturers, realLecturers);
+
+		//Testing seminarists' list
+		ArrayList <Person> realSeminarists = new ArrayList <Person>(); 
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			String name = "b" + String.valueOf(ch);
+			String surname = "b" + String.valueOf(ch);
+			String email = "b" + String.valueOf(ch) + "@freeuni.edu.ge";
+
+			db.addPerson(name, surname, email);
+			db.addSeminarist(email, currentClassroom);
+			
+			realSeminarists.add(new Person(name, surname, email, "2"));
+		}
+		List <Person> seminarists = testClass.getClassroomSeminarists();
+		assertEquals(seminarists, realSeminarists);
+
+		//Testing section leaders' list;
+		ArrayList <Person> realSectionLeaders = new ArrayList <Person>(); 
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			String name = "c" + String.valueOf(ch);
+			String surname = "c" + String.valueOf(ch);
+			String email = "c" + String.valueOf(ch) + "@freeuni.edu.ge";
+
+			db.addPerson(name, surname, email);
+			db.addSectionLeader(email, currentClassroom);
+			
+			realSectionLeaders.add(new Person(name, surname, email, "2"));
+		}
+		List <Person> sectionLeaders = testClass.getClassroomSectionLeaders();
+		assertEquals(sectionLeaders, realSectionLeaders);				
+	}
+}

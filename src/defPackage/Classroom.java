@@ -10,7 +10,7 @@ public class Classroom {
 	
 	private String classroomName;
 	private String classroomID;
-	private DBConnection classroomConnection;
+	protected DBConnection classroomConnection;
 	
 	//Constructor;
 	public Classroom (String classroomName, String classroomID) {
@@ -75,7 +75,7 @@ public class Classroom {
 	 * @return - list of lecturers
 	 */
 	public List <Person> getClassroomLecturers(){
-		return this.classroomConnection.getLecturers(this.classroomID);
+		return (this.classroomConnection.getLecturers(this.classroomID));
 	}
 	
 	

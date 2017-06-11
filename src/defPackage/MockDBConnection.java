@@ -3,10 +3,21 @@ package defPackage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
+
 public class MockDBConnection extends DBConnection {
+	
+	/**
+	 * This is mock connection to data base
+	 * We use this to make tests;
+	 */
+	
 	public MockDBConnection() {
-		
+	
 	}
+	
+	
 	
 	@Override
 	public Connection getConnection() {

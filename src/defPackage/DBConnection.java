@@ -14,15 +14,22 @@ public class DBConnection {
 	private DataSource dataSource;
 	public static final String DATABASE_ERROR = "DATABASE ERROR";
 	
-	public DBConnection(){
+	
+	//creates constructor
+	protected void createConstructor(){
 		PoolProperties p = new PoolProperties();
-        p.setUrl(DBinfo.MYSQL_DATABASE_SERVER);
-        p.setDriverClassName(DBinfo.JDBC_DRIVER);
-        p.setUsername(DBinfo.MYSQL_USERNAME);
-        p.setPassword(DBinfo.MYSQL_PASSWORD);
-        
-        dataSource = new DataSource();
-        dataSource.setPoolProperties(p);
+		p.setUrl(DBinfo.MYSQL_DATABASE_SERVER);
+      	p.setDriverClassName(DBinfo.JDBC_DRIVER);
+      	p.setUsername(DBinfo.MYSQL_USERNAME);
+      	p.setPassword(DBinfo.MYSQL_PASSWORD);
+      
+      dataSource = new DataSource();
+      dataSource.setPoolProperties(p);
+	}
+	
+	public DBConnection(){
+		//delete here to uses tests;
+		//createConstructor();
 	}
 	
 	/**
