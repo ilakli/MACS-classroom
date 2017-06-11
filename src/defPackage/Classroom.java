@@ -193,6 +193,31 @@ public class Classroom {
 		}
 	}
 	
+	
+	//mari
+	/**
+	 * This method adds seminar in the classroom; 
+	 * @param seminarName - name of the seminar;
+	 * @return - true if a seminar has added successfully, false otherwise 
+	 * (if seminar with same name already existed in this classroom or some error occurred) 
+	 */
+	public boolean classroomAddSeminar(String seminarName){
+		return false;
+	}
+	
+
+	//mari
+	/**
+	 * This method adds section in the classroom; 
+	 * @param sectionName - name of the section;
+	 * @return - true if a section has added successfully, false otherwise 
+	 * (if section with same name already existed in this classroom or some error occurred) 
+	 */
+	public boolean classroomAddSection(String sectionName){
+		return false;
+	}
+	
+	
 	/**
 	 * This method adds person in the classroom as a seminarist; 
 	 * @param email - person's email;
