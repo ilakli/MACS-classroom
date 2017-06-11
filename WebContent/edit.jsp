@@ -112,8 +112,7 @@
 	<form action= <%="AddNewStudentServlet?"
 	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Add New Student:</h4>
-		<p>Enter Email address, name and surname of the student</p>
-		
+		<p>Enter Email address, name and surname of the student</p>		
 		
 		<input type="text" name="name" placeholder="First name">
 		<input type="text" name="surname" placeholder="Last name">
@@ -131,15 +130,21 @@
 	</form><br>
 	
 	
-	<form action="EditServlet" method="post">
+	<!-- deletes person from the classroom -->
+	<form action=<%="DeletePersonServlet?"
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 		<h4>Delete person by Email:</h4>
-		<p>Enter Email </p>
-		
-		
-		<input type="text" name="email" placeholder="Email">
-		
-		
-		<input type="submit" value ="Delete">
+		<p>Enter Email address of the person you want to delete from this classroom </p>
+				
+		<input type="text" name="email" placeholder="Email">	
+		<input type="submit" value ="Delete">	
+	
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.DEL_PERSON_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.DEL_PERSON_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>	
 		
 	</form><br>
 	
