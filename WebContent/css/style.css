@@ -33,11 +33,16 @@
 	color: inherit;
 }
 
+.edit-groups
 .person-groups
 .grevent-groups {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+
+.quick-edit {
+  background-color: #003737;
 }
 
 .group-lecturers {
@@ -68,6 +73,7 @@
   background-color: #8c8000;
 }
 
+.quick-edit,
 .group-lecturers,
 .group-seminarists,
 .group-section-leaders,
@@ -81,6 +87,7 @@
   color: whitesmoke;
 }
 
+.display-quick-edit-button,
 .display-persons-button,
 .display-grevent-button {
   padding: 0.75em 1.25em;
@@ -95,6 +102,7 @@ ul {
   padding: 0;
 }
 
+.group-quick-edit,
 .group-persons,
 .grevent-items {
   margin: 1em 0;
