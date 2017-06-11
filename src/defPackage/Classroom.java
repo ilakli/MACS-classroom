@@ -6,7 +6,7 @@ import java.util.List;
 public class Classroom {
 	
 	public static final String ID_ATTRIBUTE_NAME = "classroomID";
-	
+	public static final String EMAIL_ATTRIBUTE_NAME = "email";
 	
 	private String classroomName;
 	private String classroomID;
@@ -193,6 +193,31 @@ public class Classroom {
 		}
 	}
 	
+	
+	//mari
+	/**
+	 * This method adds seminar in the classroom; 
+	 * @param seminarName - name of the seminar;
+	 * @return - true if a seminar has added successfully, false otherwise 
+	 * (if seminar with same name already existed in this classroom or some error occurred) 
+	 */
+	public boolean classroomAddSeminar(String seminarName){
+		return false;
+	}
+	
+
+	//mari
+	/**
+	 * This method adds section in the classroom; 
+	 * @param sectionName - name of the section;
+	 * @return - true if a section has added successfully, false otherwise 
+	 * (if section with same name already existed in this classroom or some error occurred) 
+	 */
+	public boolean classroomAddSection(String sectionName){
+		return false;
+	}
+	
+	
 	/**
 	 * This method adds person in the classroom as a seminarist; 
 	 * @param email - person's email;
@@ -256,6 +281,60 @@ public class Classroom {
 		} else {
 			return this.classroomConnection.deleteSeminarist(email, this.classroomID);
 		}
+	}
+	
+	
+	//mari  sheidzleba saxelis magivrad mtlianad seminari gadmogce not sure
+	/**
+	 * This method deletes seminar from the classroom; 
+	 * @param seminarName - name of the seminar;
+	 * @return - true if a seminar has deleted successfully, false otherwise 
+	 * (if seminar with same name didn't exist in this classroom or some error occurred) 
+	 */
+	public boolean classroomDeleteSeminar(String seminarName){
+		return false;
+	}
+	
+
+	//mari  sheidzleba saxelis magivrad mtlianad seqcia gadmogce not sure
+	/**
+	 * This method deletes section in the classroom; 
+	 * @param sectionName - name of the section;
+	 * @return - true if a section has deleted successfully, false otherwise 
+	 * (if section with same name didn't exist in this classroom or some error occurred) 
+	 */
+	public boolean classroomDeleteSection(String sectionName){
+		return false;
+	}
+
+	
+	// UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`)
+	// asea bazashi da mgoni araa maincdamainc logikuri
+	public boolean classroomAddActiveSeminar(String activeSeminarName, String seminarName, String time,
+			String location) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	
+	public boolean classroomAddStudentToSection(String sectionName, String studentEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddStudentToSeminar(String seminarName, String studentEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddSeminaristToSeminar(String seminarName, String seminaristEmail) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean classroomAddsectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	

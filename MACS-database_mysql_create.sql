@@ -75,6 +75,7 @@ CREATE TABLE `sections` (
     `section_name` varchar(100) NOT NULL,
     
 	PRIMARY KEY (`section_id`, `classroom_id`),
+	UNIQUE KEY `seminars_uk0` (`section_name`, `classroom_id`),
 	CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
@@ -82,8 +83,9 @@ CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
     `seminar_name` varchar(100) NOT NULL,
-    
+  
 	PRIMARY KEY (`seminar_id`, `classroom_id`),
+	UNIQUE KEY `seminars_uk0` (`seminar_name`, `classroom_id`),
 	CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
