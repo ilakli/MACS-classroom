@@ -148,6 +148,47 @@
 		
 	</form><br>
 	
+		
+	<!-- adds new seminar -->
+	<form action=<%="AddNewSeminarServlet?"
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Seminar:</h4>
+		<p>Enter name of the seminar you want to add (name must be unique) </p>
+				
+		<input type="text" name="name" placeholder="Seminar Name">	
+		<input type="submit" value ="Add">	
+	
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_SEMINAR_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_SEMINAR_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>	
+		
+	</form><br>
+	
+	<!-- adds new section -->
+	<form action=<%="AddNewSectionServlet?"
+	+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+		<h4>Add New Section:</h4>
+		<p>Enter name of the section you want to add (name must be unique) </p>
+				
+		<input type="text" name="name" placeholder="Section Name">	
+		<input type="submit" value ="Add">	
+	
+		<%
+			if(status != null){
+				if(status.equals( EditStatusConstants.ADD_NEW_SECTION_ACC)) out.println(EditStatusConstants.ACCEPT);
+				if(status.equals( EditStatusConstants.ADD_NEW_SECTION_REJ)) out.println(EditStatusConstants.REJECT);
+			}
+		%>	
+		
+	</form><br>
+	
+	
+	
+	
+	
 	
 	<!-- adds existing student to section -->
 	<form action="EditServlet" method="post">

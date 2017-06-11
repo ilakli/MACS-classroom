@@ -15,4 +15,8 @@ public class EditStatusConstants {
 	public static final String ADD_NEW_SECTION_LEADER_REJ = "addNewSectionLeaderRej";
 	public static final String DEL_PERSON_ACC = "delPersonAcc";
 	public static final String DEL_PERSON_REJ = "delPersonRej";
+	public static final String ADD_NEW_SEMINAR_ACC = "addNewSeminarAcc";
+	public static final String ADD_NEW_SEMINAR_REJ = "addNewSeminarRej";
+	public static final String ADD_NEW_SECTION_ACC = "addNewSectionAcc";
+	public static final String ADD_NEW_SECTION_REJ = "addNewSectionRej";
 }
