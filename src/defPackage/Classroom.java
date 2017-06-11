@@ -194,7 +194,6 @@ public class Classroom {
 	}
 	
 	
-	//mari
 	/**
 	 * This method adds seminar in the classroom; 
 	 * @param seminarName - name of the seminar;
@@ -202,11 +201,10 @@ public class Classroom {
 	 * (if seminar with same name already existed in this classroom or some error occurred) 
 	 */
 	public boolean classroomAddSeminar(String seminarName){
-		return false;
+		return this.classroomConnection.addSeminar(seminarName, this.classroomID);
 	}
 	
 
-	//mari
 	/**
 	 * This method adds section in the classroom; 
 	 * @param sectionName - name of the section;
@@ -214,7 +212,7 @@ public class Classroom {
 	 * (if section with same name already existed in this classroom or some error occurred) 
 	 */
 	public boolean classroomAddSection(String sectionName){
-		return false;
+		return this.classroomConnection.addSection(sectionName, this.classroomID);
 	}
 	
 	
@@ -284,7 +282,7 @@ public class Classroom {
 	}
 	
 	
-	//mari  sheidzleba saxelis magivrad mtlianad seminari gadmogce not sure
+	//not sure, header can be changed
 	/**
 	 * This method deletes seminar from the classroom; 
 	 * @param seminarName - name of the seminar;
@@ -292,11 +290,11 @@ public class Classroom {
 	 * (if seminar with same name didn't exist in this classroom or some error occurred) 
 	 */
 	public boolean classroomDeleteSeminar(String seminarName){
-		return false;
+		return this.classroomConnection.deleteSeminar(seminarName, this.classroomID);
 	}
 	
 
-	//mari  sheidzleba saxelis magivrad mtlianad seqcia gadmogce not sure
+	// not sure, header can be changed
 	/**
 	 * This method deletes section in the classroom; 
 	 * @param sectionName - name of the section;
@@ -304,7 +302,7 @@ public class Classroom {
 	 * (if section with same name didn't exist in this classroom or some error occurred) 
 	 */
 	public boolean classroomDeleteSection(String sectionName){
-		return false;
+		return this.classroomConnection.deleteSection(sectionName, this.classroomID);
 	}
 
 	
@@ -312,29 +310,52 @@ public class Classroom {
 	// asea bazashi da mgoni araa maincdamainc logikuri
 	public boolean classroomAddActiveSeminar(String activeSeminarName, String seminarName, String time,
 			String location) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.classroomConnection.addActiveSeminar(activeSeminarName, 
+				seminarName, time, location, this.classroomID);
 	}
 
-	
+	/**
+	 * This method sets section's student;
+	 * @param sectionName - seminar's name;
+	 * @param sectionLeaderEmail - student who should become section member;
+	 * @return - true if added, false otherwise;
+	 */
 	public boolean classroomAddStudentToSection(String sectionName, String studentEmail) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.classroomConnection.addStudentToSection(sectionName, 
+				studentEmail, this.classroomID);
 	}
 
+	/**
+	 * This method sets seminar's student;
+	 * @param sectionName - seminar's name;
+	 * @param sectionLeaderEmail - student who should become seminar member;
+	 * @return - true if added, false otherwise;
+	 */
 	public boolean classroomAddStudentToSeminar(String seminarName, String studentEmail) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.classroomConnection.addStudentToSeminar(seminarName, 
+				studentEmail, this.classroomID);
 	}
-
+	
+	/**
+	 * This method sets seminar's seminarist;
+	 * @param sectionName - seminar's name;
+	 * @param sectionLeaderEmail - person who should become seminarist;
+	 * @return - true if added leader, false otherwise;
+	 */
 	public boolean classroomAddSeminaristToSeminar(String seminarName, String seminaristEmail) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.classroomConnection.addSeminaristToSeminar(seminarName, 
+				seminaristEmail, this.classroomID);
 	}
-
+	
+	/**
+	 * This method sets section's leader
+	 * @param sectionName - section's name;
+	 * @param sectionLeaderEmail - person who should become leader;
+	 * @return - true if added leader, false otherwise;
+	 */
 	public boolean classroomAddsectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.classroomConnection.addSectionLeaderToSection(sectionName, 
+				sectionLeaderEmail, this.classroomID);
 	}
 	
 	
