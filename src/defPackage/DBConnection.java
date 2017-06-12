@@ -29,7 +29,7 @@ public class DBConnection {
 	
 	public DBConnection(){
 		//delete here to uses tests;
-		//createConstructor();
+		createConstructor();
 	}
 	
 	/**
@@ -106,7 +106,9 @@ public class DBConnection {
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally {
-			if (myConnection != null) myConnection.closeConnection();
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		
 		return currentPerson;
@@ -130,7 +132,9 @@ public class DBConnection {
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally {
-			if (myConnection != null) myConnection.closeConnection();
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		
 		return persons;
@@ -223,7 +227,9 @@ public class DBConnection {
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally {
-			if (myConnection != null) myConnection.closeConnection();
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		return classroom;
 	}
@@ -288,7 +294,9 @@ public class DBConnection {
 		} catch (SQLException | NullPointerException e) {
 			isEmpty = true;
 		} finally {
-			if (myConnection != null) myConnection.closeConnection();
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		
 		return isEmpty;
