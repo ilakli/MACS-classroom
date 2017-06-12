@@ -46,7 +46,7 @@ public class AddNewSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.getClassroom(classroomId);
-		if(currentClassroom.classroomAddSeminar(name)) {
+		if(currentClassroom.classroomAddSection(name)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 					+ EditStatusConstants.ADD_NEW_SECTION_ACC);	
 						 
