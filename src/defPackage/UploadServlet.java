@@ -17,6 +17,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import EditingServlets.EditStatusConstants;
+import Listeners.ContextListener;
 
 /**
  * Servlet implementation class UploadServlet
@@ -75,7 +76,7 @@ public class UploadServlet extends HttpServlet {
 
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
-
+		String fileName = "";
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			Iterator<FileItem> i = fileItems.iterator();
@@ -84,7 +85,7 @@ public class UploadServlet extends HttpServlet {
 				
 				if (!item.isFormField()) {
 
-					String fileName = item.getName();
+					fileName = item.getName();
 
 					if (fileName.lastIndexOf("\\") >= 0) {
 						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
@@ -101,6 +102,15 @@ public class UploadServlet extends HttpServlet {
 		} catch (Exception ex) {
 			
 		}
+		
+		DBConnection connection = (DBConnection)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		
+		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+		
+		System.out.println(fileName + " is fileName");
+		
+		Classroom currentClassroom = connection.getClassroom(classroomId);
+		currentClassroom.classroomAddMaterial(fileName);
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		RequestDispatcher dispatcher = request.getRequestDispatcher(address);

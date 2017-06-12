@@ -12,7 +12,8 @@ import defPackage.DBConnection;
  */
 @WebListener
 public class ContextListener implements ServletContextListener {
-
+	
+	public static final String CONNECTION_ATTRIBUTE_NAME = "connection";
     /**
      * Default constructor. 
      */
@@ -32,7 +33,7 @@ public class ContextListener implements ServletContextListener {
      */
     public void contextInitialized(ServletContextEvent arg0)  { 
         DBConnection connection = new DBConnection();
-        arg0.getServletContext().setAttribute("connection", connection);
+        arg0.getServletContext().setAttribute(CONNECTION_ATTRIBUTE_NAME, connection);
     }
 	
 }

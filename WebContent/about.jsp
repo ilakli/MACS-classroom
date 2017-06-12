@@ -1,3 +1,5 @@
+<%@page import="defPackage.Material"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -12,6 +14,15 @@
 <title>About</title>
 </head>
 <body>
+	<%!private String generateMaterial(String materialName) {
+		
+		System.out.println(materialName);
+		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href="
+				+ System.getProperty("user.dir") + "\\" + materialName + " download>" + materialName
+				+ "</div> <div class=\"panel-footer\"></div> </div>";
+		System.out.println(result);
+		return result;
+	}%>
 	<%
 		System.out.println("Already Here");
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
@@ -43,16 +54,26 @@
 	</nav>
 
 
-	
 
-		<form action="UploadServlet" method="POST" enctype="multipart/form-data">
-			<input name=<%= Classroom.ID_ATTRIBUTE_NAME %> type="hidden" value=<%= classroomId %> id = "classroomID"/>
-			<input type="file" name="file" size="30"/>
-			<input type="submit"/ class="btn btn-success">
-		</form>
-		
-	
-	
+
+	<form action="UploadServlet" method="POST"
+		enctype="multipart/form-data">
+		<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
+			value=<%=classroomId%> id="classroomID" /> <input type="file"
+			name="file" size="30" /> <input type="submit"
+			/ class="btn btn-success">
+	</form>
+
+	<%
+		ArrayList<Material> materials = currentClassroom.getMaterials();
+		for (int i = 0; i < materials.size(); i++) {
+			String htmlMaterial = generateMaterial(materials.get(i).getMaterialName());
+			out.print(htmlMaterial);
+		}
+	%>
+
+
+
 
 
 

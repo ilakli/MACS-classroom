@@ -459,7 +459,7 @@ public class Classroom {
 	 * 
 	 * @return returns List of materials associated with this classroom.
 	 */
-	public List<Material> getMaterials() {
+	public ArrayList<Material> getMaterials() {
 		return this.classroomConnection.getMaterials(this.classroomID);
 	}
 	public boolean classroomAddSectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
