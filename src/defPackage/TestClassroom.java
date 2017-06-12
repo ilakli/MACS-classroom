@@ -197,4 +197,47 @@ public class TestClassroom {
 		List <Person> sectionLeaders = testClass.getClassroomSectionLeaders();
 		assertEquals(sectionLeaders, realSectionLeaders);				
 	}
+		
+	/**
+	 * This method tests sections and seminars in the classroom
+	 * checked: add/delete and list methods for this objects;
+	 */
+	@Test
+	public void test5SectionAndSeminars(){
+		String classID = db.addClassroom("testGroups");
+		MockClassroom mockClass = new MockClassroom("testGoups", classID);
+		
+		assertTrue(mockClass.classroomAddSection("section1"));
+		assertFalse(mockClass.classroomAddSection("section1"));
+		assertTrue(mockClass.classroomAddSection("section2"));		
+		assertTrue(mockClass.classroomAddSection("section3"));
+		assertTrue(mockClass.classroomAddSection("deleteSection"));
+		assertTrue(mockClass.classroomDeleteSection("deleteSection"));
+		assertFalse(mockClass.classroomDeleteSection("deleteSection"));
+				
+		ArrayList<Section> sections = new ArrayList<Section>();
+		
+		sections.add(new Section("random","section1",classID));
+		sections.add(new Section("random","section2",classID));
+		sections.add(new Section("random","section3",classID));
+		
+		assertEquals(mockClass.getClassroomSections(),sections);
+				
+		assertTrue(mockClass.classroomAddSeminar("seminar1"));
+		assertFalse(mockClass.classroomAddSeminar("seminar1"));
+		assertTrue(mockClass.classroomAddSeminar("seminar2"));		
+		assertTrue(mockClass.classroomAddSeminar("seminar3"));
+		assertTrue(mockClass.classroomAddSeminar("deleteSection"));
+		assertTrue(mockClass.classroomDeleteSeminar("deleteSection"));
+		assertFalse(mockClass.classroomDeleteSeminar("deleteSection"));
+		
+		ArrayList<Seminar> seminars = new ArrayList<Seminar>();
+		
+		seminars.add(new Seminar("random","seminar1",classID));
+		seminars.add(new Seminar("random","seminar2",classID));
+		seminars.add(new Seminar("random","seminar3",classID));
+						
+		assertEquals(mockClass.getClassroomSeminars(),seminars);
+		
+	}
 }
