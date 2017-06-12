@@ -42,7 +42,7 @@ public class UploadServlet extends HttpServlet {
 
 	public void init() {
 		// Get the file location where it would be stored.
-		filePath = System.getProperty("user.dir");
+		filePath = System.getProperty("user.dir") + "\\";
 	}
 
 	/**
@@ -62,6 +62,7 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		System.out.println(filePath + " Is the filepath");
 		String classroomId = "";
 		
 		isMultipart = ServletFileUpload.isMultipartContent(request);
