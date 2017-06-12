@@ -282,10 +282,12 @@ public class TestClassroom {
 		assertTrue(mockClass.classroomAddSectionLeaderToSection("section1", "gkhos15@freeuni.edu.ge"));
 		assertTrue(mockClass.classroomAddSectionLeaderToSection("section2", "ipopk15@freeuni.edu.ge"));
 		
+		assertFalse(mockClass.classroomAddStudentToSection("section1", "acxcx15@freeuni.edu.ge"));
 		assertFalse(mockClass.classroomAddStudentToSection("section1", "ipopk15@freeuni.edu.ge"));
 		assertFalse(mockClass.classroomAddStudentToSection("section1", "raraca@mail.ru"));
 		assertTrue(mockClass.classroomAddStudentToSection("section1", "gitser15@freeuni.edu.ge"));
 		
+		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "acxcx15@freeuni.edu.ge"));
 		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "gkhos15@freeuni.edu.ge"));
 		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "raraca@mail.ru"));
 		assertTrue(mockClass.classroomAddStudentToSeminar("seminar1", "gitser15@freeuni.edu.ge"));
