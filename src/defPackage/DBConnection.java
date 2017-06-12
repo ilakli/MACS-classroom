@@ -25,10 +25,17 @@ public class DBConnection {
 		dataSource = new DataSource();
 		dataSource.setPoolProperties(p);
 	}
+<<<<<<< HEAD
 
 	public DBConnection() {
 		// delete here to uses tests;
 	//	createConstructor();
+=======
+	
+	public DBConnection(){
+		//delete here to uses tests;
+		//createConstructor();
+>>>>>>> e479ff59e7889fe12cf0fbdcc9d38be99cc3c3bd
 	}
 
 	/**
