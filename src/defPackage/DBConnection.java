@@ -29,7 +29,7 @@ public class DBConnection {
 	
 	public DBConnection(){
 		//delete here to uses tests;
-		createConstructor();
+		//createConstructor();
 	}
 	
 	/**

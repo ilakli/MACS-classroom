@@ -46,7 +46,7 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.getClassroom(classroomId);
-		if(currentClassroom.classroomAddsectionLeaderToSection(sectionName, sectionLeaderEmail)) {
+		if(currentClassroom.classroomAddSectionLeaderToSection(sectionName, sectionLeaderEmail)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 					+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	
 						 

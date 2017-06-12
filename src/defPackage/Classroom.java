@@ -154,6 +154,24 @@ public class Classroom {
 	}
 	
 	/**
+	 * This method tells us if a section exists in the class;
+	 * @param sectionName - name of the section;
+	 * @return - true if a section exists, false otherwise;
+	 */
+	public boolean classroomSectionExists (String sectionName){
+		return this.classroomConnection.sectionExists(sectionName, this.classroomID);
+	}
+	
+	/**
+	 * This method tells us if a seminar exists in the class;
+	 * @param seminarName - name of the section;
+	 * @return - true is a seminar exists, false otherwise;
+	 */
+	public boolean classroomSeminarExists (String seminarName){
+		return this.classroomConnection.seminarExists(seminarName, this.classroomID);
+	}
+	
+	/**
 	 * This method adds person in the classroom as a lecturer; 
 	 * @param email - person's email;
 	 * @return - true if a person has added successfully, false otherwise (if it was a lecturer before or some error occurred) 
@@ -353,7 +371,7 @@ public class Classroom {
 	 * @param sectionLeaderEmail - person who should become leader;
 	 * @return - true if added leader, false otherwise;
 	 */
-	public boolean classroomAddsectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
+	public boolean classroomAddSectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
 		return this.classroomConnection.addSectionLeaderToSection(sectionName, 
 				sectionLeaderEmail, this.classroomID);
 	}
