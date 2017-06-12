@@ -33,6 +33,12 @@ CREATE TABLE `classrooms` (
 	PRIMARY KEY (`classroom_id`)
 );
 
+CREATE TABLE `classroom_materials` (
+	`classroom_id` INT NOT NULL,
+	`material_name` varchar(100) NOT NULL,
+	PRIMARY KEY (`classroom_id`,`material_name`),
+	CONSTRAINT `classroom_materials_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
+);
 CREATE TABLE `classroom_lecturers` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
