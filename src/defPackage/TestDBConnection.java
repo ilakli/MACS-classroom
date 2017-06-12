@@ -323,9 +323,6 @@ public class TestDBConnection {
 		
 		ArrayList<Material> materials = db.getMaterials(classroomId);
 		
-		for(int i=0;i<materials.size();i++){
-			System.out.println(materials.get(i).getMaterialName());
-		}
 		
 		assertEquals(materials,realMaterials);
 	}

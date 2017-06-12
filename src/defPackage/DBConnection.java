@@ -25,17 +25,10 @@ public class DBConnection {
 		dataSource = new DataSource();
 		dataSource.setPoolProperties(p);
 	}
-<<<<<<< HEAD
 
 	public DBConnection() {
 		// delete here to uses tests;
-	//	createConstructor();
-=======
-	
-	public DBConnection(){
-		//delete here to uses tests;
-		//createConstructor();
->>>>>>> e479ff59e7889fe12cf0fbdcc9d38be99cc3c3bd
+		// createConstructor();
 	}
 
 	/**
@@ -925,7 +918,7 @@ public class DBConnection {
 		ResultSet rs = myConnection.executeQuery();
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
-			while(rs != null && rs.next()) {
+			while (rs != null && rs.next()) {
 				materials.add(new Material(rs.getString(1), rs.getString(2)));
 			}
 
