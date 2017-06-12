@@ -31,4 +31,8 @@ public class EditStatusConstants {
 	public static final String ADD_SEMINARIST_TO_SEMINAR_REJ = "addSeminaristToSeminarRej";
 	public static final String ADD_SECTION_LEADER_TO_SECTION_ACC = "addSectionLeaderToSectionAcc";
 	public static final String ADD_SECTION_LEADER_TO_SECTION_REJ = "addSectionLeaderToSectionRej";
+	public static final String DEL_SEMINAR_ACC = "delSeminarAcc";
+	public static final String DEL_SEMINAR_REJ = "detSeminarRej";
+	public static final String DEL_SECTION_ACC = "delSectionAcc";
+	public static final String DEL_SECTION_REJ = "delSectionRej";
 }

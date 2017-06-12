@@ -373,6 +373,33 @@
 				
 				</li>
 				
+				
+				<li>
+				
+				<!-- deletes existing seminar -->
+					<form
+						action=<%="DeleteSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						method="post">
+						<h4>Delete Seminar:</h4>
+						<p>Enter name of the seminar you want to delete
+						</p>
+				
+						<input type="text" name="name" placeholder="Seminar Name"> <input
+							type="submit" value="Delete">
+				
+						<%
+							if (status != null) {
+								if (status.equals(EditStatusConstants.DEL_SEMINAR_ACC))
+									out.println(EditStatusConstants.ACCEPT);
+								if (status.equals(EditStatusConstants.DEL_SEMINAR_REJ))
+									out.println(EditStatusConstants.REJECT);
+							}
+						%>
+				
+					</form>
+				
+				</li>
+				
 				<li>
 				
 					<!-- adds existing seminarist to seminar -->
@@ -469,6 +496,32 @@
 								if (status.equals(EditStatusConstants.ADD_NEW_SECTION_ACC))
 									out.println(EditStatusConstants.ACCEPT);
 								if (status.equals(EditStatusConstants.ADD_NEW_SECTION_REJ))
+									out.println(EditStatusConstants.REJECT);
+							}
+						%>
+						
+					</form>
+				
+				</li>
+				
+				<li>
+				
+					<!-- deletes existing section -->
+					<form
+						action=<%="DeleteSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						method="post">
+						<h4>Delete Section:</h4>
+						<p>Enter name of the section you want to delete
+						</p>
+				
+						<input type="text" name="name" placeholder="Section Name"> <input
+							type="submit" value="Delete">
+				
+						<%
+							if (status != null) {
+								if (status.equals(EditStatusConstants.DEL_SECTION_ACC))
+									out.println(EditStatusConstants.ACCEPT);
+								if (status.equals(EditStatusConstants.DEL_SECTION_REJ))
 									out.println(EditStatusConstants.REJECT);
 							}
 						%>
