@@ -72,9 +72,8 @@
 	
 		<div class='quick-edit'>
 
-			<h1>quick-edit</h1>
 
-			<div class='display-quick-edit-button'>Quick Edit</div>
+			<div class='display-quick-edit-button'>Delete Persons</div>
 
 			<ul class='group-quick-edit'>
 				<li>
@@ -121,8 +120,6 @@
 
 		<!-- LECTURERS -->
 		<div class='group-lecturers'>
-
-			<h1>lecturers</h1>
 
 			<div class='display-persons-button'>Lecturers</div>
 
@@ -175,11 +172,7 @@
 		<!-- SEMINARISTS -->
 		<div class='group-seminarists'>
 
-			<h1>seminarists</h1>
-
 			<div class='display-persons-button'>Seminarists</div>
-
-
 
 			<ul class='group-persons'>
 				<li> 
@@ -230,11 +223,7 @@
 		<!-- SECTION LEADERS -->
 		<div class='group-section-leaders'>
 
-			<h1>section leaders</h1>
-
 			<div class='display-persons-button'>Section Leaders</div>
-
-
 
 			<ul class='group-persons'>
 			
@@ -246,7 +235,6 @@
 						method="post">
 						<h4>Add New Section Leader:</h4>
 						<p>Enter Email address, name and surname of the section leader</p>
-				
 				
 						<input type="text" name="name" placeholder="First name"> <input
 							type="text" name="surname" placeholder="Last name"> <input
@@ -283,12 +271,7 @@
 		<!-- STUDENTS -->
 		<div class='group-students'>
 
-			<h1>students</h1>
-
-
 			<div class='display-persons-button'>Students</div>
-
-
 
 			<ul class='group-persons'>
 			
@@ -340,8 +323,6 @@
 
 		<!-- SEMINARS -->
 		<div class='grevent-seminars'>
-
-			<h1>seminars</h1>
 
 			<div class='display-grevent-button'>Seminars</div>
 
@@ -473,8 +454,6 @@
 		<!-- SECTIONS -->
 		<div class='grevent-sections'>
 
-			<h1>sections</h1>
-
 			<div class='display-grevent-button'>Sections</div>
 
 			<ul class='grevent-items'>
@@ -601,19 +580,10 @@
 		</div>
 
 
-
-
-
-
-
 		<!-- ACTIVE SEMINARS -->
 		<div class='grevent-active-seminars'>
 
-			<h1>active seminars</h1>
-
 			<div class='display-grevent-button'>Active Seminars</div>
-
-
 
 			<ul class='grevent-items'>
 			

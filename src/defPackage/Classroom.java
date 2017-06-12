@@ -437,9 +437,9 @@ public class Classroom {
 	 *            - person who should become leader;
 	 * @return - true if added leader, false otherwise;
 	 */
-
-	public boolean classroomAddsectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
+	public boolean classroomAddSectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
 		return this.classroomConnection.addSectionLeaderToSection(sectionName, sectionLeaderEmail, this.classroomID);
+
 	}
 
 	/**
@@ -462,8 +462,5 @@ public class Classroom {
 	public ArrayList<Material> getMaterials() {
 		return this.classroomConnection.getMaterials(this.classroomID);
 	}
-	public boolean classroomAddSectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
-		return this.classroomConnection.addSectionLeaderToSection(sectionName, sectionLeaderEmail, this.classroomID);
-
-	}
+	
 }
