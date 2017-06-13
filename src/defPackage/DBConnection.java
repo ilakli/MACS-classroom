@@ -954,7 +954,9 @@ public class DBConnection {
 	 * @return returns booelan (whether it added succesfully or not).
 	 */
 	public boolean addMaterial(String classroomId, String materialName) {
-
+		
+		if(materialName.equals(""))
+			return false;
 		String query = String.format("insert into `classroom_materials` values (%s,'%s');", classroomId, materialName);
 
 		MyConnection myConnection = getMyConnection(query);

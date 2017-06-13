@@ -39,7 +39,7 @@ public class CreateClassroomServlet extends HttpServlet {
 		DBConnection db = new DBConnection();
 		String classroomID = db.addClassroom(className);
 		
-		if(classroomID .equals( DBConnection.DATABASE_ERROR)){
+		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
 			RequestDispatcher dispatch = request.getRequestDispatcher("createClassroom.jsp");
 			dispatch.forward(request, response);
 		} else {
