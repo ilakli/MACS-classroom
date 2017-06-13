@@ -6,7 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +42,9 @@ public class UploadServlet extends HttpServlet {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void init() {
+	public void init(ServletConfig config) {
 		// Get the file location where it would be stored.
-		filePath = System.getProperty("user.dir") + "\\";
+		filePath = "";
 	}
 
 	/**
@@ -62,9 +64,10 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		filePath = request.getServletContext().getRealPath("/");
 		System.out.println(filePath + " Is the filepath");
 		String classroomId = "";
-		
+
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 
 		if (!isMultipart) {
@@ -82,8 +85,8 @@ public class UploadServlet extends HttpServlet {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			Iterator<FileItem> i = fileItems.iterator();
 
-			for(FileItem item : fileItems) {
-				
+			for (FileItem item : fileItems) {
+
 				if (!item.isFormField()) {
 
 					fileName = item.getName();
@@ -94,29 +97,29 @@ public class UploadServlet extends HttpServlet {
 						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
 					}
 					item.write(file);
-				}else {
+				} else {
 					classroomId = item.getString();
 				}
 			}
-		
-			
+
 		} catch (Exception ex) {
-			
+
 		}
-		
-		DBConnection connection = (DBConnection)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
-		
+
+		DBConnection connection = (DBConnection) request.getServletContext()
+				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
-		
+
 		System.out.println(fileName + " is fileName");
-		
+
 		Classroom currentClassroom = connection.getClassroom(classroomId);
 		currentClassroom.classroomAddMaterial(fileName);
-		
+
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
-		RequestDispatcher dispatcher = request.getRequestDispatcher(address);
-	
-		dispatcher.forward(request, response);
+		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);
+		response.sendRedirect(address);
+		// dispatcher.forward(request, response);
 	}
 
 }

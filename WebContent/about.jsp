@@ -18,8 +18,9 @@
 		System.out.println("Material Name is: " + materialName);
 		
 		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href='"
-				+ System.getProperty("user.dir") + "\\" + materialName + "' download>" + materialName
+				  + materialName + "' download>" + materialName
 				+ "</a></div> <div class=\"panel-footer\"></div> </div>";
+				
 		System.out.println(result);
 		return result;
 	}%>
