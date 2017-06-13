@@ -58,22 +58,19 @@ public class Seminar {
 		if (getClass() != obj.getClass())
 			return false;
 		Seminar other = (Seminar) obj;
-		if (classroomId == null && name == null && 
-				other.classroomId == null && other.name == null) {
-			return true;
-		} 
-		
-		if (classroomId == null || name == null || 
-				other.classroomId == null || other.name == null) {
+		if (classroomId == null) {
+			if (other.classroomId != null)
+				return false;
+		} else if (!classroomId.equals(other.classroomId))
 			return false;
-		} 
-		
-		if (classroomId.equals(other.classroomId) && name.equals(other.name) ) {
-			return true;
-		} 
-		
-		return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
+
 	
 	
 }

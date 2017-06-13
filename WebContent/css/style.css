@@ -42,35 +42,35 @@
 }
 
 .quick-edit {
-  background-color: #003737;
+  background-color: #d7d7d7;
 }
 
 .group-lecturers {
-  background-color: #E55126;
+  background-color: #d7d7d7;
 }
 
 .group-seminarists {
-  background-color: #E5A227;
+  background-color: #d7d7d7;
 }
 
 .group-section-leaders {
-  background-color: #0C73B8;
+  background-color: #d7d7d7;
 }
 
 .group-students {
-  background-color: #76cc1a;
+  background-color: #d7d7d7;
 }
 
 .grevent-seminars {
-  background-color: #084f01;
+  background-color: #d7d7d7;
 }
 
 .grevent-active-seminars {
-  background-color: #3f0707;
+  background-color: #d7d7d7;
 }
 
 .grevent-sections {
-  background-color: #8c8000;
+  background-color: #d7d7d7;
 }
 
 .quick-edit,
@@ -84,7 +84,7 @@
   width: 100%;
   padding: 1em 3em 2em 2em;
   margin: 0.5em;
-  color: whitesmoke;
+  color: #383838;
 }
 
 .display-quick-edit-button,
@@ -94,7 +94,7 @@
   background-color: whitesmoke;
   opacity: 0.9;
   width: 10em;
-  color: black;
+  color: #383838;
 }
 
 ul {
