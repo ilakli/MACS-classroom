@@ -16,11 +16,10 @@
 <body>
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
-		
-		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href='"
-				  + materialName + "' download>" + materialName
-				+ "</a></div> <div class=\"panel-footer\"></div> </div>";
-				
+
+		String result = "<form action=\"DownloadServlet\" method = \"GET\"> <input type=\"hidden\" name=\"fileToDownload\" value = \"" + materialName + "\" /> <input type=\"submit\" value=\"Download "
+				+ materialName + "\" /> </form>";
+
 		System.out.println(result);
 		return result;
 	}%>
@@ -68,7 +67,8 @@
 	<%
 		ArrayList<Material> materials = currentClassroom.getMaterials();
 		for (int i = 0; i < materials.size(); i++) {
-			String htmlMaterial = generateMaterial(materials.get(i).getMaterialName());
+			String materialName = materials.get(i).getMaterialName();
+			String htmlMaterial = generateMaterial(materialName);
 			out.print(htmlMaterial);
 		}
 	%>
