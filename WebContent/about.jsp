@@ -1,3 +1,4 @@
+<%@page import="defPackage.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
@@ -17,9 +18,10 @@
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
 
-		String result = "<form action=\"DownloadServlet\" method = \"GET\"> <input type=\"hidden\" name=\"fileToDownload\" value = \"" + materialName + "\" /> <input type=\"submit\" value=\"Download "
-				+ materialName + "\" /> </form>";
-
+		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href=\"DownloadServlet?"
+				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + materialName + "\">" + materialName
+				+ "</a></div> <div class=\"panel-footer\"></div> </div>";
+				
 		System.out.println(result);
 		return result;
 	}%>

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/DownloadServlet")
 public class DownloadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	public static final String DOWNLOAD_PARAMETER = "fileToDownload";
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -32,7 +33,7 @@ public class DownloadServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html");
 		PrintWriter out = response.getWriter();
-		String filename = request.getParameter("fileToDownload");
+		String filename = request.getParameter(DOWNLOAD_PARAMETER);
 		String filepath = request.getServletContext().getRealPath("/");
 		response.setContentType("APPLICATION/OCTET-STREAM");
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
