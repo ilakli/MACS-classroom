@@ -1077,7 +1077,7 @@ public class DBConnection {
 	public void addPostComment(String postID, String personID, String comment_text) {
 		String query = String.format(
 				"insert into `post_comments` (`post_id`, `person_id`, `comment_text`)"
-				+ "values(%s, %s, `%s`)", postID, personID, comment_text);
+				+ "values(%s, %s, '%s')", postID, personID, comment_text);
 		
 		MyConnection myConnection = getMyConnection(query);
 		executeUpdate(myConnection);
@@ -1090,7 +1090,7 @@ public class DBConnection {
 	 */
 	public ArrayList<Comment> getPostComments(String postID){
 		ArrayList<Comment> comments = new ArrayList<Comment>();
-		String query = String.format("select * from `post_comments` where `post_id` = %s;", postID);
+		String query = String.format("select * from `post_comments` where post_id = %s;", postID);
 		
 		MyConnection myConnection = getMyConnection(query);
 		ResultSet rs = myConnection.executeQuery();

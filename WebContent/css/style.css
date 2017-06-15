@@ -5,6 +5,11 @@
 	
 }
 
+.posts {
+		width: 70%;
+		margin: auto;
+}
+
 .single-classroom{
 	
 	margin: 1%;
@@ -313,3 +318,4 @@ ul.seminar-students {
 			color: inherit;
 		}
 /*# sourceMappingURL=awesomplete.css.map */
+

@@ -1,3 +1,4 @@
+<%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
@@ -11,6 +12,21 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/commentsStyling.css">
+<style>
+.posts {
+	width: 70%;
+	margin: auto;
+	margin-top: 3%;
+}
+
+.comment-textarea {
+	width: 90%;
+	margin-left: 5%;
+	margin-bottom: 3%;
+	margin-top: 2%;
+}
+</style>
 <title>Stream</title>
 </head>
 <body>
@@ -56,9 +72,11 @@
 			<div class="modal-body">
 
 				<div class="form-group">
-					<form action="PostServlet"  method="POST">
-						<textarea class="form-control" rows="5" id="comment" name="postText"></textarea>
-						<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME %> value=<%= classroomId %> >
+					<form action="PostServlet" method="POST">
+						<textarea class="form-control" rows="5" id="comment"
+							name="postText"></textarea>
+						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
+							value=<%=classroomId%>>
 						<button type="submit" class="btn btn-success" id="myBtn">Add
 						</button>
 					</form>
@@ -69,18 +87,41 @@
 
 	</div>
 	<%
-	
-		ArrayList <Post> posts = connector.getPosts(classroomId);
-		for(int i=0;i<posts.size();i++){
+		ArrayList<Post> posts = connector.getPosts(classroomId);
+		for (int i = 0; i < posts.size(); i++) {
+
 			String postText = posts.get(i).getPostText();
 			String postAuthor = posts.get(i).getPersonId();
-			String html = "<div class=\"panel panel-success\"> <div class=\"panel-heading\">" + postAuthor + "</div> <div class=\"panel-body\">" + postText + "</div> </div>";
+			String postId = posts.get(i).getPostId();
+			ArrayList<Comment> comments = connector.getPostComments(postId);
+
+			out.println("<div class='panel panel-success posts'>");
+
+			String html = "<div class=\"panel-heading\">" + postAuthor + "</div> <div class=\"panel-body\">"
+					+ postText + "</div>";
 			out.println(html);
+			out.println("<ul class=\"list-group\">");
+			for (int j = 0; j < comments.size(); j++) {
+				String commentText = comments.get(j).getCommentText();
+				String commentAuthor = comments.get(j).getPersonID();
+
+				String commentHtml = " <li class=\"list-group-item\">" + commentText + "    Author: "
+						+ commentAuthor + "</li>";
+				out.println(commentHtml);
+			}
+			out.println("</ul>");
+
+			String commentForm = "<form class=\"comments-form\"> <input class=\"postId\" type=\"hidden\" name = \"postId\" value = \""
+					+ postId
+					+ "\" >  <textarea class=\"comment-textarea\"> </textarea> <input type=\"submit\" /> </form>";
+			out.println(commentForm);
+
+			out.println("</div>");
 		}
-	
 	%>
-	
+
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
+	<script type="text/javascript" src='js/comments.js'></script>
 </body>
 </html>
