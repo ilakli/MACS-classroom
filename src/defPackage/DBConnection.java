@@ -1175,4 +1175,53 @@ public class DBConnection {
 			stmnt.executeUpdate();
 		}
 	}
+
+
+	/**
+	 * returns seminar that contains smallest number of students in it
+	 * @param seminars - ArrayList of seminars
+	 * @return smallest Seminar
+	 */
+	public Seminar getSmallestSeminar(String classroomID) {
+		ArrayList<Seminar> seminars = this.getSeminars(classroomID);
+		if (seminars.isEmpty()) return null;
+		
+		Seminar seminar = null;
+		int curMin = Integer.MAX_VALUE;
+		
+		for (Seminar sem : seminars){
+			int curSize = sem.getSeminarStudents().size();
+			
+			if (curSize <= curMin){
+				curMin = curSize;
+				seminar = sem;
+			}
+		}
+		return seminar;
+	}
+	
+	/**
+	 * returns section that contains smallest number of students
+	 * @param classroomID - ID of classroom
+	 * @return smallest Section
+	 */
+	public Section getSmallestSection(String classroomID) {
+		ArrayList<Section> sections = this.getSections(classroomID);
+		if (sections.isEmpty()) return null;
+		
+		Section section = null;
+		int curMin = Integer.MAX_VALUE;
+		
+		for (Section sec : sections){
+			int curSize = sec.getSectionStudents().size();
+			
+			if (curSize <= curMin){
+				curMin = curSize;
+				section = sec;
+			}
+		}
+		return section;
+	}
+	
+	
 }
