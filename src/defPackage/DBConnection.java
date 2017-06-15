@@ -1109,6 +1109,40 @@ public class DBConnection {
 	
 	
 	/**
+	 * returns list of students without seminar assigned of classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return List of students that are not assigned to any seminar
+	 */
+	public ArrayList<Person> getStudentsWithoutSeminar(String classroomID){
+		
+		String query = String.format("select * from `classroom_students` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `student-seminar` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> students = getPersons(query);
+		return students;
+	}
+	
+	/**
+	 * returns list of students without section assigned of classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return list of students that are not in any section
+	 */
+	public ArrayList<Person> getStudentsWithoutSection(String classroomID){
+		
+		String query = String.format("select * from `classroom_students` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `student-section` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> students = getPersons(query);
+		return students;
+	}
+	
+	
+	
+	/**
 	 * 
 	 * this is class which saves connection and given prepared statement
 	 *
