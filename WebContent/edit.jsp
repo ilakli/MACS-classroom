@@ -133,11 +133,8 @@
 						<h4>Add New Lecturer:</h4>
 						<p>Enter Email address, name and surname of the lecturer</p>
 
-
-						<input type="text" name="name" placeholder="First name"> <input
-							type="text" name="surname" placeholder="Last name"> <input
-							type="text" name="email" placeholder="Email"> <input
-							type="submit" value="Add">
+						<input type="text" name="email" placeholder="Email">
+						<input type="submit" value="Add">
 
 						<%
 							if (status != null) {
@@ -184,11 +181,8 @@
 						<h4>Add New Seminarist:</h4>
 						<p>Enter Email address, name and surname of the seminarist</p>
 				
-				
-						<input type="text" name="name" placeholder="First name"> <input
-							type="text" name="surname" placeholder="Last name"> <input
-							type="text" name="email" placeholder="Email"> <input
-							type="submit" value="Add">
+						<input type="text" name="email" placeholder="Email"> 
+						<input type="submit" value="Add">
 				
 						<%
 							if (status != null) {
@@ -236,10 +230,8 @@
 						<h4>Add New Section Leader:</h4>
 						<p>Enter Email address, name and surname of the section leader</p>
 				
-						<input type="text" name="name" placeholder="First name"> <input
-							type="text" name="surname" placeholder="Last name"> <input
-							type="text" name="email" placeholder="Email"> <input
-							type="submit" value="Add">
+						 <input type="text" name="email" placeholder="Email"> 
+						 <input type="submit" value="Add">
 				
 						<%
 							if (status != null) {
@@ -282,11 +274,9 @@
 							method="post">
 							<h4>Add New Student:</h4>
 							<p>Enter Email address, name and surname of the student</p>
-					
-							<input type="text" name="name" placeholder="First name"> <input
-								type="text" name="surname" placeholder="Last name"> <input
-								type="text" name="email" placeholder="Email"> <input
-								type="submit" value="Add">
+							
+							<input type="text" name="email" placeholder="Email"> 
+							<input type="submit" value="Add">
 					
 							<%
 								if (status != null) {
