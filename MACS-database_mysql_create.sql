@@ -33,6 +33,26 @@ CREATE TABLE `classrooms` (
 	PRIMARY KEY (`classroom_id`)
 );
 
+CREATE TABLE `classroom_posts` (
+	`post_id` INT NOT NULL AUTO_INCREMENT,
+	`classroom_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
+	`post_text` TEXT NOT NULL,
+	PRIMARY KEY (`post_id`),
+	CONSTRAINT `classroom_posts_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
+	CONSTRAINT `classroom_posts_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+);
+
+CREATE TABLE `post_comments` (
+	`comment_id` INT NOT NULL AUTO_INCREMENT,
+	`post_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
+	`comment_text` TEXT NOT NULL,
+	PRIMARY KEY (`comment_id`),
+	CONSTRAINT `post_comments_fk0` FOREIGN KEY (`post_id`) REFERENCES `classroom_posts`(`post_id`),
+	CONSTRAINT `post_comments_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+);
+
 CREATE TABLE `classroom_materials` (
 	`classroom_id` INT NOT NULL,
 	`material_name` varchar(100) NOT NULL,
