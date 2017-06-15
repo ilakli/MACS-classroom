@@ -1,3 +1,5 @@
+<%@page import="defPackage.Post"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.DBConnection"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -41,8 +43,7 @@
 	</div>
 	</nav>
 
-	<button type="button" class="btn btn-info" id="myBtn">Add
-		Post</button>
+	<button type="button" class="btn btn-info" id="myBtn">Add Post</button>
 
 	<div id="myModal" class="modal">
 
@@ -53,17 +54,32 @@
 				<h2>Add Post</h2>
 			</div>
 			<div class="modal-body">
-				<form>
-					<div class="form-group">
-						<textarea class="form-control" rows="5" id="comment" name="text"></textarea>
-						<button type="submit" class="btn btn-success" id="myBtn">Add </button>
-					</div>
-				</form>
+
+				<div class="form-group">
+					<form action="PostServlet"  method="POST">
+						<textarea class="form-control" rows="5" id="comment" name="postText"></textarea>
+						<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME %> value=<%= classroomId %> >
+						<button type="submit" class="btn btn-success" id="myBtn">Add
+						</button>
+					</form>
+				</div>
+
 			</div>
 		</div>
 
 	</div>
-
+	<%
+	
+		ArrayList <Post> posts = connector.getPosts(classroomId);
+		for(int i=0;i<posts.size();i++){
+			String postText = posts.get(i).getPostText();
+			String postAuthor = posts.get(i).getPersonId();
+			String html = "<div class=\"panel panel-success\"> <div class=\"panel-heading\">" + postAuthor + "</div> <div class=\"panel-body\">" + postText + "</div> </div>";
+			out.println(html);
+		}
+	
+	%>
+	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 </body>
