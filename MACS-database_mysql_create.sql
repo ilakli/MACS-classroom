@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS `student-section`;
 DROP TABLE IF EXISTS `sections`;
 DROP TABLE IF EXISTS `seminars_timetable`;
 DROP TABLE IF EXISTS `seminars`;
+DROP TABLE IF EXISTS `classroom_posts`;
 DROP TABLE IF EXISTS `classroom_students`;
 DROP TABLE IF EXISTS `classroom_section_leaders`;
 DROP TABLE IF EXISTS `classroom_seminarists`;
