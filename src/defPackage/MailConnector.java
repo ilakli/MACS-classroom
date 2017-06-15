@@ -20,7 +20,7 @@ public class MailConnector {
 	private String d_uname = "macs"; //name of the sender
 	private String d_password = "itisnotwrong"; //password of the sender
 	private String d_host = "smtp.gmail.com";
-	private String d_port  = "465";
+	private String d_port  = "8080";
 	private String m_to; //receiver email
 	private String m_subject; //subject of the mail
 	private String m_text;//text of the mail
@@ -101,7 +101,7 @@ public class MailConnector {
 	
 	public static void main(String[] args) {
 		
-		new MailConnector("gkhos15@freeuni.edu.ge", " amanac tu gaweda", " mere rara vqna").sendMail();
+		new MailConnector("gitser15@freeuni.edu.ge", " amanac tu gaweda", " mere rara vqna").sendMail();
 		
 	}
 	

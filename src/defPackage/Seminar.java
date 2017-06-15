@@ -11,6 +11,7 @@ public class Seminar {
 		this.id = id;
 		this.name = name;
 		this.classroomId = classroomId;
+		
 	}
 	
 	/**

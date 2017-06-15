@@ -28,7 +28,7 @@ public class DBConnection {
 
 	public DBConnection() {
 		// delete here to uses tests;
-		 createConstructor();
+		createConstructor();
 	}
 
 	/**
@@ -114,21 +114,23 @@ public class DBConnection {
 
 		return currentPerson;
 	}
-	
+
 	/**
 	 * returns Person by email
-	 * @param email - email of needed person
+	 * 
+	 * @param email
+	 *            - email of needed person
 	 * @return Person if there exists one with such email, null otherwise.
 	 */
-	public Person getPersonByEmail(String email){
+	public Person getPersonByEmail(String email) {
 		Person currentPerson = null;
-		
+
 		String query = String.format("select * from `persons` where `person_email`=\"%s\"", email);
 		MyConnection myConnection = null;
-		try{
+		try {
 			myConnection = getMyConnection(query);
 			ResultSet rs = myConnection.executeQuery();
-			while (rs.next()){
+			while (rs.next()) {
 				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
 			}
 		} catch (SQLException | NullPointerException e) {
@@ -138,10 +140,9 @@ public class DBConnection {
 				myConnection.closeConnection();
 			}
 		}
-		
+
 		return currentPerson;
 	}
-	
 
 	/**
 	 * 
@@ -570,28 +571,31 @@ public class DBConnection {
 	 * @param classroomId
 	 * @return true - if deletion was successful, false - otherwise
 	 */
-	public boolean deleteSection (String sectionName, String classroomId) {
-        if (!sectionExists(sectionName, classroomId)) return false;
-        String sectionID = getSectionId(sectionName, classroomId);
-       
-        String preQuery0 = String.format("delete from `section-section_leader` where `section_id` = '%s' and `classroom_id` = %s;",
-                sectionID, classroomId);
-       
-        String preQuery1 = String.format("delete from `student-section` where `section_id` = '%s' and `classroom_id` = %s;",
-                sectionID, classroomId);
-       
-        String query = String.format("delete from `sections` where `section_name` = '%s' and `classroom_id` = %s;",
-                sectionName, classroomId);
-       
-        MyConnection myConnection = getMyConnection(preQuery0);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(preQuery1);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+	public boolean deleteSection(String sectionName, String classroomId) {
+		if (!sectionExists(sectionName, classroomId))
+			return false;
+		String sectionID = getSectionId(sectionName, classroomId);
+
+		String preQuery0 = String.format(
+				"delete from `section-section_leader` where `section_id` = '%s' and `classroom_id` = %s;", sectionID,
+				classroomId);
+
+		String preQuery1 = String.format(
+				"delete from `student-section` where `section_id` = '%s' and `classroom_id` = %s;", sectionID,
+				classroomId);
+
+		String query = String.format("delete from `sections` where `section_name` = '%s' and `classroom_id` = %s;",
+				sectionName, classroomId);
+
+		MyConnection myConnection = getMyConnection(preQuery0);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(preQuery1);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * adds section leader with given email to the given classroom
@@ -734,31 +738,33 @@ public class DBConnection {
 	 * @param classroomId
 	 * @return true - if seminar was successfully deleted, false - otherwise
 	 */
-	public boolean deleteSeminar (String seminarName, String classroomId) {
-        if (!seminarExists(seminarName, classroomId)) return false;
-        String seminarID = getSeminarId(seminarName, classroomId);
-       
-        String preQuery0 = String.format("delete from `seminar-seminarists` where `seminar_id` = '%s' and `classroom_id` = %s;",
-                seminarID, classroomId);
-        String preQuery1 = String.format("delete from `seminars_timetable` where `seminar_id` = '%s';",
-                seminarID);
-        String preQuery2 = String.format("delete from `student-seminar` where `seminar_id` = '%s' and `classroom_id` = %s;",
-                seminarID, classroomId);
-        String query = String.format("delete from `seminars` where `seminar_name` = '%s' and `classroom_id` = %s;",
-                seminarName, classroomId);
-       
-        MyConnection myConnection = getMyConnection(preQuery0);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(preQuery1);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(preQuery2);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+	public boolean deleteSeminar(String seminarName, String classroomId) {
+		if (!seminarExists(seminarName, classroomId))
+			return false;
+		String seminarID = getSeminarId(seminarName, classroomId);
+
+		String preQuery0 = String.format(
+				"delete from `seminar-seminarists` where `seminar_id` = '%s' and `classroom_id` = %s;", seminarID,
+				classroomId);
+		String preQuery1 = String.format("delete from `seminars_timetable` where `seminar_id` = '%s';", seminarID);
+		String preQuery2 = String.format(
+				"delete from `student-seminar` where `seminar_id` = '%s' and `classroom_id` = %s;", seminarID,
+				classroomId);
+		String query = String.format("delete from `seminars` where `seminar_name` = '%s' and `classroom_id` = %s;",
+				seminarName, classroomId);
+
+		MyConnection myConnection = getMyConnection(preQuery0);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(preQuery1);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(preQuery2);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * adds seminarist with given email to the given classroom
@@ -810,20 +816,23 @@ public class DBConnection {
 	 *         seminarist or database crashed
 	 */
 	public boolean deleteSeminarist(String email, String classroomId) {
-        if (!seminaristExists(email, classroomId)) return false;
-        String personId = getPersonId(email);
-       
-        String preQuery = String.format("delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-        String query = String.format("delete from `classroom_seminarists` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-       
-        MyConnection myConnection = getMyConnection(preQuery);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+		if (!seminaristExists(email, classroomId))
+			return false;
+		String personId = getPersonId(email);
+
+		String preQuery = String.format(
+				"delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s;", classroomId,
+				personId);
+		String query = String.format(
+				"delete from `classroom_seminarists` where `classroom_id` = %s and `person_id` = %s;", classroomId,
+				personId);
+
+		MyConnection myConnection = getMyConnection(preQuery);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * deletes student with given email from given classroom
@@ -834,25 +843,26 @@ public class DBConnection {
 	 *         student or database crashed
 	 */
 	public boolean deleteStudent(String email, String classroomId) {
-        if (!studentExists(email, classroomId)) return false;
-        String personId = getPersonId(email);
-       
-        String preQuery0 = String.format("delete from `student-seminar` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-        String preQuery1 = String.format("delete from `student-section` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-        String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-       
-        MyConnection myConnection = getMyConnection(preQuery0);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(preQuery1);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+		if (!studentExists(email, classroomId))
+			return false;
+		String personId = getPersonId(email);
+
+		String preQuery0 = String.format(
+				"delete from `student-seminar` where `classroom_id` = %s and `person_id` = %s;", classroomId, personId);
+		String preQuery1 = String.format(
+				"delete from `student-section` where `classroom_id` = %s and `person_id` = %s;", classroomId, personId);
+		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` = %s;",
+				classroomId, personId);
+
+		MyConnection myConnection = getMyConnection(preQuery0);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(preQuery1);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * deletes section leader with given email from given classroom
@@ -863,20 +873,23 @@ public class DBConnection {
 	 *         section leader or database crashed
 	 */
 	public boolean deleteSectionLeader(String email, String classroomId) {
-        if (!sectionLeaderExists(email, classroomId)) return false;
-        String personId = getPersonId(email);
-       
-        String preQuery = String.format("delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s;",
-                classroomId, personId);
-        String query = String.format("delete from `classroom_section_leaders` where `classroom_id` = %s and `person_id` =%s;",
-                classroomId, personId);
-       
-        MyConnection myConnection = getMyConnection(preQuery);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+		if (!sectionLeaderExists(email, classroomId))
+			return false;
+		String personId = getPersonId(email);
+
+		String preQuery = String.format(
+				"delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s;", classroomId,
+				personId);
+		String query = String.format(
+				"delete from `classroom_section_leaders` where `classroom_id` = %s and `person_id` =%s;", classroomId,
+				personId);
+
+		MyConnection myConnection = getMyConnection(preQuery);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * deletes lecturer with given email from given classroom
@@ -887,21 +900,23 @@ public class DBConnection {
 	 *         lecturer or database crashed
 	 */
 	public boolean deleteLecturer(String email, String classroomId) {
-        if (!lecturerExists(email, classroomId)) return false;
-        String personId = getPersonId(email);
-       
-        String preQuery = String.format("delete from `lectures` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-       
-        String query = String.format("delete from `classroom_lecturers` where `classroom_id` = %s and `person_id` = %s;",
-                classroomId, personId);
-       
-        MyConnection myConnection = getMyConnection(preQuery);
-        executeUpdate(myConnection);
-       
-        myConnection = getMyConnection(query);
-        return executeUpdate(myConnection);
-    }
+		if (!lecturerExists(email, classroomId))
+			return false;
+		String personId = getPersonId(email);
+
+		String preQuery = String.format("delete from `lectures` where `classroom_id` = %s and `person_id` = %s;",
+				classroomId, personId);
+
+		String query = String.format(
+				"delete from `classroom_lecturers` where `classroom_id` = %s and `person_id` = %s;", classroomId,
+				personId);
+
+		MyConnection myConnection = getMyConnection(preQuery);
+		executeUpdate(myConnection);
+
+		myConnection = getMyConnection(query);
+		return executeUpdate(myConnection);
+	}
 
 	/**
 	 * 
@@ -982,9 +997,10 @@ public class DBConnection {
 	 * @return returns booelan (whether it added succesfully or not).
 	 */
 	public boolean addMaterial(String classroomId, String materialName) {
-		
-		if(materialName.equals(""))
+
+		if (materialName.equals(""))
 			return false;
+
 		String query = String.format("insert into `classroom_materials` values (%s,'%s');", classroomId, materialName);
 
 		MyConnection myConnection = getMyConnection(query);
@@ -1016,7 +1032,6 @@ public class DBConnection {
 
 		return materials;
 	}
-
 	/**
 	 * 
 	 * this is class which saves connection and given prepared statement
