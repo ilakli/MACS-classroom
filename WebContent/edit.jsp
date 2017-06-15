@@ -36,9 +36,8 @@
 		System.out.println("roles downloaded successfully!");
 
 		List<Seminar> seminars = connector.getSeminars(classroomId);
-		List<ActiveSeminar> activeSeminars = connector.getActiveSeminars(classroomId);
 		List<Section> sections = connector.getSections(classroomId);
-		System.out.println("seminars, active seminars and sections downloaded successfully!");
+		System.out.println("seminars and sections downloaded successfully!");
 	%>
 
 
@@ -328,8 +327,7 @@
 						<p>Enter name of the seminar you want to add (name must be unique)
 						</p>
 				
-						<input type="text" name="name" placeholder="Seminar Name"> <input
-							type="submit" value="Add">
+						<input type="submit" value="AddSeminar">
 				
 						<%
 							if (status != null) {
@@ -352,11 +350,8 @@
 						action=<%="DeleteSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
 						method="post">
 						<h4>Delete Seminar:</h4>
-						<p>Enter name of the seminar you want to delete
-						</p>
-				
-						<input type="text" name="name" placeholder="Seminar Name"> <input
-							type="submit" value="Delete">
+					
+						<input	type="submit" value="DeleteSeminar">
 				
 						<%
 							if (status != null) {
@@ -377,10 +372,10 @@
 					<form action=<%="AddSeminaristToSeminarServlet?" 
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 						<h4>Add Seminarist To Seminar:</h4>
-						<p>Enter name of the seminar and email of the seminarist</p>
+						<p>Enter index of the seminar and email of the seminarist</p>
 						
 						
-						<input type="text" name="seminarName" placeholder = "Seminar Name">
+						<input type="text" name="seminarN" placeholder = "Seminar N">
 						
 						<input type="text" name="seminaristEmail" placeholder = "EMail">
 						
@@ -404,10 +399,10 @@
 					<form action=<%="AddStudentToSeminarServlet?" 
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 						<h4>Add Student To Seminar:</h4>
-						<p>Enter name of the seminar and email of the student</p>
+						<p>Enter index of the seminar and email of the student</p>
 						
 						
-						<input type="text" name="seminarName" placeholder = "Seminar Name">
+						<input type="text" name="seminarN" placeholder = "Seminar N">
 						
 						<input type="text" name="studentEmail" placeholder = "EMail">
 						
@@ -433,7 +428,7 @@
 						out.println("<li>" + "Empty" + "</li>");
 					} else {
 						for (Seminar seminar : seminars) {
-							out.println("<li>" + seminar.getSeminarName() + "<li>");
+							out.println("<li>" + seminar.getSeminarN() + "<li>");
 						}
 					}
 				%>
@@ -457,8 +452,7 @@
 						<p>Enter name of the section you want to add (name must be unique)
 						</p>
 				
-						<input type="text" name="name" placeholder="Section Name"> <input
-							type="submit" value="Add">
+						<input type="submit" value="AddSection">
 				
 						<%
 							if (status != null) {
@@ -480,11 +474,9 @@
 						action=<%="DeleteSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
 						method="post">
 						<h4>Delete Section:</h4>
-						<p>Enter name of the section you want to delete
-						</p>
-				
-						<input type="text" name="name" placeholder="Section Name"> <input
-							type="submit" value="Delete">
+						
+	
+						<input type="submit" value="DeleteSection">
 				
 						<%
 							if (status != null) {
@@ -508,7 +500,7 @@
 						<p>Enter name of the section and email of the section leader</p>
 						
 						
-						<input type="text" name="sectionName" placeholder = "Section Name">
+						<input type="text" name="sectionN" placeholder = "Section N">
 						
 						<input type="text" name="sectionLeaderEmail" placeholder = "EMail">
 						
@@ -533,10 +525,9 @@
 					<form action=<%="AddStudentToSectionServlet?" 
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
 						<h4>Add Student To Section:</h4>
-						<p>Enter name of the section and email of the student</p>
+						<p>Enter index of the section and email of the student</p>
 						
-						
-						<input type="text" name="sectionName" placeholder = "Section Name">
+						<input type="text" name="sectionN" placeholder = "Section N">
 						
 						<input type="text" name="studentEmail" placeholder = "EMail">
 						
@@ -562,7 +553,7 @@
 						out.println("<li>" + "Empty" + "</li>");
 					} else {
 						for (Section section : sections) {
-							out.println("<li>" + section.getSectionName() + "<li>");
+							out.println("<li>" + section.getSectionN() + "<li>");
 						}
 					}
 				%>
@@ -570,62 +561,7 @@
 		</div>
 
 
-		<!-- ACTIVE SEMINARS -->
-		<div class='grevent-active-seminars'>
-
-			<div class='display-grevent-button'>Active Seminars</div>
-
-			<ul class='grevent-items'>
-			
-				<li>
-				
-					<!-- adds new active seminar  -->
-					<form action=<%="AddNewActiveSeminarServlet?"
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
-						<h4>Add Active Seminar:</h4>
-						<p>Enter name of the active seminar, name of the seminar group, 
-						location and time of the active seminar </p>
-							
-						<input type="text" name="activeSeminarName" placeholder = "Active Seminar Name">
-						
-						<input type="text" name="seminarName" placeholder = "Seminar Name">
-						
-						<input type="text" name="seminarLocation" placeholder = "Location">
-						
-						<input type="text" name="seminarTime" placeholder = "Time">
-						
-						<input type="submit" value ="Add">
-						
-						<%
-							if(status != null){
-								if(status.equals( EditStatusConstants.ADD_NEW_ACTIVE_SEMINAR_ACC)) 
-									out.println(EditStatusConstants.ACCEPT);
-								if(status.equals( EditStatusConstants.ADD_NEW_ACTIVE_SEMINAR_REJ)) 
-									out.println(EditStatusConstants.REJECT);
-							}
-						%>	
-						
-					
-					</form>
-								
-				</li>
-				
-				<li><h4>Existing Active Seminars:</h4> </li>
-			
-				<%
-					if (activeSeminars.isEmpty()) {
-						out.println("<li>" + "Empty" + "</li>");
-					} else {
-						for (ActiveSeminar activeSeminar : activeSeminars) {
-							out.println("<li>" + activeSeminar.getActiveSeminarName() + ".  " + " Location: "
-									+ activeSeminar.getActiveSeminarLocation() + ".  " + " Time: "
-									+ activeSeminar.getActiveSeminarTime() + "<li>");
-						}
-					}
-				%>
-			</ul>
-		</div>
-
+		
 		
 
 

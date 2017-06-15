@@ -103,16 +103,6 @@ public class Classroom {
 		return this.classroomConnection.getSections(this.classroomID);
 	}
 
-	/**
-	 * This method returns ActiveSeminars' list from a classroom; This method
-	 * returns only copy of real data, so it can't be changed from outside; We
-	 * use DBConnection to return information.
-	 * 
-	 * @return - list of ActiveSeminars
-	 */
-	public List<ActiveSeminar> getClassroomActiveSeminar() {
-		return this.classroomConnection.getActiveSeminars(this.classroomID);
-	}
 
 	/**
 	 * This method tells us if the person is a lecturer in the classroom;
@@ -177,23 +167,23 @@ public class Classroom {
 	 * @return - true if a person has added successfully, false otherwise (if it
 	 *         was a lecturer before or some error occurred) ======= This method
 	 *         tells us if a section exists in the class;
-	 * @param sectionName
+	 * @param sectionN
 	 *            - name of the section;
 	 * @return - true if a section exists, false otherwise;
 	 */
-	public boolean classroomSectionExists(String sectionName) {
-		return this.classroomConnection.sectionExists(sectionName, this.classroomID);
+	public boolean classroomSectionExists(int sectionN) {
+		return this.classroomConnection.sectionExists(sectionN, this.classroomID);
 	}
 
 	/**
 	 * This method tells us if a seminar exists in the class;
 	 * 
-	 * @param seminarName
+	 * @param seminarN
 	 *            - name of the section;
 	 * @return - true is a seminar exists, false otherwise;
 	 */
-	public boolean classroomSeminarExists(String seminarName) {
-		return this.classroomConnection.seminarExists(seminarName, this.classroomID);
+	public boolean classroomSeminarExists(int seminarN) {
+		return this.classroomConnection.seminarExists(seminarN, this.classroomID);
 	}
 
 	/**
@@ -248,28 +238,22 @@ public class Classroom {
 
 	/**
 	 * This method adds seminar in the classroom;
-	 * 
-	 * @param seminarName
-	 *            - name of the seminar;
 	 * @return - true if a seminar has added successfully, false otherwise (if
 	 *         seminar with same name already existed in this classroom or some
 	 *         error occurred)
 	 */
-	public boolean classroomAddSeminar(String seminarName) {
-		return this.classroomConnection.addSeminar(seminarName, this.classroomID);
+	public boolean classroomAddSeminar() {
+		return this.classroomConnection.addSeminar(this.classroomID);
 	}
 
 	/**
 	 * This method adds section in the classroom;
-	 * 
-	 * @param sectionName
-	 *            - name of the section;
 	 * @return - true if a section has added successfully, false otherwise (if
 	 *         section with same name already existed in this classroom or some
 	 *         error occurred)
 	 */
-	public boolean classroomAddSection(String sectionName) {
-		return this.classroomConnection.addSection(sectionName, this.classroomID);
+	public boolean classroomAddSection() {
+		return this.classroomConnection.addSection(this.classroomID);
 	}
 
 	/**
@@ -354,91 +338,79 @@ public class Classroom {
 
 	// not sure, header can be changed
 	/**
-	 * This method deletes seminar from the classroom;
-	 * 
-	 * @param seminarName
-	 *            - name of the seminar;
+	 * This method deletes the last seminar from the classroom;
+
 	 * @return - true if a seminar has deleted successfully, false otherwise (if
 	 *         seminar with same name didn't exist in this classroom or some
 	 *         error occurred)
 	 */
-	public boolean classroomDeleteSeminar(String seminarName) {
-		return this.classroomConnection.deleteSeminar(seminarName, this.classroomID);
+	public boolean classroomDeleteSeminar() {
+		return this.classroomConnection.deleteSeminar(this.classroomID);
 	}
 
 	// not sure, header can be changed
 	/**
-	 * This method deletes section in the classroom;
-	 * 
-	 * @param sectionName
-	 *            - name of the section;
+	 * This method deletes the last section in the classroom;
 	 * @return - true if a section has deleted successfully, false otherwise (if
 	 *         section with same name didn't exist in this classroom or some
 	 *         error occurred)
 	 */
-	public boolean classroomDeleteSection(String sectionName) {
-		return this.classroomConnection.deleteSection(sectionName, this.classroomID);
+	public boolean classroomDeleteSection() {
+		return this.classroomConnection.deleteSection(this.classroomID);
 	}
 
-	// UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`,
-	// `seminar_location`)
-	// asea bazashi da mgoni araa maincdamainc logikuri
-	public boolean classroomAddActiveSeminar(String activeSeminarName, String seminarName, String time,
-			String location) {
-		return this.classroomConnection.addActiveSeminar(activeSeminarName, seminarName, time, location,
-				this.classroomID);
-	}
+
 
 	/**
 	 * This method sets section's student;
 	 * 
-	 * @param sectionName
+	 * @param sectionN
 	 *            - seminar's name;
 	 * @param sectionLeaderEmail
 	 *            - student who should become section member;
 	 * @return - true if added, false otherwise;
 	 */
-	public boolean classroomAddStudentToSection(String sectionName, String studentEmail) {
-		return this.classroomConnection.addStudentToSection(sectionName, studentEmail, this.classroomID);
+	public boolean classroomAddStudentToSection(int sectionN, String studentEmail) {
+		return this.classroomConnection.addStudentToSection(sectionN, studentEmail, this.classroomID);
 	}
 
 	/**
 	 * This method sets seminar's student;
 	 * 
-	 * @param sectionName
+	 * @param sectionN
 	 *            - seminar's name;
 	 * @param sectionLeaderEmail
 	 *            - student who should become seminar member;
 	 * @return - true if added, false otherwise;
 	 */
-	public boolean classroomAddStudentToSeminar(String seminarName, String studentEmail) {
-		return this.classroomConnection.addStudentToSeminar(seminarName, studentEmail, this.classroomID);
+	public boolean classroomAddStudentToSeminar(int seminarN, String studentEmail) {
+		return this.classroomConnection.addStudentToSeminar(seminarN, studentEmail, this.classroomID);
 	}
 
 	/**
 	 * This method sets seminar's seminarist;
 	 * 
-	 * @param sectionName
+	 * @param sectionN
 	 *            - seminar's name;
 	 * @param sectionLeaderEmail
 	 *            - person who should become seminarist;
 	 * @return - true if added leader, false otherwise;
 	 */
-	public boolean classroomAddSeminaristToSeminar(String seminarName, String seminaristEmail) {
-		return this.classroomConnection.addSeminaristToSeminar(seminarName, seminaristEmail, this.classroomID);
+	public boolean classroomAddSeminaristToSeminar(int seminarN, String seminaristEmail) {
+		return this.classroomConnection.addSeminaristToSeminar(seminarN, seminaristEmail, this.classroomID);
 	}
 
 	/**
 	 * This method sets section's leader
 	 * 
-	 * @param sectionName
+	 * @param sectionN
 	 *            - section's name;
 	 * @param sectionLeaderEmail
 	 *            - person who should become leader;
 	 * @return - true if added leader, false otherwise;
 	 */
-	public boolean classroomAddSectionLeaderToSection(String sectionName, String sectionLeaderEmail) {
-		return this.classroomConnection.addSectionLeaderToSection(sectionName, sectionLeaderEmail, this.classroomID);
+	public boolean classroomAddSectionLeaderToSection(int sectionN, String sectionLeaderEmail) {
+		return this.classroomConnection.addSectionLeaderToSection(sectionN, sectionLeaderEmail, this.classroomID);
 
 	}
 

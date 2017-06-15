@@ -59,6 +59,7 @@ CREATE TABLE `classroom_materials` (
 	PRIMARY KEY (`classroom_id`,`material_name`),
 	CONSTRAINT `classroom_materials_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
+
 CREATE TABLE `classroom_lecturers` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
@@ -98,20 +99,20 @@ CREATE TABLE `classroom_section_leaders` (
 CREATE TABLE `sections` (
 	`section_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    `section_name` varchar(100) NOT NULL,
+    `section_n` INT NOT NULL,
     
 	PRIMARY KEY (`section_id`, `classroom_id`),
-	UNIQUE KEY `seminars_uk0` (`section_name`, `classroom_id`),
+	UNIQUE KEY `seminars_uk0` (`section_n`, `classroom_id`),
 	CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
 CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    `seminar_name` varchar(100) NOT NULL,
+    `seminar_n`INT NOT NULL,
   
 	PRIMARY KEY (`seminar_id`, `classroom_id`),
-	UNIQUE KEY `seminars_uk0` (`seminar_name`, `classroom_id`),
+	UNIQUE KEY `seminars_uk0` (`seminar_n`, `classroom_id`),
 	CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
@@ -121,15 +122,6 @@ CREATE TABLE `classroom_students` (
 	PRIMARY KEY (`classroom_id`,`person_id`),
 	CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
 	CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
-);
-
-CREATE TABLE `seminars_timetable` (
-	`seminar_id` INT NOT NULL,
-	`seminar_name` varchar(100) NOT NULL,
-	`seminar_location` varchar(100) NOT NULL,
-	`seminar_time` varchar(100) NOT NULL,
-	UNIQUE KEY `unique-key-timetable` (`seminar_id`, `seminar_name`, `seminar_location`),
-	CONSTRAINT `seminars_timetable_fk0` FOREIGN KEY (`seminar_id`) REFERENCES `seminars`(`seminar_id`)
 );
 
 CREATE TABLE `student-seminar` (
