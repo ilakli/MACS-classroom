@@ -65,7 +65,43 @@
 		</ul>
 	</div>
 	</nav>
-
+	
+	
+	
+	
+	<input class="awesomplete" list="students" />
+	<datalist id="students">
+	<%
+		for(Person person : students){
+			out.println("<option>" + person.getEmail() + "</option>");
+		}
+	%>
+	</datalist>
+	
+	
+	<h1>Seminar Groups:</h1>
+    <div class='seminar-boxes'>
+        <%
+            for(Seminar seminar : seminars){
+                out.println("<div class='seminar-box'>");
+               
+                out.println("<h1>Seminarist name here...  </h1> </br>");
+               
+                out.println("<h2>Students:</h2>");
+                out.println("<ul class='seminar-students'>");
+                
+                for (int i=1; i<=seminar.hashCode()%15; i++)
+                out.println("<li>student1</li>");
+                out.println("<li>student2</li>");
+                out.println("<li>student3</li>");
+                out.println("</ul>");
+               
+                out.println("</div>");
+            }
+        %>
+    </div>
+	
+	
 
 	<div class='-groupsedit'>
 	

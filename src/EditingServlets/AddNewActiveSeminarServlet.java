@@ -19,27 +19,15 @@ import defPackage.DBConnection;
 public class AddNewActiveSeminarServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddNewActiveSeminarServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doGet(request, response);
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("AddNewActiveSeminarServlet");
+
 		String activeSeminarName = request.getParameter("activeSeminarName");
 		String seminarName = request.getParameter("seminarName");
 		String time = request.getParameter("seminarTime");
