@@ -4,34 +4,25 @@ import java.util.List;
 
 public class Seminar {
 	
-	private String id;
-	private String name;
+	private int seminarN;
 	private String classroomId;
-	
-	public Seminar(String id, String name, String classroomId){
-		
-		this.id = id;
-		this.name = name;
+	protected DBConnection seminarConnection;
+
+	public Seminar(int seminarN, String classroomId){
+
+		this.seminarN = seminarN;
 		this.classroomId = classroomId;
-		
+		seminarConnection = new DBConnection();
 	}
 	
-	/**
-	 * Returns id associated with this seminar.
-	 * 
-	 * @return
-	 */
-	public String getSeminarId(){
-		return this.id;
-	}
-	
+
 	/**
 	 * Returns name of this current seminar.
 	 * 
 	 * @return
 	 */
-	public String getSeminarName(){
-		return this.name;
+	public int getSeminarN(){
+		return this.seminarN;
 	}
 	
 	/**
@@ -79,8 +70,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean setSeminarist(Person seminarist){
-		return false;
-		
+		return seminarConnection.addSeminaristToSeminar(seminarN, seminarist.getEmail(), classroomId);		
 	}
 
 	/**
@@ -98,7 +88,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean addStudentToSeminar(Person student){
-		return false;		
+		return seminarConnection.addStudentToSeminar(seminarN, student.getEmail(), classroomId);	
 	}
 	
 	
@@ -117,7 +107,6 @@ public class Seminar {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((classroomId == null) ? 0 : classroomId.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -135,10 +124,7 @@ public class Seminar {
 				return false;
 		} else if (!classroomId.equals(other.classroomId))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		if (seminarN != other.seminarN)
 			return false;
 		return true;
 	}

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import defPackage.Classroom;
 import defPackage.DBConnection;
+import defPackage.Person;
+import defPackage.Seminar;
 
 /**
  * Servlet implementation class AddStudentToSeminarServlet
@@ -39,19 +41,20 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String seminarName = request.getParameter("seminarName");
+		int seminarN = Integer.parseInt(request.getParameter("seminarN"));
 		String studentEmail = request.getParameter("studentEmail");
 		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Classroom currentClassroom = connection.getClassroom(classroomId);
-		if(currentClassroom.classroomAddStudentToSeminar(seminarName, studentEmail)) {
+		Seminar currentSeminar = new Seminar(seminarN,classroomId);
+		Person student = connection.getPersonByEmail(studentEmail);
+		if(currentSeminar.addStudentToSeminar(student)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	
 						 
 			view.forward(request, response);  
-			System.out.println("Added Student To Seminar: " + seminarName + " " + studentEmail + 
+			System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
 					" to class with id: " + classroomId);
 		}
 		else {
@@ -60,7 +63,7 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 						 
 			view.forward(request, response);  
 			
-			System.out.println("Didn't add Student to Seminar: " + seminarName + " " + studentEmail + 
+			System.out.println("Didn't add Student to Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
 					" to class with id: " + classroomId);
 	
 		}

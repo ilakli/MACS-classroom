@@ -5,24 +5,18 @@ import java.util.List;
 public class Section {
 	
 	private String id;
-	private String name;
+	private int sectionN;
 	private String classroomId;
+	protected DBConnection sectionConnection;
 	
-	public Section(String id, String name, String classroomId){
+	public Section( int sectionN, String classroomId){
 		
-		this.id = id;
-		this.name = name;
+		this.sectionN = sectionN;
 		this.classroomId = classroomId;
+		sectionConnection = new DBConnection();
 	}
 	
-	/**
-	 * Returns id of this current section.
-	 * 
-	 * @return
-	 */
-	public String getSectionId(){
-		return this.id;
-	}
+	
 	
 	
 	/**
@@ -30,8 +24,8 @@ public class Section {
 	 * 
 	 * @return
 	 */
-	public String getSectionName(){
-		return this.name;
+	public int getSectionN(){
+		return this.sectionN;
 	}
 	
 	
@@ -80,7 +74,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean setSectionLeader(Person leader){
-		return false;
+		return sectionConnection.addSectionLeaderToSection(sectionN, leader.getEmail(), classroomId);
 		
 	}
 
@@ -99,7 +93,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean addStudentToSection(Person student){
-		return false;		
+		return sectionConnection.addStudentToSection(sectionN, student.getEmail(), classroomId);		
 	}
 	
 	
@@ -119,7 +113,6 @@ public class Section {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((classroomId == null) ? 0 : classroomId.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -137,10 +130,7 @@ public class Section {
 				return false;
 		} else if (!classroomId.equals(other.classroomId))
 			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
+		 if (sectionN !=other.sectionN)
 			return false;
 		return true;
 	}

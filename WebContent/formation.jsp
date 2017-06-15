@@ -33,7 +33,6 @@
 		System.out.println("roles downloaded successfully!");
 		
 		List <Seminar> seminars = connector.getSeminars(classroomId);
-		List <ActiveSeminar> activeSeminars = connector.getActiveSeminars(classroomId);
 		List <Section> sections = connector.getSections(classroomId);
 		System.out.println("seminars, active seminars and sections downloaded successfully!");
 		
@@ -139,7 +138,7 @@
 					out.println("<li>" + "Empty" + "</li>");
 				} else {
 					for(Seminar seminar : seminars){
-						out.println("<li>" + seminar.getSeminarName() + "<li>");
+						out.println("<li>" + seminar.getSeminarN() + "<li>");
 					}
 				}
 			%>
@@ -156,35 +155,12 @@
 					out.println("<li>" + "Empty" + "</li>");
 				} else {
 					for(Section section : sections){
-						out.println("<li>" + section.getSectionName() +  "<li>");
+						out.println("<li>" + section.getSectionN() +  "<li>");
 					}
 				}
 			%>
 			</ul>
 		</div>
-
-
-		<!-- ACTIVE SEMINARS -->
-		<div class='grevent-active-seminars'>
-			<div class='display-grevent-button'>Active Seminars</div>
-			<ul class='grevent-items'>
-			<%	
-				if (activeSeminars.isEmpty()){
-					out.println("<li>" + "Empty" + "</li>");
-				} else {
-					for(ActiveSeminar activeSeminar : activeSeminars){
-						out.println("<li>" + activeSeminar.getActiveSeminarName() + ".  " + 
-									" Location: " + activeSeminar.getActiveSeminarLocation()  + ".  "+ 
-									" Time: " + activeSeminar.getActiveSeminarTime() + "<li>");
-					}
-				}
-			%>
-			</ul>
-		</div>	
-
-	
-	
-	
 	
 	</div>
 	
