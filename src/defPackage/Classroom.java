@@ -435,4 +435,40 @@ public class Classroom {
 		return this.classroomConnection.getMaterials(this.classroomID);
 	}
 	
+	/**
+	 * fills seminars with free students,
+	 * prioritizes seminars with small number of students
+	 */
+	public void fillSeminarsWithFreeStudents(){
+		
+		List<Person> students = classroomConnection.getStudentsWithoutSeminar(this.classroomID);
+		List<Seminar> seminars = classroomConnection.getSeminars(this.classroomID);
+		
+		if (seminars.isEmpty()) {
+			System.out.println("TRIED TO FILL SEMINARS WITH FREE STUDENTS, BUT THERE ARE NO SEMINARS!!!!");
+			return;
+		}
+		
+		for (Person p : students){
+			Seminar seminar = classroomConnection.getSmallestSeminar(this.classroomID);
+			seminar.addStudentToSeminar(p);
+		}
+	
+	}
+	
+	public void fillSectionsWithFreeStudents(){
+		
+		List<Person> students = classroomConnection.getStudentsWithoutSection(this.classroomID);
+		List<Section> sections = classroomConnection.getSections(this.classroomID);
+		
+		if (sections.isEmpty()){
+			System.out.println("TRIED TO FILL SECTIONS WITH FREE STUDENTS, BUT THERE ARE NO SECTION!!!!");
+			return;
+		}
+		
+		for (Person p : students){
+			Section section = classroomConnection.getSmallestSection(this.classroomID);
+		}
+	}
+	
 }

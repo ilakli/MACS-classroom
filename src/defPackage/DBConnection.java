@@ -1,5 +1,6 @@
 package defPackage;
 
+import java.awt.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1025,6 +1026,80 @@ public class DBConnection {
 	}
 
 	/**
+	 * adds comment to the post.
+	 * @param postID - ID of the post
+	 * @param personID - ID of person
+	 * @param comment_text - comment's text
+	 */
+	public void addPostComment(String postID, String personID, String comment_text) {
+		String query = String.format(
+				"insert into `post_comments` (`post_id`, `person_id`, `comment_text`)"
+				+ "values(%s, %s, `%s`)", postID, personID, comment_text);
+		
+		MyConnection myConnection = getMyConnection(query);
+		executeUpdate(myConnection);
+	}
+	
+	/**
+	 * returns list of comments of post with given ID
+	 * @param postID - ID of post
+	 * @return list of comments
+	 */
+	public ArrayList<Comment> getPostComments(String postID){
+		ArrayList<Comment> comments = new ArrayList<Comment>();
+		String query = String.format("select * from `post_comments` where `post_id` = %s;", postID);
+		
+		MyConnection myConnection = getMyConnection(query);
+		ResultSet rs = myConnection.executeQuery();
+		
+		try {
+			while (rs.next()){
+				Comment comment = new Comment(rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4));
+				comments.add(comment);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return comments;
+	}
+	
+	
+	/**
+	 * returns list of students without seminar assigned of classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return List of students that are not assigned to any seminar
+	 */
+	public ArrayList<Person> getStudentsWithoutSeminar(String classroomID){
+		
+		String query = String.format("select * from `classroom_students` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `student-seminar` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> students = getPersons(query);
+		return students;
+	}
+	
+	/**
+	 * returns list of students without section assigned of classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return list of students that are not in any section
+	 */
+	public ArrayList<Person> getStudentsWithoutSection(String classroomID){
+		
+		String query = String.format("select * from `classroom_students` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `student-section` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> students = getPersons(query);
+		return students;
+	}
+	
+	
+	
+	/**
 	 * 
 	 * this is class which saves connection and given prepared statement
 	 *
@@ -1059,4 +1134,55 @@ public class DBConnection {
 	}
 
 
+
+
+
+	/**
+	 * returns seminar that contains smallest number of students in it
+	 * @param seminars - ArrayList of seminars
+	 * @return smallest Seminar
+	 */
+	public Seminar getSmallestSeminar(String classroomID) {
+		ArrayList<Seminar> seminars = this.getSeminars(classroomID);
+		if (seminars.isEmpty()) return null;
+		
+		Seminar seminar = null;
+		int curMin = Integer.MAX_VALUE;
+		
+		for (Seminar sem : seminars){
+			int curSize = sem.getSeminarStudents().size();
+			
+			if (curSize <= curMin){
+				curMin = curSize;
+				seminar = sem;
+			}
+		}
+		return seminar;
+	}
+	
+	/**
+	 * returns section that contains smallest number of students
+	 * @param classroomID - ID of classroom
+	 * @return smallest Section
+	 */
+	public Section getSmallestSection(String classroomID) {
+		ArrayList<Section> sections = this.getSections(classroomID);
+		if (sections.isEmpty()) return null;
+		
+		Section section = null;
+		int curMin = Integer.MAX_VALUE;
+		
+		for (Section sec : sections){
+			int curSize = sec.getSectionStudents().size();
+			
+			if (curSize <= curMin){
+				curMin = curSize;
+				section = sec;
+			}
+		}
+		return section;
+	}
+	
+	
 }
+

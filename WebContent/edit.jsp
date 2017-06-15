@@ -23,21 +23,43 @@
 </head>
 <body>
 	<%
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomId);
+		Classroom currentClassroom = connector.getClassroom(classroomID);
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-		List<Person> lecturers = connector.getLecturers(classroomId);
-		List<Person> seminarists = connector.getSeminarists(classroomId);
-		List<Person> sectionLeaders = connector.getSectionLeaders(classroomId);
-		List<Person> students = connector.getStudents(classroomId);
+		List<Person> lecturers = connector.getLecturers(classroomID);
+		List<Person> seminarists = connector.getSeminarists(classroomID);
+		List<Person> sectionLeaders = connector.getSectionLeaders(classroomID);
+		List<Person> students = connector.getStudents(classroomID);
 		System.out.println("roles downloaded successfully!");
 
-		List<Seminar> seminars = connector.getSeminars(classroomId);
-		List<Section> sections = connector.getSections(classroomId);
+		
+		
 		System.out.println("seminars and sections downloaded successfully!");
+
+		List<Seminar> seminars = connector.getSeminars(classroomID);
+
+		List<Section> sections = connector.getSections(classroomID);
+		
+		List<Person> others = connector.getStudentsWithoutSeminar(classroomID);
+		List<Person> srehto = connector.getStudentsWithoutSection(classroomID);
+		
+		System.out.println("seminars, active seminars and sections downloaded successfully!");
+		
+		System.out.println("OTHERS ARE:");
+		for (Person p : others){
+			System.out.println(p.getEmail());
+		}
+		
+		System.out.println("SREHTO ARE:");
+		for (Person p : srehto){
+			System.out.println(p.getEmail());
+		}
+		
+		
+
 	%>
 
 
@@ -54,17 +76,53 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li><a
-				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Stream</a></li>
+				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			<li><a
-				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>About</a></li>
+				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>
 			<li><a
-				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Formation</a></li>
+				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Formation</a></li>
 			<li class="active"><a
-				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
+				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
 		</ul>
 	</div>
 	</nav>
-
+	
+	
+	
+	
+	<input class="awesomplete" list="students" />
+	<datalist id="students">
+	<%
+		for(Person person : students){
+			out.println("<option>" + person.getEmail() + "</option>");
+		}
+	%>
+	</datalist>
+	
+	
+	<h1>Seminar Groups:</h1>
+    <div class='seminar-boxes'>
+        <%
+            for(Seminar seminar : seminars){
+                out.println("<div class='seminar-box'>");
+               
+                out.println("<h1>Seminarist name here...  </h1> </br>");
+               
+                out.println("<h2>Students:</h2>");
+                out.println("<ul class='seminar-students'>");
+                
+                for (int i=1; i<=seminar.hashCode()%15; i++)
+                out.println("<li>student1</li>");
+                out.println("<li>student2</li>");
+                out.println("<li>student3</li>");
+                out.println("</ul>");
+               
+                out.println("</div>");
+            }
+        %>
+    </div>
+	
+	
 
 	<div class='-groupsedit'>
 	
@@ -78,7 +136,7 @@
 				<li>
 					<!-- deletes person from the classroom -->
 					<form
-					action=<%="DeletePersonServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+					action=<%="DeletePersonServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 					method="post">
 					<h4>Delete person by Email:</h4>
 					<p>Enter Email address of the person you want to delete from this
@@ -127,7 +185,7 @@
 				<li>
 					<!-- adds new lecturer to the class -->
 					<form
-						action=<%="AddNewLecturerServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="AddNewLecturerServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Add New Lecturer:</h4>
 						<p>Enter Email address, name and surname of the lecturer</p>
@@ -175,7 +233,7 @@
 				
 					<!-- adds new seminarist to the class -->
 					<form
-						action=<%="AddNewSeminaristServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="AddNewSeminaristServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Add New Seminarist:</h4>
 						<p>Enter Email address, name and surname of the seminarist</p>
@@ -224,7 +282,7 @@
 				
 					<!-- adds new section leader to the class -->
 					<form
-						action=<%="AddNewSectionLeaderServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="AddNewSectionLeaderServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Add New Section Leader:</h4>
 						<p>Enter Email address, name and surname of the section leader</p>
@@ -269,7 +327,7 @@
 				<li>
 						<!-- adds new student to the class -->
 						<form
-							action=<%="AddNewStudentServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+							action=<%="AddNewStudentServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 							method="post">
 							<h4>Add New Student:</h4>
 							<p>Enter Email address, name and surname of the student</p>
@@ -321,7 +379,7 @@
 				
 					<!-- adds new seminar -->
 					<form
-						action=<%="AddNewSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="AddNewSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Add New Seminar:</h4>
 						<p>Enter name of the seminar you want to add (name must be unique)
@@ -347,7 +405,7 @@
 				
 				<!-- deletes existing seminar -->
 					<form
-						action=<%="DeleteSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="DeleteSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Delete Seminar:</h4>
 					
@@ -370,7 +428,7 @@
 				
 					<!-- adds existing seminarist to seminar -->
 					<form action=<%="AddSeminaristToSeminarServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
 						<h4>Add Seminarist To Seminar:</h4>
 						<p>Enter index of the seminar and email of the seminarist</p>
 						
@@ -397,7 +455,7 @@
 											
 					<!-- adds existing student to seminar -->
 					<form action=<%="AddStudentToSeminarServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
 						<h4>Add Student To Seminar:</h4>
 						<p>Enter index of the seminar and email of the student</p>
 						
@@ -446,7 +504,7 @@
 				
 					<!-- adds new section -->
 					<form
-						action=<%="AddNewSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="AddNewSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Add New Section:</h4>
 						<p>Enter name of the section you want to add (name must be unique)
@@ -471,7 +529,7 @@
 				
 					<!-- deletes existing section -->
 					<form
-						action=<%="DeleteSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>
+						action=<%="DeleteSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 						method="post">
 						<h4>Delete Section:</h4>
 						
@@ -495,7 +553,7 @@
 				
 					<!-- adds existing section leader to section -->
 					<form action=<%="AddSectionLeaderToSectionServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
 						<h4>Add Section Leader To Section:</h4>
 						<p>Enter name of the section and email of the section leader</p>
 						
@@ -523,7 +581,7 @@
 					
 					<!-- adds existing student to section -->
 					<form action=<%="AddStudentToSectionServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  method="post">
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
 						<h4>Add Student To Section:</h4>
 						<p>Enter index of the section and email of the student</p>
 						
@@ -559,10 +617,6 @@
 				%>
 			</ul>
 		</div>
-
-
-		
-		
 
 
 	</div>
