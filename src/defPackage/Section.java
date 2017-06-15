@@ -1,5 +1,7 @@
 package defPackage;
 
+import java.util.List;
+
 public class Section {
 	
 	private String id;
@@ -41,6 +43,76 @@ public class Section {
 	public String getClassroomId(){
 		return this.classroomId;
 	}
+	
+	
+	/**
+	 * Returns person object of the leader of current section, null if section leader is not set
+	 * 
+	 * @return
+	 */
+	public Person getSectionLeader(){
+		return null;	
+	}
+	
+	
+	/**
+	 * Returns list of person objects of students of current section
+	 * 
+	 * @return
+	 */
+	public List<Person> getSectionStudents(){
+		return null;	
+	}
+	
+	/**
+	 * Returns true if section leader was removed from the section, false otherwise 
+	 * 
+	 * @return
+	 */
+	public boolean removeSectionLeader(){
+		return false;
+		
+	}
+	
+	/**
+	 * Returns true if section leader was added to the section, false otherwise
+	 * @param leader
+	 * @return
+	 */
+	public boolean setSectionLeader(Person leader){
+		return false;
+		
+	}
+
+	/**
+	 * Returns true if student was removed from the section false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean removeStudentFromSection(Person student){
+		return false;
+	}
+	
+	/**
+	 * Returns true if student was added to the section false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean addStudentToSection(Person student){
+		return false;		
+	}
+	
+	
+	/**
+	 * Returns true if student is in current section, false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean sectionContainsStudent(Person student){
+		return false;	
+	}
+	
+	
 
 	@Override
 	public int hashCode() {

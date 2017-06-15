@@ -1,5 +1,7 @@
 package defPackage;
 
+import java.util.List;
+
 public class Seminar {
 	
 	private String id;
@@ -40,6 +42,75 @@ public class Seminar {
 		return this.classroomId;
 	}
 
+	
+	/**
+	 * Returns person object of the seminarist of current seminar, null if seminarist is not set
+	 * 
+	 * @return
+	 */
+	public Person getSeminarist(){
+		return null;	
+	}
+	
+	
+	/**
+	 * Returns list of person objects of students of current seminar
+	 * 
+	 * @return
+	 */
+	public List<Person> getSeminarStudents(){
+		return null;	
+	}
+	
+	/**
+	 * Returns true if seminarist was removed from the seminar, false otherwise 
+	 * 
+	 * @return
+	 */
+	public boolean removeSeminarist(){
+		return false;
+		
+	}
+	
+	/**
+	 * Returns true if seminarist was added to the section, false otherwise
+	 * @param seminarist
+	 * @return
+	 */
+	public boolean setSeminarist(Person seminarist){
+		return false;
+		
+	}
+
+	/**
+	 * Returns true if student was removed from the seminar false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean removeStudentFromSeminar(Person student){
+		return false;
+	}
+	
+	/**
+	 * Returns true if student was added to the seminar false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean addStudentToSeminar(Person student){
+		return false;		
+	}
+	
+	
+	/**
+	 * Returns true if student is in current seminar, false otherwise
+	 * @param student
+	 * @return
+	 */
+	public boolean seminarContainsStudent(Person student){
+		return false;	
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
