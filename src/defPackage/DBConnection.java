@@ -114,6 +114,34 @@ public class DBConnection {
 
 		return currentPerson;
 	}
+	
+	/**
+	 * returns Person by email
+	 * @param email - email of needed person
+	 * @return Person if there exists one with such email, null otherwise.
+	 */
+	public Person getPersonByEmail(String email){
+		Person currentPerson = null;
+		
+		String query = String.format("select * from `persons` where `person_email`=\"%s\"", email);
+		MyConnection myConnection = null;
+		try{
+			myConnection = getMyConnection(query);
+			ResultSet rs = myConnection.executeQuery();
+			while (rs.next()){
+				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		
+		return currentPerson;
+	}
+	
 
 	/**
 	 * 

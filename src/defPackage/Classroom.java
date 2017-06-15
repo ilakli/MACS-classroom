@@ -170,7 +170,7 @@ public class Classroom {
 	}
 
 	/**
-	 * <<<<<<< HEAD This method adds person in the classroom as a lecturer;
+	 * This method adds person in the classroom as a lecturer;
 	 * 
 	 * @param email
 	 *            - person's email;

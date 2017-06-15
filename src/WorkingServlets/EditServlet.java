@@ -1,4 +1,4 @@
-package defPackage;
+package WorkingServlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

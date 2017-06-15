@@ -1,4 +1,4 @@
-package defPackage;
+package WorkingServlets;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,6 +20,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import EditingServlets.EditStatusConstants;
 import Listeners.ContextListener;
+import defPackage.Classroom;
+import defPackage.DBConnection;
 
 /**
  * Servlet implementation class UploadServlet
