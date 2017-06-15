@@ -29,16 +29,10 @@ public class AddNewLecturerServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
 		String email = request.getParameter("email");
-		String surname = request.getParameter("surname");
-		
+		Person p = PersonGeneratorDummy.createPersonByEmail(email);
 		
 		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
-		
-		//temporary function to be sure that before adding someone to students table, they will be added to persons
-		//connection.addPerson(name, surname, email);
-		Person p = PersonGeneratorDummy.createPersonByEmail(email);
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.getClassroom(classroomId);
@@ -59,7 +53,7 @@ public class AddNewLecturerServlet extends HttpServlet {
 			
 			
 			System.out.println("Person Already Existed IN This Classroom: " 
-			+ name + " " + surname + " " + email + "    class with id: " + classroomId);
+			+  p.getName()+ " " +  p.getSurname() + " " + email + "    class with id: " + classroomId);
 		}
 	}
 

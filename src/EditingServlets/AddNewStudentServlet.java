@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Dummys.PersonGeneratorDummy;
 import defPackage.Classroom;
 import defPackage.DBConnection;
+import defPackage.Person;
 
 
 /**
@@ -19,14 +21,6 @@ import defPackage.DBConnection;
 @WebServlet("/AddNewStudentServlet")
 public class AddNewStudentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddNewStudentServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -40,27 +34,21 @@ public class AddNewStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
 		String email = request.getParameter("email");
-		String surname = request.getParameter("surname");
-		
+		Person p = PersonGeneratorDummy.createPersonByEmail(email);
 		
 		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
 		
-		//temporary function to be sure that before adding someone to students table, they will be added to persons
-		connection.addPerson(name, surname, email);
-	
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.getClassroom(classroomId);
 		if(currentClassroom.classroomAddStudent(email)) {
-			 RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
+			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 		+ EditStatusConstants.ADD_NEW_STUDENT_ACC);	
 			 
-			 view.forward(request, response);    
+			view.forward(request, response);    
 			
-			
-			System.out.println("Added Student: " + name + " " + surname + " " + email + " to class with id: " + classroomId);
+			System.out.println("Added Student: " + p.getName() + " " + p.getSurname() + " " + email + " to class with id: " + classroomId);
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
@@ -69,7 +57,7 @@ public class AddNewStudentServlet extends HttpServlet {
 			view.forward(request, response);    
 			
 			System.out.println("Person Already Existed IN This Classroom: " 
-			+ name + " " + surname + " " + email + " to class with id: " + classroomId);
+			+ p.getName() + " " + p.getSurname() + " " + email + " to class with id: " + classroomId);
 		}
 	}
 
