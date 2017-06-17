@@ -9,24 +9,15 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/commentsStyling.css">
-<style>
-.posts {
-	width: 70%;
-	margin: auto;
-	margin-top: 3%;
-}
 
-.comment-textarea {
-	width: 90%;
-	margin-left: 5%;
-	margin-bottom: 3%;
-	margin-top: 2%;
-}
-</style>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/comments.css" type="text/css">
 <title>Stream</title>
 </head>
 <body>
@@ -59,7 +50,7 @@
 	</div>
 	</nav>
 
-	<button type="button" class="btn btn-info" id="myBtn">Add Post</button>
+	<button type="button" class="w3-button w3-teal" id="myBtn">Add Post</button>
 
 	<div id="myModal" class="modal">
 
@@ -88,32 +79,41 @@
 	</div>
 	<%
 		ArrayList<Post> posts = connector.getPosts(classroomId);
-		for (int i = 0; i < posts.size(); i++) {
+		for (int i = posts.size() - 1; i >= 0; i--) {
 
 			String postText = posts.get(i).getPostText();
-			String postAuthor = posts.get(i).getPersonId();
+
+			String postAuthorId = posts.get(i).getPersonId();
+			String postAuthor = connector.getPerson(postAuthorId).getName() + " "
+					+ connector.getPerson(postAuthorId).getSurname();
+
 			String postId = posts.get(i).getPostId();
 			ArrayList<Comment> comments = connector.getPostComments(postId);
 
-			out.println("<div class='panel panel-success posts'>");
+			out.println("<div class='panel panel-info posts'>");
 
-			String html = "<div class=\"panel-heading\">" + postAuthor + "</div> <div class=\"panel-body\">"
+			String html = "<div class=\"panel-heading w3-teal\" >" + postAuthor + "</div> <div class=\"panel-body\">"
 					+ postText + "</div>";
 			out.println(html);
 			out.println("<ul class=\"list-group\">");
 			for (int j = 0; j < comments.size(); j++) {
 				String commentText = comments.get(j).getCommentText();
-				String commentAuthor = comments.get(j).getPersonID();
 
-				String commentHtml = " <li class=\"list-group-item\">" + commentText + "    Author: "
-						+ commentAuthor + "</li>";
+				String commentAuthorId = comments.get(j).getPersonID();
+				String commentAuthor = connector.getPerson(commentAuthorId).getName() + " "
+						+ connector.getPerson(commentAuthorId).getSurname();
+
+				String commentBody = "<div class=\"w3-card-4\"> <div class=\"w3-container\"> <img src=\"img_avatar3.png\" alt=\"Avatar\" class=\"w3-left w3-circle\" style=\"width: 10%;\"> <h4>"
+						+ commentAuthor + "</h4> <p style=\"padding-left: 11%;\">" + commentText
+						+ "</p> </div> </div>";
+				String commentHtml = " <li class=\"list-group-item\">" + commentBody + "</li>";
 				out.println(commentHtml);
 			}
 			out.println("</ul>");
 
 			String commentForm = "<form class=\"comments-form\"> <input class=\"postId\" type=\"hidden\" name = \"postId\" value = \""
 					+ postId
-					+ "\" >  <textarea class=\"comment-textarea\"> </textarea> <input type=\"submit\" /> </form>";
+					+ "\" >  <textarea class=\"comment-textarea\"> </textarea> <input type=\"submit\"class=\"w3-button w3-teal\" value=\"Add Comment\" ></form>";
 			out.println(commentForm);
 
 			out.println("</div>");
@@ -122,6 +122,6 @@
 
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
-	<script type="text/javascript" src='js/comments.js'></script>
+	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 </body>
 </html>

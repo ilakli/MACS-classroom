@@ -1,0 +1,27 @@
+.w3-container > p {
+	
+	width: 90%;
+	max-width: 90%;
+	white-space: pre-line;
+	word-wrap: break-word;
+}
+.w3-button {
+	margin-left: 2%;
+	margin-bottom: 1%;
+}
+.panel-body {
+	height: 100px;
+}
+
+.posts {
+	width: 70%;
+	margin: auto;
+	margin-top: 3%;
+}
+
+.comment-textarea {
+	width: 95%;
+	margin-left: 2%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+}
