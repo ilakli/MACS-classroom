@@ -4,7 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import defPackage.DBConnection;
+import database.AllConnections;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -32,7 +32,7 @@ public class ContextListener implements ServletContextListener {
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent arg0)  { 
-        DBConnection connection = new DBConnection();
+        AllConnections connection = new AllConnections();
         arg0.getServletContext().setAttribute(CONNECTION_ATTRIBUTE_NAME, connection);
     }
 	

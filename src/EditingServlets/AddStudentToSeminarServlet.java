@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import defPackage.Classroom;
-import defPackage.DBConnection;
+import database.AllConnections;
 import defPackage.Person;
 import defPackage.Seminar;
 
@@ -43,12 +43,12 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int seminarN = Integer.parseInt(request.getParameter("seminarN"));
 		String studentEmail = request.getParameter("studentEmail");
-		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId);
-		Person student = connection.getPersonByEmail(studentEmail);
+		Person student = connection.personDB.getPersonByEmail(studentEmail);
 		if(currentSeminar.addStudentToSeminar(student)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	

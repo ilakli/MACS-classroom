@@ -3,6 +3,15 @@ package defPackage;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.AllConnections;
+import database.ClassroomDB;
+import database.DBConnection;
+import database.LecturerDB;
+import database.MaterialDB;
+import database.SectionDB;
+import database.SeminarDB;
+import database.StudentDB;
+
 public class Classroom {
 
 	public static final String ID_ATTRIBUTE_NAME = "classroomID";
@@ -11,12 +20,14 @@ public class Classroom {
 	private String classroomName;
 	private String classroomID;
 	protected DBConnection classroomConnection;
+	private AllConnections db;
 
 	// Constructor;
 	public Classroom(String classroomName, String classroomID) {
 		this.classroomName = classroomName;
 		this.classroomID = classroomID;
 		classroomConnection = new DBConnection();
+		db = new AllConnections();
 	}
 
 	/**
@@ -45,7 +56,7 @@ public class Classroom {
 	 * @return - section leaders list
 	 */
 	public List<Person> getClassroomSectionLeaders() {
-		return this.classroomConnection.getSectionLeaders(this.classroomID);
+		return db.sectionLeaderDB.getSectionLeaders(this.classroomID);
 	}
 
 	/**
@@ -56,7 +67,7 @@ public class Classroom {
 	 * @return - list of a seminarists
 	 */
 	public List<Person> getClassroomSeminarists() {
-		return this.classroomConnection.getSeminarists(this.classroomID);
+		return db.seminaristDB.getSeminarists(this.classroomID);
 	}
 
 	/**
@@ -67,7 +78,7 @@ public class Classroom {
 	 * @return - list of students
 	 */
 	public List<Person> getClassroomStudents() {
-		return this.classroomConnection.getStudents(this.classroomID);
+		return db.studentDB.getStudents(this.classroomID);
 	}
 
 	/**
@@ -78,7 +89,7 @@ public class Classroom {
 	 * @return - list of lecturers
 	 */
 	public List<Person> getClassroomLecturers() {
-		return (this.classroomConnection.getLecturers(this.classroomID));
+		return (db.lecturerDB.getLecturers(this.classroomID));
 	}
 
 	/**
@@ -89,7 +100,7 @@ public class Classroom {
 	 * @return - list of seminars
 	 */
 	public List<Seminar> getClassroomSeminars() {
-		return this.classroomConnection.getSeminars(this.classroomID);
+		return db.seminarDB.getSeminars(this.classroomID);
 	}
 
 	/**
@@ -100,7 +111,7 @@ public class Classroom {
 	 * @return - list of sections
 	 */
 	public List<Section> getClassroomSections() {
-		return this.classroomConnection.getSections(this.classroomID);
+		return db.sectionDB.getSections(this.classroomID);
 	}
 
 
@@ -112,7 +123,7 @@ public class Classroom {
 	 * @return - true if a person is a lecturer, false otherwise;
 	 */
 	public boolean classroomLecturerExists(String email) {
-		return this.classroomConnection.lecturerExists(email, this.classroomID);
+		return db.lecturerDB.lecturerExists(email, this.classroomID);
 	}
 
 	/**
@@ -123,7 +134,7 @@ public class Classroom {
 	 * @return - true if a person is a seminarist, false otherwise;
 	 */
 	public boolean classroomSeminaristExists(String email) {
-		return this.classroomConnection.seminaristExists(email, this.classroomID);
+		return db.seminaristDB.seminaristExists(email, this.classroomID);
 	}
 
 	/**
@@ -134,7 +145,7 @@ public class Classroom {
 	 * @return - true if a person is a section leader, false otherwise;
 	 */
 	public boolean classroomSectionLeaderExists(String email) {
-		return this.classroomConnection.sectionLeaderExists(email, this.classroomID);
+		return db.sectionLeaderDB.sectionLeaderExists(email, this.classroomID);
 	}
 
 	/**
@@ -145,7 +156,7 @@ public class Classroom {
 	 * @return - true if a person is a student, false otherwise
 	 */
 	public boolean classroomStudentExists(String email) {
-		return this.classroomConnection.studentExists(email, this.classroomID);
+		return db.studentDB.studentExists(email, this.classroomID);
 	}
 
 	/**
@@ -156,7 +167,7 @@ public class Classroom {
 	 * @return - true if a person is a member, false otherwise;
 	 */
 	public boolean classroomPersonExists(String email) {
-		return this.classroomConnection.personExists(email, this.classroomID);
+		return db.personDB.personExists(email, this.classroomID);
 	}
 
 	/**
@@ -172,7 +183,7 @@ public class Classroom {
 	 * @return - true if a section exists, false otherwise;
 	 */
 	public boolean classroomSectionExists(int sectionN) {
-		return this.classroomConnection.sectionExists(sectionN, this.classroomID);
+		return db.sectionDB.sectionExists(sectionN, this.classroomID);
 	}
 
 	/**
@@ -183,7 +194,7 @@ public class Classroom {
 	 * @return - true is a seminar exists, false otherwise;
 	 */
 	public boolean classroomSeminarExists(int seminarN) {
-		return this.classroomConnection.seminarExists(seminarN, this.classroomID);
+		return db.seminarDB.seminarExists(seminarN, this.classroomID);
 	}
 
 	/**
@@ -199,7 +210,7 @@ public class Classroom {
 		if (classroomLecturerExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.addLecturer(email, this.classroomID);
+			return db.lecturerDB.addLecturer(email, this.classroomID);
 		}
 
 	}
@@ -216,7 +227,7 @@ public class Classroom {
 		if (classroomStudentExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.addStudent(email, this.classroomID);
+			return db.studentDB.addStudent(email, this.classroomID);
 		}
 	}
 
@@ -232,7 +243,7 @@ public class Classroom {
 		if (classroomSectionLeaderExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.addSectionLeader(email, this.classroomID);
+			return db.sectionLeaderDB.addSectionLeader(email, this.classroomID);
 		}
 	}
 
@@ -243,7 +254,7 @@ public class Classroom {
 	 *         error occurred)
 	 */
 	public boolean classroomAddSeminar() {
-		return this.classroomConnection.addSeminar(this.classroomID);
+		return db.seminarDB.addSeminar(this.classroomID);
 	}
 
 	/**
@@ -253,7 +264,7 @@ public class Classroom {
 	 *         error occurred)
 	 */
 	public boolean classroomAddSection() {
-		return this.classroomConnection.addSection(this.classroomID);
+		return db.sectionDB.addSection(this.classroomID);
 	}
 
 	/**
@@ -268,7 +279,7 @@ public class Classroom {
 		if (classroomSeminaristExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.addSeminarist(email, this.classroomID);
+			return db.seminaristDB.addSeminarist(email, this.classroomID);
 		}
 	}
 
@@ -284,7 +295,7 @@ public class Classroom {
 		if (!classroomLecturerExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.deleteLecturer(email, this.classroomID);
+			return db.lecturerDB.deleteLecturer(email, this.classroomID);
 		}
 	}
 
@@ -300,7 +311,7 @@ public class Classroom {
 		if (!classroomStudentExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.deleteStudent(email, this.classroomID);
+			return db.studentDB.deleteStudent(email, this.classroomID);
 		}
 	}
 
@@ -316,7 +327,7 @@ public class Classroom {
 		if (!classroomSectionLeaderExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.deleteSectionLeader(email, this.classroomID);
+			return db.sectionLeaderDB.deleteSectionLeader(email, this.classroomID);
 		}
 	}
 
@@ -332,20 +343,19 @@ public class Classroom {
 		if (!classroomSeminaristExists(email)) {
 			return false;
 		} else {
-			return this.classroomConnection.deleteSeminarist(email, this.classroomID);
+			return db.seminaristDB.deleteSeminarist(email, this.classroomID);
 		}
 	}
 
 	// not sure, header can be changed
 	/**
 	 * This method deletes the last seminar from the classroom;
-
 	 * @return - true if a seminar has deleted successfully, false otherwise (if
 	 *         seminar with same name didn't exist in this classroom or some
 	 *         error occurred)
 	 */
 	public boolean classroomDeleteSeminar() {
-		return this.classroomConnection.deleteSeminar(this.classroomID);
+		return db.seminarDB.deleteSeminar(this.classroomID);
 	}
 
 	// not sure, header can be changed
@@ -356,7 +366,7 @@ public class Classroom {
 	 *         error occurred)
 	 */
 	public boolean classroomDeleteSection() {
-		return this.classroomConnection.deleteSection(this.classroomID);
+		return db.sectionDB.deleteSection(this.classroomID);
 	}
 
 
@@ -371,7 +381,7 @@ public class Classroom {
 	 * @return - true if added, false otherwise;
 	 */
 	public boolean classroomAddStudentToSection(int sectionN, String studentEmail) {
-		return this.classroomConnection.addStudentToSection(sectionN, studentEmail, this.classroomID);
+		return db.sectionDB.addStudentToSection(sectionN, studentEmail, this.classroomID);
 	}
 
 	/**
@@ -384,7 +394,7 @@ public class Classroom {
 	 * @return - true if added, false otherwise;
 	 */
 	public boolean classroomAddStudentToSeminar(int seminarN, String studentEmail) {
-		return this.classroomConnection.addStudentToSeminar(seminarN, studentEmail, this.classroomID);
+		return db.seminarDB.addStudentToSeminar(seminarN, studentEmail, this.classroomID);
 	}
 
 	/**
@@ -397,7 +407,7 @@ public class Classroom {
 	 * @return - true if added leader, false otherwise;
 	 */
 	public boolean classroomAddSeminaristToSeminar(int seminarN, String seminaristEmail) {
-		return this.classroomConnection.addSeminaristToSeminar(seminarN, seminaristEmail, this.classroomID);
+		return db.seminarDB.addSeminaristToSeminar(seminarN, seminaristEmail, this.classroomID);
 	}
 
 	/**
@@ -410,7 +420,7 @@ public class Classroom {
 	 * @return - true if added leader, false otherwise;
 	 */
 	public boolean classroomAddSectionLeaderToSection(int sectionN, String sectionLeaderEmail) {
-		return this.classroomConnection.addSectionLeaderToSection(sectionN, sectionLeaderEmail, this.classroomID);
+		return db.sectionDB.addSectionLeaderToSection(sectionN, sectionLeaderEmail, this.classroomID);
 
 	}
 
@@ -423,7 +433,7 @@ public class Classroom {
 	 *         not).
 	 */
 	public boolean classroomAddMaterial(String materialName) {
-		return this.classroomConnection.addMaterial(this.classroomID, materialName);
+		return db.materialDB.addMaterial(this.classroomID, materialName);
 	}
 
 	/**
@@ -432,7 +442,7 @@ public class Classroom {
 	 * @return returns List of materials associated with this classroom.
 	 */
 	public ArrayList <Material> getMaterials() {
-		return this.classroomConnection.getMaterials(this.classroomID);
+		return db.materialDB.getMaterials(this.classroomID);
 	}
 	
 	/**
@@ -441,8 +451,8 @@ public class Classroom {
 	 */
 	public void fillSeminarsWithFreeStudents(){
 		
-		List<Person> students = classroomConnection.getStudentsWithoutSeminar(this.classroomID);
-		List<Seminar> seminars = classroomConnection.getSeminars(this.classroomID);
+		List<Person> students = db.studentDB.getStudentsWithoutSeminar(this.classroomID);
+		List<Seminar> seminars = db.seminarDB.getSeminars(this.classroomID);
 		
 		if (seminars.isEmpty()) {
 			System.out.println("TRIED TO FILL SEMINARS WITH FREE STUDENTS, BUT THERE ARE NO SEMINARS!!!!");
@@ -450,7 +460,7 @@ public class Classroom {
 		}
 		
 		for (Person p : students){
-			Seminar seminar = classroomConnection.getSmallestSeminar(this.classroomID);
+			Seminar seminar = db.seminarDB.getSmallestSeminar(this.classroomID);
 			seminar.addStudentToSeminar(p);
 		}
 	
@@ -458,8 +468,8 @@ public class Classroom {
 	
 	public void fillSectionsWithFreeStudents(){
 		
-		List<Person> students = classroomConnection.getStudentsWithoutSection(this.classroomID);
-		List<Section> sections = classroomConnection.getSections(this.classroomID);
+		List<Person> students = db.studentDB.getStudentsWithoutSection(this.classroomID);
+		List<Section> sections = db.sectionDB.getSections(this.classroomID);
 		
 		if (sections.isEmpty()){
 			System.out.println("TRIED TO FILL SECTIONS WITH FREE STUDENTS, BUT THERE ARE NO SECTION!!!!");
@@ -467,8 +477,7 @@ public class Classroom {
 		}
 		
 		for (Person p : students){
-			Section section = classroomConnection.getSmallestSection(this.classroomID);
+			Section section = db.sectionDB.getSmallestSection(this.classroomID);
 		}
-	}
-	
+	}	
 }

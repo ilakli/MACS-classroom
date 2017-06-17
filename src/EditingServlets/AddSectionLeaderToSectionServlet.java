@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.AllConnections;
 import defPackage.Classroom;
-import defPackage.DBConnection;
 import defPackage.Person;
 import defPackage.Section;
 
@@ -45,12 +45,12 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 		int sectionN = Integer.parseInt(request.getParameter("sectionN"));
 		System.out.println(sectionN);
 		String sectionLeaderEmail = request.getParameter("sectionLeaderEmail");
-		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Section currentSection = new Section(sectionN,classroomId);
-		Person leader = connection.getPersonByEmail(sectionLeaderEmail);
+		Person leader = connection.personDB.getPersonByEmail(sectionLeaderEmail);
 		if(currentSection.setSectionLeader(leader)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 					+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	

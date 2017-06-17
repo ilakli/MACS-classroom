@@ -2,7 +2,8 @@
 <%@page import="defPackage.Material"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
-<%@page import="defPackage.DBConnection"%>
+<%@page import="database.DBConnection"%>
+<%@page import="database.AllConnections"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -28,8 +29,8 @@
 	<%
 		System.out.println("Already Here");
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomId);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
 	%>
 
 	<div class="jumbotron">

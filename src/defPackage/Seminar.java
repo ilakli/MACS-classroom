@@ -2,17 +2,22 @@ package defPackage;
 
 import java.util.List;
 
+import database.DBConnection;
+import database.SeminarDB;
+
 public class Seminar {
 	
 	private int seminarN;
 	private String classroomId;
 	protected DBConnection seminarConnection;
+	private SeminarDB seminarDB;
 
 	public Seminar(int seminarN, String classroomId){
 
 		this.seminarN = seminarN;
 		this.classroomId = classroomId;
 		seminarConnection = new DBConnection();
+		seminarDB = new SeminarDB();
 	}
 	
 
@@ -70,7 +75,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean setSeminarist(Person seminarist){
-		return seminarConnection.addSeminaristToSeminar(seminarN, seminarist.getEmail(), classroomId);		
+		return seminarDB.addSeminaristToSeminar(seminarN, seminarist.getEmail(), classroomId);		
 	}
 
 	/**
@@ -88,7 +93,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean addStudentToSeminar(Person student){
-		return seminarConnection.addStudentToSeminar(seminarN, student.getEmail(), classroomId);	
+		return seminarDB.addStudentToSeminar(seminarN, student.getEmail(), classroomId);	
 	}
 	
 	

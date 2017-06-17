@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Dummys.PersonGeneratorDummy;
+import database.AllConnections;
 import defPackage.Classroom;
-import defPackage.DBConnection;
 import defPackage.Person;
 
 /**
@@ -32,10 +32,10 @@ public class AddNewLecturerServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		Person p = PersonGeneratorDummy.createPersonByEmail(email);
 		
-		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		Classroom currentClassroom = connection.getClassroom(classroomId);
+		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
 		if(currentClassroom.classroomAddLecturer(email)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="

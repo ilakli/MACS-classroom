@@ -1,6 +1,6 @@
 <%@page import="EditingServlets.EditStatusConstants"%>
 <%@page import="defPackage.Classroom"%>
-<%@page import="defPackage.DBConnection"%>
+<%@page import="database.AllConnections"%>
 
 
 <%@page import="defPackage.Person"%>
@@ -24,27 +24,27 @@
 <body>
 	<%
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomID);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-		List<Person> lecturers = connector.getLecturers(classroomID);
-		List<Person> seminarists = connector.getSeminarists(classroomID);
-		List<Person> sectionLeaders = connector.getSectionLeaders(classroomID);
-		List<Person> students = connector.getStudents(classroomID);
+		List<Person> lecturers = connector.lecturerDB.getLecturers(classroomID);
+		List<Person> seminarists = connector.seminaristDB.getSeminarists(classroomID);
+		List<Person> sectionLeaders = connector.sectionLeaderDB.getSectionLeaders(classroomID);
+		List<Person> students = connector.studentDB.getStudents(classroomID);
 		System.out.println("roles downloaded successfully!");
 
 		
 		
 		System.out.println("seminars and sections downloaded successfully!");
 
-		List<Seminar> seminars = connector.getSeminars(classroomID);
+		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 
-		List<Section> sections = connector.getSections(classroomID);
+		List<Section> sections = connector.sectionDB.getSections(classroomID);
 		
-		List<Person> others = connector.getStudentsWithoutSeminar(classroomID);
-		List<Person> srehto = connector.getStudentsWithoutSection(classroomID);
+		List<Person> others = connector.studentDB.getStudentsWithoutSeminar(classroomID);
+		List<Person> srehto = connector.studentDB.getStudentsWithoutSection(classroomID);
 		
 		System.out.println("seminars, active seminars and sections downloaded successfully!");
 		

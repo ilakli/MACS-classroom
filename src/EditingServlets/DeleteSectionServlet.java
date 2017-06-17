@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import defPackage.Classroom;
-import defPackage.DBConnection;
+import database.AllConnections;
 
 /**
  * Servlet implementation class DeleteSectionServlet
@@ -39,11 +39,11 @@ public class DeleteSectionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Classroom currentClassroom = connection.getClassroom(classroomId);
+		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
 		if(currentClassroom.classroomDeleteSection()) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="

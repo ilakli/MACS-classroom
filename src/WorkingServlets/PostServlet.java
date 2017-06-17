@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
+import database.AllConnections;
 import defPackage.Classroom;
-import defPackage.DBConnection;
 
 /**
  * Servlet implementation class PostServlet
@@ -43,11 +43,9 @@ public class PostServlet extends HttpServlet {
 		String postText = request.getParameter("postText");
 		String personId = PersonGeneratorDummy.createPersonByEmail("random@random.com").getPersonID();
 		
-		DBConnection connection = (DBConnection)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		
-		connection.addPost(classroomId, personId, postText);
+		connection.postDB.addPost(classroomId, personId, postText);
 		response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
-		
 	}
-
 }

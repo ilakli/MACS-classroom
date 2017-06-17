@@ -2,7 +2,7 @@
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
-<%@page import="defPackage.DBConnection"%>
+<%@page import="database.AllConnections"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -32,8 +32,8 @@
 <body>
 	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomId);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
 	%>
 
 	<div class="jumbotron">
@@ -87,13 +87,13 @@
 
 	</div>
 	<%
-		ArrayList<Post> posts = connector.getPosts(classroomId);
+		ArrayList<Post> posts = connector.postDB.getPosts(classroomId);
 		for (int i = 0; i < posts.size(); i++) {
 
 			String postText = posts.get(i).getPostText();
 			String postAuthor = posts.get(i).getPersonId();
 			String postId = posts.get(i).getPostId();
-			ArrayList<Comment> comments = connector.getPostComments(postId);
+			ArrayList<Comment> comments = connector.commentDB.getPostComments(postId);
 
 			out.println("<div class='panel panel-success posts'>");
 

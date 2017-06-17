@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import defPackage.Classroom;
-import defPackage.DBConnection;
+import database.AllConnections;;
 
 /**
  * Servlet implementation class DeletePersonServlet
@@ -42,12 +42,12 @@ public class DeletePersonServlet extends HttpServlet {
 		
 		String email = request.getParameter("email");
 
-		DBConnection  connection = (DBConnection)request.getServletContext().getAttribute("connection");
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Classroom classroom = connection.getClassroom(classroomId);
+		Classroom classroom = connection.classroomDB.getClassroom(classroomId);
 		
 		if(classroom.classroomDeleteLecturer(email) || classroom.classroomDeleteSectionLeader(email)
 				|| classroom.classroomDeleteSeminarist(email) || classroom.classroomDeleteStudent(email)){

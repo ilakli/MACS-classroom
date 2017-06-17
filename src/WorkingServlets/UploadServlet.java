@@ -20,8 +20,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import EditingServlets.EditStatusConstants;
 import Listeners.ContextListener;
+import database.AllConnections;
 import defPackage.Classroom;
-import defPackage.DBConnection;
 
 /**
  * Servlet implementation class UploadServlet
@@ -108,14 +108,14 @@ public class UploadServlet extends HttpServlet {
 
 		}
 
-		DBConnection connection = (DBConnection) request.getServletContext()
+		AllConnections connection = (AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 
 		System.out.println(fileName + " is fileName");
 
-		Classroom currentClassroom = connection.getClassroom(classroomId);
+		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		currentClassroom.classroomAddMaterial(fileName);
 
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
