@@ -1,5 +1,7 @@
 package defPackage;
 
+import database.ClassroomDB;
+
 public class MockClassroom extends Classroom{
 	/**
 	 * This is MockClassroom to use in tests;
@@ -11,6 +13,4 @@ public class MockClassroom extends Classroom{
 		super(classroomName, classroomID);
 		super.classroomConnection = new MockDBConnection();
 	}
-	
-	
 }

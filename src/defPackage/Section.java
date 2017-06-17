@@ -13,7 +13,7 @@ public class Section {
 	protected DBConnection sectionConnection;
 	private SectionDB sectionDB;
 	
-	public Section( int sectionN, String classroomId){
+	public Section(int sectionN, String classroomId){
 		
 		this.sectionN = sectionN;
 		this.classroomId = classroomId;

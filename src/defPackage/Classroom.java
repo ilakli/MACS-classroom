@@ -114,7 +114,6 @@ public class Classroom {
 		return db.sectionDB.getSections(this.classroomID);
 	}
 
-
 	/**
 	 * This method tells us if the person is a lecturer in the classroom;
 	 * 

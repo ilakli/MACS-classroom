@@ -163,7 +163,6 @@ public class SectionDB {
 		String query = "select * from sections where `classroom_id`=" + classroomId + ";";
 		ArrayList<Section> sections = new ArrayList<Section>();
 		ResultSet rs = db.getResultSet(query);
-
 		try {
 			while (rs.next()) {
 				sections.add(new Section( rs.getInt("section_n"), classroomId));
