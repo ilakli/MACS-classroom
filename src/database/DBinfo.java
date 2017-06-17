@@ -1,4 +1,4 @@
-package defPackage;
+package database;
 
 public class DBinfo {
 	public static final String MYSQL_USERNAME = "root";

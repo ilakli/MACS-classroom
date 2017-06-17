@@ -12,21 +12,23 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import database.AllConnections;
+import database.ClassroomDB;
+
 @FixMethodOrder (MethodSorters.NAME_ASCENDING)
 public class TestClassroom {
 	
-	private MockDBConnection db = new MockDBConnection();
-	private  MockClassroom oop ; 
+	private AllConnections db = new AllConnections();
+	private MockClassroom oop ; 
 	private MockClassroom pp;
 	private MockClassroom meth;
 	
 	@Before
 	public void bla(){
 		//creating classes;
-		oop = new MockClassroom ("OOP" , db.addClassroom("OOP"));
-		pp = new MockClassroom ("Paradigms", db.addClassroom("Paradigms"));
-		meth = new MockClassroom ("Methodologies", db.addClassroom("Methodologies"));
-		
+		oop = new MockClassroom ("OOP" , db.classroomDB.addClassroom("OOP"));
+		pp = new MockClassroom ("Paradigms", db.classroomDB.addClassroom("Paradigms"));
+		meth = new MockClassroom ("Methodologies", db.classroomDB.addClassroom("Methodologies"));
 	}
 	
 	
@@ -34,13 +36,13 @@ public class TestClassroom {
 	public void test1init() {
 		//Just add people into database so we can use them
 		
-		db.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge");
-		db.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge");
-		db.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge");
-		db.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge");
-		db.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge");
-		db.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge");
-		db.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge");
+		db.personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge");
+		db.personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge");
+		db.personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge");
+		db.personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge");
+		db.personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge");
+		db.personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge");
+		db.personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge");
 		
 		//check if class names are correct;
 		assertEquals(oop.getClassroomName(), "OOP");
@@ -108,9 +110,9 @@ public class TestClassroom {
 		
 		assertFalse(pp.classroomDeleteSectionLeader("vigaca@freeuni.edu.ge"));
 
-		db.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge");
-		db.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge");
-		db.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge");
+		db.personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge");
+		db.personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge");
+		db.personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge");
 		
 		assertTrue(oop.classroomAddStudent("tpp@freeuni.edu.ge"));
 		assertTrue(oop.classroomAddStudent("kpp@freeuni.edu.ge"));
@@ -133,7 +135,7 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test4ListGetters() {
-		String currentClassroom = db.addClassroom("just to test");
+		String currentClassroom = db.classroomDB.addClassroom("just to test");
 		MockClassroom testClass = new MockClassroom("just to test",currentClassroom);
 				
 		//Testing students' list
@@ -143,8 +145,8 @@ public class TestClassroom {
 			String surname = String.valueOf(ch);
 			String email = String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.addPerson(name, surname, email);
-			db.addStudent(email, currentClassroom);
+			db.personDB.addPerson(name, surname, email);
+			db.studentDB.addStudent(email, currentClassroom);
 			
 			realStudents.add(new Person(name, surname, email, "3"));
 		}
@@ -159,8 +161,8 @@ public class TestClassroom {
 			String surname = "a" + String.valueOf(ch);
 			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.addPerson(name, surname, email);
-			db.addLecturer(email, currentClassroom);
+			db.personDB.addPerson(name, surname, email);
+			db.lecturerDB.addLecturer(email, currentClassroom);
 			
 			realLecturers.add(new Person(name, surname, email, "2"));
 		}
@@ -174,8 +176,8 @@ public class TestClassroom {
 			String surname = "b" + String.valueOf(ch);
 			String email = "b" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.addPerson(name, surname, email);
-			db.addSeminarist(email, currentClassroom);
+			db.personDB.addPerson(name, surname, email);
+			db.seminaristDB.addSeminarist(email, currentClassroom);
 			
 			realSeminarists.add(new Person(name, surname, email, "2"));
 		}
@@ -189,8 +191,8 @@ public class TestClassroom {
 			String surname = "c" + String.valueOf(ch);
 			String email = "c" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.addPerson(name, surname, email);
-			db.addSectionLeader(email, currentClassroom);
+			db.personDB.addPerson(name, surname, email);
+			db.sectionLeaderDB.addSectionLeader(email, currentClassroom);
 			
 			realSectionLeaders.add(new Person(name, surname, email, "2"));
 		}
@@ -204,47 +206,56 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test5SectionAndSeminars(){
-		String classID = db.addClassroom("testGroups");
+		String classID = db.classroomDB.addClassroom("testGroups");
 		MockClassroom mockClass = new MockClassroom("testGoups", classID);
 		
-		assertTrue(mockClass.classroomAddSection("section1"));
-		assertFalse(mockClass.classroomAddSection("section1"));
-		assertTrue(mockClass.classroomSectionExists("section1"));
-		assertFalse(mockClass.classroomSectionExists("section2"));
-		assertTrue(mockClass.classroomAddSection("section2"));	
-		assertTrue(mockClass.classroomSectionExists("section2"));
-		assertTrue(mockClass.classroomAddSection("section3"));
-		assertTrue(mockClass.classroomAddSection("deleteSection"));
-		assertTrue(mockClass.classroomDeleteSection("deleteSection"));
-		assertFalse(mockClass.classroomDeleteSection("deleteSection"));
-				
+		assertTrue(mockClass.classroomAddSection());
+		assertTrue(mockClass.classroomSectionExists(0));
+		assertFalse(mockClass.classroomSectionExists(1));
+		assertTrue(mockClass.classroomAddSection());
+		assertTrue(mockClass.classroomSectionExists(1));
+		assertTrue(mockClass.classroomDeleteSection());
+		assertTrue(mockClass.classroomDeleteSection());
+		assertFalse(mockClass.classroomDeleteSection());
+		
 		ArrayList<Section> sections = new ArrayList<Section>();
 		
-		sections.add(new Section("random","section1",classID));
-		sections.add(new Section("random","section2",classID));
-		sections.add(new Section("random","section3",classID));
+		sections.add(new Section(0, classID));
+		sections.add(new Section(1, classID));
+		sections.add(new Section(2, classID));
+
+		db.sectionDB.addSection(classID);
+		db.sectionDB.addSection(classID);
+		db.sectionDB.addSection(classID);
 		
-		assertEquals(mockClass.getClassroomSections(),sections);
-				
-		assertTrue(mockClass.classroomAddSeminar("seminar1"));
-		assertFalse(mockClass.classroomAddSeminar("seminar1"));
-		assertTrue(mockClass.classroomSeminarExists("seminar1"));
-		assertFalse(mockClass.classroomSeminarExists("seminar2"));
-		assertTrue(mockClass.classroomAddSeminar("seminar2"));
-		assertTrue(mockClass.classroomSeminarExists("seminar2"));
-		assertTrue(mockClass.classroomAddSeminar("seminar3"));
-		assertTrue(mockClass.classroomAddSeminar("deleteSection"));
-		assertTrue(mockClass.classroomDeleteSeminar("deleteSection"));
-		assertFalse(mockClass.classroomDeleteSeminar("deleteSection"));
+		List <Section> resSections = mockClass.getClassroomSections();
+		
+		for (Section sec: resSections) {
+			System.out.println(sec.getClassroomId() + " " + sec.getSectionN());
+			System.out.println("oeeee");
+		}
+		
+		assertEquals(mockClass.getClassroomSections(), sections);
+		
+		assertTrue(mockClass.classroomAddSeminar());
+		assertTrue(mockClass.classroomSeminarExists(0));
+		assertFalse(mockClass.classroomSeminarExists(1));
+		assertTrue(mockClass.classroomAddSeminar());
+		assertTrue(mockClass.classroomDeleteSeminar());
+		assertTrue(mockClass.classroomDeleteSeminar());
+		assertFalse(mockClass.classroomDeleteSeminar());
 		
 		ArrayList<Seminar> seminars = new ArrayList<Seminar>();
 		
-		seminars.add(new Seminar("random","seminar1",classID));
-		seminars.add(new Seminar("random","seminar2",classID));
-		seminars.add(new Seminar("random","seminar3",classID));
-						
-		assertEquals(mockClass.getClassroomSeminars(),seminars);
+		seminars.add(new Seminar(0, classID));
+		seminars.add(new Seminar(1, classID));
+		seminars.add(new Seminar(2, classID));
 		
+		db.seminarDB.addSeminar(classID);
+		db.seminarDB.addSeminar(classID);
+		db.seminarDB.addSeminar(classID);
+		
+		assertEquals(mockClass.getClassroomSeminars(),seminars);
 	}
 	
 	/**
@@ -253,14 +264,14 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test6AddGroupsAndPeople(){
-		String classID = db.addClassroom("testGroupsAndPeople");
+		String classID = db.classroomDB.addClassroom("testGroupsAndPeople");
 		MockClassroom mockClass = new MockClassroom("testGoupsAndPeople", classID);
 		
-		mockClass.classroomAddSection("section1");
-		mockClass.classroomAddSection("section2");
+		mockClass.classroomAddSection();
+		mockClass.classroomAddSection();
 		
-		mockClass.classroomAddSeminar("seminar1");
-		mockClass.classroomAddSeminar("seminar2");
+		mockClass.classroomAddSeminar();
+		mockClass.classroomAddSeminar();
 		
 		mockClass.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");
 		mockClass.classroomAddSectionLeader("gkhos15@freeuni.edu.ge");
@@ -268,31 +279,28 @@ public class TestClassroom {
 		mockClass.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge");
 		mockClass.classroomAddStudent("gitser15@freeuni.edu.ge");
 		
-		assertFalse(mockClass.classroomAddSeminaristToSeminar("notseminar", "n.begiashvili@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar("seminar1", "vigaca@mail.re"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar("seminar1", "gitser15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar("seminar1", "s.gvinepadze@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSeminaristToSeminar("seminar1", "n.begiashvili@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSeminaristToSeminar("seminar2", "n.begiashvili@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSeminaristToSeminar(123, "n.begiashvili@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "vigaca@mail.re"));
+		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "gitser15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "s.gvinepadze@freeuni.edu.ge"));
+		assertTrue(mockClass.classroomAddSeminaristToSeminar(0, "n.begiashvili@freeuni.edu.ge"));
+		assertTrue(mockClass.classroomAddSeminaristToSeminar(1, "n.begiashvili@freeuni.edu.ge"));
 		
-		assertFalse(mockClass.classroomAddSectionLeaderToSection("notsection", "gkhos15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection("section1", "vigaca@mail.re"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection("section1", "gitser15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection("section1", "s.gvinepadze@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSectionLeaderToSection("section1", "gkhos15@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSectionLeaderToSection("section2", "ipopk15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSectionLeaderToSection(123, "gkhos15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "vigaca@mail.re"));
+		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "gitser15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "s.gvinepadze@freeuni.edu.ge"));
+		assertTrue(mockClass.classroomAddSectionLeaderToSection(0, "gkhos15@freeuni.edu.ge"));
+		assertTrue(mockClass.classroomAddSectionLeaderToSection(1, "ipopk15@freeuni.edu.ge"));
 		
-		assertFalse(mockClass.classroomAddStudentToSection("section1", "acxcx15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSection("section1", "ipopk15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSection("section1", "raraca@mail.ru"));
-		assertTrue(mockClass.classroomAddStudentToSection("section1", "gitser15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddStudentToSection(0, "acxcx15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddStudentToSection(0, "ipopk15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddStudentToSection(0, "raraca@mail.ru"));
+		assertTrue(mockClass.classroomAddStudentToSection(0, "gitser15@freeuni.edu.ge"));
 		
-		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "acxcx15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "gkhos15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSeminar("seminar1", "raraca@mail.ru"));
-		assertTrue(mockClass.classroomAddStudentToSeminar("seminar1", "gitser15@freeuni.edu.ge"));
-		
-	}
-	
-	
+		assertFalse(mockClass.classroomAddStudentToSeminar(0, "acxcx15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddStudentToSeminar(0, "gkhos15@freeuni.edu.ge"));
+		assertFalse(mockClass.classroomAddStudentToSeminar(0, "raraca@mail.ru"));
+		assertTrue(mockClass.classroomAddStudentToSeminar(0, "gitser15@freeuni.edu.ge"));
+	}	
 }

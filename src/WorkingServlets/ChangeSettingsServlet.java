@@ -1,28 +1,27 @@
 package WorkingServlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Dummys.PersonGeneratorDummy;
-import Listeners.ContextListener;
-import database.AllConnections;
 import defPackage.Classroom;
 
 /**
- * Servlet implementation class PostServlet
+ * Servlet implementation class ChangeSettings
  */
-@WebServlet("/PostServlet")
-public class PostServlet extends HttpServlet {
+@WebServlet("/ChangeSettingsServlet")
+public class ChangeSettingsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public PostServlet() {
+    public ChangeSettingsServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,15 +36,16 @@ public class PostServlet extends HttpServlet {
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * Here class info must be changed in database; 
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		String postText = request.getParameter("postText");
-		String personId = PersonGeneratorDummy.createPersonByEmail("random@random.com").getPersonID();
 		
-		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
-		
-		connection.postDB.addPost(classroomId, personId, postText);
-		response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		System.out.println(request.getParameter("sections"));
+		RequestDispatcher dispatch = request.getRequestDispatcher("settings.jsp?" + 
+				Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		dispatch.forward(request, response);
 	}
+
 }

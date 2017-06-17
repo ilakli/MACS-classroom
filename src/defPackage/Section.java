@@ -2,22 +2,24 @@ package defPackage;
 
 import java.util.List;
 
+import database.DBConnection;
+import database.SectionDB;
+
 public class Section {
 	
 	private String id;
 	private int sectionN;
 	private String classroomId;
 	protected DBConnection sectionConnection;
+	private SectionDB sectionDB;
 	
-	public Section( int sectionN, String classroomId){
+	public Section(int sectionN, String classroomId){
 		
 		this.sectionN = sectionN;
 		this.classroomId = classroomId;
 		sectionConnection = new DBConnection();
+		sectionDB = new SectionDB();
 	}
-	
-	
-	
 	
 	/**
 	 * Returns name of this current section.
@@ -74,7 +76,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean setSectionLeader(Person leader){
-		return sectionConnection.addSectionLeaderToSection(sectionN, leader.getEmail(), classroomId);
+		return sectionDB.addSectionLeaderToSection(sectionN, leader.getEmail(), classroomId);
 		
 	}
 
@@ -93,7 +95,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean addStudentToSection(Person student){
-		return sectionConnection.addStudentToSection(sectionN, student.getEmail(), classroomId);		
+		return sectionDB.addStudentToSection(sectionN, student.getEmail(), classroomId);		
 	}
 	
 	

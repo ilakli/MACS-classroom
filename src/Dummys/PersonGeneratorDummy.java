@@ -1,14 +1,14 @@
 package Dummys;
 
-import defPackage.DBConnection;
+import database.PersonDB;
 import defPackage.Person;
 
 public class PersonGeneratorDummy {
 	
 	public static Person createPersonByEmail(String email){
 		
-		DBConnection connection = new DBConnection();
-		Person person = connection.getPersonByEmail(email);
+		PersonDB personDB = new PersonDB();
+		Person person = personDB.getPersonByEmail(email);
 		
 		if (person == null) {
 			int len = email.length();
@@ -21,8 +21,8 @@ public class PersonGeneratorDummy {
 				surname = email.substring(en);
 			}
 			
-			connection.addPerson(name, surname, email);
-			person = connection.getPersonByEmail(email);
+			personDB.addPerson(name, surname, email);
+			person = personDB.getPersonByEmail(email);
 		}
 		
 		return person;

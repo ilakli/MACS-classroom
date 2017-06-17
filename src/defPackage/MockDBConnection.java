@@ -6,6 +6,9 @@ import java.sql.DriverManager;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 
+import database.DBConnection;
+import database.DBinfo;
+
 public class MockDBConnection extends DBConnection {
 	
 	/**

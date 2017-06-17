@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import database.AllConnections;
+import database.DBConnection;
 import defPackage.Classroom;
-import defPackage.DBConnection;
 
 /**
  * Servlet implementation class CreateClassroomServlet
@@ -39,8 +40,8 @@ public class CreateClassroomServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String className = request.getParameter("newClassroomName");
-		DBConnection db = new DBConnection();
-		String classroomID = db.addClassroom(className);
+		AllConnections db = new AllConnections();
+		String classroomID = db.classroomDB.addClassroom(className);
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
 			RequestDispatcher dispatch = request.getRequestDispatcher("createClassroom.jsp");

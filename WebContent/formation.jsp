@@ -1,5 +1,5 @@
 <%@page import="defPackage.Classroom"%>
-<%@page import="defPackage.DBConnection"%>
+<%@page import="database.AllConnections"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Seminar"%>
 <%@page import="defPackage.Section"%>
@@ -23,17 +23,17 @@
 <body>
 	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomId);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
 		
-		List <Person> lecturers = connector.getLecturers(classroomId);
-		List <Person> seminarists = connector.getSeminarists(classroomId);
-		List <Person> sectionLeaders = connector.getSectionLeaders(classroomId);
-		List <Person> students = connector.getStudents(classroomId);
+		List <Person> lecturers = connector.lecturerDB.getLecturers(classroomId);
+		List <Person> seminarists = connector.seminaristDB.getSeminarists(classroomId);
+		List <Person> sectionLeaders = connector.sectionLeaderDB.getSectionLeaders(classroomId);
+		List <Person> students = connector.studentDB.getStudents(classroomId);
 		System.out.println("roles downloaded successfully!");
 		
-		List <Seminar> seminars = connector.getSeminars(classroomId);
-		List <Section> sections = connector.getSections(classroomId);
+		List <Seminar> seminars = connector.seminarDB.getSeminars(classroomId);
+		List <Section> sections = connector.sectionDB.getSections(classroomId);
 		System.out.println("seminars, active seminars and sections downloaded successfully!");
 		
 	%>
@@ -51,6 +51,8 @@
 					<li><a href=<%= "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>  >About</a></li>
 					<li class="active"><a href=<%= "formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Formation</a></li>
 					<li><a href=<%= "edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId %>>Edit</a></li>
+					<li><a
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
 				</ul>
 			</div>
 	</nav>

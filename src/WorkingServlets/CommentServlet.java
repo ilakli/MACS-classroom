@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Listeners.ContextListener;
-import defPackage.Classroom;
-import defPackage.DBConnection;
+import database.AllConnections;
 
 /**
  * Servlet implementation class CommentServlet
@@ -49,9 +48,9 @@ public class CommentServlet extends HttpServlet {
 		
 		System.out.println("They look like this: " + postId + personId + commentText);
 		
-		DBConnection connection = (DBConnection)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		
-		connection.addPostComment(postId, personId, commentText);
+		connection.commentDB.addPostComment(postId, personId, commentText);
 		out.print("a");
 		
 	}

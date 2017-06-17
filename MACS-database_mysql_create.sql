@@ -156,7 +156,7 @@ CREATE TABLE `section-section_leader` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`section_id` INT NOT NULL,
-	UNIQUE KEY `section-section_leader-uk0` (`classroom_id`, `section_id`),
+	UNIQUE KEY `section-section_leader-uk0` (`person_id`, `section_id`),
 	CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`),
 	CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
 );

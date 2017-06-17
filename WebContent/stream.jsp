@@ -1,8 +1,9 @@
+<%@page import="database.PersonDB"%>
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
-<%@page import="defPackage.DBConnection"%>
+<%@page import="database.AllConnections"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -23,8 +24,11 @@
 <body>
 	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		DBConnection connector = (DBConnection) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.getClassroom(classroomId);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		
+		PersonDB personConnector = new PersonDB();
+		
 	%>
 
 	<div class="jumbotron">
@@ -46,6 +50,8 @@
 				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Formation</a></li>
 			<li><a
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
+			<li><a
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
 		</ul>
 	</div>
 	</nav>
@@ -78,17 +84,19 @@
 
 	</div>
 	<%
-		ArrayList<Post> posts = connector.getPosts(classroomId);
-		for (int i = posts.size() - 1; i >= 0; i--) {
+
+		ArrayList<Post> posts = connector.postDB.getPosts(classroomId);
+		for (int i = 0; i < posts.size(); i++) {
+
 
 			String postText = posts.get(i).getPostText();
 
 			String postAuthorId = posts.get(i).getPersonId();
-			String postAuthor = connector.getPerson(postAuthorId).getName() + " "
-					+ connector.getPerson(postAuthorId).getSurname();
+			String postAuthor = personConnector.getPerson(postAuthorId).getName() + " "
+					+ personConnector.getPerson(postAuthorId).getSurname();
 
 			String postId = posts.get(i).getPostId();
-			ArrayList<Comment> comments = connector.getPostComments(postId);
+			ArrayList<Comment> comments = connector.commentDB.getPostComments(postId);
 
 			out.println("<div class='panel panel-info posts'>");
 
@@ -100,8 +108,8 @@
 				String commentText = comments.get(j).getCommentText();
 
 				String commentAuthorId = comments.get(j).getPersonID();
-				String commentAuthor = connector.getPerson(commentAuthorId).getName() + " "
-						+ connector.getPerson(commentAuthorId).getSurname();
+				String commentAuthor = personConnector.getPerson(commentAuthorId).getName() + " "
+						+ personConnector.getPerson(commentAuthorId).getSurname();
 
 				String commentBody = "<div class=\"w3-card-4\"> <div class=\"w3-container\"> <img src=\"img_avatar3.png\" alt=\"Avatar\" class=\"w3-left w3-circle\" style=\"width: 10%;\"> <h4>"
 						+ commentAuthor + "</h4> <p style=\"padding-left: 11%;\">" + commentText
@@ -118,6 +126,7 @@
 
 			out.println("</div>");
 		}
+		
 	%>
 
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
