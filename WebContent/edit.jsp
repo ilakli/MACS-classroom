@@ -83,6 +83,8 @@
 				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Formation</a></li>
 			<li class="active"><a
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
+			<li><a
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
 		</ul>
 	</div>
 	</nav>
