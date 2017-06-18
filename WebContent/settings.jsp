@@ -13,9 +13,13 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
-<title>About</title>
+<title>Settings</title>
 </head>
 <body>
+	<%!private String checkboxValue(boolean b){
+		if (b) return "checked";
+		return "";
+	}%>
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
 
@@ -31,6 +35,12 @@
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		int numberOfSeminars = currentClassroom.getNumberOfSeminars();
+		boolean autoSeminarDistribution = currentClassroom.areSeminarsAudoDistributed();
+		int numberOfSections = currentClassroom.getNumberOfSections();
+		boolean autoSectionDistribution = currentClassroom.areSectionsAudoDistributed();
+		int numberOfReschedulings = currentClassroom.getNumberOfReschedulings();
+		int reschedulingLength = currentClassroom.getReschedulingLength();
 	%>
 
 	<div class="jumbotron">
@@ -101,28 +111,28 @@
 			</tr>
 			<tr>
 				<td height="50" >Number of Seminars</td>
-				<td height="50" ><input type="text" name="seminars" /></td>
+				<td height="50" ><input type="text" name="seminars" value = <%=numberOfSeminars%> /></td>
 			</tr>
 			<tr>
 				<td height="50" >Automatic distribution of students into Seminars</td>
-				<td height="50" ><input type="checkbox" name="disSeminars" /></td>
+				<td height="50" ><input type="checkbox" name="disSeminars" <%=checkboxValue(autoSeminarDistribution)%>/></td>
 			</tr>
 			<tr>
 				<td height="50" >Number of Sections</td>
-				<td height="50" ><input type="text" name="sections" /></td>
+				<td height="50" ><input type="text" name="sections" value = <%=numberOfSections%> /></td>
 			</tr>
 			
 			<tr>
 				<td height="50" >Automatic distribution of students into Sections</td>
-				<td height="50" ><input type="checkbox" name="disSSections" /></td>
+				<td height="50" ><input type="checkbox" name="disSSections" <%=checkboxValue(autoSectionDistribution)%>/></td>
 			</tr>
 			<tr>
 				<td height="50" >Number of Assignment Rescheduling </td>
-				<td height="50" ><input type="text" name="numResch" /></td>
+				<td height="50" ><input type="text" name="numResch" value = <%=numberOfReschedulings%> /></td>
 			</tr>
 			<tr>
 				<td height="50" >Length in Days of Assignment  Rescheduling </td>
-				<td height="50" ><input type="text" name="lengthResch" /></td>
+				<td height="50" ><input type="text" name="lengthResch" value = <%=reschedulingLength%> /></td>
 			</tr>
 			
 			<tr>
