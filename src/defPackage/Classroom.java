@@ -21,11 +21,28 @@ public class Classroom {
 	private String classroomID;
 	protected DBConnection classroomConnection;
 	private AllConnections db;
+	private boolean autoSeminarDistribution;
+	private boolean autoSectionDistribution;
+	private int numberOfSeminars;
+	private int numberOfSections;
+	private int numberOfReschedulings;
+	private int reschedulingLength;
+	
+	
+	
 
 	// Constructor;
 	public Classroom(String classroomName, String classroomID) {
 		this.classroomName = classroomName;
 		this.classroomID = classroomID;
+		this.autoSeminarDistribution = false;
+		this.autoSectionDistribution = false;
+		this.numberOfSections = 0;
+		this.numberOfSeminars = 0;
+		this.numberOfReschedulings = 0;
+		this.reschedulingLength = 0;
+		
+		
 		classroomConnection = new DBConnection();
 		db = new AllConnections();
 	}
@@ -464,19 +481,106 @@ public class Classroom {
 		}
 	
 	}
-	
+
+	/**
+	 * fills sections with free students,
+	 * prioritizes sections with small number of students
+	 */
 	public void fillSectionsWithFreeStudents(){
 		
 		List<Person> students = db.studentDB.getStudentsWithoutSection(this.classroomID);
 		List<Section> sections = db.sectionDB.getSections(this.classroomID);
 		
 		if (sections.isEmpty()){
-			System.out.println("TRIED TO FILL SECTIONS WITH FREE STUDENTS, BUT THERE ARE NO SECTION!!!!");
+			System.out.println("TRIED TO FILL SECTIONS WITH FREE STUDENTS, BUT THERE ARE NO SECTIONS!!!!");
 			return;
 		}
 		
 		for (Person p : students){
 			Section section = db.sectionDB.getSmallestSection(this.classroomID);
+			section.addStudentToSection(p);
 		}
-	}	
+	}
+	
+	/**
+	 * changes class's section auto distribution to res
+	 * @param res - variable for autoSectionDistribution to be set to
+	 */
+	public void setSectionDistribution(boolean newValue) {
+		this.autoSectionDistribution = newValue;
+	}
+	
+	/**
+	 * @return - if sections are auto distributed in this class 
+	 */
+	public boolean areSectionsAudoDistributed() {
+		return this.autoSectionDistribution;
+	}
+	
+	/**
+	 * changes class's seminar auto distribution to res
+	 * @param res - variable for autoSeminarDistribution to be set to
+	 */
+	public void setSeminarDistribution(boolean newValue) {
+		this.autoSeminarDistribution = newValue;
+	}
+	
+	/**
+	 * @return - if sections are auto distributed in this class 
+	 */
+	public boolean areSeminarsAudoDistributed() {
+		return this.autoSeminarDistribution;
+	}
+	
+	/**
+	 * sets number of section in class to newValue
+	 * @param newValue - new value
+	 */
+	public void setNumberOfSections(int newValue){
+		//TODO create new sections or delete not needed ones
+		this.numberOfSections = newValue;
+	}
+	
+	/**
+	 * @return - number of sections in this class
+	 */
+	public int getNumberOfSections() {
+		return numberOfSections;
+	}
+	
+	/**
+	 * sets number of seminars in class to newValue
+	 * @param newValue - new value
+	 */
+	public void setNumberOfSeminars(int newValue){
+		//TODO create new seminars or delete not needed ones
+		this.numberOfSeminars= newValue;
+	}
+	
+	/**
+	 * @return - number of seminars in this class
+	 */
+	public int getNumberOfSeminars() {
+		return numberOfSeminars;
+	}
+	
+	/**
+	 * @param newValue - new value of rescheduling allowed
+	 */
+	public void setNumberOfReschedulings(int newValue) {
+		numberOfReschedulings = newValue;
+	}
+	
+	/**
+	 * @return - number of reschedulings allowed
+	 */
+	public int getNumberOfReschedulings() {
+		return numberOfReschedulings;
+	}
+	
+	public void setReschedulingLength(int newValue) {
+		reschedulingLength = newValue;
+	}
+	
+	
 }

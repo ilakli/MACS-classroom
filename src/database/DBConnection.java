@@ -52,6 +52,7 @@ public class DBConnection {
 		try {
 			currentConnection = dataSource.getConnection();
 		} catch (SQLException e) {
+			System.out.println("getConnection is about to return null!!!");
 			e.printStackTrace();
 		}
 
