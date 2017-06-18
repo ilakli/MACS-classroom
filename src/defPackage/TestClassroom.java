@@ -278,29 +278,30 @@ public class TestClassroom {
 		mockClass.classroomAddSectionLeader("ipopk15@freeuni.edu.ge");
 		mockClass.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge");
 		mockClass.classroomAddStudent("gitser15@freeuni.edu.ge");
-		
-		assertFalse(mockClass.classroomAddSeminaristToSeminar(123, "n.begiashvili@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "vigaca@mail.re"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "gitser15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "s.gvinepadze@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSeminaristToSeminar(0, "n.begiashvili@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSeminaristToSeminar(1, "n.begiashvili@freeuni.edu.ge"));
-		
-		assertFalse(mockClass.classroomAddSectionLeaderToSection(123, "gkhos15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "vigaca@mail.re"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "gitser15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "s.gvinepadze@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSectionLeaderToSection(0, "gkhos15@freeuni.edu.ge"));
-		assertTrue(mockClass.classroomAddSectionLeaderToSection(1, "ipopk15@freeuni.edu.ge"));
-		
-		assertFalse(mockClass.classroomAddStudentToSection(0, "acxcx15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSection(0, "ipopk15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSection(0, "raraca@mail.ru"));
-		assertTrue(mockClass.classroomAddStudentToSection(0, "gitser15@freeuni.edu.ge"));
-		
-		assertFalse(mockClass.classroomAddStudentToSeminar(0, "acxcx15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSeminar(0, "gkhos15@freeuni.edu.ge"));
-		assertFalse(mockClass.classroomAddStudentToSeminar(0, "raraca@mail.ru"));
-		assertTrue(mockClass.classroomAddStudentToSeminar(0, "gitser15@freeuni.edu.ge"));
+
+//		similar methods in section and seminar classes must be tested		
+//		assertFalse(mockClass.classroomAddSeminaristToSeminar(123, "n.begiashvili@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "vigaca@mail.re"));
+//		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "gitser15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddSeminaristToSeminar(0, "s.gvinepadze@freeuni.edu.ge"));
+//		assertTrue(mockClass.classroomAddSeminaristToSeminar(0, "n.begiashvili@freeuni.edu.ge"));
+//		assertTrue(mockClass.classroomAddSeminaristToSeminar(1, "n.begiashvili@freeuni.edu.ge"));
+//		
+//		assertFalse(mockClass.classroomAddSectionLeaderToSection(123, "gkhos15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "vigaca@mail.re"));
+//		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "gitser15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddSectionLeaderToSection(0, "s.gvinepadze@freeuni.edu.ge"));
+//		assertTrue(mockClass.classroomAddSectionLeaderToSection(0, "gkhos15@freeuni.edu.ge"));
+//		assertTrue(mockClass.classroomAddSectionLeaderToSection(1, "ipopk15@freeuni.edu.ge"));
+//		
+//		assertFalse(mockClass.classroomAddStudentToSection(0, "acxcx15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddStudentToSection(0, "ipopk15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddStudentToSection(0, "raraca@mail.ru"));
+//		assertTrue(mockClass.classroomAddStudentToSection(0, "gitser15@freeuni.edu.ge"));
+//		
+//		assertFalse(mockClass.classroomAddStudentToSeminar(0, "acxcx15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddStudentToSeminar(0, "gkhos15@freeuni.edu.ge"));
+//		assertFalse(mockClass.classroomAddStudentToSeminar(0, "raraca@mail.ru"));
+//		assertTrue(mockClass.classroomAddStudentToSeminar(0, "gitser15@freeuni.edu.ge"));
 	}	
 }

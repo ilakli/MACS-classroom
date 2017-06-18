@@ -388,59 +388,6 @@ public class Classroom {
 
 
 	/**
-	 * This method sets section's student;
-	 * 
-	 * @param sectionN
-	 *            - seminar's name;
-	 * @param sectionLeaderEmail
-	 *            - student who should become section member;
-	 * @return - true if added, false otherwise;
-	 */
-	public boolean classroomAddStudentToSection(int sectionN, String studentEmail) {
-		return db.sectionDB.addStudentToSection(sectionN, studentEmail, this.classroomID);
-	}
-
-	/**
-	 * This method sets seminar's student;
-	 * 
-	 * @param sectionN
-	 *            - seminar's name;
-	 * @param sectionLeaderEmail
-	 *            - student who should become seminar member;
-	 * @return - true if added, false otherwise;
-	 */
-	public boolean classroomAddStudentToSeminar(int seminarN, String studentEmail) {
-		return db.seminarDB.addStudentToSeminar(seminarN, studentEmail, this.classroomID);
-	}
-
-	/**
-	 * This method sets seminar's seminarist;
-	 * 
-	 * @param sectionN
-	 *            - seminar's name;
-	 * @param sectionLeaderEmail
-	 *            - person who should become seminarist;
-	 * @return - true if added leader, false otherwise;
-	 */
-	public boolean classroomAddSeminaristToSeminar(int seminarN, String seminaristEmail) {
-		return db.seminarDB.addSeminaristToSeminar(seminarN, seminaristEmail, this.classroomID);
-	}
-
-	/**
-	 * This method sets section's leader
-	 * 
-	 * @param sectionN
-	 *            - section's name;
-	 * @param sectionLeaderEmail
-	 *            - person who should become leader;
-	 * @return - true if added leader, false otherwise;
-	 */
-	public boolean classroomAddSectionLeaderToSection(int sectionN, String sectionLeaderEmail) {
-		return db.sectionDB.addSectionLeaderToSection(sectionN, sectionLeaderEmail, this.classroomID);
-
-	}
-
-	/**
 	 * Adds specified material to this classroom.
 	 * 
 	 * @param materialName
