@@ -35,30 +35,46 @@ public class AddNewStudentServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		Person p = PersonGeneratorDummy.createPersonByEmail(email);
-		
+	
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		if(currentClassroom.classroomAddStudent(email)) {
+		
+		
+		String emails[] = email.split("\\s"); 
+		
+		boolean status = true;
+		if(emails.length == 0) status = false;
+		
+		for(String e:emails){  
+			Person p = PersonGeneratorDummy.createPersonByEmail(e);
+			
+			if(currentClassroom.classroomAddStudent(e)) {
+				System.out.println("Added Student: " + p.getName() + " " + 
+				p.getSurname() + " " + e + " to class with id: " + classroomId);
+			}
+			else {
+				status =  false;
+				
+				System.out.println("Person Already Existed IN This Classroom: " + 
+				p.getName() + " " + p.getSurname() + " " + e + " to class with id: " + classroomId);
+			}
+		} 
+		
+		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-		+ EditStatusConstants.ADD_NEW_STUDENT_ACC);	
+				+ EditStatusConstants.ADD_NEW_STUDENT_ACC);	
 			 
 			view.forward(request, response);    
-			
-			System.out.println("Added Student: " + p.getName() + " " + p.getSurname() + " " + email + " to class with id: " + classroomId);
-		}
-		else {
+		} else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-		+ EditStatusConstants.ADD_NEW_STUDENT_REJ);	
+				+ EditStatusConstants.ADD_NEW_STUDENT_REJ);	
 			
-			view.forward(request, response);    
-			
-			System.out.println("Person Already Existed IN This Classroom: " 
-			+ p.getName() + " " + p.getSurname() + " " + email + " to class with id: " + classroomId);
+			view.forward(request, response);  
 		}
+		
 	}
 
 }
