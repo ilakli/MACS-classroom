@@ -596,6 +596,10 @@ public class Classroom {
 	 */
 	public void addStudentToSmallestSection(Person p) {
 		Section section = db.sectionDB.getSmallestSection(this.classroomID);
+		if (section == null) {
+			System.out.println("THERE IS NO SECTION!!!");
+			return;
+		}
 		section.addStudentToSection(p);
 	}
 	
@@ -605,6 +609,10 @@ public class Classroom {
 	 */
 	public void addStudentToSmallestSeminar(Person p) {
 		Seminar seminar = db.seminarDB.getSmallestSeminar(this.classroomID);
+		if (seminar == null) {
+			System.out.println("THERE IS NO SEMINAR!!!");
+			return;
+		}
 		seminar.addStudentToSeminar(p);
 	}
 	
