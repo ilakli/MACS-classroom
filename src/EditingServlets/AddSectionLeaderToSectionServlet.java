@@ -41,32 +41,33 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getParameter("sectionN"));
 		int sectionN = Integer.parseInt(request.getParameter("sectionN"));
-		System.out.println(sectionN);
 		String sectionLeaderEmail = request.getParameter("sectionLeaderEmail");
+		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
-			
+	
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Section currentSection = new Section(sectionN,classroomId);
 		Person leader = connection.personDB.getPersonByEmail(sectionLeaderEmail);
-		if(currentSection.setSectionLeader(leader)) {
+		if(connection.sectionLeaderDB.sectionLeaderExists(sectionLeaderEmail, classroomId)
+				&& connection.sectionDB.sectionExists(sectionN, classroomId)
+				&& currentSection.setSectionLeader(leader)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	
+				+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	
 						 
 			view.forward(request, response);  
 			System.out.println("Added sectionLeader To Section: " +currentSection.getSectionN() + " " + sectionLeaderEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_REJ);	
+				+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_REJ);	
 						 
 			view.forward(request, response);  
 			
 			System.out.println("Didn't add sectionLeader to Section: " + currentSection.getSectionN() + " " + sectionLeaderEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 	
 		}
 	}

@@ -49,22 +49,24 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId);
 		Person student = connection.personDB.getPersonByEmail(studentEmail);
-		if(currentSeminar.addStudentToSeminar(student)) {
+		if(connection.seminarDB.seminarExists(seminarN, classroomId)
+				&& connection.studentDB.studentExists(studentEmail, classroomId)
+				&& currentSeminar.addStudentToSeminar(student)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	
+				+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	
 						 
 			view.forward(request, response);  
 			System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_REJ);	
+				+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_REJ);	
 						 
 			view.forward(request, response);  
 			
 			System.out.println("Didn't add Student to Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 	
 		}
 	}
