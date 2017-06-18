@@ -476,8 +476,7 @@ public class Classroom {
 		}
 		
 		for (Person p : students){
-			Seminar seminar = db.seminarDB.getSmallestSeminar(this.classroomID);
-			seminar.addStudentToSeminar(p);
+			this.addStudentToSmallestSeminar(p);
 		}
 	
 	}
@@ -497,8 +496,7 @@ public class Classroom {
 		}
 		
 		for (Person p : students){
-			Section section = db.sectionDB.getSmallestSection(this.classroomID);
-			section.addStudentToSection(p);
+			this.addStudentToSmallestSection(p);
 		}
 	}
 	
@@ -591,5 +589,24 @@ public class Classroom {
 	public int getReschedulingLength() {
 		return reschedulingLength;
 	}
+	
+	/**
+	 * adds student to the smallest section of this class
+	 * @param p - the student
+	 */
+	public void addStudentToSmallestSection(Person p) {
+		Section section = db.sectionDB.getSmallestSection(this.classroomID);
+		section.addStudentToSection(p);
+	}
+	
+	/**
+	 * adds student to the smallest seminar of this class
+	 * @param p - the student
+	 */
+	public void addStudentToSmallestSeminar(Person p) {
+		Seminar seminar = db.seminarDB.getSmallestSeminar(this.classroomID);
+		seminar.addStudentToSeminar(p);
+	}
+	
 	
 }
