@@ -578,9 +578,18 @@ public class Classroom {
 		return numberOfReschedulings;
 	}
 	
+	/**
+	 * @param newValue - new value of rescheduling length(in days)
+	 */
 	public void setReschedulingLength(int newValue) {
 		reschedulingLength = newValue;
 	}
 	
+	/**
+	 * @return - length of rescheduling(in days)
+	 */
+	public int getReschedulingLength() {
+		return reschedulingLength;
+	}
 	
 }
