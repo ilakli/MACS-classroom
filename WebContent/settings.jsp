@@ -35,6 +35,7 @@
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		
 		int numberOfSeminars = currentClassroom.getNumberOfSeminars();
 		boolean autoSeminarDistribution = currentClassroom.areSeminarsAudoDistributed();
 		int numberOfSections = currentClassroom.getNumberOfSections();

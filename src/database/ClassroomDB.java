@@ -97,4 +97,134 @@ public class ClassroomDB {
 
 		return classrooms;
 	}
+
+	/**
+	 * sets new value to distribution of students into sections
+	 * for classroom with given ID 
+	 * @param newValue - new value for this parameter
+	 */
+	public void setClassroomSectionDistribution(String classroomID, boolean newValue) {
+		String sqlCode = String.format("update `classrooms` set classroom_section_auto_distribution = %s"
+				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
+		
+		
+		MyConnection update = db.getMyConnection(sqlCode);
+		this.db.executeUpdate(update);
+	}
+	
+	/**
+	 * sets new value to distribution of students into 
+	 * seminars for classroom with given ID 
+	 * @param newValue - new value for this parameter
+	 */
+	public void setClassroomSeminarDistribution(String classroomID, boolean newValue) {
+		String sqlCode = String.format("update `classrooms` set classroom_seminar_auto_distribution = %s"
+				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
+		
+		
+		MyConnection update = db.getMyConnection(sqlCode);
+		this.db.executeUpdate(update);
+	}
+	
+	
+	/**
+	 * returns if classroom with given ID is auto distributed to seminars
+	 * @param classroomID - ID of classroom
+	 */
+	public boolean getClassroomSeminarDistribution(String classroomID) {
+		String sqlCode = "select classroom_seminar_auto_distribution from classrooms "
+				+ "where classroom_id = " + classroomID + ";";
+		
+		ResultSet rs = db.getResultSet(sqlCode);
+		try {
+			rs.next();
+			return rs.getBoolean(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	/**
+	 * returns if classroom with given ID is auto distributed to sections
+	 * @param classroomID - ID of classroom
+	 */
+	public boolean getClassroomSectionDistribution(String classroomID) {
+		String sqlCode = "select classroom_section_auto_distribution from classrooms "
+				+ "where classroom_id = " + classroomID + ";";
+		
+		ResultSet rs = db.getResultSet(sqlCode);
+		
+		try {
+			rs.next();
+			return rs.getBoolean(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	/**
+	 * sets the number of reschedulings allowed in this classroom to new value
+	 * @param classroomID - ID of classroom
+	 * @param newValue - new value
+	 */
+	public void setClassroomsNumberOfReschedulings(String classroomID, int newValue) {
+		String sqlCode = String.format("update `classrooms` set classroom_reschedulings_num = %s"
+				+ " where classroom_id = %s", newValue, classroomID);
+		
+		
+		MyConnection update = db.getMyConnection(sqlCode);
+		this.db.executeUpdate(update);
+	}
+	
+	/**
+	 * @param classroomID - ID of classroom
+	 * @return - number of reschedulings allowed in this classroom
+	 */
+	public int getClassroomsNumberOfReshcedulings(String classroomID) {
+		String sqlCode = "select classroom_reschedulings_num from classrooms "
+				+ "where classroom_id = " + classroomID + ";";
+		
+		ResultSet rs = db.getResultSet(sqlCode);
+		try {
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+	
+	/**
+	 * sets length of rescheduling allowed in classroom to new value 
+	 * @param classroomID - ID of classroom
+	 * @param newValue - new value
+	 */
+	public void setClassroomsReschedulingLength(String classroomID, int newValue) {
+		String sqlCode = String.format("update `classrooms` set classroom_reschedulings_length = %s"
+				+ " where classroom_id = %s", newValue, classroomID);
+		
+		
+		MyConnection update = db.getMyConnection(sqlCode);
+		this.db.executeUpdate(update);
+	}
+	
+	/**
+	 * @param classroomID - ID of classroom
+	 * @return - length of rescheduling allowed in classroom with given ID
+	 */
+	public int getClassroomsReschedulingLength(String classroomID) {
+		String sqlCode = "select classroom_reschedulings_length from classrooms "
+				+ "where classroom_id = " + classroomID + ";";
+		
+		ResultSet rs = db.getResultSet(sqlCode);
+		try {
+			rs.next();
+			return rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }
