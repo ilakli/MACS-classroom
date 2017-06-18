@@ -31,6 +31,11 @@ CREATE TABLE `persons` (
 CREATE TABLE `classrooms` (
 	`classroom_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_name` varchar(100) NOT NULL,
+	`classroom_reschedulings_num` INT NOT NULL DEFAULT 0,
+	`classroom_reschedulings_length` INT NOT NULL DEFAULT 0,
+	`classroom_seminar_auto_distribution` BOOL NOT NULL DEFAULT false,
+	`classroom_section_auto_distribution` BOOL NOT NULL DEFAULT false,
+	
 	PRIMARY KEY (`classroom_id`)
 );
 

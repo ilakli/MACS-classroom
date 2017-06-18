@@ -21,27 +21,12 @@ public class Classroom {
 	private String classroomID;
 	protected DBConnection classroomConnection;
 	private AllConnections db;
-	private boolean autoSeminarDistribution;
-	private boolean autoSectionDistribution;
-	private int numberOfSeminars;
-	private int numberOfSections;
-	private int numberOfReschedulings;
-	private int reschedulingLength;
-	
-	
 	
 
 	// Constructor;
 	public Classroom(String classroomName, String classroomID) {
 		this.classroomName = classroomName;
 		this.classroomID = classroomID;
-		this.autoSeminarDistribution = false;
-		this.autoSectionDistribution = false;
-		this.numberOfSections = 0;
-		this.numberOfSeminars = 0;
-		this.numberOfReschedulings = 0;
-		this.reschedulingLength = 0;
-		
 		
 		classroomConnection = new DBConnection();
 		db = new AllConnections();
@@ -452,14 +437,14 @@ public class Classroom {
 	 * @param res - variable for autoSectionDistribution to be set to
 	 */
 	public void setSectionDistribution(boolean newValue) {
-		this.autoSectionDistribution = newValue;
+		this.db.classroomDB.setClassroomSectionDistribution(this.classroomID, newValue);
 	}
 	
 	/**
 	 * @return - if sections are auto distributed in this class 
 	 */
 	public boolean areSectionsAudoDistributed() {
-		return this.autoSectionDistribution;
+		return this.db.classroomDB.getClassroomSectionDistribution(this.classroomID);
 	}
 	
 	/**
@@ -467,14 +452,14 @@ public class Classroom {
 	 * @param res - variable for autoSeminarDistribution to be set to
 	 */
 	public void setSeminarDistribution(boolean newValue) {
-		this.autoSeminarDistribution = newValue;
+		this.db.classroomDB.setClassroomSeminarDistribution(this.classroomID, newValue);
 	}
 	
 	/**
 	 * @return - if sections are auto distributed in this class 
 	 */
 	public boolean areSeminarsAudoDistributed() {
-		return this.autoSeminarDistribution;
+		return this.db.classroomDB.getClassroomSeminarDistribution(this.classroomID);
 	}
 	
 	/**
@@ -482,23 +467,24 @@ public class Classroom {
 	 * @param newValue - new value
 	 */
 	public void setNumberOfSections(int newValue){
-		if (newValue > this.numberOfSections){
-			for (int i = 0; i < (newValue - this.numberOfSections); i++ ){
+		int numberOfSections = db.sectionDB.getSections(this.classroomID).size();
+		
+		if (newValue > numberOfSections){
+			for (int i = 0; i < (newValue - numberOfSections); i++ ){
 				classroomAddSection();
 			}
-		} else if (newValue < this.numberOfSections){
-			for (int i = 0; i < (this.numberOfSections - newValue); i++ ){
-				classroomDeleteSeminar();
+		} else if (newValue < numberOfSections){
+			for (int i = 0; i < (numberOfSections - newValue); i++ ){
+				classroomDeleteSection();
 			}
 		}
-		this.numberOfSections = newValue;
 	}
 	
 	/**
 	 * @return - number of sections in this class
 	 */
 	public int getNumberOfSections() {
-		return numberOfSections;
+		return db.sectionDB.getSections(this.classroomID).size();
 	}
 	
 	/**
@@ -506,51 +492,52 @@ public class Classroom {
 	 * @param newValue - new value
 	 */
 	public void setNumberOfSeminars(int newValue){
-		if (newValue > this.numberOfSeminars){
-			for (int i = 0; i < (newValue - this.numberOfSeminars); i++ ){
+		int numberOfSeminars = db.seminarDB.getSeminars(this.classroomID).size();
+		
+		if (newValue > numberOfSeminars){
+			for (int i = 0; i < (newValue - numberOfSeminars); i++ ){
 				classroomAddSeminar();
 			}
-		} else if (newValue < this.numberOfSeminars){
-			for (int i = 0; i < (this.numberOfSeminars - newValue); i++ ){
+		} else if (newValue < numberOfSeminars){
+			for (int i = 0; i < (numberOfSeminars - newValue); i++ ){
 				classroomDeleteSeminar();
 			}
 		}
-		this.numberOfSeminars= newValue;
 	}
 	
 	/**
 	 * @return - number of seminars in this class
 	 */
 	public int getNumberOfSeminars() {
-		return numberOfSeminars;
+		return db.seminarDB.getSeminars(this.classroomID).size();
 	}
 	
 	/**
 	 * @param newValue - new value of rescheduling allowed
 	 */
 	public void setNumberOfReschedulings(int newValue) {
-		numberOfReschedulings = newValue;
+		this.db.classroomDB.setClassroomsNumberOfReschedulings(this.classroomID, newValue);
 	}
 	
 	/**
 	 * @return - number of reschedulings allowed
 	 */
 	public int getNumberOfReschedulings() {
-		return numberOfReschedulings;
+		return this.db.classroomDB.getClassroomsNumberOfReshcedulings(this.classroomID);
 	}
 	
 	/**
 	 * @param newValue - new value of rescheduling length(in days)
 	 */
 	public void setReschedulingLength(int newValue) {
-		reschedulingLength = newValue;
+		this.db.classroomDB.setClassroomsReschedulingLength(this.classroomID, newValue);
 	}
 	
 	/**
 	 * @return - length of rescheduling(in days)
 	 */
 	public int getReschedulingLength() {
-		return reschedulingLength;
+		return this.db.classroomDB.getClassroomsReschedulingLength(this.classroomID);
 	}
 	
 	/**
