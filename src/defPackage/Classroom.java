@@ -535,7 +535,15 @@ public class Classroom {
 	 * @param newValue - new value
 	 */
 	public void setNumberOfSections(int newValue){
-		//TODO create new sections or delete not needed ones
+		if (newValue > this.numberOfSections){
+			for (int i = 0; i < (newValue - this.numberOfSections); i++ ){
+				classroomAddSection();
+			}
+		} else if (newValue < this.numberOfSections){
+			for (int i = 0; i < (this.numberOfSections - newValue); i++ ){
+				classroomDeleteSeminar();
+			}
+		}
 		this.numberOfSections = newValue;
 	}
 	
@@ -551,7 +559,15 @@ public class Classroom {
 	 * @param newValue - new value
 	 */
 	public void setNumberOfSeminars(int newValue){
-		//TODO create new seminars or delete not needed ones
+		if (newValue > this.numberOfSeminars){
+			for (int i = 0; i < (newValue - this.numberOfSeminars); i++ ){
+				classroomAddSeminar();
+			}
+		} else if (newValue < this.numberOfSeminars){
+			for (int i = 0; i < (this.numberOfSeminars - newValue); i++ ){
+				classroomDeleteSeminar();
+			}
+		}
 		this.numberOfSeminars= newValue;
 	}
 	
