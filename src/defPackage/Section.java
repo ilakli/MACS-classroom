@@ -47,6 +47,7 @@ public class Section {
 	 * @return
 	 */
 	public Person getSectionLeader(){
+		//TODO
 		return null;	
 	}
 	
@@ -57,6 +58,7 @@ public class Section {
 	 * @return
 	 */
 	public List<Person> getSectionStudents(){
+		//TODO
 		return null;	
 	}
 	
@@ -66,6 +68,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean removeSectionLeader(){
+		//TODO
 		return false;
 		
 	}
@@ -86,6 +89,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean removeStudentFromSection(Person student){
+		//TODO
 		return false;
 	}
 	
@@ -105,6 +109,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean sectionContainsStudent(Person student){
+		//TODO
 		return false;	
 	}
 	

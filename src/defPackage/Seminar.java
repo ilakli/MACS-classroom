@@ -46,6 +46,7 @@ public class Seminar {
 	 * @return
 	 */
 	public Person getSeminarist(){
+		//TODO
 		return null;	
 	}
 	
@@ -56,6 +57,7 @@ public class Seminar {
 	 * @return
 	 */
 	public List<Person> getSeminarStudents(){
+		//TODO
 		return null;	
 	}
 	
@@ -65,6 +67,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean removeSeminarist(){
+		//TODO
 		return false;
 		
 	}
@@ -84,6 +87,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean removeStudentFromSeminar(Person student){
+		//TODO
 		return false;
 	}
 	
@@ -103,6 +107,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean seminarContainsStudent(Person student){
+		//TODO
 		return false;	
 	}
 	
