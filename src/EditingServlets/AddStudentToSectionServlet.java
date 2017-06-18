@@ -49,22 +49,24 @@ public class AddStudentToSectionServlet extends HttpServlet {
 		
 		Section currentSection = new Section(sectionN,classroomId);
 		Person student = connection.personDB.getPersonByEmail(studentEmail);
-		if(currentSection.addStudentToSection(student)) {
+		if(connection.sectionDB.sectionExists(sectionN, classroomId)  
+				&& connection.studentDB.studentExists(studentEmail, classroomId)
+				&& currentSection.addStudentToSection(student)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
+				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
 						 
 			view.forward(request, response);  
 			System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + studentEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
+				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
 						 
 			view.forward(request, response);  
 			
 			System.out.println("Didn't add Student to Section: " + currentSection.getSectionN() + " " + studentEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 	
 		}
 	

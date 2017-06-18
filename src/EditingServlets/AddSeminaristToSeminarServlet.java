@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import database.AllConnections;
+
 import defPackage.Classroom;
 import defPackage.Person;
-import defPackage.Section;
 import defPackage.Seminar;
 
 /**
@@ -50,22 +50,24 @@ public class AddSeminaristToSeminarServlet extends HttpServlet {
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId);
 		Person seminarist = connection.personDB.getPersonByEmail(seminaristEmail);
-		if(currentSeminar.setSeminarist(seminarist)) {
+		if(connection.seminaristDB.seminaristExists(seminaristEmail,classroomId) 
+				&& connection.seminarDB.seminarExists(seminarN,classroomId)
+				&& currentSeminar.setSeminarist(seminarist)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_ACC);	
+				+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_ACC);	
 						 
 			view.forward(request, response);  
 			System.out.println("Added seminarist To Seminar: " + currentSeminar.getSeminarN() + " " + seminaristEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_REJ);	
+				+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_REJ);	
 						 
 			view.forward(request, response);  
 			
 			System.out.println("Didn't add seminarist to Seminar: " + currentSeminar.getSeminarN() + " " + seminaristEmail + 
-					" to class with id: " + classroomId);
+				" to class with id: " + classroomId);
 		}
 	
 	}
