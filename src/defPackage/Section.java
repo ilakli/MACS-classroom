@@ -4,6 +4,8 @@ import java.util.List;
 
 import database.DBConnection;
 import database.SectionDB;
+import database.SectionLeaderDB;
+import database.StudentDB;
 
 public class Section {
 	
@@ -12,6 +14,8 @@ public class Section {
 	private String classroomId;
 	protected DBConnection sectionConnection;
 	private SectionDB sectionDB;
+	private SectionLeaderDB sectionLeaderDB;
+	private StudentDB studentDB;
 	
 	public Section(int sectionN, String classroomId){
 		
@@ -19,6 +23,8 @@ public class Section {
 		this.classroomId = classroomId;
 		sectionConnection = new DBConnection();
 		sectionDB = new SectionDB();
+		sectionLeaderDB = new SectionLeaderDB();
+		studentDB = new StudentDB();
 	}
 	
 	/**
@@ -39,7 +45,13 @@ public class Section {
 	public String getClassroomId(){
 		return this.classroomId;
 	}
-	
+	/**
+	 * 
+	 * @return sectionId of current section
+	 */
+	public String getSectionId() {
+		return sectionDB.getSectionId(sectionN, classroomId);
+	}
 	
 	/**
 	 * Returns person object of the leader of current section, null if section leader is not set
@@ -47,8 +59,8 @@ public class Section {
 	 * @return
 	 */
 	public Person getSectionLeader(){
-		//TODO
-		return null;	
+		String sectionId = getSectionId();
+		return sectionLeaderDB.getSectionLeader(sectionId);
 	}
 	
 	
@@ -58,8 +70,7 @@ public class Section {
 	 * @return
 	 */
 	public List<Person> getSectionStudents(){
-		//TODO
-		return null;	
+		return studentDB.getSectionStudents(getSectionId());
 	}
 	
 	/**
@@ -68,9 +79,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean removeSectionLeader(){
-		//TODO
-		return false;
-		
+		return sectionLeaderDB.deleteSectionLeader(getSectionLeader().getEmail(), classroomId);
 	}
 	
 	/**
@@ -89,8 +98,7 @@ public class Section {
 	 * @return
 	 */
 	public boolean removeStudentFromSection(Person student){
-		//TODO
-		return false;
+		return sectionDB.removeStudent(classroomId, student.getPersonID());
 	}
 	
 	/**
@@ -109,10 +117,8 @@ public class Section {
 	 * @return
 	 */
 	public boolean sectionContainsStudent(Person student){
-		//TODO
-		return false;	
+		return sectionDB.containsStudent(classroomId, student.getPersonID());
 	}
-	
 	
 
 	@Override
@@ -141,6 +147,4 @@ public class Section {
 			return false;
 		return true;
 	}
-	
-	
 }

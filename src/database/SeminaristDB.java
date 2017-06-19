@@ -92,4 +92,11 @@ public class SeminaristDB {
 		myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
+	
+	public Person getSeminarist (String seminarId) {
+		String query = String.format(
+				"select * from `seminar-seminarists` where `seminar_id` = %s;", seminarId);
+		ArrayList<Person> seminarists = personDB.getPersons(query);
+		return seminarists.isEmpty() ? null : seminarists.get(0);
+	}
 }

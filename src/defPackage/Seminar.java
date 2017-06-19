@@ -4,20 +4,26 @@ import java.util.List;
 
 import database.DBConnection;
 import database.SeminarDB;
+import database.SeminaristDB;
+import database.StudentDB;
 
 public class Seminar {
 	
 	private int seminarN;
 	private String classroomId;
 	protected DBConnection seminarConnection;
+	private SeminaristDB seminaristDB;
 	private SeminarDB seminarDB;
+	private StudentDB studentDB;
 
 	public Seminar(int seminarN, String classroomId){
 
 		this.seminarN = seminarN;
 		this.classroomId = classroomId;
 		seminarConnection = new DBConnection();
+		seminaristDB = new SeminaristDB();
 		seminarDB = new SeminarDB();
+		studentDB = new StudentDB();
 	}
 	
 
@@ -38,7 +44,15 @@ public class Seminar {
 	public String getClassroomId(){
 		return this.classroomId;
 	}
-
+	
+	/**
+	 * 
+	 * @return id of the seminar
+	 */
+	public String getSeminarId() {
+		return seminarDB.getSeminarId(seminarN, classroomId);
+	}
+	
 	
 	/**
 	 * Returns person object of the seminarist of current seminar, null if seminarist is not set
@@ -46,8 +60,8 @@ public class Seminar {
 	 * @return
 	 */
 	public Person getSeminarist(){
-		//TODO
-		return null;	
+		String seminarId = getSeminarId();
+		return seminaristDB.getSeminarist(seminarId);
 	}
 	
 	
@@ -57,8 +71,8 @@ public class Seminar {
 	 * @return
 	 */
 	public List<Person> getSeminarStudents(){
-		//TODO
-		return null;	
+		String seminarId = getSeminarId();
+		return studentDB.getSeminarStudents(seminarId, seminarId);
 	}
 	
 	/**
@@ -67,8 +81,8 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean removeSeminarist(){
-		//TODO
-		return false;
+		Person seminarist = getSeminarist();
+		return seminaristDB.deleteSeminarist(seminarist.getEmail(), classroomId);
 		
 	}
 	
@@ -87,8 +101,7 @@ public class Seminar {
 	 * @return
 	 */
 	public boolean removeStudentFromSeminar(Person student){
-		//TODO
-		return false;
+		return seminarDB.deleteStudentFromSeminar(seminarN, student.getEmail(), classroomId);
 	}
 	
 	/**
@@ -100,17 +113,14 @@ public class Seminar {
 		return seminarDB.addStudentToSeminar(seminarN, student.getEmail(), classroomId);	
 	}
 	
-	
 	/**
 	 * Returns true if student is in current seminar, false otherwise
 	 * @param student
 	 * @return
 	 */
 	public boolean seminarContainsStudent(Person student){
-		//TODO
-		return false;	
+		return seminarDB.studentExists(student.getPersonID(), getSeminarId());
 	}
-	
 	
 	@Override
 	public int hashCode() {
