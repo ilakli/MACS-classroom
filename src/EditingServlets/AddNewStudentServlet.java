@@ -34,8 +34,13 @@ public class AddNewStudentServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("Came fuckin hre");
+		
 		String email = request.getParameter("email");
-	
+		
+		System.out.println("Paarm = " + email);
+		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
@@ -43,12 +48,13 @@ public class AddNewStudentServlet extends HttpServlet {
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
 		
-		String emails[] = email.split("\\s"); 
+		String emails[] = email.split("\\s+"); 
 		
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
 		for(String e:emails){  
+			
 			Person p = PersonGeneratorDummy.createPersonByEmail(e);
 			
 			if(currentClassroom.classroomAddStudent(e)) {
