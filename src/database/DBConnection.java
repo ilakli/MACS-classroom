@@ -46,17 +46,13 @@ public class DBConnection {
 	 * @return new Connection
 	 */
 	public Connection getConnection() {
-
-		Connection currentConnection = null;
-
 		try {
-			currentConnection = dataSource.getConnection();
-		} catch (SQLException e) {
-			System.out.println("getConnection is about to return null!!!");
+			Class.forName(DBinfo.JDBC_DRIVER);
+			return DriverManager.getConnection(DBinfo.MYSQL_DATABASE_SERVER, DBinfo.MYSQL_USERNAME, DBinfo.MYSQL_PASSWORD);
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-
-		return currentConnection;
 	}
 
 	/**
@@ -146,7 +142,8 @@ public class DBConnection {
 		public void closeConnection() {
 			try {
 				con.close();
-			} catch (SQLException e) {
+			} catch (SQLException | NullPointerException e) {
+				e.printStackTrace();
 			}
 		}
 
