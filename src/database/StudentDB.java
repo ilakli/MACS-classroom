@@ -40,10 +40,10 @@ public class StudentDB {
 	 * @param seminarId
 	 * @return students of current seminar of given classroom
 	 */
-	public ArrayList<Person> getSeminarStudents(String classroomId, String seminarId) {
+	public ArrayList<Person> getSeminarStudents(String seminarId) {
 		String query = String.format(
-				"select * from `student-seminar` where `classroom_id` = %s and `seminar_id` = %s;", 
-				classroomId, seminarId);
+				"select * from `student-seminar` where `seminar_id` = %s;", seminarId);
+		
 		ArrayList<Person> students = personDB.getPersons(query);
 		return students;
 	}
