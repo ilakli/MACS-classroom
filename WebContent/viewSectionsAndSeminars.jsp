@@ -113,7 +113,7 @@
                 
                 String seminaristName = "Seminarist Is Not Added Yet";
                	Person p = seminar.getSeminarist();
-                if(p!= null) seminaristName = p.getName();
+                if(p!= null) seminaristName = p.getName() + " " + p.getSurname();
                 
                 out.println("<p style = \" margin: 10px 10px;  \">" + seminaristName +"  </p> ");
                
@@ -122,9 +122,9 @@
                 
                 
                 List<Person> seminarStudents = seminar.getSeminarStudents();
-                
-                for (int i=0; i<seminarStudents.size(); i++){
-                	out.println("<li>"+ seminarStudents.get(i).getName() +"</li>");
+
+                for (Person student : seminarStudents){
+                	out.println("<li>"+ student.getName() + " " + student.getSurname()+"</li>");
                 }
 
 				out.println("</ul>");
@@ -150,8 +150,8 @@
 		        out.println("<hr>");
 		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
 		        
-		        for (int i=0; i<studentsWithoutSeminar.size(); i++){
-		        	out.println("<li>"+ studentsWithoutSeminar.get(i).getName() +"</li>");
+		        for (Person student : studentsWithoutSeminar){
+		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
@@ -189,8 +189,8 @@
                 out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
                 
                 List<Person> sectionStudents = section.getSectionStudents();
-                for (int i=0; i<sectionStudents.size(); i++){
-                	out.println("<li>"+ sectionStudents.get(i).getName() +"</li>");
+                for (Person student : sectionStudents){
+                	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
                 	
                 }
 
@@ -218,8 +218,8 @@
 		        out.println("<hr>");
 		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
 		        
-		        for (int i=0; i<studentsWithoutSection.size(); i++){
-		        	out.println("<li>"+ studentsWithoutSection.get(i).getName() +"</li>");
+		        for (Person student : studentsWithoutSection){
+		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
