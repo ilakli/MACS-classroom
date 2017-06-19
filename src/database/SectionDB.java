@@ -34,7 +34,33 @@ public class SectionDB {
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @param personId
+	 * @return
+	 */
+	public boolean containsStudent (String classroomId, String personId) {
+		String query = String.format("select * from `student-section` where `person_id` = %s and `classroom_id` = %s;", 
+				personId, classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return !db.isResultEmpty(myConnection);
+	}
 
+	/**
+	 * removes given person from section of given classroom
+	 * @param classroomId
+	 * @param personId
+	 * @return
+	 */
+	public boolean removeStudent(String classroomId, String personId) {
+		String query = String.format("delete * from `student-section` where `classroom_id` = %s and `person_id` = %s;", 
+				classroomId, personId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
+	
 	/**
 	 * 
 	 * @param sectionN
@@ -68,7 +94,7 @@ public class SectionDB {
 	public boolean addStudentToSection(int sectionN, String studentEmail, String classroomId) {
 		String sectionId = getSectionId(sectionN, classroomId);
 		String personId = personDB.getPersonId(studentEmail);
-		if (sectionId.equals("")) {			
+		if (sectionId.equals("")) {
 			return false;
 		}
 		if (personId.equals("")) {
@@ -173,7 +199,6 @@ public class SectionDB {
 
 		return sections;
 	}
-	
 	
 	/**
 	 * returns section that contains smallest number of students

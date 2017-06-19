@@ -290,7 +290,7 @@ public class TestDBConnection {
 		assertTrue(sc.addSectionLeaderToSection(2, "test9per2@gmail.com", classroomId));
 		assertFalse(sc.addSectionLeaderToSection(123, "test9per3@gmail.com", classroomId));
 		assertFalse(sc.addSectionLeaderToSection(3, "test9per3@gmail.com", classroomId));
-		assertTrue(sc.addSectionLeaderToSection(2, "test9per3@gmail.com", classroomId));
+		assertFalse(sc.addSectionLeaderToSection(2, "test9per3@gmail.com", classroomId));
 	}
 
 	@Test

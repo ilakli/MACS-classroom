@@ -26,6 +26,17 @@ public class SectionLeaderDB {
 		ArrayList<Person> sectionLeaders = personDB.getPersons(query);
 		return sectionLeaders;
 	}
+	
+	/**
+	 * 
+	 * @param sectionId
+	 * @return section leaders of given section
+	 */
+	public Person getSectionLeader(String sectionId) {
+		String query = String.format("select * from `section-section_leader` where `section_id` = %s;", sectionId);
+		ArrayList <Person> sectionLeaders = personDB.getPersons(query);
+		return sectionLeaders.isEmpty() ? null : sectionLeaders.get(0);
+	}
 
 	/**
 	 * checks if section leader with given email exists in given classroom

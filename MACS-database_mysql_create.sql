@@ -115,8 +115,8 @@ CREATE TABLE `sections` (
 CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    `seminar_n`INT NOT NULL,
-  
+   `seminar_n` INT NOT NULL,
+
 	PRIMARY KEY (`seminar_id`, `classroom_id`),
 	UNIQUE KEY `seminars_uk0` (`seminar_n`, `classroom_id`),
 	CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)

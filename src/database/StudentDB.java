@@ -27,6 +27,26 @@ public class StudentDB {
 		ArrayList<Person> students = personDB.getPersons(query);
 		return students;
 	}
+	
+	public ArrayList <Person> getSectionStudents (String sectionId) {
+		String query = String.format("select * from `student-section` where `section_id` = %s;", sectionId);
+		ArrayList <Person> students = personDB.getPersons(query);
+		return students;
+	}
+
+	/**
+	 * 
+	 * @param classroomId
+	 * @param seminarId
+	 * @return students of current seminar of given classroom
+	 */
+	public ArrayList<Person> getSeminarStudents(String classroomId, String seminarId) {
+		String query = String.format(
+				"select * from `student-seminar` where `classroom_id` = %s and `seminar_id` = %s;", 
+				classroomId, seminarId);
+		ArrayList<Person> students = personDB.getPersons(query);
+		return students;
+	}
 
 	/**
 	 * checks if student with given email exists in given classroom
