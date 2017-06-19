@@ -20,6 +20,11 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
 <title>Edit</title>
+<style>
+	li {
+		display: table;
+	}
+</style>
 </head>
 <body>
 	<%
@@ -137,15 +142,18 @@
 			<ul class='group-quick-edit'>
 				<li>
 					<!-- deletes person from the classroom -->
-					<form
-					action=<%="DeletePersonServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
-					method="post">
+					
+					
 					<h4>Delete person by Email:</h4>
 					<p>Enter Email address of the person you want to delete from this
 						classroom</p>
 			
-					<input type="text" name="email" placeholder="Email"> <input
-						type="submit" value="Delete">
+					<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								<button class="personAddButton btn btn-success"> Submit </button>
+  								<input type="hidden" value="DeletePersonServlet">
+  								<input type="hidden" value = <%= classroomID %> >
+							</div>
 			
 					<%
 						if (status != null) {
@@ -156,7 +164,7 @@
 						}
 					%>
 					
-				</form>
+				
 	
 				</li>
 				
@@ -186,14 +194,16 @@
 
 				<li>
 					<!-- adds new lecturer to the class -->
-					<form
-						action=<%="AddNewLecturerServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
-						method="post">
+					
 						<h4>Add New Lecturer:</h4>
 						<p>Enter Email address, name and surname of the lecturer</p>
 
-						<input type="text" name="email" placeholder="Email">
-						<input type="submit" value="Add">
+						<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								<button class="personAddButton btn btn-success"> Submit </button>
+  								<input type="hidden" value="AddNewLecturerServlet">
+  								<input type="hidden" value = <%= classroomID %> >
+							</div>
 
 						<%
 							if (status != null) {
@@ -205,7 +215,6 @@
 						%>
 
 						
-					</form>
 				</li>
 				
 				
@@ -234,14 +243,17 @@
 				<li> 
 				
 					<!-- adds new seminarist to the class -->
-					<form
-						action=<%="AddNewSeminaristServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
-						method="post">
+					
+						
 						<h4>Add New Seminarist:</h4>
 						<p>Enter Email address, name and surname of the seminarist</p>
 				
-						<input type="text" name="email" placeholder="Email"> 
-						<input type="submit" value="Add">
+						<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								<button class="personAddButton btn btn-success"> Submit </button>
+  								<input type="hidden" value="AddNewSeminaristServlet">
+  								<input type="hidden" value = <%= classroomID %> >
+							</div>
 				
 						<%
 							if (status != null) {
@@ -253,7 +265,7 @@
 						%>
 						
 						
-					</form>
+					
 					
 				</li>
 				
@@ -283,14 +295,17 @@
 				<li>
 				
 					<!-- adds new section leader to the class -->
-					<form
-						action=<%="AddNewSectionLeaderServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
-						method="post">
+					
+						
 						<h4>Add New Section Leader:</h4>
 						<p>Enter Email address, name and surname of the section leader</p>
-				
-						 <input type="text" name="email" placeholder="Email"> 
-						 <input type="submit" value="Add">
+						
+						<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								<button class="personAddButton btn btn-success"> Submit </button>
+  								<input type="hidden" value="AddNewSectionLeaderServlet">
+  								<input type="hidden" value = <%= classroomID %> >
+							</div>
 				
 						<%
 							if (status != null) {
@@ -301,7 +316,6 @@
 							}
 						%>
 				
-					</form>
 				
 				</li>
 				
@@ -328,14 +342,17 @@
 			
 				<li>
 						<!-- adds new student to the class -->
-						<form
-							action=<%="AddNewStudentServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
-							method="post">
+						
+							
 							<h4>Add New Student:</h4>
 							<p>Enter Email address, name and surname of the student</p>
 							
-							<input type="text" name="email" placeholder="Email"> 
-							<input type="submit" value="Add">
+							<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								<button class="personAddButton btn btn-success"> Submit </button>
+  								<input type="hidden" value="AddNewStudentServlet">
+  								<input type="hidden" value = <%= classroomID %> >
+							</div>
 					
 							<%
 								if (status != null) {
@@ -347,7 +364,7 @@
 							%>
 					
 							
-						</form>
+						
 				
 				</li>
 				
@@ -625,7 +642,7 @@
 
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/formationJS.js'></script>
-
+	<script type="text/javascript" src='js/multiInput.js'></script>
 
 
 

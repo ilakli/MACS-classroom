@@ -20,6 +20,9 @@
 
 <link rel="stylesheet" href="css/comments.css" type="text/css">
 <title>Stream</title>
+<style>
+
+</style>
 </head>
 <body>
 	<%
@@ -55,8 +58,10 @@
 		</ul>
 	</div>
 	</nav>
-
+	
+	
 	<button type="button" class="w3-button w3-teal" id="myBtn">Add Post</button>
+
 
 	<div id="myModal" class="modal">
 
@@ -74,7 +79,7 @@
 							name="postText"></textarea>
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 							value=<%=classroomId%>>
-						<button type="submit" class="btn btn-success" id="myBtn">Add
+						<button type="submit" class="btn btn-success">Add
 						</button>
 					</form>
 				</div>
