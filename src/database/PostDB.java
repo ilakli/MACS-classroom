@@ -35,15 +35,19 @@ public class PostDB {
 		String query = String.format("select * from `classroom_posts` where `classroom_id` = %s;", classroomId);
 
 		MyConnection myConnection = db.getMyConnection(query);
-		ResultSet rs = myConnection.executeQuery();
 		ArrayList<Post> posts = new ArrayList<Post>();
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
 				posts.add(new Post(rs.getString(1), rs.getString(2),rs.getString(3), rs.getString(4)));
 			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 
 		return posts;

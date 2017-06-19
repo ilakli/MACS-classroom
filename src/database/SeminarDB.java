@@ -101,14 +101,17 @@ public class SeminarDB {
 				"select `seminar_id` from `seminars` where `seminar_n` = %s and `classroom_id` = %s;", seminarN,
 				classroomId);
 		MyConnection myConnection = db.getMyConnection(query);
-		ResultSet rs = myConnection.executeQuery();
 		String seminarId = "";
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			if (rs != null && rs.next())
 				seminarId = rs.getString(1);
 		} catch (SQLException e) {
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
-		myConnection.closeConnection();
 		return seminarId;
 	}
 	
@@ -189,18 +192,21 @@ public class SeminarDB {
 	 */
 	public ArrayList<Seminar> getSeminars(String classroomId) {
 		String query = String.format("select * from seminars where `classroom_id`=%s;", classroomId);
-		System.out.println(query);
 		ArrayList<Seminar> seminars = new ArrayList<Seminar>();
-		ResultSet rs = db.getResultSet(query);
-
+		MyConnection myConnection = db.getMyConnection(query);
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				seminars.add(new Seminar( rs.getInt("seminar_n"), classroomId));
+				seminars.add(new Seminar(rs.getInt("seminar_n"), classroomId));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
-
+		
 		return seminars;
 	}
 	

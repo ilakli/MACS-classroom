@@ -40,15 +40,18 @@ public class CommentDB {
 		String query = String.format("select * from `post_comments` where post_id = %s;", postID);
 		
 		MyConnection myConnection = db.getMyConnection(query);
-		ResultSet rs = myConnection.executeQuery();
-		
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()){
 				Comment comment = new Comment(rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4));
 				comments.add(comment);
 			}
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		
 		return comments;

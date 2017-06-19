@@ -82,7 +82,6 @@ public class ClassroomDB {
 		ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
 		String classroomsQuery = "select * from classrooms;";
 		MyConnection stmnt = db.getMyConnection(classroomsQuery);
-
 		try {
 			ResultSet classroomsTable = stmnt.executeQuery();
 			while (classroomsTable.next()) {
@@ -93,6 +92,10 @@ public class ClassroomDB {
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (stmnt != null) {				
+				stmnt.closeConnection();
+			}
 		}
 
 		return classrooms;
@@ -107,7 +110,6 @@ public class ClassroomDB {
 		String sqlCode = String.format("update `classrooms` set classroom_section_auto_distribution = %s"
 				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
 		
-		
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
@@ -121,11 +123,9 @@ public class ClassroomDB {
 		String sqlCode = String.format("update `classrooms` set classroom_seminar_auto_distribution = %s"
 				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
 		
-		
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
-	
 	
 	/**
 	 * returns if classroom with given ID is auto distributed to seminars
@@ -134,15 +134,21 @@ public class ClassroomDB {
 	public boolean getClassroomSeminarDistribution(String classroomID) {
 		String sqlCode = "select classroom_seminar_auto_distribution from classrooms "
 				+ "where classroom_id = " + classroomID + ";";
-		
-		ResultSet rs = db.getResultSet(sqlCode);
+		MyConnection myConnection = db.getMyConnection(sqlCode);
+		boolean result;
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			rs.next();
-			return rs.getBoolean(1);
-		} catch (SQLException e) {
+			result = rs.getBoolean(1);
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
-			return false;
+			result = false;
+		} finally {
+			if (myConnection != null) {				
+				myConnection.closeConnection();
+			}
 		}
+		return result;
 	}
 	
 	/**
@@ -152,16 +158,21 @@ public class ClassroomDB {
 	public boolean getClassroomSectionDistribution(String classroomID) {
 		String sqlCode = "select classroom_section_auto_distribution from classrooms "
 				+ "where classroom_id = " + classroomID + ";";
-		
-		ResultSet rs = db.getResultSet(sqlCode);
-		
+		MyConnection myConnection = db.getMyConnection(sqlCode);
+		boolean result;
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			rs.next();
-			return rs.getBoolean(1);
-		} catch (SQLException e) {
+			result = rs.getBoolean(1);
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
-			return false;
+			result = false;
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
+		return result;
 	}
 
 	/**
@@ -170,9 +181,9 @@ public class ClassroomDB {
 	 * @param newValue - new value
 	 */
 	public void setClassroomsNumberOfReschedulings(String classroomID, int newValue) {
-		String sqlCode = String.format("update `classrooms` set classroom_reschedulings_num = %s"
-				+ " where classroom_id = %s", newValue, classroomID);
-		
+		String sqlCode = String.format(
+				"update `classrooms` set classroom_reschedulings_num = %s where classroom_id = %s", 
+				newValue, classroomID);
 		
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
@@ -185,15 +196,21 @@ public class ClassroomDB {
 	public int getClassroomsNumberOfReshcedulings(String classroomID) {
 		String sqlCode = "select classroom_reschedulings_num from classrooms "
 				+ "where classroom_id = " + classroomID + ";";
-		
-		ResultSet rs = db.getResultSet(sqlCode);
+		MyConnection myConnection = db.getMyConnection(sqlCode);
+		int result;
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
+			result = rs.getInt(1);
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
-			return 0;
+			result = 0;
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
+		return result;
 	}
 	
 	/**
@@ -204,7 +221,6 @@ public class ClassroomDB {
 	public void setClassroomsReschedulingLength(String classroomID, int newValue) {
 		String sqlCode = String.format("update `classrooms` set classroom_reschedulings_length = %s"
 				+ " where classroom_id = %s", newValue, classroomID);
-		
 		
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
@@ -218,13 +234,20 @@ public class ClassroomDB {
 		String sqlCode = "select classroom_reschedulings_length from classrooms "
 				+ "where classroom_id = " + classroomID + ";";
 		
-		ResultSet rs = db.getResultSet(sqlCode);
+		MyConnection myConnection = db.getMyConnection(sqlCode);
+		int result;
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			rs.next();
-			return rs.getInt(1);
-		} catch (SQLException e) {
+			result = rs.getInt(1);
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
-			return 0;
+			result = 0;
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
+		return result;
 	}
 }

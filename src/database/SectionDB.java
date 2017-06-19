@@ -72,12 +72,16 @@ public class SectionDB {
 				"select `section_id` from `sections` where `classroom_id` = %s and `section_n` = %s;", classroomId,
 				sectionN);
 		MyConnection myConnection = db.getMyConnection(query);
-		ResultSet rs = myConnection.executeQuery();
 		String sectionId = "";
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			if (rs != null && rs.next())
 				sectionId = rs.getString(1);
 		} catch (SQLException e) {
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		return sectionId;
 	}
@@ -188,13 +192,18 @@ public class SectionDB {
 	public ArrayList<Section> getSections(String classroomId) {
 		String query = "select * from sections where `classroom_id`=" + classroomId + ";";
 		ArrayList<Section> sections = new ArrayList<Section>();
-		ResultSet rs = db.getResultSet(query);
+		MyConnection myConnection = db.getMyConnection(query);
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
 				sections.add(new Section( rs.getInt("section_n"), classroomId));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 
 		return sections;

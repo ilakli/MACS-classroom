@@ -43,7 +43,6 @@ public class ChangeSettingsServlet extends HttpServlet {
 		String sectionDis = request.getParameter("disSSections");
 		String seminarDis = request.getParameter("disSeminars");
 		
-		
 		currentClassroom.setNumberOfSections(Integer.parseInt(numSections));
 		currentClassroom.setNumberOfSeminars(Integer.parseInt(numSeminars));
 		currentClassroom.setNumberOfReschedulings(Integer.parseInt(numResch));

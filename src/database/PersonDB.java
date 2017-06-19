@@ -135,6 +135,10 @@ public class PersonDB {
 				personId = rs.getString(1);
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
+		} finally { 
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
 		}
 		return personId;
 	}

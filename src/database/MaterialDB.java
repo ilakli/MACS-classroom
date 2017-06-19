@@ -47,15 +47,18 @@ public class MaterialDB {
 		String query = String.format("select * from `classroom_materials` where `classroom_id` = %s;", classroomId);
 
 		MyConnection myConnection = db.getMyConnection(query);
-		ResultSet rs = myConnection.executeQuery();
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
+			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
 				materials.add(new Material(rs.getString(1), rs.getString(2)));
 			}
-
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {				
+				myConnection.closeConnection();
+			}
 		}
 
 		return materials;

@@ -62,27 +62,6 @@ public class DBConnection {
 	/**
 	 * 
 	 * @param query
-	 *            -SQL query
-	 * @return returns ResultSet object of this query
-	 */
-	ResultSet getResultSet(String query) {
-
-		Connection con = getConnection();
-		ResultSet rs = null;
-
-		try {
-			PreparedStatement stmnt = con.prepareStatement(query);
-			rs = stmnt.executeQuery();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return rs;
-	}
-
-	/**
-	 * 
-	 * @param query
 	 *            that PreparedStatement needs to execute
 	 * @return MyConnection object which includes Connection and
 	 *         PreparedStatement
@@ -92,7 +71,7 @@ public class DBConnection {
 		PreparedStatement stmnt = null;
 		try {
 			stmnt = con.prepareStatement(query);
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 
