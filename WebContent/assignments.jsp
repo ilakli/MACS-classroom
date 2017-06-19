@@ -95,7 +95,7 @@
 			<div class="modal-body">
 
 				<div class="form-group">
-					<form action="AddNewAssignmentServlet" method="POST">
+					<form action="AddNewAssignmentServlet" enctype="multipart/form-data" method="POST">
 						
 						<h6> Title </h6>
 						
@@ -104,7 +104,7 @@
 							jsname="YPqjbf" 
 							data-rows="1" 
 						
-							name="assignmentName">
+							name="assignmentTitle">
 						</textarea>
 						
 						<h6> Instructions </h6>
@@ -112,36 +112,21 @@
 							class="form-control" 
 							rows="5" 
 							id="comment"
-							name="assignmentText">
+							name="assignmentInstructions">
 						</textarea>
 						
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 							value=<%=classroomId%>>
 						
-						<h6> Upload Files </h6>
-						<form action="UploadServlet" method="POST"
-							enctype="multipart/form-data">
-							<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
-								value=<%=classroomId%> id="classroomID" /> 
-							<input type="file" name="file" size="30" /> <br>
-							<input type="submit"/ class="btn btn-success"> 
-						</form>
+						<h6> Upload File </h6>
 						
-						<h6> Chosen Files </h6>
-						<%
-							ArrayList<Material> materials = currentClassroom.getMaterials();
-							for (int i = 0; i < materials.size(); i++) {
-								String materialName = materials.get(i).getMaterialName();
-								String htmlMaterial = generateMaterial(materialName);
-								out.print(htmlMaterial);
-							}
-						%>
+						<input type="file" name="file" size="30" />
 						
+						</br>
 						
-						
-						<button type="submit" class="btn btn-success" id="myBtn">Add
-						</button>
+						<input type="submit"/ value = "Submit" class="btn btn-success">
 					</form>
+					
 				</div>
 
 			</div>
@@ -150,6 +135,7 @@
 
 	
 	</div>
+	<!-- -------------------------------------------------------------------- -->
 	<%
 
 		ArrayList<Post> posts = connector.postDB.getPosts(classroomId);
@@ -170,7 +156,7 @@
 			String html = "<div class=\"panel-heading w3-teal\" >" + postAuthor + "</div> <div class=\"panel-body\">"
 					+ postText + "</div>";
 			out.println(html);
-			/*
+			
 			out.println("<ul class=\"list-group\">");
 			for (int j = 0; j < comments.size(); j++) {
 				String commentText = comments.get(j).getCommentText();
@@ -192,7 +178,7 @@
 					+ "\" >  <textarea class=\"comment-textarea\"> </textarea> <input type=\"submit\"class=\"w3-button w3-teal\" value=\"Add Comment\" ></form>";
 			out.println(commentForm);
 
-			*/
+			
 			out.println("</div>");
 		}
 		

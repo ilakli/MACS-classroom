@@ -66,6 +66,7 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		
 		filePath = request.getServletContext().getRealPath("/");
 		System.out.println(filePath + " Is the filepath");
 		String classroomId = "";
@@ -86,7 +87,7 @@ public class UploadServlet extends HttpServlet {
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			Iterator<FileItem> i = fileItems.iterator();
-
+			
 			for (FileItem item : fileItems) {
 
 				if (!item.isFormField()) {
@@ -107,7 +108,7 @@ public class UploadServlet extends HttpServlet {
 		} catch (Exception ex) {
 
 		}
-
+		
 		AllConnections connection = (AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 
