@@ -4,8 +4,12 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="database.AllConnections"%>
+<%@page import="WorkingServlets.DownloadServlet"%>
+<%@page import="defPackage.Material"%>
+
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -19,9 +23,27 @@
 <link rel="stylesheet" href="css/style.css">
 
 <link rel="stylesheet" href="css/comments.css" type="text/css">
-<title>Stream</title>
+<title>Assignments</title>
+
+
+
+
 </head>
 <body>
+
+
+	<%!private String generateMaterial(String materialName) {
+		System.out.println("Material Name is: " + materialName);
+
+		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href=\"DownloadServlet?"
+				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + materialName + "\">" + materialName
+				+ "</a></div> <div class=\"panel-footer\"></div> </div>";
+				
+		System.out.println(result);
+		return result;
+	}%>
+	
+
 	<%
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
@@ -42,7 +64,7 @@
 			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li class="active"><a
+			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Stream</a></li>
 			<li><a
 				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>About</a></li>
@@ -52,47 +74,86 @@
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
 			<li><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
-			<li><a
+			<li class="active"><a
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Assignments</a></li>
-				
-			<li><a
-				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>
-				Sections And Seminars</a></li>
 		</ul>
 	</div>
 	</nav>
 
-	<button type="button" class="w3-button w3-teal" id="myBtn">Add Post</button>
+	<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
 
 	<div id="myModal" class="modal">
 
 		<!-- Modal content -->
 		<div class="modal-content">
+			
 			<div class="modal-header">
 				<span class="close">&times;</span>
-				<h2>Add Post</h2>
+				<h2>Add New Assignment</h2>
 			</div>
+			
 			<div class="modal-body">
 
 				<div class="form-group">
-					<form action="PostServlet" method="POST">
-						<textarea class="form-control" rows="5" id="comment"
-							name="postText"></textarea>
+					<form action="AddNewAssignmentServlet" method="POST">
+						
+						<h6> Title </h6>
+						
+						<textarea 
+							class="form-control" 
+							jsname="YPqjbf" 
+							data-rows="1" 
+						
+							name="assignmentName">
+						</textarea>
+						
+						<h6> Instructions </h6>
+						<textarea 
+							class="form-control" 
+							rows="5" 
+							id="comment"
+							name="assignmentText">
+						</textarea>
+						
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 							value=<%=classroomId%>>
+						
+						<h6> Upload Files </h6>
+						<form action="UploadServlet" method="POST"
+							enctype="multipart/form-data">
+							<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
+								value=<%=classroomId%> id="classroomID" /> 
+							<input type="file" name="file" size="30" /> <br>
+							<input type="submit"/ class="btn btn-success"> 
+						</form>
+						
+						<h6> Chosen Files </h6>
+						<%
+							ArrayList<Material> materials = currentClassroom.getMaterials();
+							for (int i = 0; i < materials.size(); i++) {
+								String materialName = materials.get(i).getMaterialName();
+								String htmlMaterial = generateMaterial(materialName);
+								out.print(htmlMaterial);
+							}
+						%>
+						
+						
+						
 						<button type="submit" class="btn btn-success" id="myBtn">Add
 						</button>
 					</form>
 				</div>
 
 			</div>
+		
 		</div>
 
+	
 	</div>
 	<%
 
 		ArrayList<Post> posts = connector.postDB.getPosts(classroomId);
-		for (int i = 0; i < posts.size(); i++) {
+		for (int i = posts.size() - 1; i >= 0; i--) {
 
 
 			String postText = posts.get(i).getPostText();
@@ -109,6 +170,7 @@
 			String html = "<div class=\"panel-heading w3-teal\" >" + postAuthor + "</div> <div class=\"panel-body\">"
 					+ postText + "</div>";
 			out.println(html);
+			/*
 			out.println("<ul class=\"list-group\">");
 			for (int j = 0; j < comments.size(); j++) {
 				String commentText = comments.get(j).getCommentText();
@@ -130,6 +192,7 @@
 					+ "\" >  <textarea class=\"comment-textarea\"> </textarea> <input type=\"submit\"class=\"w3-button w3-teal\" value=\"Add Comment\" ></form>";
 			out.println(commentForm);
 
+			*/
 			out.println("</div>");
 		}
 		
@@ -138,5 +201,8 @@
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
+
+
+
 </body>
 </html>

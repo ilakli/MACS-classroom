@@ -186,11 +186,10 @@ ul {
 }
 
 .seminar-box {
-	background-color: #fcff80;
-	border: solid;
-	width: 31%;
-	max-width: 31%;
-	min-width: 25%;
+	background-color: #dfdae0;
+	width: 23%;
+	max-width: 23%;
+	min-width: 20%;
 	
 	
 	margin: 1%;
@@ -198,7 +197,7 @@ ul {
 }
 
 .seminar-boxes {
-	border: solid;
+
 	display: table;
 	max-width: 100%;
 	width: 95%;
