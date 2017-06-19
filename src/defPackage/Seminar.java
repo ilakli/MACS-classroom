@@ -72,7 +72,7 @@ public class Seminar {
 	 */
 	public List<Person> getSeminarStudents(){
 		String seminarId = getSeminarId();
-		return studentDB.getSeminarStudents(seminarId, seminarId);
+		return studentDB.getSeminarStudents(seminarId);
 	}
 	
 	/**

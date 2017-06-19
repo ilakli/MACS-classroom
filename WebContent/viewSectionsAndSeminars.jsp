@@ -122,6 +122,7 @@
                 
                 
                 List<Person> seminarStudents = seminar.getSeminarStudents();
+                
                 for (int i=0; i<seminarStudents.size(); i++){
                 	out.println("<li>"+ seminarStudents.get(i).getName() +"</li>");
                 }
