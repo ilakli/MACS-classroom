@@ -28,6 +28,9 @@ $(document).ready(function() {
 		
 		var classId = $(this).next().next().val();
 		
+		$(this).parent().find("span").remove();
+		
+		var ul = $(this).parent().parent().parent();
 		
 		
 		$.ajax({
@@ -38,7 +41,27 @@ $(document).ready(function() {
 				classroomID: classId
 			},
 			success : function(result) {
+				if(ul.children().last().text() === "Empty"){
+					ul.children().last().remove();
+				}
 				
+				while(true){
+					var index = str.indexOf(" ");
+					if(index == -1){
+						break;
+					}
+					
+					var currentString = str.substr(0,index);
+
+					ul.append("<li>" + currentString + "</li>");
+					
+					str = str.substr(index+1);
+						
+					if(str === " "){
+						break;
+					}
+					
+				}
 			}
 		});
 
