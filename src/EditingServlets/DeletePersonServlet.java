@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 import defPackage.Classroom;
+
 import database.AllConnections;;
 
 /**
@@ -49,24 +51,36 @@ public class DeletePersonServlet extends HttpServlet {
 		
 		Classroom classroom = connection.classroomDB.getClassroom(classroomId);
 		
-		if(classroom.classroomDeleteLecturer(email) || classroom.classroomDeleteSectionLeader(email)
-				|| classroom.classroomDeleteSeminarist(email) || classroom.classroomDeleteStudent(email)){
-			
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.DEL_PERSON_ACC);	
-						 
-		view.forward(request, response);   
+		String emails[] = email.split("\\s+"); 
 		
-		System.out.println("deleted person: " + email + " class with id: " + classroomId);
-		}	else {
+		boolean status = true;
+		if(emails.length == 0) status = false;
+		
+		for(String e:emails){  
+			
+			if(classroom.classroomDeleteLecturer(e) || classroom.classroomDeleteSectionLeader(e)
+					|| classroom.classroomDeleteSeminarist(e) || classroom.classroomDeleteStudent(e)) {
+				System.out.println("Deleted person: "  + " " + e + " to class with id: " + classroomId);
+			}
+			else {
+				status = false;
+				
+				System.out.println("Person didn't exist IN This Classroom: " + " " + e + "    class with id: " + classroomId);
+			}
+		}  
+		
+		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-						+ EditStatusConstants.DEL_PERSON_REJ);	
-							 
+				+ EditStatusConstants.DEL_PERSON_ACC);	
+						 
 			view.forward(request, response);   
-			
-			System.out.println("Didn't Existed IN This Classroom: "  + email + "    class with id: " + classroomId);
+		} else {
+			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
+				+ EditStatusConstants.DEL_PERSON_REJ);	
+						 
+			view.forward(request, response);   
+		
 		}
-			
 		
 		
 		

@@ -48,27 +48,44 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId);
-		Person student = connection.personDB.getPersonByEmail(studentEmail);
-		if(connection.seminarDB.seminarExists(seminarN, classroomId)
-				&& connection.studentDB.studentExists(studentEmail, classroomId)
-				&& currentSeminar.addStudentToSeminar(student)) {
+		
+String emails[] = studentEmail.split("\\s+"); 
+		
+		boolean status = true;
+		if(emails.length == 0) status = false;
+		
+		for(String e:emails){  
+			
+			Person student = connection.personDB.getPersonByEmail(e);
+			
+			if(connection.seminarDB.seminarExists(seminarN, classroomId)  
+					&& connection.studentDB.studentExists(e, classroomId)
+					&& currentSeminar.addStudentToSeminar(student)) {
+				
+				System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + e + 
+					" to class with id: " + classroomId);
+			}
+			else {
+				status =  false;
+					
+				System.out.println("Didn't add Student to Section: " + currentSeminar.getSeminarN() + " " + e + 
+						" to class with id: " + classroomId);
+			}
+		} 
+		
+		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
-				" to class with id: " + classroomId);
-		}
-		else {
+							 
+			view.forward(request, response);     
+		} else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_REJ);	
-						 
+					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_REJ);	
+							 
 			view.forward(request, response);  
-			
-			System.out.println("Didn't add Student to Seminar: " + currentSeminar.getSeminarN() + " " + studentEmail + 
-				" to class with id: " + classroomId);
-	
 		}
+	
+		
 	}
 
 }
