@@ -1,7 +1,8 @@
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
-<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="defPackage.Classroom"%>
+<%@page import="defPackage.Assignment"%>
 <%@page import="database.DBConnection"%>
 <%@page import="database.AllConnections"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -16,6 +17,21 @@
 <title>About</title>
 </head>
 <body>
+<%!private String generateAssignmentHTML(Assignment a) {
+		
+		String result = "<div class=\"panel panel-default\"> " + 
+						" <div class=\"panel-body\"> " + 
+						"<h1>" + a.getTitle() + "</h1>" + 
+						"<p> " + a.getInstructions() + "</p>" +
+						" <a href=\"DownloadServlet?"
+						+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + a.getName() + "\">" + a.getName() + "</a></div>"
+						
+						+ " <div class=\"panel-footer\"></div> " 
+								
+						+ "</div>";
+		
+		return result;
+	}%>
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
 
@@ -28,9 +44,9 @@
 	}%>
 	<%
 		System.out.println("Already Here");
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 	%>
 
 	<div class="jumbotron">
@@ -45,15 +61,15 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li><a
-				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Stream</a></li>
+				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			<li class="active"><a
-				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>About</a></li>
+				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>
 			<li><a
-				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Formation</a></li>
+				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Formation</a></li>
 			<li><a
-				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
+				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
 			<li><a
-				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
 		</ul>
 	</div>
 	</nav>
@@ -64,13 +80,24 @@
 	<form action="UploadServlet" method="POST"
 		enctype="multipart/form-data">
 		<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
-			value=<%=classroomId%> id="classroomID" /> <input type="file"
+			value=<%=classroomID%> id="classroomID" /> <input type="file"
 			name="file" size="30" /> <input type="submit"
 			/ class="btn btn-success">
 	</form>
-
+	
 	<%
-		ArrayList<Material> materials = currentClassroom.getMaterials();
+		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
+		
+		for (Assignment a : assignments) {
+			String htmlCode = generateAssignmentHTML(a);
+			out.println(htmlCode);
+		}
+	%>
+	
+	</br></br></br></br></br></br>
+	
+	<%
+		List<Material> materials = currentClassroom.getMaterials();
 		for (int i = 0; i < materials.size(); i++) {
 			String materialName = materials.get(i).getMaterialName();
 			String htmlMaterial = generateMaterial(materialName);

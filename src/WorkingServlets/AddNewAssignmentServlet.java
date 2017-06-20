@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 
 import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
@@ -28,22 +29,16 @@ import defPackage.Classroom;
 public class AddNewAssignmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private String filePath;
+	private String filePath = "";
 	private int maxFileSize = 800 * 1024;
 	private int maxMemSize = 500 * 1024;
 	private File file;
 	
-	
-	public void init(ServletConfig config) {
-		// Get the file location where it would be stored.
-		filePath = "";
-	}
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		String assignmentTitle = request.getParameter("assignmentTitle");
-		String assignmentInstructions = request.getParameter("assignmentInstructions");
-		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		String classroomID = "";
+		String assignmentTitle = "";
+		String assignmentInstructions = "";
+		
 		filePath = request.getServletContext().getRealPath("/");
 		
 		System.out.println(filePath + " Is the filepath");
@@ -75,15 +70,27 @@ public class AddNewAssignmentServlet extends HttpServlet {
 					}
 					item.write(file);
 				} else {
-					//?classroomId = item.getString();
+					String fieldName = item.getFieldName();
+					
+					if (fieldName.equals("classroomID")){
+						classroomID = item.getString();
+					} else if (fieldName.equals("assignmentTitle")){
+						assignmentTitle = item.getString();
+					} else if (fieldName.equals("assignmentInstructions")){
+						assignmentInstructions = item.getString();
+					}
 				}
 			}
 
 		} catch (Exception ex) {}
 		
-		doGet(request, response);
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+		
+		connection.assignmentDB.addAssignment(classroomID, fileName, assignmentTitle, assignmentInstructions);
+		
 		//connection.postDB.addPost(classroomId, personId, postText);
-		//response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

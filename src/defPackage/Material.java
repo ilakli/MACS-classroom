@@ -3,6 +3,7 @@ package defPackage;
 public class Material {
 	private String materialName;
 	private String classroomId;
+	
 	public Material(String classroomId, String materialName){
 		this.materialName = materialName;
 		this.classroomId = classroomId;
@@ -46,5 +47,6 @@ public class Material {
 			return false;
 		return true;
 	}
+	
 	
 }
