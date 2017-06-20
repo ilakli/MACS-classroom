@@ -15,6 +15,8 @@ DROP TABLE IF EXISTS `classroom_students`;
 DROP TABLE IF EXISTS `classroom_section_leaders`;
 DROP TABLE IF EXISTS `classroom_seminarists`;
 DROP TABLE IF EXISTS `classroom_lecturers`;
+DROP TABLE IF EXISTS `classroom_materials`;
+DROP TABLE IF EXISTS `classroom_assignments`;
 DROP TABLE IF EXISTS `classrooms`;
 DROP TABLE IF EXISTS `persons`;
 
@@ -57,6 +59,15 @@ CREATE TABLE `post_comments` (
 	PRIMARY KEY (`comment_id`),
 	CONSTRAINT `post_comments_fk0` FOREIGN KEY (`post_id`) REFERENCES `classroom_posts`(`post_id`),
 	CONSTRAINT `post_comments_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+);
+
+CREATE TABLE `classroom_assignments` (
+	`classroom_id` INT NOT NULL,
+	`assignment_name` varchar(100) NOT NULL,
+	`assignment_title` TEXT NOT NULL,
+	`assignment_instructions` TEXT NOT NULL,
+	PRIMARY KEY (`classroom_id`,`assignment_name`),
+	CONSTRAINT `classroom_assignments_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
 CREATE TABLE `classroom_materials` (

@@ -29,11 +29,11 @@
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-		List<Person> lecturers = connector.lecturerDB.getLecturers(classroomID);
-		List<Person> seminarists = connector.seminaristDB.getSeminarists(classroomID);
-		List<Person> sectionLeaders = connector.sectionLeaderDB.getSectionLeaders(classroomID);
-		List<Person> students = connector.studentDB.getStudents(classroomID);
-		System.out.println("roles downloaded successfully!");
+		//List<Person> lecturers = connector.lecturerDB.getLecturers(classroomID);
+		//List<Person> seminarists = connector.seminaristDB.getSeminarists(classroomID);
+		//List<Person> sectionLeaders = connector.sectionLeaderDB.getSectionLeaders(classroomID);
+		//List<Person> students = connector.studentDB.getStudents(classroomID);
+		//System.out.println("roles downloaded successfully!");
 
 		
 		
@@ -112,37 +112,26 @@
                 out.println("<hr>");
                 
                 String seminaristName = "Seminarist Is Not Added Yet";
-                
-              
-              
                	Person p = seminar.getSeminarist();
-                if(p!= null) seminaristName = p.getName();
+                if(p!= null) seminaristName = p.getName() + " " + p.getSurname();
                 
-                out.println("<p style = \" margin: 10px 10px;  \">" +seminaristName +"  </p> ");
+                out.println("<p style = \" margin: 10px 10px;  \">" + seminaristName +"  </p> ");
                
                 out.println("<hr>");
                 out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
                 
                 
                 List<Person> seminarStudents = seminar.getSeminarStudents();
-                for (int i=1; i<=seminarStudents.size(); i++){
-                	out.println("<li>"+ seminarStudents.get(i).getName() +"</li>");
-                	
+
+                for (Person student : seminarStudents){
+                	out.println("<li>"+ student.getName() + " " + student.getSurname()+"</li>");
                 }
 
 				out.println("</ul>");
                    
 				out.println("</div>");
                 
-                /*
-                for (int i=1; i<=seminar.hashCode()%15; i++)
-                out.println("<li>student1</li>");
-                out.println("<li>student2</li>");
-                out.println("<li>student3</li>");
-                out.println("</ul>");
-               
-                out.println("</div>");
-                */
+
             }
         
         	
@@ -156,13 +145,13 @@
 		        out.println("<hr>");
 		        
 		        
-		      //  out.println("<p style = \" margin: 10px 10px;  \">" +seminaristName +"  </p> ");
+		        out.println("<p style = \" margin: 10px 10px;  \">  </p> ");
 		       
 		        out.println("<hr>");
 		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
 		        
-		        for (int i=1; i<=studentsWithoutSeminar.size(); i++){
-		        	out.println("<li>"+ studentsWithoutSeminar.get(i).getName() +"</li>");
+		        for (Person student : studentsWithoutSeminar){
+		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
@@ -181,6 +170,7 @@
 	<div class='seminar-boxes'>
     <h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
         <%
+        	
             for(Section section : sections){
                 out.println("<div class='seminar-box'");  
                 out.println("style = \" color: white;\">");
@@ -199,8 +189,8 @@
                 out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
                 
                 List<Person> sectionStudents = section.getSectionStudents();
-                for (int i=1; i<=sectionStudents.size(); i++){
-                	out.println("<li>"+ sectionStudents.get(i).getName() +"</li>");
+                for (Person student : sectionStudents){
+                	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
                 	
                 }
 
@@ -209,16 +199,9 @@
 				out.println("</div>");
                 
                 
-                /*
-                for (int i=1; i<=section.hashCode()%15; i++)
-                out.println("<li>student1</li>");
-                out.println("<li>student2</li>");
-                out.println("<li>student3</li>");
-                out.println("</ul>");
-               
-                out.println("</div>");
                 
-                */
+                
+                
             }
         
         
@@ -230,19 +213,20 @@
 		        out.println("<hr>");
 		        
 		        
-		      //  out.println("<p style = \" margin: 10px 10px;  \">" +seminaristName +"  </p> ");
+		        out.println("<p style = \" margin: 10px 10px;  \">   </p> ");
 		       
 		        out.println("<hr>");
 		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
 		        
-		        for (int i=1; i<=studentsWithoutSection.size(); i++){
-		        	out.println("<li>"+ studentsWithoutSection.get(i).getName() +"</li>");
+		        for (Person student : studentsWithoutSection){
+		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
 				out.println("</ul>");
 		           
 				out.println("</div>");
+				
         %>
     </div>
 	

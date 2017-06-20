@@ -1,11 +1,21 @@
 package WorkingServlets;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 
 import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
@@ -18,35 +28,73 @@ import defPackage.Classroom;
 @WebServlet("/AddNewAssignmentServlet")
 public class AddNewAssignmentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AddNewAssignmentServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	
+	private String filePath = "";
+	private int maxFileSize = 800 * 1024;
+	private int maxMemSize = 500 * 1024;
+	private File file;
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		String assignmentText = request.getParameter("assignmentText");
+		String classroomID = "";
+		String assignmentTitle = "";
+		String assignmentInstructions = "";
 		
+		filePath = request.getServletContext().getRealPath("/");
+		
+		System.out.println(filePath + " Is the filepath");
+
+		if (!ServletFileUpload.isMultipartContent(request)){
+			return;
+		}
+		
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		factory.setSizeThreshold(maxMemSize);
+		factory.setRepository(new File("c:\\temp"));
+		
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setSizeMax(maxFileSize);
+		String fileName = "";
+		
+		try {
+			List<FileItem> fileItems = upload.parseRequest(request);
+			
+			for (FileItem item : fileItems) {
+
+				if (!item.isFormField()) {
+					fileName = item.getName();
+
+					if (fileName.lastIndexOf("\\") >= 0) {
+						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
+					} else {
+						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+					}
+					item.write(file);
+				} else {
+					String fieldName = item.getFieldName();
+					
+					if (fieldName.equals("classroomID")){
+						classroomID = item.getString();
+					} else if (fieldName.equals("assignmentTitle")){
+						assignmentTitle = item.getString();
+					} else if (fieldName.equals("assignmentInstructions")){
+						assignmentInstructions = item.getString();
+					}
+				}
+			}
+
+		} catch (Exception ex) {}
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+		
+		connection.assignmentDB.addAssignment(classroomID, fileName, assignmentTitle, assignmentInstructions);
 		
 		//connection.postDB.addPost(classroomId, personId, postText);
-		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 }

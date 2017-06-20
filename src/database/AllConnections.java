@@ -12,6 +12,8 @@ public class AllConnections {
 	public SeminarDB seminarDB;
 	public SeminaristDB seminaristDB;
 	public StudentDB studentDB;
+	public AssignmentDB assignmentDB;
+	
 	public AllConnections() {
 		classroomDB = new ClassroomDB();
 		commentDB = new CommentDB();
@@ -24,5 +26,6 @@ public class AllConnections {
 		seminarDB = new SeminarDB();
 		seminaristDB = new SeminaristDB();
 		studentDB = new StudentDB();
+		assignmentDB = new AssignmentDB();
 	}
 }
