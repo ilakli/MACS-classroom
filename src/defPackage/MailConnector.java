@@ -1,5 +1,7 @@
 package defPackage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -20,8 +22,8 @@ public class MailConnector {
 	private String d_uname = "macs"; //name of the sender
 	private String d_password = "itisnotwrong"; //password of the sender
 	private String d_host = "smtp.gmail.com";
-	private String d_port  = "8080";
-	private String m_to; //receiver email
+	private String d_port  = "465";
+	private List <String> m_to; //receiver email
 	private String m_subject; //subject of the mail
 	private String m_text;//text of the mail
 	
@@ -31,7 +33,7 @@ public class MailConnector {
 	 * @param subject - subject of the mail;
 	 * @param test - text of the mail;
 	 */
-	public MailConnector(String email_to, String subject, String test){
+	public MailConnector(List <String> email_to, String subject, String test){
 		this.m_to = email_to;
 		this.m_subject = subject;
 		this.m_text = test;
@@ -70,7 +72,8 @@ public class MailConnector {
 	    try {
 	        msg.setSubject(m_subject);
 	        msg.setFrom(new InternetAddress(d_email));
-	        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
+	        for(String mail : this.m_to)
+	        	msg.addRecipients(Message.RecipientType.TO, mail);
 	        msg.setText(m_text);
 
 	        Transport transport = session.getTransport("smtp");
@@ -100,8 +103,11 @@ public class MailConnector {
 	}
 	
 	public static void main(String[] args) {
+		ArrayList <String> mails = new ArrayList<String>(); 
+		mails.add("gitser15@freeuni.edu.ge");
+		mails.add("gkhos15@freeuni.edu.ge");
 		
-		new MailConnector("gitser15@freeuni.edu.ge", " amanac tu gaweda", " mere rara vqna").sendMail();
+		new MailConnector(mails, " amanac tu gaweda", " mere rara vqna").sendMail();
 		
 	}
 	
