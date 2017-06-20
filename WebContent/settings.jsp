@@ -32,9 +32,9 @@
 	}%>
 	<%
 		System.out.println("Already Here");
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 		
 		int numberOfSeminars = currentClassroom.getNumberOfSeminars();
 		boolean autoSeminarDistribution = currentClassroom.areSeminarsAudoDistributed();
@@ -56,15 +56,18 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li><a
-				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Stream</a></li>
+				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			<li><a
-				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>About</a></li>
+				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+				Sections And Seminars</a></li>
 			<li><a
-				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Formation</a></li>
+				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
 			<li><a
-				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
+				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
+			<li><a
+				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
 			<li class="active"><a
-				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
 		</ul>
 	</div>
 	</nav>
@@ -102,7 +105,7 @@
 			
 		}
 	</script>
-	<% response.setHeader(Classroom.ID_ATTRIBUTE_NAME, classroomId); %>
+	<% response.setHeader(Classroom.ID_ATTRIBUTE_NAME, classroomID); %>
 	<form name="frm" method="post" action= "ChangeSettingsServlet" 
 		  onSubmit="return validateForm()">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -141,7 +144,7 @@
 				<td height="50" ><input type="submit" name="save" value="Save"></td>
 			</tr>
 		</table>
-		<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME  %> value = <%= classroomId %>>  
+		<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME  %> value = <%= classroomID %>>  
 	</form>
 	
 </body>

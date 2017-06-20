@@ -20,12 +20,15 @@
 
 <link rel="stylesheet" href="css/comments.css" type="text/css">
 <title>Stream</title>
+<style>
+
+</style>
 </head>
 <body>
 	<%
-		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomId);
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 		
 		PersonDB personConnector = new PersonDB();
 		
@@ -43,26 +46,31 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li class="active"><a
-				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Stream</a></li>
+				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			<li><a
-				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>About</a></li>
-			<li><a
-				href=<%="formation.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Formation</a></li>
-			<li><a
-				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Edit</a></li>
-			<li><a
-				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Settings</a></li>
-			<li><a
-				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>Assignments</a></li>
-				
-			<li><a
-				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId%>>
+				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
+			<li><a
+				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
+			<li><a
+				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
+			<li><a
+				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
+			<li><a
+				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
+			
+				
+			
+				
+
+
 		</ul>
 	</div>
 	</nav>
-
+	
+	
 	<button type="button" class="w3-button w3-teal" id="myBtn">Add Post</button>
+
 
 	<div id="myModal" class="modal">
 
@@ -79,8 +87,8 @@
 						<textarea class="form-control" rows="5" id="comment"
 							name="postText"></textarea>
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
-							value=<%=classroomId%>>
-						<button type="submit" class="btn btn-success" id="myBtn">Add
+							value=<%=classroomID%>>
+						<button type="submit" class="btn btn-success">Add
 						</button>
 					</form>
 				</div>
@@ -91,7 +99,7 @@
 	</div>
 	<%
 
-		ArrayList<Post> posts = connector.postDB.getPosts(classroomId);
+		ArrayList<Post> posts = connector.postDB.getPosts(classroomID);
 		for (int i = 0; i < posts.size(); i++) {
 
 
