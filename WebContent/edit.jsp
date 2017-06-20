@@ -89,8 +89,8 @@
 	</nav>
 	
 	
-	
-	
+	<!--   
+
 	<input class="awesomplete" list="students" />
 	<datalist id="students">
 	<%
@@ -122,6 +122,8 @@
             }
         %>
     </div>
+    
+    -->
 	
 	
 

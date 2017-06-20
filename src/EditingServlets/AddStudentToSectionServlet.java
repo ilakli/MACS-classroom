@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Dummys.PersonGeneratorDummy;
 import defPackage.Classroom;
 import database.AllConnections;
 import defPackage.Person;
@@ -48,27 +49,44 @@ public class AddStudentToSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Section currentSection = new Section(sectionN,classroomId);
-		Person student = connection.personDB.getPersonByEmail(studentEmail);
-		if(connection.sectionDB.sectionExists(sectionN, classroomId)  
-				&& connection.studentDB.studentExists(studentEmail, classroomId)
-				&& currentSection.addStudentToSection(student)) {
+		
+		String emails[] = studentEmail.split("\\s+"); 
+		
+		boolean status = true;
+		if(emails.length == 0) status = false;
+		
+		for(String e:emails){  
+			
+			Person student = connection.personDB.getPersonByEmail(e);
+			
+			if(connection.sectionDB.sectionExists(sectionN, classroomId)  
+					&& connection.studentDB.studentExists(e, classroomId)
+					&& currentSection.addStudentToSection(student)) {
+				
+				System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + e + 
+					" to class with id: " + classroomId);
+			}
+			else {
+				status =  false;
+					
+				System.out.println("Didn't add Student to Section: " + currentSection.getSectionN() + " " + e + 
+						" to class with id: " + classroomId);
+			}
+		} 
+		
+		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + studentEmail + 
-				" to class with id: " + classroomId);
-		}
-		else {
+							 
+			view.forward(request, response);     
+		} else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
-						 
+					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
+							 
 			view.forward(request, response);  
-			
-			System.out.println("Didn't add Student to Section: " + currentSection.getSectionN() + " " + studentEmail + 
-				" to class with id: " + classroomId);
-	
 		}
+		
+
 	
 	}
 

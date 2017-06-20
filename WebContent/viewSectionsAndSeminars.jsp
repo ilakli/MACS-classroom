@@ -29,13 +29,7 @@
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-		//List<Person> lecturers = connector.lecturerDB.getLecturers(classroomID);
-		//List<Person> seminarists = connector.seminaristDB.getSeminarists(classroomID);
-		//List<Person> sectionLeaders = connector.sectionLeaderDB.getSectionLeaders(classroomID);
-		//List<Person> students = connector.studentDB.getStudents(classroomID);
-		//System.out.println("roles downloaded successfully!");
 
-		
 		
 		System.out.println("seminars and sections downloaded successfully!");
 
@@ -95,13 +89,29 @@
 	</nav>
 	
 	
+	<!-- 	
+	<form action=<%="EditSectionsAndSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    	<input type="submit" value="Edit" />
+	</form>
 	
 	
 	
+	-->
 	
 
-    <div class='seminar-boxes'>
-    <h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Seminar Groups</h1>
+    <div class='seminar-boxes' >
+		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Seminar Groups</h1>
+       
+       	<form action=<%="ManualDistributionToSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Manually Distribute Students To Seminars" />
+		</form>
+		
+		<form action=<%="AutoDistributionToSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Automatically Distribute Students To Seminars" />
+		</form>
         <%
             for(Seminar seminar : seminars){
                 out.println("<div class='seminar-box'");  
@@ -168,7 +178,17 @@
 	
 	
 	<div class='seminar-boxes'>
-    <h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
+   		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
+       
+       	<form action=<%="ManualDistributionToSectionsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Manually Distribute Students To Sections" />
+		</form>
+		
+		<form action=<%="AutoDistributionToSectionsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Automatically Distribute Students To Sections" />
+		</form>
         <%
         	
             for(Section section : sections){
