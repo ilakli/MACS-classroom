@@ -3,21 +3,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="ISO-8859-1">
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/login.css">
-	<title>Insert title here</title>
+<meta charset="ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/login.css">
+<title>Homepage</title>
+
+<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 </head>
 <body>
-  <div class="wrapper">
-    <form class="form-signin">       
-      <h2 class="form-signin-heading">Please login</h2>
-      <input type="text" class="form-control" name="username" placeholder="Email Address" />
-      <input type="password" class="form-control" name="password" placeholder="Password" />
-      <br>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-    </form>
-  </div>
+	<div class="wrapper">
+		<form class="form-signin">
+			<h2 class="form-signin-heading">Please login</h2>
+			<input type="text" class="form-control email-field" name="username"
+				placeholder="Email Address" /> <input type="password"
+				class="form-control password-field" name="password" placeholder="Password" /> <br>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+		</form>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$(".form-signin").submit(function(e) {
+				e.preventDefault();
+				
+				var email =  $(this).find('> .email-field').val();
+				var psw = $(this).find('> .password-field').val();
+				if(email === "admin" && psw === "admin")
+					window.location = "index.jsp"
+				
+			});
+		});
+	</script>
 </body>
 </html>
