@@ -22,7 +22,6 @@ public class Classroom {
 	protected DBConnection classroomConnection;
 	private AllConnections db;
 	
-
 	// Constructor;
 	public Classroom(String classroomName, String classroomID) {
 		this.classroomName = classroomName;

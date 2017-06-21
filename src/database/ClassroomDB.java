@@ -100,6 +100,32 @@ public class ClassroomDB {
 
 		return classrooms;
 	}
+	/**
+	 * returns classroom arraylist associated with given person's email
+	 * @param email
+	 * @return classroom arraylist
+	 */
+	public ArrayList <Classroom> getClassroomsByPerson(String email) {
+		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
+		String query = String.format(
+				"select classrooms.classroom_name, classrooms.classroom_id from classroom_students inner join persons on persons.person_email = '%s' "
+				+ "and persons.person_id = classroom_students.person_id inner join classrooms on classrooms.classroom_id = "
+				+ "classroom_students.classroom_id", email);
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			while (rs.next()) {
+				classrooms.add(new Classroom(rs.getString("classroom_name"), rs.getString("classroom_id")));
+			}
+		} catch (SQLException | NullPointerException e) {
+			
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		return classrooms;
+	}
 
 	/**
 	 * sets new value to distribution of students into sections

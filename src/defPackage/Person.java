@@ -1,5 +1,9 @@
 package defPackage;
 
+import java.util.ArrayList;
+
+import database.ClassroomDB;
+
 public class Person {
 	
 	public static final String ID_ATTRIBUTE_NAME = "personID";
@@ -8,12 +12,14 @@ public class Person {
 	private String surname;
 	private String Email;
 	private String personID;
+	private ClassroomDB classroomDB;
 	
 	public Person (String name, String surname, String Email, String personID) {
 		this.name = name;
 		this.surname = surname;
 		this.Email = Email;
 		this.personID = personID;
+		classroomDB = new ClassroomDB();
 	}
 	
 	public String getName() {
@@ -30,6 +36,10 @@ public class Person {
 	
 	public String getPersonID() {
 		return personID;
+	}
+	
+	public ArrayList <Classroom> getClassrooms() {
+		return classroomDB.getClassroomsByPerson(Email);
 	}
 	
 	@Override
