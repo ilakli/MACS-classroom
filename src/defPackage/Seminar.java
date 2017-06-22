@@ -91,8 +91,8 @@ public class Seminar {
 	 * @param seminarist
 	 * @return
 	 */
-	public boolean setSeminarist(Person seminarist){
-		return seminarDB.addSeminaristToSeminar(seminarN, seminarist.getEmail(), classroomId);		
+	public boolean setSeminarist(String seminaristEmail){
+		return seminarDB.addSeminaristToSeminar(seminarN, seminaristEmail, classroomId);		
 	}
 
 	/**
@@ -100,8 +100,8 @@ public class Seminar {
 	 * @param student
 	 * @return
 	 */
-	public boolean removeStudentFromSeminar(Person student){
-		return seminarDB.deleteStudentFromSeminar(seminarN, student.getEmail(), classroomId);
+	public boolean removeStudentFromSeminar(String studentEmail){
+		return seminarDB.deleteStudentFromSeminar(seminarN, studentEmail, classroomId);
 	}
 	
 	/**
@@ -109,8 +109,8 @@ public class Seminar {
 	 * @param student
 	 * @return
 	 */
-	public boolean addStudentToSeminar(Person student){
-		return seminarDB.addStudentToSeminar(seminarN, student.getEmail(), classroomId);	
+	public boolean addStudentToSeminar(String studentEmail){
+		return seminarDB.addStudentToSeminar(seminarN, studentEmail, classroomId);	
 	}
 	
 	/**
@@ -118,8 +118,8 @@ public class Seminar {
 	 * @param student
 	 * @return
 	 */
-	public boolean seminarContainsStudent(Person student){
-		return seminarDB.studentExists(student.getPersonID(), getSeminarId());
+	public boolean seminarContainsStudent(String studentId){
+		return seminarDB.studentExists(studentId, getSeminarId());
 	}
 	
 	@Override

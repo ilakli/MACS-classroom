@@ -49,10 +49,9 @@ public class AddSeminaristToSeminarServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId);
-		Person seminarist = connection.personDB.getPersonByEmail(seminaristEmail);
 		if(connection.seminaristDB.seminaristExists(seminaristEmail,classroomId) 
 				&& connection.seminarDB.seminarExists(seminarN,classroomId)
-				&& currentSeminar.setSeminarist(seminarist)) {
+				&& currentSeminar.setSeminarist(seminaristEmail)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_ACC);	
 						 

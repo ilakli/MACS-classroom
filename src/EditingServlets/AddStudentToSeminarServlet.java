@@ -56,11 +56,9 @@ String emails[] = studentEmail.split("\\s+");
 		
 		for(String e:emails){  
 			
-			Person student = connection.personDB.getPersonByEmail(e);
-			
 			if(connection.seminarDB.seminarExists(seminarN, classroomId)  
 					&& connection.studentDB.studentExists(e, classroomId)
-					&& currentSeminar.addStudentToSeminar(student)) {
+					&& currentSeminar.addStudentToSeminar(e)) {
 				
 				System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + e + 
 					" to class with id: " + classroomId);

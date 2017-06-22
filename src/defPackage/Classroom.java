@@ -562,7 +562,7 @@ public class Classroom {
 			System.out.println("THERE IS NO SEMINAR!!!");
 			return;
 		}
-		seminar.addStudentToSeminar(p);
+		seminar.addStudentToSeminar(p.getEmail());
 	}
 	
 	
