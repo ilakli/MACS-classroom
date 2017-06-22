@@ -69,6 +69,7 @@ public class TestSeminar {
 		
 		testClass.classroomAddStudent("gkhos15@freeuni.edu.ge");
 		testClass.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge");
+		testClass.classroomAddSeminarist("acxcx15@freeuni.edu.ge");
 		otherOne.classroomAddStudent("ipopk15@freeuni.edu.ge");
 		otherOne.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");		
 		
@@ -82,7 +83,9 @@ public class TestSeminar {
 		assertTrue(test1.setSeminarist("n.begiashvili@freeuni.edu.ge"));
 		assertFalse(test2.setSeminarist("n.begiashvili@freeuni.edu.ge"));	
 		assertFalse(test2.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
-	//	assertEquals(testClass.getClassroomSeminarists().get(0), test1.getSeminarist());
+		assertTrue(test2.setSeminarist("acxcx15@freeuni.edu.ge"));
+		assertEquals(testClass.getClassroomSeminarists().get(0), test1.getSeminarist());
+		assertEquals(testClass.getClassroomSeminarists().get(1), test2.getSeminarist());
 	}
 	
 	@Test
