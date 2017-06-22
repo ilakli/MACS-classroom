@@ -79,7 +79,12 @@ public class Section {
 	 * @return
 	 */
 	public boolean removeSectionLeader(){
-		return sectionLeaderDB.deleteSectionLeader(getSectionLeader().getEmail(), classroomId);
+		String sectionId = getSectionId();
+		if(getSectionLeader() == null){
+			return false;
+		}			
+		return sectionLeaderDB.deleteSectionLeaderFromSection(getSectionLeader().getEmail(), 
+				classroomId, sectionId);
 	}
 	
 	/**
@@ -97,8 +102,8 @@ public class Section {
 	 * @param student
 	 * @return
 	 */
-	public boolean removeStudentFromSection(String studentId){
-		return sectionDB.removeStudent(classroomId, studentId);
+	public boolean removeStudentFromSection(String studentEmail){
+		return sectionDB.removeStudent(classroomId, studentEmail);
 	}
 	
 	/**

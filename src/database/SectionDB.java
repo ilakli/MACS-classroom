@@ -54,9 +54,11 @@ public class SectionDB {
 	 * @param personId
 	 * @return
 	 */
-	public boolean removeStudent(String classroomId, String personId) {
-		String query = String.format("delete * from `student-section` where `classroom_id` = %s and `person_id` = %s;", 
+	public boolean removeStudent(String classroomId, String studentEmail) {
+		String personId = personDB.getPersonId(studentEmail);
+		String query = String.format("delete from `student-section` where `classroom_id` = %s and `person_id` = %s;", 
 				classroomId, personId);
+		
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

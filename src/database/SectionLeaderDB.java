@@ -104,4 +104,27 @@ public class SectionLeaderDB {
 		myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
+	
+	
+	/**
+	 * deletes section leader with given email from given classroom
+	 * 
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such
+	 *         section leader or database crashed
+	 */
+	public boolean deleteSectionLeaderFromSection(String email, String classroomId, String sectionId) {
+		if (!sectionLeaderExists(email, classroomId)) {
+			return false;
+		}
+		String personId = personDB.getPersonId(email);
+
+		String preQuery = String.format(
+				"delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s and section_id = %s;", 
+				classroomId, personId, sectionId);
+		
+		MyConnection myConnection = db.getMyConnection(preQuery);
+		return db.executeUpdate(myConnection);
+	}
 }
