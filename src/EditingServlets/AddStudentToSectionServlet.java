@@ -57,11 +57,9 @@ public class AddStudentToSectionServlet extends HttpServlet {
 		
 		for(String e:emails){  
 			
-			Person student = connection.personDB.getPersonByEmail(e);
-			
 			if(connection.sectionDB.sectionExists(sectionN, classroomId)  
 					&& connection.studentDB.studentExists(e, classroomId)
-					&& currentSection.addStudentToSection(student)) {
+					&& currentSection.addStudentToSection(e)) {
 				
 				System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + e + 
 					" to class with id: " + classroomId);

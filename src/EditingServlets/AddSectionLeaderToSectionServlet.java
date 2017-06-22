@@ -49,10 +49,9 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Section currentSection = new Section(sectionN,classroomId);
-		Person leader = connection.personDB.getPersonByEmail(sectionLeaderEmail);
 		if(connection.sectionLeaderDB.sectionLeaderExists(sectionLeaderEmail, classroomId)
 				&& connection.sectionDB.sectionExists(sectionN, classroomId)
-				&& currentSection.setSectionLeader(leader)) {
+				&& currentSection.setSectionLeader(sectionLeaderEmail)) {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	
 						 

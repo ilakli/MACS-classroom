@@ -549,7 +549,7 @@ public class Classroom {
 			System.out.println("THERE IS NO SECTION!!!");
 			return;
 		}
-		section.addStudentToSection(p);
+		section.addStudentToSection(p.getEmail());
 	}
 	
 	/**

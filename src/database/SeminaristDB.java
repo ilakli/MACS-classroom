@@ -93,6 +93,27 @@ public class SeminaristDB {
 		return db.executeUpdate(myConnection);
 	}
 	
+	/**
+	 * deletes seminarist with given email from given classroom
+	 * 
+	 * @param email
+	 * @param classroomId
+	 * @return true - if deletion was successful, false - if there was no such
+	 *         seminarist or database crashed
+	 */
+	public boolean deleteSeminaristFromSeminar(String email, String classroomId, String seminarId) {
+		if (!seminaristExists(email, classroomId))
+			return false;
+		String personId = personDB.getPersonId(email);
+
+		String preQuery = String.format(
+				"delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s and "
+				+ "seminar_id = %s; ", classroomId, personId, seminarId);
+		
+		MyConnection myConnection = db.getMyConnection(preQuery);
+		return db.executeUpdate(myConnection);
+	}
+	
 	public Person getSeminarist (String seminarId) {
 		String query = String.format(
 				"select * from `seminar-seminarists` where `seminar_id` = %s;", seminarId);

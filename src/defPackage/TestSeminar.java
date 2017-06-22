@@ -73,20 +73,61 @@ public class TestSeminar {
 		otherOne.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge");		
 		
 		assertTrue(test1.addStudentToSeminar("gkhos15@freeuni.edu.ge"));
-//		assertFalse(test1.addStudentToSeminar("gkhos15@freeuni.edu.ge"));
-//		assertFalse(test1.addStudentToSeminar("n.begiashvili@freeuni.edu.ge"));
-//		assertFalse(test2.addStudentToSeminar("ipopk15@freeuni.edu.ge"));
-//		assertFalse(test2.setSeminarist("ipopk15@freeuni.edu.ge"));
-//		assertFalse(test2.addStudentToSeminar("GauqmebuliaGauqmebulia"));
-//		assertFalse(test1.setSeminarist("gkhos15@freeuni.edu.ge"));
+		assertFalse(test1.addStudentToSeminar("gkhos15@freeuni.edu.ge"));
+		assertFalse(test1.addStudentToSeminar("n.begiashvili@freeuni.edu.ge"));
+		assertFalse(test2.addStudentToSeminar("ipopk15@freeuni.edu.ge"));
+		assertFalse(test2.setSeminarist("ipopk15@freeuni.edu.ge"));
+		assertFalse(test2.addStudentToSeminar("GauqmebuliaGauqmebulia"));
+		assertFalse(test1.setSeminarist("gkhos15@freeuni.edu.ge"));
 		assertTrue(test1.setSeminarist("n.begiashvili@freeuni.edu.ge"));
-//		assertFalse(test2.setSeminarist("n.begiashvili@freeuni.edu.ge"));	
-//		assertFalse(test2.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
-		System.out.println(test1.getSeminarist().getEmail());
-		System.out.println(testClass.getClassroomSeminarists().get(0).getEmail());
-		assertEquals(testClass.getClassroomSeminarists().get(0), test1.getSeminarist());
+		assertFalse(test2.setSeminarist("n.begiashvili@freeuni.edu.ge"));	
+		assertFalse(test2.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
+	//	assertEquals(testClass.getClassroomSeminarists().get(0), test1.getSeminarist());
 	}
 	
+	@Test
+	public void test3DeleteStudents(){
+		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars");
+		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom);
+		
+		testClass.classroomAddSeminar();
+		
+		List <Seminar> seminars = testClass.getClassroomSeminars();
+		Seminar test1 = seminars.get(0);
+		testClass.classroomAddStudent("ipopk15@freeuni.edu.ge");
+		testClass.classroomAddStudent("gkhos15@freeuni.edu.ge");
+		
+		assertFalse(test1.removeStudentFromSeminar("notEmail"));
+		test1.addStudentToSeminar("gkhos15@freeuni.edu.ge");
+		test1.addStudentToSeminar("ipopk15@freeuni.edu.ge");
+		assertTrue(test1.removeStudentFromSeminar("ipopk15@freeuni.edu.ge"));
+//		assertTrue(test1.seminarContainsStudent("gkhos15@freeuni.edu.ge"));
+//		assertFalse(test1.seminarContainsStudent("ipopk15@freeuni.edu.ge"));
+	}
+	
+	@Test
+	public void test4Seminarist(){
+		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars");
+		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom);
+		
+		testClass.classroomAddSeminar();
+		testClass.classroomAddSeminar();
+		testClass.classroomAddSeminarist("s.gvinepadze@freeuni.edu.ge");
+		testClass.classroomAddSeminarist("n.begiashvili@freeuni.edu.ge");
+		List <Seminar> seminars = testClass.getClassroomSeminars();
+		Seminar test1 = seminars.get(0);
+		Seminar test2 = seminars.get(1);
+		
+		assertTrue(test1.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
+		assertFalse(test2.setSeminarist("notEmail@mail.ru"));
+		assertFalse(test2.removeSeminarist());
+		assertFalse(test1.setSeminarist("n.begiashvili@freeuni.edu.ge"));
+		assertTrue(test1.removeSeminarist());
+		assertTrue(test1.setSeminarist("n.begiashvili@freeuni.edu.ge"));
+		assertFalse(test1.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
+		assertFalse(test2.setSeminarist("n.begiashvili@freeuni.edu.ge"));
+		assertTrue(test2.setSeminarist("s.gvinepadze@freeuni.edu.ge"));
+	}
 	
 	
 }

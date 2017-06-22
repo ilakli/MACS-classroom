@@ -82,8 +82,12 @@ public class Seminar {
 	 */
 	public boolean removeSeminarist(){
 		Person seminarist = getSeminarist();
-		return seminaristDB.deleteSeminarist(seminarist.getEmail(), classroomId);
-		
+		if(seminarist != null){
+			String seminarId = getSeminarId();
+			return seminaristDB.deleteSeminaristFromSeminar(seminarist.getEmail(), classroomId, seminarId);
+		} else{
+			return false;
+		}
 	}
 	
 	/**
