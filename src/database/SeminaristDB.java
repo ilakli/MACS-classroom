@@ -75,8 +75,9 @@ public class SeminaristDB {
 	 *         seminarist or database crashed
 	 */
 	public boolean deleteSeminarist(String email, String classroomId) {
-		if (!seminaristExists(email, classroomId))
+		if (!seminaristExists(email, classroomId)) {
 			return false;
+		}
 		String personId = personDB.getPersonId(email);
 
 		String preQuery = String.format(

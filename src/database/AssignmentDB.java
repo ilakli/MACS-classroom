@@ -51,7 +51,8 @@ public class AssignmentDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				assignments.add(new Assignment(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4)));
+				assignments.add(new Assignment(rs.getString("classroom_id"), rs.getString("assignment_name"),
+						rs.getString("assignment_title"), rs.getString("assignment_instructions")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
