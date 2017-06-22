@@ -87,8 +87,8 @@ public class Section {
 	 * @param leader
 	 * @return
 	 */
-	public boolean setSectionLeader(Person leader){
-		return sectionDB.addSectionLeaderToSection(sectionN, leader.getEmail(), classroomId);
+	public boolean setSectionLeader(String leaderEmail){
+		return sectionDB.addSectionLeaderToSection(sectionN, leaderEmail, classroomId);
 		
 	}
 
@@ -97,8 +97,8 @@ public class Section {
 	 * @param student
 	 * @return
 	 */
-	public boolean removeStudentFromSection(Person student){
-		return sectionDB.removeStudent(classroomId, student.getPersonID());
+	public boolean removeStudentFromSection(String studentId){
+		return sectionDB.removeStudent(classroomId, studentId);
 	}
 	
 	/**
@@ -106,8 +106,8 @@ public class Section {
 	 * @param student
 	 * @return
 	 */
-	public boolean addStudentToSection(Person student){
-		return sectionDB.addStudentToSection(sectionN, student.getEmail(), classroomId);		
+	public boolean addStudentToSection(String studentEmail){
+		return sectionDB.addStudentToSection(sectionN, studentEmail, classroomId);		
 	}
 	
 	
@@ -116,8 +116,8 @@ public class Section {
 	 * @param student
 	 * @return
 	 */
-	public boolean sectionContainsStudent(Person student){
-		return sectionDB.containsStudent(classroomId, student.getPersonID());
+	public boolean sectionContainsStudent(String studentId){
+		return sectionDB.containsStudent(classroomId, studentId);
 	}
 	
 
