@@ -39,7 +39,8 @@ public class PostDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				posts.add(new Post(rs.getString(1), rs.getString(2),rs.getString(3), rs.getString(4)));
+				posts.add(new Post(rs.getString("post_id"), rs.getString("classroom_id"),
+						rs.getString("person_id"), rs.getString("post_text")));
 			}
 
 		} catch (SQLException e) {

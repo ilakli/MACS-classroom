@@ -175,8 +175,9 @@ public class SeminarDB {
 	public boolean addSeminaristToSeminar(int seminarN, String email, String classroomId) {
 		String seminarId = getSeminarId(seminarN, classroomId);
 		String personId = personDB.getPersonId(email);
-		if (seminarId.equals("") || personId.equals(""))
+		if (seminarId.equals("") || personId.equals("")) {
 			return false;
+		}
 		String query = String.format(
 				"insert into `seminar-seminarists` (`seminar_id`, `classroom_id`, `person_id`) values(%s, %s, %s);",
 				seminarId, classroomId, personId);

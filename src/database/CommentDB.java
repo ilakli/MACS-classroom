@@ -43,7 +43,8 @@ public class CommentDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()){
-				Comment comment = new Comment(rs.getString(1), rs.getString(2), rs.getString(3),rs.getString(4));
+				Comment comment = new Comment(rs.getString("comment_id"), rs.getString("post_id"), 
+						rs.getString("person_id"),rs.getString("comment_text"));
 				comments.add(comment);
 			}
 		} catch (SQLException | NullPointerException e) {

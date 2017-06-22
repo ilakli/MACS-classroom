@@ -64,10 +64,12 @@ public class SectionLeaderDB {
 	 */
 	public boolean addSectionLeader(String email, String classroomId) {
 		String personId = personDB.getPersonId(email);
-		if (personId.equals(""))
+		if (personId.equals("")) {
 			return false;
-		if (sectionLeaderExists(email, classroomId))
+		}
+		if (sectionLeaderExists(email, classroomId)) {
 			return false;
+		}
 		String query = String.format(
 				"insert into `classroom_section_leaders` (`classroom_id`, `person_id`) values (%s, %s);", classroomId,
 				personId);

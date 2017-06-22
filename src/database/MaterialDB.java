@@ -26,8 +26,9 @@ public class MaterialDB {
 	 */
 	public boolean addMaterial(String classroomId, String materialName) {
 
-		if (materialName.equals(""))
+		if (materialName.equals("")) {
 			return false;
+		}
 
 		String query = String.format("insert into `classroom_materials` values (%s,'%s');", classroomId, materialName);
 
@@ -51,7 +52,7 @@ public class MaterialDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				materials.add(new Material(rs.getString(1), rs.getString(2)));
+				materials.add(new Material(rs.getString("classroom_id"), rs.getString("material_name")));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

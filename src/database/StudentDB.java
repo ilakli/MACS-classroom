@@ -74,10 +74,12 @@ public class StudentDB {
 	 */
 	public boolean addStudent(String email, String classroomId) {
 		String personId = personDB.getPersonId(email);
-		if (personId.equals(""))
+		if (personId.equals("")) {
 			return false;
-		if (studentExists(email, classroomId))
+		}
+		if (studentExists(email, classroomId)) {
 			return false;
+		}
 		String query = String.format("insert into `classroom_students` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
 		MyConnection myConnection = db.getMyConnection(query);

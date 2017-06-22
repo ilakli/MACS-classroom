@@ -31,7 +31,7 @@ public class ClassroomDB {
 			myConnection = db.getMyConnection(query);
 			ResultSet rs = myConnection.executeQuery();
 			if (rs.next()) {
-				String classroomName = rs.getString(2);
+				String classroomName = rs.getString("classroom_name");
 				classroom = new Classroom(classroomName, classroomId);
 			}
 		} catch (SQLException | NullPointerException e) {
@@ -63,9 +63,9 @@ public class ClassroomDB {
 			PreparedStatement selectLastIndex = con.prepareStatement("select last_insert_id();");
 			ResultSet rs = selectLastIndex.executeQuery();
 
-			if (rs.next())
+			if (rs.next()) {				
 				classroomId = rs.getString(1);
-
+			}
 			con.commit();
 			con.close();
 		} catch (SQLException e) {
@@ -85,8 +85,8 @@ public class ClassroomDB {
 		try {
 			ResultSet classroomsTable = stmnt.executeQuery();
 			while (classroomsTable.next()) {
-				String classroomID = classroomsTable.getString(1);
-				String classroomName = classroomsTable.getString(2);
+				String classroomID = classroomsTable.getString("classroom_id");
+				String classroomName = classroomsTable.getString("classroom_name");
 
 				classrooms.add(new Classroom(classroomName, classroomID));
 			}

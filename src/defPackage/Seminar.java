@@ -83,7 +83,6 @@ public class Seminar {
 	public boolean removeSeminarist(){
 		Person seminarist = getSeminarist();
 		return seminaristDB.deleteSeminarist(seminarist.getEmail(), classroomId);
-		
 	}
 	
 	/**

@@ -34,7 +34,8 @@ public class PersonDB {
 			myConnection = db.getMyConnection(query);
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
+				currentPerson = new Person(rs.getString("person_name"), rs.getString("person_surname"), 
+						rs.getString("person_email"), rs.getString("person_id"));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -63,7 +64,8 @@ public class PersonDB {
 			myConnection = db.getMyConnection(query);
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				currentPerson = new Person(rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(1));
+				currentPerson = new Person(rs.getString("person_name"), rs.getString("person_surname"), 
+						rs.getString("person_email"), rs.getString("person_id"));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -90,7 +92,7 @@ public class PersonDB {
 			myConnection = db.getMyConnection(query);
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				persons.add(getPerson(rs.getString(2)));
+				persons.add(getPerson(rs.getString("person_id")));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -132,7 +134,7 @@ public class PersonDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			if (rs.next())
-				personId = rs.getString(1);
+				personId = rs.getString("person_id");
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally { 
