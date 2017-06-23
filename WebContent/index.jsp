@@ -21,10 +21,13 @@
 <link rel="stylesheet" href="css/style.css">
 
 <script type="text/javascript">
-	function redirect() {
+	function redirectClassroom() {
 
 		window.location = "createClassroom.jsp"
 
+	}
+	function redirectLecturer(){
+		window.location = "addLecturer.html"
 	}
 </script>
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
@@ -40,7 +43,11 @@
 
 
 	<button id="create" type="submit" class="btn btn-danger"
-		onclick="redirect()">Create New</button>
+		onclick="redirectClassroom()">Create New Classroom</button>
+		
+	<button id="create" type="submit" class="btn btn-danger"
+		onclick="redirectLecturer()">Add New Lecturer</button>
+	
 		
 	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 

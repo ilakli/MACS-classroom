@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS `classroom_lecturers`;
 DROP TABLE IF EXISTS `classroom_materials`;
 DROP TABLE IF EXISTS `classroom_assignments`;
 DROP TABLE IF EXISTS `classrooms`;
+DROP TABLE IF EXISTS `lecturers`;
 DROP TABLE IF EXISTS `persons`;
 
 
@@ -28,6 +29,12 @@ CREATE TABLE `persons` (
 	`person_email` varchar(100) NOT NULL,
 	UNIQUE (`person_email`),
 	PRIMARY KEY (`person_id`)
+);
+
+CREATE TABLE `lecturers` (
+	`person_id` INT NOT NULL,
+	UNIQUE (`person_id`),
+	CONSTRAINT `lecturers_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
 );
 
 CREATE TABLE `classrooms` (
@@ -82,7 +89,7 @@ CREATE TABLE `classroom_lecturers` (
 	`person_id` INT NOT NULL,
 	PRIMARY KEY (`classroom_id`,`person_id`),
 	CONSTRAINT `classroom_lecturers_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-	CONSTRAINT `classroom_lecturers_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+	CONSTRAINT `classroom_lecturers_fk1` FOREIGN KEY (`person_id`) REFERENCES `lecturers`(`person_id`)
 );
 
 

@@ -2,11 +2,12 @@ package database;
 
 import java.util.ArrayList;
 
+import Dummys.PersonGeneratorDummy;
 import database.DBConnection.MyConnection;
 import defPackage.Person;
 
 public class LecturerDB {
-	
+
 	private DBConnection db;
 	private PersonDB personDB;
 
@@ -43,6 +44,19 @@ public class LecturerDB {
 	}
 
 	/**
+	 * checks if global lecturer with given email exists
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public boolean globalLecturerExists(String email) {
+		String personId = personDB.getPersonId(email);
+		String query = String.format("select * from `lecturers` where `person_id`=%s;", personId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return !db.isResultEmpty(myConnection);
+	}
+
+	/**
 	 * adds lecturer with given email to the given class
 	 * 
 	 * @param email
@@ -60,6 +74,26 @@ public class LecturerDB {
 		}
 		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
+
+	/**
+	 * adds global lecturer with given email
+	 * 
+	 * @param email
+	 * @return true - if addition was successful, false - if lecturer already
+	 *         exists or there is no such person
+	 */
+	public boolean addGlobalLecturer(String email) {
+		String personId = personDB.getPersonId(email);
+		if (personId.equals("")) {
+			return false;
+		}
+		if (globalLecturerExists(email)) {
+			return false;
+		}
+		String query = String.format("insert into `lecturers` (`person_id`) values (%s);", personId);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
