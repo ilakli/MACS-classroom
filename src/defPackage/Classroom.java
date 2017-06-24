@@ -167,7 +167,7 @@ public class Classroom {
 	 * @return - true if a person is a member, false otherwise;
 	 */
 	public boolean classroomPersonExists(String email) {
-		return db.personDB.personExists(email, this.classroomID);
+		return db.personDB.personExistsInClassroom(email, this.classroomID);
 	}
 
 	/**

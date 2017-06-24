@@ -121,6 +121,19 @@ public class PersonDB {
 		return db.executeUpdate(myConnection);
 	}
 
+	/**
+	 * adds new person with given email adress to the persons table
+	 * 
+	 * @param email
+	 * @return true- if update executed successfully, false - otherwise
+	 */
+	public boolean addPersonByEmail(String email) {
+		String query = String.format("insert into `persons` (`person_email`)"
+				+ " values ('%s');", email);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
+
 
 	/**
 	 * 
@@ -153,8 +166,26 @@ public class PersonDB {
 	 * @param classroomId
 	 * @return
 	 */
-	public boolean personExists(String email, String classroomId) {
+	public boolean personExistsInClassroom(String email, String classroomId) {
 		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
 				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
+	}
+
+	/**
+	 * sets name and surname of the person with given email
+	 * 
+	 * @param email
+	 * @param name
+	 * @param surname
+	 * @return true- if update executed successfully, false - otherwise
+	 */
+	public boolean setNameAndSurname(String email, String name, String surname) {
+		String query1 = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`)"
+				+ " values ('%s', '%s', '%s');", name, surname, email);
+		String query = String.format("update `persons` set `person_name` = '%s', `person_surname` = '%s' "
+				+ "where `person_email` = '%s'; ", name, surname, email);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+		
 	}
 }
