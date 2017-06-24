@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Dummys.PersonGeneratorDummy;
 import database.AllConnections;
 import defPackage.Classroom;
 import defPackage.Person;
@@ -43,18 +42,8 @@ public class AddNewLecturerServlet extends HttpServlet {
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
-		for(String e:emails){  
-			Person p = PersonGeneratorDummy.createPersonByEmail(e);
-			if(currentClassroom.classroomAddLecturer(e)) {
-				System.out.println("Added Lecturer: " + p.getName() + " " + 
-						p.getSurname() + " " + e + " to class with id: " + classroomId);
-			}
-			else {
-				status = false;
-				
-				System.out.println("Person Already Existed IN This Classroom: " +  
-						p.getName() + " " +  p.getSurname() + " " + e + "    class with id: " + classroomId);
-			}
+		for(String e:emails){
+			status = currentClassroom.classroomAddLecturer(e);
 		}  
 		
 		if(status){

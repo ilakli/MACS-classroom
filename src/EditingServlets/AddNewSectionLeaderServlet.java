@@ -46,18 +46,9 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
-		for(String e:emails){  
-			Person p = PersonGeneratorDummy.createPersonByEmail(e);
-			if(currentClassroom.classroomAddSectionLeader(e)) {
-				System.out.println("Added Section Leader: " + p.getName() + " " + 
-				p.getSurname() + " " + e + " to class with id: " + classroomId);
-			}
-			else {
-				status =  false;
-				
-				System.out.println("Person Already Existed IN This Classroom: " + 
-				p.getName()+ " " + p.getSurname() + " " + e + "    class with id: " + classroomId);
-			}
+		for(String e:emails){
+			connection.personDB.addPersonByEmail(e);
+			status = currentClassroom.classroomAddSectionLeader(e);
 		}  
 		
 		if(status){
