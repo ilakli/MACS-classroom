@@ -29,6 +29,16 @@ public class LecturerDB {
 	}
 
 	/**
+	 * 
+	 * @return all global lecturers.
+	 */
+	public ArrayList<Person> getGlobalLecturers() {
+		String query = String.format("select * from `persons` where `person_id`in(select * from `lecturers`);");
+		ArrayList<Person> globalLecturers = personDB.getPersons(query);
+		return globalLecturers;
+	}
+
+	/**
 	 * checks if lecturer with given email exists in given classroom
 	 * 
 	 * @param email

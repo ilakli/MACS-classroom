@@ -22,7 +22,6 @@ public class AddNewGlobalLecturerServlet extends HttpServlet {
 	 */
 	public AddNewGlobalLecturerServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

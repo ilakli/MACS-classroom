@@ -1,4 +1,6 @@
 
+<%@page import="defPackage.Person"%>
+<%@page import="database.LecturerDB"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@page import="defPackage.Classroom"%>
@@ -8,10 +10,11 @@
 <html>
 <head>
 
- <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id" content="127282049380-isld6v6lrvjeqk5nrq8o9qjquk5bp0ig.apps.googleusercontent.com">
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id"
+	content="127282049380-isld6v6lrvjeqk5nrq8o9qjquk5bp0ig.apps.googleusercontent.com">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <title>Macs Classroom</title>
@@ -20,13 +23,14 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
 
+
 <script type="text/javascript">
 	function redirectClassroom() {
 
 		window.location = "createClassroom.jsp"
 
 	}
-	function redirectLecturer(){
+	function redirectLecturer() {
 		window.location = "addLecturer.html"
 	}
 </script>
@@ -44,11 +48,49 @@
 
 	<button id="create" type="submit" class="btn btn-danger"
 		onclick="redirectClassroom()">Create New Classroom</button>
-		
+
 	<button id="create" type="submit" class="btn btn-danger"
 		onclick="redirectLecturer()">Add New Lecturer</button>
+
 	
+	<!--  Given a person generates list item containing persons name, surname and email -->
+	<%!
+		private String printPersonInfo(Person currentPerson) {
+		String result = "<li><h5>";
+		result = result + currentPerson.getEmail() + " " + currentPerson.getName() + " " + currentPerson.getSurname();
+		result = result + "</h5></li>";
 		
+		return result;
+	}
+	%>
+	
+	<%
+		System.out.println("First Step");
+	
+		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
+	
+		System.out.println("Middle Step");
+		
+		LecturerDB lecturerDB = connection.lecturerDB;
+		
+		System.out.println("Second Step");
+		
+		ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
+		
+		System.out.println("Globals are: " + globalLecturers);
+		
+		out.println("<div id=\"global-lecturers\">");
+		out.println("<h4>Lecturers</h4>");
+		out.println("<ul>");
+		for (int i = 0; i < globalLecturers.size(); i++) {
+			Person currentPerson = globalLecturers.get(i);
+			out.println(printPersonInfo(currentPerson));
+		}
+		
+		out.println("</ul>");
+		out.println("</div>");
+	%>
+
 	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
 
 
