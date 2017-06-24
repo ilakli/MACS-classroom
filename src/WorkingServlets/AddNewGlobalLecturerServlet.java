@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.AllConnections;
 import database.LecturerDB;
+import database.PersonDB;
 
 /**
  * Servlet implementation class AddNewGlobalLecturerServlet
@@ -46,12 +47,14 @@ public class AddNewGlobalLecturerServlet extends HttpServlet {
 		String email = request.getParameter("email");
 
 		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
-
+		
+		PersonDB personDB = connection.personDB;
 		LecturerDB lecturerDB = connection.lecturerDB;
 
 		String emails[] = email.split("\\s+");
 
 		for (int i = 0; i < emails.length; i++) {
+			personDB.addPersonByEmail(emails[i]);
 			lecturerDB.addGlobalLecturer(emails[i]);
 		}
 

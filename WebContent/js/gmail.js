@@ -8,7 +8,7 @@ function onSignIn(googleUser) {
 	
 	
 	$.ajax({
-		url : "AddPersonServlet",
+		url : "LoginServlet",
 		type: 'POST',
 		data: {
 			firstName: firstName,
