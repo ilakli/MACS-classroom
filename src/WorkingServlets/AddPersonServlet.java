@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Listeners.ContextListener;
+import database.AllConnections;
 import database.PersonDB;
 
 /**
@@ -45,8 +47,9 @@ public class AddPersonServlet extends HttpServlet {
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 
-		PersonDB personDb = new PersonDB();
-		personDb.addPerson(firstName, lastName, email);
+		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		//PersonDB personDb = new PersonDB();
+		connection.personDB.addPerson(firstName, lastName, email);
 
 	}
 

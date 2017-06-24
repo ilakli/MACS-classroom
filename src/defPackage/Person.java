@@ -2,6 +2,7 @@ package defPackage;
 
 import java.util.ArrayList;
 
+import database.AllConnections;
 import database.ClassroomDB;
 
 public class Person {
@@ -12,14 +13,15 @@ public class Person {
 	private String surname;
 	private String Email;
 	private String personID;
-	private ClassroomDB classroomDB;
+	
+	private AllConnections db;
 	
 	public Person (String name, String surname, String Email, String personID) {
 		this.name = name;
 		this.surname = surname;
 		this.Email = Email;
 		this.personID = personID;
-		classroomDB = new ClassroomDB();
+		db = new AllConnections();
 	}
 	
 	public String getName() {
@@ -38,8 +40,13 @@ public class Person {
 		return personID;
 	}
 	
+	public boolean setNameAndSurname(String firstName, String lastName) {
+		return db.personDB.setNameAndSurname(Email, firstName, lastName);
+		
+	}
+	
 	public ArrayList <Classroom> getClassrooms() {
-		return classroomDB.getClassroomsByPerson(Email);
+		return db.classroomDB.getClassroomsByPerson(Email);
 	}
 	
 	@Override
@@ -52,4 +59,7 @@ public class Person {
 		
 		return p.Email.equals(this.Email);
 	}
+
+	
+
 }
