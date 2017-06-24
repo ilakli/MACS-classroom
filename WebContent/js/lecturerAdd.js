@@ -1,7 +1,7 @@
 $(document).ready(function() { 
 	
 	$(".lecturerAddButton").on('click', function() {
-		alert("Ya Man");
+		
 		
 		
 		var str = $(this).parent().html();
@@ -13,7 +13,7 @@ $(document).ready(function() {
 		str = str.substr(0,str.indexOf("<inp"));
 		
 		
-		alert("Yy Man");
+		
 
 		str = str.replaceAll('<span>', '');
 
@@ -24,13 +24,11 @@ $(document).ready(function() {
 		var servlet = $(this).next().val();
 		
 		
-		alert("Yo Man");
+		
 		
 		$(this).parent().find("span").remove();
 		
-		alert("Le Man");
-		alert(str);
-		alert(servlet);
+		
 		
 		
 		$.ajax({
