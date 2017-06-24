@@ -24,8 +24,8 @@ DROP TABLE IF EXISTS `persons`;
 
 CREATE TABLE `persons` (
 	`person_id` INT NOT NULL AUTO_INCREMENT,
-	`person_name` varchar(100) NOT NULL,
-	`person_surname` varchar(100) NOT NULL,
+	`person_name` varchar(100),
+	`person_surname` varchar(100),
 	`person_email` varchar(100) NOT NULL,
 	UNIQUE (`person_email`),
 	PRIMARY KEY (`person_id`)
