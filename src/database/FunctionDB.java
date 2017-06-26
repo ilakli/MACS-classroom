@@ -54,11 +54,42 @@ public class FunctionDB {
 	 */
 	public boolean hasPremission(Classroom c, Position p, Function f){
 		String query = String.format("select * from `classroom_position_function` where "
-				+ "classroom_id = %s and position_id = %s and function_id = %s;", c.getClassroomID(), p.getID(), f.getID());
-		
-		System.out.println(">"+query+"<");
-		
+				+ "classroom_id = %s and position_id = %s and function_id = %s;", 
+				c.getClassroomID(), p.getID(), f.getID());
+			
 		MyConnection myConnection = db.getMyConnection(query);
 		return !db.isResultEmpty(myConnection);
+	}
+	
+	/**
+	 * This method deletes all the functions for classroom members in the classroom;
+	 * @param classroomId - ID of the class; 
+	 */
+	public void deleteAllPermissions(String classroomId){
+		String query = String.format("delete from `classroom_position_function` where "
+				+ "classroom_id = %s;", classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			myConnection.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * This method adds permission to a position in a classroom; 
+	 * @param classroomId - class ID
+	 * @param positionId - position ID
+	 * @param functionId - function ID
+	 */
+	public void addPermission(String classroomId, String positionId, String functionId){
+		String query = String.format("insert into `classroom_position_function` values (%s, %s, %s);",
+				classroomId, positionId, functionId);
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			myConnection.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -168,19 +168,14 @@
 		      </tr>
 		    </thead>
 		    <tbody>
-		      <%
+		      <% 
 			      for(Function f : functions){
 			    	  out.println("<tr>");
 			    	  out.println("<th>" + f.getName() + "</th>");
-			    	  /*out.println("<td> <input type=\"checkbox\"> </td>" +
-			    	  			  "<td> <input type=\"checkbox\"> </td>" +
-			    	  			  "<td> <input type=\"checkbox\"> </td>" +
-			    	  			  "<td> <input type=\"checkbox\"> </td>");
-					  */
-					  
-					  for (int i=0; i<positions.size(); i++) {
+			    	  for (int i=0; i<positions.size(); i++) {
 			        		Position p = positions.get(i);
-			        		out.println("<td> <input type=\"checkbox\"" + 
+			        		out.println("<td> <input type=\"checkbox\" name=\"permission\" value=\"" 
+			        				+ String.valueOf(p.getID())  + "-" + String.valueOf(f.getID()) + "\"" +
 			        				checkboxValue(connector.functionDB.hasPremission(currentClassroom, p, f)) + "> </td>");
 			          }
 			    	  

@@ -50,6 +50,15 @@ public class ChangeSettingsServlet extends HttpServlet {
 		currentClassroom.setSectionDistribution(sectionDis != null && sectionDis.equals("on"));
 		currentClassroom.setSeminarDistribution(seminarDis != null && seminarDis.equals("on"));
 		
+		connector.functionDB.deleteAllPermissions(classroomId);
+		String[] newPermissions = request.getParameterValues("permission");		
+		if(newPermissions != null){
+			for(String token : newPermissions){
+				String[] permissionValues = token.split("-");
+				connector.functionDB.addPermission(classroomId, permissionValues[0], permissionValues[1]);
+			}
+		}
+		
 		RequestDispatcher dispatch = request.getRequestDispatcher("settings.jsp?" + 
 				Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
 		dispatch.forward(request, response);
