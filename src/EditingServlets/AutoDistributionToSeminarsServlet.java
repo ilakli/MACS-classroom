@@ -39,7 +39,6 @@ public class AutoDistributionToSeminarsServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
@@ -47,7 +46,7 @@ public class AutoDistributionToSeminarsServlet extends HttpServlet {
 		
 		classroom.fillSeminarsWithFreeStudents();
 		
-		RequestDispatcher view = request.getRequestDispatcher("viewSectionsAndSeminars.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("editSectionsAndSeminars.jsp");
 		 
 		view.forward(request, response);  
 	}
