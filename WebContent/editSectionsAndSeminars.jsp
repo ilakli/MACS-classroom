@@ -132,7 +132,7 @@
                 	
                 	<form style = " margin: 10px 10px; "
                 	action=<%="RemoveSeminaristFromSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
-					 +"&sectionN ="+ seminar.getSeminarN()%> method="post">
+					 +"&seminarN="+ seminar.getSeminarN()%> method="post">
 					 	<p><%=seminaristName %></p>
 					 	<input type="submit" value ="Remove Seminarist">
 				 	</form>
@@ -167,7 +167,7 @@
                 for (Person student : seminarStudents){
                 	%>
                 	
-                	<li><input type="checkbox" name="students" value=<%=student.getEmail() %>>
+                	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
                 	<%
                 	out.println( student.getName() + " " + student.getSurname()+"</li>");
                 }
@@ -291,7 +291,7 @@
                 for (Person student : sectionStudents){
                 	%>
                 	
-                	<li><input type="checkbox" name="students" value=<%=student.getEmail() %>>
+                	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
                 	<%
                 	out.println( student.getName() + " " + student.getSurname()+"</li>");
                 }
