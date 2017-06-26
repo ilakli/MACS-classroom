@@ -19,8 +19,6 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <title>Sections And Seminars</title>
 </head>
@@ -233,42 +231,5 @@
         %>
     </div>
 	
-	<!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
-	<div class="container">
-		<form action="https://www.facebook.com">
-			<!-- Trigger the modal with a button -->
-			<button type="button" data-toggle="modal" data-target="#myModal">Add
-				Students</button>
-			<!-- Modal -->
-			<div class="modal fade" id="myModal" role="dialog">
-				<div class="modal-dialog">
-					<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal">&times;</button>
-							<h4 class="modal-title">Add Students</h4>
-						</div>
-						<div class="modal-body">
-							<p>Some text in the modal.</p>
-							<div class="emails">
-								<input type="text" value="" placeholder="Add Email" />
-								<button class="lecturerAddButton btn btn-success">Submit</button>
-								<input type="hidden" value="AddStudentToSectionServlet">
-							</div>
-
-							<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-							<script type="text/javascript" src='js/multiInput.js'></script>
-							<script type="text/javascript" src='js/lecturerAdd.js'></script>
-
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" 
-								data-dismiss="modal">Close</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
 </body>
 </html>
