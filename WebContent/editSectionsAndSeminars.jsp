@@ -168,10 +168,10 @@
                 <!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
 				<div class="container">
 					<!-- Trigger the modal with a button -->
-					<button type="button" data-toggle="modal" data-target="#myModal">Add
+					<button type="button" data-toggle="modal" data-target="#sem<%= seminar.getSeminarN() %>">Add
 						Students</button>
 					<!-- Modal -->
-					<div class="modal fade" id="myModal" role="dialog">
+					<div class="modal fade" id="sem<%= seminar.getSeminarN() %>" role="dialog">
 						<div class="modal-dialog">
 							<!-- Modal content-->
 							<div class="modal-content">
@@ -182,13 +182,11 @@
 								<div class="modal-body">
 									<div class="emails">
 										<input type="text" value="" placeholder="Add Email" />
-										<button class="lecturerAddButton btn btn-success">Submit</button>
-										<input type="hidden" value="AddStudentToSectionServlet">
+										<button class="studentAddSeminarButton btn btn-success">Submit</button>
+										<input type="hidden" value=<%out.print("\"" + seminar.getSeminarN() + "\""); %>>
+										<input type="hidden" value="AddStudentToSeminarServlet">
 									</div>
 			
-									<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-									<script type="text/javascript" src='js/multiInput.js'></script>
-									<script type="text/javascript" src='js/lecturerAdd.js'></script>
 			
 								</div>
 								<div class="modal-footer">
@@ -407,7 +405,7 @@
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 									<script type="text/javascript" src='js/multiInput.js'></script>
 									<script type="text/javascript" src='js/studentAddSection.js'></script>
-
+									<script type="text/javascript" src='js/studentAddSeminar.js'></script>
 
 </body>
 </html>
