@@ -13,7 +13,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/style.css">
+
 <title>About</title>
 </head>
 <body>
@@ -87,17 +89,6 @@
 			name="file" size="30" /> <input type="submit"
 			/ class="btn btn-success">
 	</form>
-	
-	<%
-		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
-		
-		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a);
-			out.println(htmlCode);
-		}
-	%>
-	
-	</br></br></br></br></br></br>
 	
 	<%
 		List<Material> materials = currentClassroom.getMaterials();
