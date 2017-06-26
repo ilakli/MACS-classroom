@@ -42,6 +42,7 @@ public class AddStudentToSectionServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Already Here");
 		int sectionN = Integer.parseInt(request.getParameter("sectionN"));
 		String studentEmail = request.getParameter("studentEmail");
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
@@ -51,7 +52,7 @@ public class AddStudentToSectionServlet extends HttpServlet {
 		Section currentSection = new Section(sectionN,classroomId);
 		
 		String emails[] = studentEmail.split("\\s+"); 
-		
+		System.out.println(classroomId + " " + studentEmail + " " + sectionN +" WE ARE GOOD");
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
