@@ -19,7 +19,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
+<link rel="stylesheet" href="css/sectionsAndSeminars.css">
 <title>Sections And Seminars</title>
 </head>
 <body>
@@ -100,135 +100,120 @@
 	
 
     <div class='seminar-boxes' >
-		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Seminar Groups</h1>
+		<h1 style = "background-color: #dfdae0; text-align: center;"> Seminar Groups</h1>
        
         <%
             for(Seminar seminar : seminars){
-                out.println("<div class='seminar-box'");  
-                out.println("style = \" color: white;\">");
-        
-                out.println("<p style = \" margin: 10px 10px;  \">Seminar " +  seminar.getSeminarN() + " </p> ");
-               	
-                out.println("<hr>");
-                
+            	%>
+                <div class='seminar-box'>
+                <p style = " margin: 10px 10px;  ">Seminar<%=seminar.getSeminarN() %> </p> 
+             	<hr>
+                <%
                 String seminaristName = "Seminarist Is Not Added Yet";
                	Person p = seminar.getSeminarist();
                 if(p!= null) seminaristName = p.getName() + " " + p.getSurname();
+                %>
+                <p style = " margin: 10px 10px;  "><%= seminaristName %> </p>
+              	<hr>
+               	<ul class='seminar-students'>
                 
-                out.println("<p style = \" margin: 10px 10px;  \">" + seminaristName +"  </p> ");
-               
-                out.println("<hr>");
-                out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
-                
-                
+                <%
                 List<Person> seminarStudents = seminar.getSeminarStudents();
 
                 for (Person student : seminarStudents){
                 	out.println("<li>"+ student.getName() + " " + student.getSurname()+"</li>");
                 }
 
-				out.println("</ul>");
-                   
-				out.println("</div>");
+				%>
+				
+				
+				</ul>
+				</div>
                 
+			<%
 
             }
-        
+        	%>
         	
-        
-        
-		        out.println("<div class='seminar-box'");  
-		        out.println("style = \" color: white;\">");
-		
-		        out.println("<p style = \" margin: 10px 10px;  \">Studens Without Seminar </p> ");
-		       	
-		        out.println("<hr>");
+		    	<div class='seminar-box'>
+		        <p style = " margin: 10px 10px;">Students Without Seminar </p>
+		        <hr>
+		        <p>  </p>
+		        <hr>
+		        <ul class='seminar-students' >
 		        
-		        
-		        out.println("<p style = \" margin: 10px 10px;  \">  </p> ");
-		       
-		        out.println("<hr>");
-		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
-		        
+		        <%
 		        for (Person student : studentsWithoutSeminar){
 		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
-				out.println("</ul>");
-		           
-				out.println("</div>");
+		        %>
+				</ul>
+                  
+				</div>
 		        
-        
-        
-        
-        %>
     </div>
 	
 	
 	
 	<div class='seminar-boxes'>
-   		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
+   		<h1 style = "background-color: #dfdae0; text-align: center; "> Sections</h1>
 
         <%
         	
             for(Section section : sections){
-                out.println("<div class='seminar-box'");  
-                out.println("style = \" color: white;\">");
-        
-                out.println("<p style = \" margin: 10px 10px;  \">Section " +  section.getSectionN() + " </p> ");
-               	
-                out.println("<hr>");
+            	%>
+            	<div class='seminar-box'>
+               	<p style = " margin: 10px 10px;">Section <%=section.getSectionN()%></p>
+                <hr>
+                <%
                 
                 String sectionLeaderName = "Section Leader Is Not Added Yet";
                 Person p = section.getSectionLeader();
                 if(p!= null) sectionLeaderName = p.getName();
                 
-                out.println("<p style = \" margin: 10px 10px;  \">" + sectionLeaderName + "  </p> ");
-               
-                out.println("<hr>");
-                out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
+                %>
+                <p style = " margin: 10px 10px; "><%=sectionLeaderName %> </p>
+                <hr>
+                <ul class='seminar-students' >
+                <%
                 
                 List<Person> sectionStudents = section.getSectionStudents();
                 for (Person student : sectionStudents){
                 	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
                 	
                 }
-
-				out.println("</ul>");
+				%>
+				</ul>
                    
-				out.println("</div>");
+				</div>
                 
                 
                 
-                
+            <%   
                 
             }
         
-        
-		        out.println("<div class='seminar-box'");  
-		        out.println("style = \" color: white;\">");
-		
-		        out.println("<p style = \" margin: 10px 10px;  \">Studens Without Section </p> ");
-		       	
-		        out.println("<hr>");
-		        
-		        
-		        out.println("<p style = \" margin: 10px 10px;  \">   </p> ");
-		       
-		        out.println("<hr>");
-		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
-		        
+        	%>
+		        <div class='seminar-box' >
+		        <p style = " margin: 10px 10px;  ">Students Without Section </p>
+		        <hr>
+		         <p style = " margin: 10px 10px;  ">  </p>
+		        <hr>
+		        <ul class='seminar-students' >
+		      
+		       <% 
 		        for (Person student : studentsWithoutSection){
 		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
-				out.println("</ul>");
-		           
-				out.println("</div>");
-				
-        %>
+		       %>
+				</ul>
+                  
+				</div>
+    
     </div>
 	
 </body>

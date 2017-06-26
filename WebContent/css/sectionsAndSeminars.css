@@ -1,0 +1,38 @@
+@CHARSET "ISO-8859-1";
+
+
+.seminar-box {
+	background-color: #dfdae0;
+	width: 23%;
+	max-width: 23%;
+	min-width: 20%;
+	margin: 1%;
+	float: left;
+	overflow:scroll; 
+	height:400px;
+	margin: 10px, 10px;
+}
+
+.seminar-boxes {
+	color: black;
+	display: table;
+	max-width: 100%;
+	width: 95%;
+	min-height: 50px;
+	padding: auto;
+	margin: 10px, 10px;
+}
+
+.seminar-boxes>p{
+	margin: 10px, 10px;
+}
+ul.seminar-students {
+	list-style-type: none;
+	margin: 10px 10px;
+}
+
+
+ul {
+	list-style: none;
+	padding: 0;
+}

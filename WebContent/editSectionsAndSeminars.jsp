@@ -18,7 +18,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/sectionsAndSeminars.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -106,7 +106,7 @@
 	
 
     <div class='seminar-boxes' >
-		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Seminar Groups</h1>
+		<h1 style = "background-color: #dfdae0; text-align: center;"> Seminar Groups</h1>
        
        	<form action=<%="ManualDistributionToSeminarsServlet?" 
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
@@ -117,17 +117,19 @@
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
     		<input type="submit" value="Automatically Distribute Students To Seminars" />
 		</form>
+        
+        
         <%
             for(Seminar seminar : seminars){
-                out.println("<div class='seminar-box'");  
-                out.println("style = \" color: white;\">");
-        
-                out.println("<p style = \" margin: 10px 10px;  \">Seminar " +  seminar.getSeminarN() + " </p> ");
-               	
-                out.println("<hr>");
+            	
+        %>
+            	
+              	<div class='seminar-box'>
+               	<p style = " margin: 10px 10px;">Seminar <%=seminar.getSeminarN()%></p>
+                <hr>
                 
-                
-               	Person p = seminar.getSeminarist();
+                <%
+                Person p = seminar.getSeminarist();
                 if(p!= null) {
                 	String seminaristName = p.getName() + " " + p.getSurname();
                 	
@@ -151,19 +153,56 @@
         				<input type="submit" value ="Set Seminarist">
         			</form>
                         	
-                     <hr>
+                    <hr>
                 	<%
                 }
                 
                 
-                out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
+                
                 
                 
                 List<Person> seminarStudents = seminar.getSeminarStudents();
 
                 %>
+                
+                <!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+				<div class="container">
+					<!-- Trigger the modal with a button -->
+					<button type="button" data-toggle="modal" data-target="#myModal">Add
+						Students</button>
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" role="dialog">
+						<div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Add Students</h4>
+								</div>
+								<div class="modal-body">
+									<div class="emails">
+										<input type="text" value="" placeholder="Add Email" />
+										<button class="lecturerAddButton btn btn-success">Submit</button>
+										<input type="hidden" value="AddStudentToSectionServlet">
+									</div>
+			
+									<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+									<script type="text/javascript" src='js/multiInput.js'></script>
+									<script type="text/javascript" src='js/lecturerAdd.js'></script>
+			
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			                
+                
+                <ul class='seminar-students' >
                 <form action=<%="RemoveStudentsFromSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
-				 +"&seminarN="+ seminar.getSeminarN()%> method="post">
+				+"&seminarN="+ seminar.getSeminarN()%> method="post">
   
   
                 <%
@@ -192,40 +231,34 @@
             }
         
         	
-        
-        
-		        out.println("<div class='seminar-box'");  
-		        out.println("style = \" color: white;\">");
-		
-		        out.println("<p style = \" margin: 10px 10px;  \">Studens Without Seminar </p> ");
-		       	
-		        out.println("<hr>");
-		        
-		        
-		        out.println("<p style = \" margin: 10px 10px;  \">  </p> ");
-		       
-		        out.println("<hr>");
-		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
-		        
+     %>
+       
+       			<div class='seminar-box'>
+		        <p style = " margin: 10px 10px;">Students Without Seminar </p>
+		        <hr>
+		        <p>  </p>
+		        <hr>
+		        <ul class='seminar-students' >
+		        <%
 		        for (Person student : studentsWithoutSeminar){
 		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
 		
-				out.println("</ul>");
-		           
-				out.println("</div>");
+		        %>
+		        </ul>
+		    	</div>
 		        
         
         
         
-        %>
+       
     </div>
 	
 	
 	
 	<div class='seminar-boxes'>
-   		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
+   		<h1 style = "background-color: #dfdae0; text-align: center; "> Sections</h1>
        
        	<form action=<%="ManualDistributionToSectionsServlet?" 
 					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
@@ -239,14 +272,12 @@
         <%
         	
             for(Section section : sections){
-                out.println("<div class='seminar-box'");  
-                out.println("style = \" color: white;\">");
-        
-                out.println("<p style = \" margin: 10px 10px;  \">Section " +  section.getSectionN() + " </p> ");
-               	
-                out.println("<hr>");
+            	%>
+            	<div class='seminar-box'>
+               	<p style = " margin: 10px 10px;">Section <%=section.getSectionN()%></p>
+                <hr>
                 
-                
+                <%
                 Person p = section.getSectionLeader();
                 
                 if(p!= null) {
@@ -277,7 +308,7 @@
                 }
                 
            
-                out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
+                
                 
                 List<Person> sectionStudents = section.getSectionStudents();
 
@@ -286,13 +317,51 @@
 
                 
                 
+                
+                <!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+				<div class="container">
+					<!-- Trigger the modal with a button -->
+					<button type="button" data-toggle="modal" data-target="#myModal">Add
+						Students</button>
+					<!-- Modal -->
+					<div class="modal fade" id="myModal" role="dialog">
+						<div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Add Students</h4>
+								</div>
+								<div class="modal-body">
+									<div class="emails">
+										<input type="text" value="" placeholder="Add Email" />
+										<button class="lecturerAddButton btn btn-success">Submit</button>
+										<input type="hidden" value="AddStudentToSectionServlet">
+									</div>
+			
+									<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+									<script type="text/javascript" src='js/multiInput.js'></script>
+									<script type="text/javascript" src='js/lecturerAdd.js'></script>
+			
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+                
+                
+                
+              	<ul class='seminar-students'>
                 <form action=<%="RemoveStudentsFromSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
                 +"&sectionN="+ section.getSectionN()%> method="post">
   
   
                 <%
                 for (Person student : sectionStudents){
-                	%>
+                %>
                 	
                 	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
                 	<%
@@ -315,71 +384,27 @@
      
             }
         
-        
-		        out.println("<div class='seminar-box'");  
-		        out.println("style = \" color: white;\">");
-		
-		        out.println("<p style = \" margin: 10px 10px;  \">Studens Without Section </p> ");
-		       	
-		        out.println("<hr>");
-		        
-		        
-		        out.println("<p style = \" margin: 10px 10px;  \">   </p> ");
-		       
-		        out.println("<hr>");
-		        out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
-		        
+        %>
+	        <div class='seminar-box' >
+	        <p style = " margin: 10px 10px;  ">Students Without Section </p>
+	        <hr>
+	         <p style = " margin: 10px 10px;  ">  </p>
+	        <hr>
+	        <ul class='seminar-students' >
+    
+		    <%    
 		        for (Person student : studentsWithoutSection){
 		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
 		        	
 		        }
-		
-				out.println("</ul>");
-		           
-				out.println("</div>");
+		    %>
+			</ul>
+		</div>
 				
-        %>
+       		 
     </div>
 
-	<!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
-	<div class="container">
-		<!-- Trigger the modal with a button -->
-		<button type="button" data-toggle="modal" data-target="#myModal">Add
-			Students</button>
-		<!-- Modal -->
-		<div class="modal fade" id="myModal" role="dialog">
-			<div class="modal-dialog">
-				<!-- Modal content-->
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal">&times;</button>
-						<h4 class="modal-title">Add Students</h4>
-					</div>
-					<div class="modal-body">
-						<div class="emails">
-							<input type="text" value="" placeholder="Add Email" />
-							<button class="lecturerAddButton btn btn-success">Submit</button>
-							<input type="hidden" value="AddStudentToSectionServlet">
-						</div>
-
-						<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-						<script type="text/javascript" src='js/multiInput.js'></script>
-						<script type="text/javascript" src='js/lecturerAdd.js'></script>
-
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
-
-
+	
 
 
 
