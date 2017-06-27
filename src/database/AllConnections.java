@@ -13,6 +13,9 @@ public class AllConnections {
 	public SeminaristDB seminaristDB;
 	public StudentDB studentDB;
 	public AssignmentDB assignmentDB;
+	public FunctionDB functionDB;
+	public PositionDB positionDB;
+	
 	
 	public AllConnections() {
 		classroomDB = new ClassroomDB();
@@ -27,5 +30,7 @@ public class AllConnections {
 		seminaristDB = new SeminaristDB();
 		studentDB = new StudentDB();
 		assignmentDB = new AssignmentDB();
+		functionDB = new FunctionDB();
+		positionDB = new PositionDB();
 	}
 }

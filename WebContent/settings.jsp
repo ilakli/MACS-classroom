@@ -1,5 +1,8 @@
+<%@page import="org.apache.catalina.connector.Connector"%>
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
+<%@page import="defPackage.Function"%>
+<%@page import="defPackage.Position"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="database.DBConnection"%>
@@ -18,10 +21,12 @@
 <title>Settings</title>
 </head>
 <body>
+
 	<%!private String checkboxValue(boolean b){
 		if (b) return "checked";
 		return "";
 	}%>
+	
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
 
@@ -44,8 +49,11 @@
 		boolean autoSectionDistribution = currentClassroom.areSectionsAudoDistributed();
 		int numberOfReschedulings = currentClassroom.getNumberOfReschedulings();
 		int reschedulingLength = currentClassroom.getReschedulingLength();
+		
+		ArrayList<Function> functions = connector.functionDB.getAllFunctions();
+		ArrayList<Position> positions = connector.positionDB.getAllPositions();
 	%>
-
+	
 	<div class="jumbotron">
 		<h2>
 			<a href="index.jsp" id="header-name">Macs Classroom</a>
@@ -151,29 +159,37 @@
 		    <thead>
 		      <tr>
 		        <th></th>
-		        <th>Lecturers</th>
-		        <th>Seminarists</th>
-		        <th>Section Leaders</th>
-		        <th>Strudents</th> 
+		        <%
+		        	for (int i=0; i<positions.size(); i++) {
+		        		Position p = positions.get(i);
+		        		out.println("<th>" + p.getName() + "</th>");	
+		        	}
+		        %>
 		      </tr>
 		    </thead>
 		    <tbody>
-		      <tr>
-		        <th>Add Post</th>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		      </tr>
-		      <tr>
-		        <th>Add File</th>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		        <td> <input type="checkbox"> </td>
-		      </tr>
-		    
-		      </tbody>
+		      <%
+			      for(Function f : functions){
+			    	  out.println("<tr>");
+			    	  out.println("<th>" + f.getName() + "</th>");
+			    	  /*out.println("<td> <input type=\"checkbox\"> </td>" +
+			    	  			  "<td> <input type=\"checkbox\"> </td>" +
+			    	  			  "<td> <input type=\"checkbox\"> </td>" +
+			    	  			  "<td> <input type=\"checkbox\"> </td>");
+					  */
+					  
+					  for (int i=0; i<positions.size(); i++) {
+			        		Position p = positions.get(i);
+			        		out.println("<td> <input type=\"checkbox\"" + 
+			        				checkboxValue(connector.functionDB.hasPremission(currentClassroom, p, f)) + "> </td>");
+			          }
+			    	  
+			    	  
+			    	  out.println("</tr>");
+			      }
+		       %> 
+		      
+		     </tbody>
 		</table>
 		
 		

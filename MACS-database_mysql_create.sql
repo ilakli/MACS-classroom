@@ -200,10 +200,12 @@ CREATE TABLE `positions` (
 	PRIMARY KEY (`position_id`)
 );
 
-CREATE TABLE `position_function` (
-	`position_id` INT NULL,
-	`function_id` INT NULL,
-	UNIQUE KEY `unique0` (`position_id`, `function_id`),
+CREATE TABLE `classroom_position_function` (
+	`classroom_id` INT NOT NULL,
+	`position_id` INT NOT NULL,
+	`function_id` INT NOT NULL,
+	UNIQUE KEY `unique0` (`classroom_id`, `position_id`, `function_id`),
+	CONSTRAINT `FK__classrooms` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
 	CONSTRAINT `FK__positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`position_id`),
 	CONSTRAINT `FK__functions` FOREIGN KEY (`function_id`) REFERENCES `functions` (`function_id`)
 );
@@ -223,18 +225,4 @@ insert into `functions` (`function_name`) values
 	('review assignments of students from their group'),
 	('add classroom materials'); 
 
-insert into `position_function` values
-	(1, 1),
-	(2, 1),
-	(3, 1),
-	(4, 1),
-	(1, 2),
-	(1, 3),
-	(1, 4),
-	(1, 5),
-	(2, 5),
-	(3, 5), 
-	(1, 6),
-	(2, 6),
-	(3, 6);
 
