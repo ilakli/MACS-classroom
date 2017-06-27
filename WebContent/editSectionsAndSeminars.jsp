@@ -130,12 +130,35 @@
                 	<%
                 }else{
                 	%>
-                	<form style = " margin: 10px 10px; "
-                    action=<%="AddSeminaristToSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
-        			+"&seminarN="+ Integer.toString(seminar.getSeminarN())%> method="post">
-        					 	
-        				<input type="submit" value ="Set Seminarist">
-        			</form>
+                	<div class="container">
+					<!-- Trigger the modal with a button -->
+					<button type="button" data-toggle="modal" data-target="#seminarist<%=seminar.getSeminarN()%>">Set Seminarist</button>
+					<!-- Modal -->
+					<div class="modal fade" id="seminarist<%= seminar.getSeminarN() %>" role="dialog">
+						<div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Add Students</h4>
+								</div>
+								<div class="modal-body">
+									<div class="emails">
+										<input type="text" value="" placeholder="Add Email" />
+										<button class="seminaristSetButton btn btn-success">Submit</button>
+										<input type="hidden" value=<%out.print("\"" + seminar.getSeminarN() + "\""); %>>
+										<input type="hidden" value="AddSeminaristToSeminarServlet">
+									</div>
+								
+											
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
                         	
                     <hr>
                 	<%

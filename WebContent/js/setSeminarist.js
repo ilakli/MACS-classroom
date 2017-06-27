@@ -7,7 +7,7 @@ String.prototype.replaceAll = function(search, replacement) {
 
 $(document).ready(function() { 
 
-	$(".sectionLeaderSetButton").on('click', function() {
+	$(".seminaristSetButton").on('click', function() {
 		
 		
 		
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
 
 		
-		var sectionN = $(this).next().val();
+		var seminarN = $(this).next().val();
 		
 		
 		var servlet = $(this).next().next().val();
@@ -48,8 +48,8 @@ $(document).ready(function() {
 			url : servlet,
 			type: 'POST',
 			data: {
-				sectionLeaderEmail: str,
-				sectionN: sectionN,
+				seminaristEmail: str,
+				seminarN: seminarN,
 				classroomID: classroomId
 			},
 			success : function(result) {
