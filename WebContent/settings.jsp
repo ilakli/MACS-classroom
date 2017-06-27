@@ -78,6 +78,9 @@
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
 			<li class="active"><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
+			<li><a
+				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+				Edit Sections And Seminars</a></li>
 		</ul>
 	</div>
 	</nav>
