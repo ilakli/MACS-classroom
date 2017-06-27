@@ -95,30 +95,12 @@
 	</nav>
 	
 	
-	<!-- 	
-	<form action=<%="EditSectionsAndSeminarsServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
-    	<input type="submit" value="Edit" />
-	</form>
-	
-	
-	
-	-->
+
 	
 
     <div class='seminar-boxes' >
 		<h1 style = "background-color: #dfdae0; text-align: center;"> Seminar Groups</h1>
-       
-       	<form action=<%="ManualDistributionToSeminarsServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
-    		<input type="submit" value="Manually Distribute Students To Seminars" />
-		</form>
-		
-		<form action=<%="AutoDistributionToSeminarsServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
-    		<input type="submit" value="Automatically Distribute Students To Seminars" />
-		</form>
-        
+
         
         <%
             for(Seminar seminar : seminars){
@@ -210,7 +192,7 @@
                 	
                 	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
                 	<%
-                	out.println( student.getName() + " " + student.getSurname()+"</li>");
+                	out.println(student.getEmail()+"</li>");
                 }
 
 				
@@ -235,12 +217,15 @@
        			<div class='seminar-box'>
 		        <p style = " margin: 10px 10px;">Students Without Seminar </p>
 		        <hr>
-		        <p>  </p>
+		       	<form  style = " margin: 10px 10px;" action=<%="AutoDistributionToSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    				<input type="submit" value="Auto Distribution" />
+				</form>
 		        <hr>
 		        <ul class='seminar-students' >
 		        <%
 		        for (Person student : studentsWithoutSeminar){
-		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
+		        	out.println("<li>"+ student.getEmail()+ "</li>");
 		        	
 		        }
 		
@@ -258,16 +243,8 @@
 	
 	<div class='seminar-boxes'>
    		<h1 style = "background-color: #dfdae0; text-align: center; "> Sections</h1>
-       
-       	<form action=<%="ManualDistributionToSectionsServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
-    		<input type="submit" value="Manually Distribute Students To Sections" />
-		</form>
 		
-		<form action=<%="AutoDistributionToSectionsServlet?" 
-					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
-    		<input type="submit" value="Automatically Distribute Students To Sections" />
-		</form>
+		
         <%
         	
             for(Section section : sections){
@@ -362,7 +339,7 @@
                 	
                 	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
                 	<%
-                	out.println( student.getName() + " " + student.getSurname()+"</li>");
+                	out.println(student.getEmail()+"</li>");
                 }
                 
                 if(!sectionStudents.isEmpty()){
@@ -385,13 +362,16 @@
 	        <div class='seminar-box' >
 	        <p style = " margin: 10px 10px;  ">Students Without Section </p>
 	        <hr>
-	         <p style = " margin: 10px 10px;  ">  </p>
+	        <form  style = " margin: 10px 10px; " action=<%="AutoDistributionToSectionsServlet?" 
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    			<input type="submit" value="Auto Distribution" />
+			</form>
 	        <hr>
 	        <ul class='seminar-students' >
     
 		    <%    
 		        for (Person student : studentsWithoutSection){
-		        	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
+		        	out.println("<li>"+ student.getEmail()+"</li>");
 		        	
 		        }
 		    %>
