@@ -13,6 +13,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/settings.css">
 <title>Settings</title>
 </head>
 <body>
@@ -144,8 +145,40 @@
 				<td height="50" ><input type="submit" name="save" value="Save"></td>
 			</tr>
 		</table>
+		
+		<table>
+		    <thead>
+		      <tr>
+		        <th></th>
+		        <th>Lecturers</th>
+		        <th>Seminarists</th>
+		        <th>Section Leaders</th>
+		        <th>Strudents</th> 
+		      </tr>
+		    </thead>
+		    <tbody>
+		      <tr>
+		        <th>Add Post</th>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		      </tr>
+		      <tr>
+		        <th>Add File</th>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		        <td> <input type="checkbox"> </td>
+		      </tr>
+		    
+		      </tbody>
+		</table>
+		
+		
 		<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME  %> value = <%= classroomID %>>  
 	</form>
+	
 	
 </body>
 </html>
