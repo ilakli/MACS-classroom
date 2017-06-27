@@ -10,10 +10,6 @@
 <html>
 <head>
 
-<meta name="google-signin-scope" content="profile email">
-<meta name="google-signin-client_id"
-	content="127282049380-isld6v6lrvjeqk5nrq8o9qjquk5bp0ig.apps.googleusercontent.com">
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
@@ -35,7 +31,7 @@
 	}
 </script>
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-<script type="text/javascript" src='js/gmail.js'></script>
+
 
 </head>
 <body>
@@ -91,7 +87,7 @@
 		out.println("</div>");
 	%>
 
-	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+	
 
 
 	<%-- 

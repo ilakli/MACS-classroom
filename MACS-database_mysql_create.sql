@@ -20,7 +20,9 @@ DROP TABLE IF EXISTS `classroom_assignments`;
 DROP TABLE IF EXISTS `classrooms`;
 DROP TABLE IF EXISTS `lecturers`;
 DROP TABLE IF EXISTS `persons`;
-
+DROP TABLE IF EXISTS `positions`;
+DROP TABLE IF EXISTS `functions`;
+DROP TABLE IF EXISTS `position_function`;
 
 CREATE TABLE `persons` (
 	`person_id` INT NOT NULL AUTO_INCREMENT,
@@ -185,3 +187,54 @@ CREATE TABLE `section-section_leader` (
 	CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`),
 	CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
 );
+
+CREATE TABLE `functions` (
+	`function_id` INT(11) NOT NULL AUTO_INCREMENT,
+	`function_name` VARCHAR(100) NOT NULL,
+	PRIMARY KEY (`function_id`)
+);
+
+CREATE TABLE `positions` (
+	`position_id` INT NOT NULL AUTO_INCREMENT,
+	`position_name` VARCHAR(50) NULL,
+	PRIMARY KEY (`position_id`)
+);
+
+CREATE TABLE `position_function` (
+	`position_id` INT NULL,
+	`function_id` INT NULL,
+	UNIQUE KEY `unique0` (`position_id`, `function_id`),
+	CONSTRAINT `FK__positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`position_id`),
+	CONSTRAINT `FK__functions` FOREIGN KEY (`function_id`) REFERENCES `functions` (`function_id`)
+);
+
+
+insert into `positions` (`position_name`) values 
+	('lecturer'),
+	('seminarist'),
+	('section-leader'),
+	('student');
+
+insert into `functions` (`function_name`) values
+	('add posts'),
+	('distribute students to seminars'),
+	('distribute students to sections'),
+	('add new assignments'),
+	('review assignments of students from their group'),
+	('add classroom materials'); 
+
+insert into `position_function` values
+	(1, 1),
+	(2, 1),
+	(3, 1),
+	(4, 1),
+	(1, 2),
+	(1, 3),
+	(1, 4),
+	(1, 5),
+	(2, 5),
+	(3, 5), 
+	(1, 6),
+	(2, 6),
+	(3, 6);
+
