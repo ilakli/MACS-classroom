@@ -272,12 +272,36 @@
                 	<%
                 }else{
                 	%>
-                	<form style = " margin: 10px 10px; "
-                    action=<%="AddSectionLeaderToSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
-        			+"&sectionN="+ section.getSectionN()%> method="post">
-        					 	
-        			<input type="submit" value ="Set Section Leader">
-        			</form>
+                	<!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
+				<div class="container">
+					<!-- Trigger the modal with a button -->
+					<button type="button" data-toggle="modal" data-target="#seclead<%=section.getSectionN()%>">Set Section Leader</button>
+					<!-- Modal -->
+					<div class="modal fade" id="seclead<%= section.getSectionN() %>" role="dialog">
+						<div class="modal-dialog">
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+									<h4 class="modal-title">Set Section Leader</h4>
+								</div>
+								<div class="modal-body">
+									<div class="emails">
+										<input type="text" value="" placeholder="Add Email" />
+										<button class="sectionLeaderSetButton btn btn-success">Submit</button>
+										<input type="hidden" value=<%out.print("\"" + section.getSectionN() + "\""); %>>
+										<input type="hidden" value="AddSectionLeaderToSectionServlet">
+									</div>
+								
+											
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
                         	
                      <hr>
                 	<%
@@ -297,10 +321,10 @@
                 <!-- this part was taken from https://www.w3schools.com/bootstrap/bootstrap_modal.asp -->
 				<div class="container">
 					<!-- Trigger the modal with a button -->
-					<button type="button" data-toggle="modal" data-target="#<%=section.getSectionN()%>">Add
+					<button type="button" data-toggle="modal" data-target="#sec<%=section.getSectionN()%>">Add
 						Students</button>
 					<!-- Modal -->
-					<div class="modal fade" id="<%= section.getSectionN() %>" role="dialog">
+					<div class="modal fade" id="sec<%= section.getSectionN() %>" role="dialog">
 						<div class="modal-dialog">
 							<!-- Modal content-->
 							<div class="modal-content">
@@ -387,6 +411,7 @@
 									<script type="text/javascript" src='js/multiInput.js'></script>
 									<script type="text/javascript" src='js/studentAddSection.js'></script>
 									<script type="text/javascript" src='js/studentAddSeminar.js'></script>
-
+									<script type="text/javascript" src='js/setSectionLeader.js'></script>
+									<script type="text/javascript" src='js/setSeminarist.js'></script>
 </body>
 </html>
