@@ -237,6 +237,8 @@ to {
 	min-width: 20%;
 	margin: 1%;
 	float: left;
+	overflow:scroll; 
+	height:400px;
 }
 
 .seminar-boxes {

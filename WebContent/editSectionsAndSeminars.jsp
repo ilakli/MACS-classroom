@@ -18,9 +18,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/style.css">
-<title>Sections And Seminars</title>
+<title>Edit Sections And Seminars</title>
 </head>
 <body>
 	<%
@@ -72,7 +71,7 @@
 		<ul class="nav navbar-nav">
 			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
-			<li class="active"><a
+			<li><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
 			<li><a
@@ -83,6 +82,10 @@
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
 			<li><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
+			<li class="active"><a
+				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+				Edit Sections And Seminars</a></li>
+			<li>
 		</ul>
 	</div>
 	</nav>
@@ -102,6 +105,15 @@
     <div class='seminar-boxes' >
 		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Seminar Groups</h1>
        
+       	<form action=<%="ManualDistributionToSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Manually Distribute Students To Seminars" />
+		</form>
+		
+		<form action=<%="AutoDistributionToSeminarsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Automatically Distribute Students To Seminars" />
+		</form>
         <%
             for(Seminar seminar : seminars){
                 out.println("<div class='seminar-box'");  
@@ -111,27 +123,69 @@
                	
                 out.println("<hr>");
                 
-                String seminaristName = "Seminarist Is Not Added Yet";
-               	Person p = seminar.getSeminarist();
-                if(p!= null) seminaristName = p.getName() + " " + p.getSurname();
                 
-                out.println("<p style = \" margin: 10px 10px;  \">" + seminaristName +"  </p> ");
-               
-                out.println("<hr>");
+               	Person p = seminar.getSeminarist();
+                if(p!= null) {
+                	String seminaristName = p.getName() + " " + p.getSurname();
+                	
+                	%>
+                	
+                	<form style = " margin: 10px 10px; "
+                	action=<%="RemoveSeminaristFromSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+					 +"&seminarN="+ seminar.getSeminarN()%> method="post">
+					 	<p><%=seminaristName %></p>
+					 	<input type="submit" value ="Remove Seminarist">
+				 	</form>
+                	
+                	<hr>
+                	<%
+                }else{
+                	%>
+                	<form style = " margin: 10px 10px; "
+                    action=<%="AddSeminaristToSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+        			+"&seminarN="+ Integer.toString(seminar.getSeminarN())%> method="post">
+        					 	
+        				<input type="submit" value ="Set Seminarist">
+        			</form>
+                        	
+                     <hr>
+                	<%
+                }
+                
+                
                 out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
                 
                 
                 List<Person> seminarStudents = seminar.getSeminarStudents();
 
+                %>
+                <form action=<%="RemoveStudentsFromSeminarServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+				 +"&seminarN="+ seminar.getSeminarN()%> method="post">
+  
+  
+                <%
                 for (Person student : seminarStudents){
-                	out.println("<li>"+ student.getName() + " " + student.getSurname()+"</li>");
+                	%>
+                	
+                	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
+                	<%
+                	out.println( student.getName() + " " + student.getSurname()+"</li>");
                 }
 
-				out.println("</ul>");
-                   
-				out.println("</div>");
+				
+                if(!seminarStudents.isEmpty()){
+                	
+                %>
+                	<li><input type="submit" value="Remove Students"></ul>
+                <%
+                }
+				%>
+				
+				</form>
+				</ul>
+	</div>
                 
-
+	<%
             }
         
         	
@@ -169,7 +223,16 @@
 	
 	<div class='seminar-boxes'>
    		<h1 style = "background-color: #dfdae0; margin: 0 0; text-align: center; color: white;"> Sections</h1>
-
+       
+       	<form action=<%="ManualDistributionToSectionsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Manually Distribute Students To Sections" />
+		</form>
+		
+		<form action=<%="AutoDistributionToSectionsServlet?" 
+					+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID %>  method="post">
+    		<input type="submit" value="Automatically Distribute Students To Sections" />
+		</form>
         <%
         	
             for(Section section : sections){
@@ -180,29 +243,73 @@
                	
                 out.println("<hr>");
                 
-                String sectionLeaderName = "Section Leader Is Not Added Yet";
-                Person p = section.getSectionLeader();
-                if(p!= null) sectionLeaderName = p.getName();
                 
-                out.println("<p style = \" margin: 10px 10px;  \">" + sectionLeaderName + "  </p> ");
-               
-                out.println("<hr>");
+                Person p = section.getSectionLeader();
+                
+                if(p!= null) {
+                	String sectionLeaderName = p.getName() + " " + p.getSurname();
+                	
+                	%>
+                	
+                	<form style = " margin: 10px 10px;" 
+                	action=<%="RemoveSectionLeaderFromSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+					 +"&sectionN="+ section.getSectionN()%> method="post">
+					 	<p><%=sectionLeaderName %></p>
+					 	<input type="submit" value ="Remove Section Leader">
+				 	</form>
+                	
+                	<hr>
+                	<%
+                }else{
+                	%>
+                	<form style = " margin: 10px 10px; "
+                    action=<%="AddSectionLeaderToSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+        			+"&sectionN="+ section.getSectionN()%> method="post">
+        					 	
+        			<input type="submit" value ="Set Section Leader">
+        			</form>
+                        	
+                     <hr>
+                	<%
+                }
+                
+           
                 out.println("<ul class='seminar-students' style = \" margin: 10px 10px;  \" >");
                 
                 List<Person> sectionStudents = section.getSectionStudents();
-                for (Person student : sectionStudents){
-                	out.println("<li>"+ student.getName() + " " + student.getSurname() +"</li>");
-                	
-                }
 
-				out.println("</ul>");
-                   
-				out.println("</div>");
+                %>
+                
+
                 
                 
+                <form action=<%="RemoveStudentsFromSectionServlet?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+                +"&sectionN="+ section.getSectionN()%> method="post">
+  
+  
+                <%
+                for (Person student : sectionStudents){
+                	%>
+                	
+                	<li><input type="checkbox" name="studentsEmails" value=<%=student.getEmail() %>>
+                	<%
+                	out.println( student.getName() + " " + student.getSurname()+"</li>");
+                }
                 
-                
-                
+                if(!sectionStudents.isEmpty()){
+                	
+                    %>
+                    	<li><input type="submit" value="Remove Students"></ul>
+                    <%
+                    }
+    				%>
+    				
+    				</form>
+    				</ul>
+    	</div>
+                    
+    	<%
+     
             }
         
         
