@@ -146,61 +146,6 @@
 	%>
 	
 	
-	<style>
-    .dialog{
-        width:100%;
-        height:100%;
-        background-color: rgba(25,25,25, 0.7);
-        display: none;
-        position: absolute;
-        z-index: 10000;
-    }
- 
-    .dialogBackground{
-        position:absolute;
-        width:100%;
-        height:100%;
-        background-color: rgba(25,25,25, 0.7);
-    }
- 
-    .dialogWindow{
-        background-color: white;
-        width:400px;
-        height: 600px;
-        margin: 0 auto;
-        position:relative;
-        top:50%;
-        -webkit-transform: translateY(-50%);
-        -moz-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        -o-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
- 
-    .dialogClose{
-        float:right;
-    }
-</style>
-<div class="dialog">
-    <div class="dialogBackground" onclick="hideDialog()"></div>
-    <div class="dialogWindow">
-        <button class="dialogClose" onclick="hideDialog()">X</button>
-    </div>
-</div>
-<div class="main">
-    <button onclick="showDialog()">show dialog</button>
-</div>
-<script>
-    function showDialog(){
-        document.querySelectorAll(".dialog")[0].style.display = "block";
-        document.querySelectorAll("body")[0].style.overflow = "hidden";
-    }
- 
-    function hideDialog(){
-        document.querySelectorAll(".dialog")[0].style.display = "none";
-        document.querySelectorAll("body")[0].style.overflow = "scroll";
-    }
-</script>
 
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
