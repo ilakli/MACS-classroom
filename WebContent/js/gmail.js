@@ -16,7 +16,7 @@ function onSignIn(googleUser) {
 			email: email
 		},
 		success : function(result) {
-			
+			window.location = "index.jsp"
 		}
 	});
 };
