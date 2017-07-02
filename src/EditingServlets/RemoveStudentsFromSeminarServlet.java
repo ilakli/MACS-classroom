@@ -42,8 +42,10 @@ public class RemoveStudentsFromSeminarServlet extends HttpServlet {
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
-		for (String email: emails) {
-			connection.seminarDB.deleteStudentFromSeminar(seminarN, email, classroomId);
+		if (emails != null) {
+			for (String email: emails) {
+				connection.seminarDB.deleteStudentFromSeminar(seminarN, email, classroomId);
+			}			
 		}
 		
 		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
