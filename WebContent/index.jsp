@@ -56,20 +56,7 @@
 	<%if (isAdmin){ %>
 		<button id="create" type="submit" class="btn btn-danger"
 			onclick="redirectLecturer()">Add New Lecturer</button>
-	<%}%>
-	
-	<!--  Given a person generates list item containing persons name, surname and email -->
-	<%!
-		private String printPersonInfo(Person currentPerson) {
-		String result = "<li><h5>";
-		result = result + currentPerson.getEmail() + " " + currentPerson.getName() + " " + currentPerson.getSurname();
-		result = result + "</h5></li>";
-		
-		return result;
-	}
-	%>
-	
-	<%
+			<%
 		System.out.println("First Step");
 	
 		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
@@ -95,6 +82,20 @@
 		out.println("</ul>");
 		out.println("</div>");
 	%>
+	<%}%>
+	
+	<!--  Given a person generates list item containing persons name, surname and email -->
+	<%!
+		private String printPersonInfo(Person currentPerson) {
+		String result = "<li><h5>";
+		result = result + currentPerson.getEmail() + " " + currentPerson.getName() + " " + currentPerson.getSurname();
+		result = result + "</h5></li>";
+		
+		return result;
+	}
+	%>
+	
+	
 
 	
 
