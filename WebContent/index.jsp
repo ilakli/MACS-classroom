@@ -38,7 +38,11 @@
 	<%
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		LecturerDB lecturerDB = connector.lecturerDB;
+		ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
+		
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isGlobalLecturer = globalLecturers.contains(currentPerson);
 		
 	%>
 
@@ -49,26 +53,18 @@
 	</div>
 
 
-
+	<%if (isAdmin || isGlobalLecturer) { %>
 	<button id="create" type="submit" class="btn btn-danger"
 		onclick="redirectClassroom()">Create New Classroom</button>
-
+	<%}%>
 	
 	<%if (isAdmin){ %>
 		<button id="create" type="submit" class="btn btn-danger"
 			onclick="redirectLecturer()">Add New Lecturer</button>
 			<%
-		System.out.println("First Step");
-	
+		
 		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
-	
-		System.out.println("Middle Step");
 		
-		LecturerDB lecturerDB = connection.lecturerDB;
-		
-		System.out.println("Second Step");
-		
-		ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
 		
 		System.out.println("Globals are: " + globalLecturers);
 		
@@ -114,7 +110,12 @@
 		Then displays every classroom on the page.
 	--%>
 	<%
-		ArrayList<Classroom> classrooms = connector.classroomDB.getClassrooms();
+		ArrayList<Classroom> classrooms;
+		if (isAdmin) classrooms = connector.classroomDB.getClassrooms(); else
+					 classrooms = connector.classroomDB.getPersonsClassrooms(currentPerson);
+		
+		System.out.println("person was: " + currentPerson.getEmail());
+		
 		for (Classroom classroom : classrooms) {
 			out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
 		}

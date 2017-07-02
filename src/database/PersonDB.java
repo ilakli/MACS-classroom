@@ -167,6 +167,7 @@ public class PersonDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
+		System.out.println("mail: " + email + " id:"+classroomId);
 		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
 				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
 	}
