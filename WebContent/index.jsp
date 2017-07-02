@@ -114,7 +114,7 @@
       });
     }
   </script>
-  <a href="#" onclick="signOut();">Sign out</a>
+  <a href="homepage.html" onclick="signOut();">Sign out</a>
 	<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 </body>
 </html>
