@@ -13,9 +13,17 @@ import defPackage.Person;
 public class ClassroomDB {
 	
 	private DBConnection db;
+	private LecturerDB lecturerDB;
+	private SeminaristDB seminaristDB;
+	private SectionLeaderDB sectionLeaderDB;
+	private StudentDB studentDB;
 	
 	public ClassroomDB() {
 		db = new DBConnection();
+		lecturerDB = new LecturerDB();
+		seminaristDB = new SeminaristDB();
+		sectionLeaderDB = new SectionLeaderDB();
+		studentDB = new StudentDB();
 	}
 	
 	/**
@@ -285,6 +293,18 @@ public class ClassroomDB {
 		
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
+	}
+
+	/**
+	 * checks if person with given email exists in given classroom
+	 * 
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean personExistsInClassroom(String email, String classroomId) {
+		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
+				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
 	}
 	
 	/**
