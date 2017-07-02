@@ -188,4 +188,28 @@ public class PersonDB {
 		return db.executeUpdate(myConnection);
 		
 	}
+	
+	
+	public boolean isAdmin(Person p) {
+		
+		boolean ret = false;
+		String query = String.format("select * from `admins` where `person_id`=\"%s\"", p.getPersonID());
+		MyConnection myConnection = db.getMyConnection(query);
+		
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			if (rs.next()) ret = true;				
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally { 
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		
+		return ret;
+	}
+	
+	
+	
 }

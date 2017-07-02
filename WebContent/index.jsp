@@ -36,6 +36,13 @@
 
 </head>
 <body>
+	<%
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		
+	%>
+
 	<div class="jumbotron">
 		<h2>
 			<a href="index.jsp" id="header-name">Macs Classroom</a>
@@ -45,10 +52,11 @@
 
 	<button id="create" type="submit" class="btn btn-danger"
 		onclick="redirectClassroom()">Create New Classroom</button>
-
-	<button id="create" type="submit" class="btn btn-danger"
-		onclick="redirectLecturer()">Add New Lecturer</button>
-
+	
+	<%if (isAdmin){ %>
+		<button id="create" type="submit" class="btn btn-danger"
+			onclick="redirectLecturer()">Add New Lecturer</button>
+	<%}%>
 	
 	<!--  Given a person generates list item containing persons name, surname and email -->
 	<%!
@@ -80,8 +88,8 @@
 		out.println("<h4>Lecturers</h4>");
 		out.println("<ul>");
 		for (int i = 0; i < globalLecturers.size(); i++) {
-			Person currentPerson = globalLecturers.get(i);
-			out.println(printPersonInfo(currentPerson));
+			Person currentLecturer = globalLecturers.get(i);
+			out.println(printPersonInfo(currentLecturer));
 		}
 		
 		out.println("</ul>");
@@ -107,7 +115,6 @@
 		Then displays every classroom on the page.
 	--%>
 	<%
-		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		ArrayList<Classroom> classrooms = connector.classroomDB.getClassrooms();
 		for (Classroom classroom : classrooms) {
 			out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
