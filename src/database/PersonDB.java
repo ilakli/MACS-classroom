@@ -10,10 +10,6 @@ import defPackage.Person;
 public class PersonDB {
 	
 	private DBConnection db;
-	private LecturerDB lecturerDB;
-	private SeminaristDB seminaristDB;
-	private SectionLeaderDB sectionLeaderDB;
-	private StudentDB studentDB;
 	
 	public PersonDB() {
 		db = new DBConnection();
@@ -156,19 +152,6 @@ public class PersonDB {
 			}
 		}
 		return personId;
-	}
-	
-
-	/**
-	 * checks if person with given email exists in given classroom
-	 * 
-	 * @param email
-	 * @param classroomId
-	 * @return
-	 */
-	public boolean personExistsInClassroom(String email, String classroomId) {
-		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
-				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
 	}
 
 	/**
