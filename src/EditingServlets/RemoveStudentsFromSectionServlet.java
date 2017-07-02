@@ -40,9 +40,13 @@ public class RemoveStudentsFromSectionServlet extends HttpServlet {
 		
 		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
 		
-		for (String email: emails) {
-			connection.sectionDB.removeStudent(classroomId, email);
+		if (emails != null) {
+			for (String email: emails) {
+				connection.sectionDB.removeStudent(classroomId, email);
+			}			
 		}
+		
+		System.out.println("movida aq");
 		
 		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
 				Classroom.ID_ATTRIBUTE_NAME, classroomId));

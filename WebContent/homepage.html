@@ -19,7 +19,7 @@
 </head>
 <body>
 	<div class="wrapper">
-		<form class="form-signin">
+		<form class="form-signin" method = "POST" action = "AdminLoginServlet">
 			<h2 class="form-signin-heading">Please login</h2>
 			<input type="text" class="form-control email-field" name="username"
 				placeholder="Email Address" /> <input type="password"
@@ -28,18 +28,6 @@
 		</form>
 	</div>
 	<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
-	<script>
-		$(document).ready(function() {
-			$(".form-signin").submit(function(e) {
-				e.preventDefault();
-				
-				var email =  $(this).find('> .email-field').val();
-				var psw = $(this).find('> .password-field').val();
-				if(email === "admin" && psw === "admin")
-					window.location = "index.jsp"
-				
-			});
-		});
-	</script>
+	
 </body>
 </html>

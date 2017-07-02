@@ -1,4 +1,4 @@
-<%@page import="org.apache.catalina.connector.Connector"%>
+
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
 <%@page import="defPackage.Function"%>
