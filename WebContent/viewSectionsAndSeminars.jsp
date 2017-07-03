@@ -78,11 +78,11 @@
 			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li class="active"><a
+			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			
 			<%if (isAdmin || isLecturer || isSeminarist){%>
-			<li><a
+			<li class="active"><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
 			<%}%>
