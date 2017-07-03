@@ -120,8 +120,8 @@
 			out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
 		}
 	%>
-
-  <script>
+	
+	<script>
     function signOut() {
       var auth2 = gapi.auth2.getAuthInstance();
       auth2.signOut().then(function () {
@@ -135,7 +135,7 @@
       });
     }
   </script>
-  <a href="homepage.html" onclick="signOut();">Sign out</a>
+  <a href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
 	<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </body>
