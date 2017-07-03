@@ -33,6 +33,8 @@
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
+<<<<<<< HEAD
+=======
 		
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
@@ -43,6 +45,7 @@
 
 		
 		System.out.println("seminars and sections downloaded successfully!");
+>>>>>>> 9235e0c04d17d247abded3796d145c1fcd3aece3
 
 		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 
@@ -50,20 +53,6 @@
 		
 		List<Person> studentsWithoutSeminar = connector.studentDB.getStudentsWithoutSeminar(classroomID);
 		List<Person> studentsWithoutSection = connector.studentDB.getStudentsWithoutSection(classroomID);
-		
-		System.out.println("seminars, active seminars and sections downloaded successfully!");
-		
-		System.out.println("studentsWithoutSeminar ARE:");
-		for (Person p : studentsWithoutSeminar){
-			System.out.println(p.getEmail());
-		}
-		
-		System.out.println("studentsWithoutSection ARE:");
-		for (Person p : studentsWithoutSection){
-			System.out.println(p.getEmail());
-		}
-		
-		
 
 	%>
 	<input type="hidden" value = <%= classroomID %> id = "classroom-id" >

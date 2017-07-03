@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Listeners.ContextListener;
 import database.AllConnections;
 import database.DBConnection;
 import defPackage.Classroom;
@@ -40,8 +41,15 @@ public class CreateClassroomServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String className = request.getParameter("newClassroomName");
-		AllConnections db = new AllConnections();
+		String lecturerEmail = request.getParameter("lecturerEmail");
+		
+		AllConnections db = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		
 		String classroomID = db.classroomDB.addClassroom(className);
+		
+		if(!classroomID.equals( DBConnection.DATABASE_ERROR)){
+			db.lecturerDB.addLecturer(lecturerEmail, classroomID);
+		}
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
 			RequestDispatcher dispatch = request.getRequestDispatcher("createClassroom.jsp");
