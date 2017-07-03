@@ -33,7 +33,13 @@
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
-
+		
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
+		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
+		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
+		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 
 		
 		System.out.println("seminars and sections downloaded successfully!");
@@ -74,23 +80,34 @@
 			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li><a
+			<li class="active"><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
+			
+			<%if (isAdmin || isLecturer || isSeminarist){%>
 			<li><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
+			<%}%>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li><a
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
+			<%}%>
+			
 			<li><a
 				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
+			
 			<li><a
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
-			<li class="active"><a
+			
+			<li><a
 				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Edit Sections And Seminars</a></li>
-			<li>
+			<%}%>
 		</ul>
 	</div>
 	</nav>
