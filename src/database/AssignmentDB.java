@@ -58,6 +58,39 @@ public class AssignmentDB {
 
 		return assignments;
 	}
+	
+	public Assignment getAssignment(String assignmentTitle,String classroomID){
+		String query = String.format("select * from `classroom_assignments` where `classroom_id` = %s and "
+				+ "`assignment_title` = `%s`;", classroomID, assignmentTitle );
+
+		MyConnection myConnection = db.getMyConnection(query);
+		Assignment assignment = null;
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			while (rs != null && rs.next()) {
+				String assignmentInstructions = rs.getString("assignment_instructions");
+				Date assignmentDeadline = null;
+				java.sql.Date sqlDate =rs.getDate("assignment_deadline");
+				System.out.println(sqlDate);
+				if(sqlDate!=null) {
+					assignmentDeadline = new java.util.Date(sqlDate.getTime());
+					System.out.println(assignmentDeadline);
+				}
+				String fileName = rs.getString("file_name");
+				assignment = new Assignment(classroomID,assignmentTitle, 
+						assignmentInstructions,assignmentDeadline, fileName);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {				
+				myConnection.closeConnection();
+			}
+		}
+
+		return assignment;
+		
+	}
 
 	/**
 	 * adds new assignment to database with given parameters

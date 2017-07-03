@@ -62,6 +62,7 @@ CREATE TABLE `classroom_posts` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`post_text` TEXT NOT NULL,
+	`post_date` DATETIME DEFAULT CURRENT_TIMESTAMP, 
 	PRIMARY KEY (`post_id`),
 	CONSTRAINT `classroom_posts_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
 	CONSTRAINT `classroom_posts_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
@@ -72,6 +73,7 @@ CREATE TABLE `post_comments` (
 	`post_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`comment_text` TEXT NOT NULL,
+	`comment_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`comment_id`),
 	CONSTRAINT `post_comments_fk0` FOREIGN KEY (`post_id`) REFERENCES `classroom_posts`(`post_id`),
 	CONSTRAINT `post_comments_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
@@ -198,6 +200,26 @@ CREATE TABLE `seminar-seminarists` (
 	UNIQUE KEY `seminar-seminarists_uk1` (`person_id`, `classroom_id`),
 	CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id` , `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`),
 	CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`)
+);
+
+CREATE TABLE `student_assignments` (
+	`student_assignmenmt_id` int NOT NULL AUTO_INCREMENT,
+	`classroom_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
+	`assignment_title` VARCHAR(100) NOT NULL,
+	`file_name` VARCHAR(100) NULL,
+	PRIMARY KEY (`student_assignmenmt_id`), 
+	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),
+	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`)
+);
+
+CREATE TABLE `assignmenmt_comment` (
+	`student_assignmenmt_id` INT NOT NULL,
+	`person_id` INT NOT NULL,
+	`comment_date` DATETIME NOT NULL,
+	`comment_text` TEXT NOT NULL,
+	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignmenmt_id`) REFERENCES `student_assignments` (`student_assignmenmt_id`),
+	CONSTRAINT `FK__persons` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
 );
 
 CREATE TABLE `section-section_leader` (

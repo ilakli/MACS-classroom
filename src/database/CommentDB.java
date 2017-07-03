@@ -2,7 +2,9 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import database.DBConnection.MyConnection;
 import defPackage.Comment;
@@ -43,8 +45,13 @@ public class CommentDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()){
+				Date commentDate = null;
+				Timestamp sqlDate =rs.getTimestamp("comment_date");
+				if(sqlDate!=null) {
+					commentDate = new java.util.Date(sqlDate.getTime());
+				}
 				Comment comment = new Comment(rs.getString("comment_id"), rs.getString("post_id"), 
-						rs.getString("person_id"),rs.getString("comment_text"));
+						rs.getString("person_id"),rs.getString("comment_text"), commentDate);
 				comments.add(comment);
 			}
 		} catch (SQLException | NullPointerException e) {

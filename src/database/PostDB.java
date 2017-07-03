@@ -2,9 +2,12 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 
 import database.DBConnection.MyConnection;
+import defPackage.Assignment;
 import defPackage.Post;
 
 public class PostDB {
@@ -26,7 +29,13 @@ public class PostDB {
 		String query = String.format(
 				"insert into `classroom_posts` (`classroom_id`, `person_id`, `post_text`) values(%s, %s, '%s');",
 				classroomId, personId, postText);
-
+		System.out.println("##################################");
+		System.out.println("##################################");
+		System.out.println("##################################");
+		System.out.println("##################################");
+		System.out.println("##################################");
+		System.out.println("##################################");
+		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -39,8 +48,14 @@ public class PostDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
+				Date postDate = null;
+				Timestamp sqlDate =rs.getTimestamp("post_date");
+				if(sqlDate!=null) {
+					postDate = new java.util.Date(sqlDate.getTime());
+				}
+				
 				posts.add(new Post(rs.getString("post_id"), rs.getString("classroom_id"),
-						rs.getString("person_id"), rs.getString("post_text")));
+						rs.getString("person_id"), rs.getString("post_text"), postDate ));
 			}
 
 		} catch (SQLException e) {

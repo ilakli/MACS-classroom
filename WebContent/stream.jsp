@@ -119,7 +119,7 @@
 		for (int i = 0; i < posts.size(); i++) {
 
 
-			String postText = posts.get(i).getPostText();
+			String postText = posts.get(i).getPostText() + posts.get(i).getPostDate();
 
 			String postAuthorId = posts.get(i).getPersonId();
 			String postAuthor = personConnector.getPerson(postAuthorId).getName() + " "
@@ -135,7 +135,7 @@
 			out.println(html);
 			out.println("<ul class=\"list-group\">");
 			for (int j = 0; j < comments.size(); j++) {
-				String commentText = comments.get(j).getCommentText();
+				String commentText = comments.get(j).getCommentText() + comments.get(j).getCommentDate();
 
 				String commentAuthorId = comments.get(j).getPersonID();
 				String commentAuthor = personConnector.getPerson(commentAuthorId).getName() + " "

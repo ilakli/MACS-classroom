@@ -56,8 +56,8 @@ public class PostServlet extends HttpServlet {
 		for(Person person : allStudents){
 			emails.add(person.getEmail());
 		}
-		MailConnector mail = new MailConnector(emails, "subject", postText);
-		mail.sendMail();
+		//MailConnector mail = new MailConnector(emails, "subject", postText);
+		//mail.sendMail();
 			
 		connection.postDB.addPost(classroomId, personId, postText);
 		response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
