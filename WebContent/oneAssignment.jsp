@@ -119,13 +119,23 @@
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
-		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
-		
-		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a);
-			out.println(htmlCode);
-		}
+		String assignmentTitle = (String)request.getAttribute("assignmentTitle");
+		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
+	
+		String htmlCode = generateAssignmentHTML(assignment);
+		out.println(htmlCode);
 	%>
+	
+	<%if (isStudent){%>
+	<%}%>	
+	
+	<%if (isSectionLeader){%>
+	<%}%>
+	
+	<%if (isSeminarist){%>
+	<%} %>
+	
+	
 	<!-- -------------------------------------------------------------------- -->
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
