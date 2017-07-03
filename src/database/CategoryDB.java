@@ -27,9 +27,10 @@ public class CategoryDB {
 			return false;
 		}
 
-		String query = String.format("insert into `classroom_material_category` values (%s,'%s');", 
+		String query = String.format("insert into `classroom_material_category`(classroom_id,category_name) values (%s,'%s');", 
 				classroomId, categoryName);
-
+		
+		System.out.println("Adding Query Is: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

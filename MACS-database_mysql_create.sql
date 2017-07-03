@@ -80,10 +80,11 @@ CREATE TABLE `classroom_assignments` (
 );
 
 CREATE TABLE `classroom_material_category` (
-	`category_id` INT NOT NULL,
+	`category_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
 	`category_name` varchar(100) NOT NULL,
 	PRIMARY KEY (`category_id`),
+	UNIQUE(category_name),
 	CONSTRAINT `classroom_material_category_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 
@@ -91,7 +92,7 @@ CREATE TABLE `classroom_materials` (
 	`classroom_id` INT NOT NULL,
 	`category_id` INT NOT NULL,
 	`material_name` varchar(100) NOT NULL,	
-	PRIMARY KEY (`classroom_id`,`material_name`,`category_id`),
+	PRIMARY KEY (`material_name`,`category_id`),
 	CONSTRAINT `classroom_materials_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
 	CONSTRAINT `classroom_materials_fk1` FOREIGN KEY (`category_id`) REFERENCES `classroom_material_category`(`category_id`)
 );
@@ -234,5 +235,3 @@ insert into `functions` (`function_name`) values
 	('add new assignments'),
 	('review assignments of students from their group'),
 	('add classroom materials'); 
-
-

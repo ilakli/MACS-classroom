@@ -15,7 +15,7 @@ public class AllConnections {
 	public AssignmentDB assignmentDB;
 	public FunctionDB functionDB;
 	public PositionDB positionDB;
-	
+	public CategoryDB categoryDB;
 	
 	public AllConnections() {
 		classroomDB = new ClassroomDB();
@@ -32,5 +32,6 @@ public class AllConnections {
 		assignmentDB = new AssignmentDB();
 		functionDB = new FunctionDB();
 		positionDB = new PositionDB();
+		categoryDB = new CategoryDB();
 	}
 }
