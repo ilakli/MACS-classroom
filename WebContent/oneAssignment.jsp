@@ -119,7 +119,8 @@
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
-		String assignmentTitle = (String)request.getAttribute("assignmentTitle");
+		String assignmentTitle = request.getParameter("assignmentTitle");
+								
 		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
 	
 		String htmlCode = generateAssignmentHTML(assignment);

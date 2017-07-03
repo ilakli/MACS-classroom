@@ -48,14 +48,19 @@
 	%>
 
 
-	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, String classroomID, Person currentPerson) {
+	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, boolean isSectionLeader,
+											String classroomID, Person currentPerson) {
 		
 		String result = "<div class=\"panel panel-default\"> " + 
 						" <div class=\"panel-body\"> ";
 						if(isStudent){ 
 							result+="<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
-								+"	\"> " + a.getTitle() + "</a></h1>";
+								+"\"> " + a.getTitle() + "</a></h1>";
+						}else if (isSectionLeader){
+							System.out.println("section lida madafaka");
+							result+="<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>";
 						}else{
 							result+="<h1>" + a.getTitle() + "</h1>";
 						}
@@ -199,7 +204,7 @@
 		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
 
 		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a, isStudent,classroomID, currentPerson);
+			String htmlCode = generateAssignmentHTML(a, isStudent, isSectionLeader, classroomID, currentPerson);
 			out.println(htmlCode);
 		}
 	%>
