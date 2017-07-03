@@ -1,7 +1,13 @@
 package defPackage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import database.AllConnections;
 import database.ClassroomDB;
@@ -406,10 +412,44 @@ public class Classroom {
 			return;
 		}
 		
-		for (Person p : students){
-			this.addStudentToSmallestSeminar(p);
+		HashMap <Integer, ArrayList <Person>> distributed = new HashMap <Integer, ArrayList <Person>>();
+		
+		int studentsToDistribute = students.size();
+		int studentsInSingleSection = studentsToDistribute / seminars.size();
+		int j = 0;
+		
+		for (Seminar s: seminars) {
+			int already = s.getSeminarSize();
+			int curSeminarN = s.getSeminarN();
+			distributed.put(curSeminarN, new ArrayList<Person>());
+			for (int i = already; i < studentsInSingleSection && j < students.size(); i++) {
+				distributed.get(curSeminarN).add(students.get(j));
+				j++;
+				s.updateSeminarSize(1);
+			}
+			if (j >= students.size()) break;
 		}
-	
+		
+		seminars.sort(new Comparator<Seminar>() {
+
+			@Override
+			public int compare(Seminar s1, Seminar s2) {
+				return s1.getSeminarSize() - s2.getSeminarSize();
+			}
+		});
+		
+		for (int k = j; k < students.size(); k++) {
+			distributed.get(seminars.get(k - j).getSeminarN()).add(students.get(k));
+			seminars.get(k - j).updateSeminarSize(1);
+		}
+		
+		for (Seminar sem: seminars) {
+			db.seminarDB.updateSeminarSize(sem.getSeminarN(), this.classroomID, sem.getSeminarSize());
+		}
+		
+		for (int i: distributed.keySet()) {
+			db.seminarDB.addStudentsToSeminar(i, distributed.get(i), this.classroomID);
+		}
 	}
 
 	/**
@@ -426,8 +466,42 @@ public class Classroom {
 			return;
 		}
 		
-		for (Person p : students){
-			this.addStudentToSmallestSection(p);
+		HashMap <Integer, ArrayList <Person>> distributed = new HashMap <Integer, ArrayList <Person>>();
+		
+		int studentsToDistribute = students.size();
+		int studentsInSingleSection = studentsToDistribute / sections.size();
+		int j = 0;
+		
+		for (Section s: sections) {
+			int already = s.getSectionSize();
+			int curSectionN = s.getSectionN();
+			distributed.put(curSectionN, new ArrayList<Person>());
+			for (int i = already; i < studentsInSingleSection && j < students.size(); i++) {
+				distributed.get(curSectionN).add(students.get(j));
+				j++;
+				s.updateSectionSize(1);
+			}
+			if (j >= students.size()) break;
+		}
+		
+		sections.sort(new Comparator<Section>() {
+			@Override
+			public int compare(Section s1, Section s2) {
+				return s1.getSectionSize() - s2.getSectionSize();
+			}
+		});
+		
+		for (int k = j; k < students.size(); k++) {
+			distributed.get(sections.get(k - j).getSectionN()).add(students.get(k));
+			sections.get(k - j).updateSectionSize(1);
+		}
+		
+		for (Section sec: sections) {
+			db.sectionDB.updateSectionSize(sec.getSectionN(), this.classroomID, sec.getSectionSize());
+		}
+		
+		for (int i: distributed.keySet()) {
+			db.sectionDB.addStudentsToSection(i, distributed.get(i), this.classroomID);
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package defPackage;
 
+import java.util.Comparator;
 import java.util.List;
 
 import database.DBConnection;
@@ -16,8 +17,9 @@ public class Section {
 	private SectionDB sectionDB;
 	private SectionLeaderDB sectionLeaderDB;
 	private StudentDB studentDB;
+	private int sectionSize;
 	
-	public Section(int sectionN, String classroomId){
+	public Section(int sectionN, String classroomId, int sectionSize){
 		
 		this.sectionN = sectionN;
 		this.classroomId = classroomId;
@@ -25,6 +27,11 @@ public class Section {
 		sectionDB = new SectionDB();
 		sectionLeaderDB = new SectionLeaderDB();
 		studentDB = new StudentDB();
+		this.sectionSize = sectionSize;
+	}
+	
+	public Section (int sectionN, String classroomId) {
+		this(sectionN, classroomId, 0);
 	}
 	
 	/**
@@ -36,6 +43,14 @@ public class Section {
 		return this.sectionN;
 	}
 	
+	/**
+	 * 
+	 * @return amount of students in given section
+	 */
+	
+	public int getSectionSize() {
+		return this.sectionSize;
+	}
 	
 	/**
 	 * Returns id of the classroom associated with this current section.
@@ -71,6 +86,14 @@ public class Section {
 	 */
 	public List<Person> getSectionStudents(){
 		return studentDB.getSectionStudents(getSectionId());
+	}
+
+	/**
+	 * updates size of section by n
+	 * @param n
+	 */
+	public void updateSectionSize(int n) {
+		sectionSize += n;
 	}
 	
 	/**

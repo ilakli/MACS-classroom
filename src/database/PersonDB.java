@@ -130,7 +130,6 @@ public class PersonDB {
 		return db.executeUpdate(myConnection);
 	}
 
-
 	/**
 	 * 
 	 * @param email

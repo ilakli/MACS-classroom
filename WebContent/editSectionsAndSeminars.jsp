@@ -34,30 +34,12 @@
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-
-		
-		System.out.println("seminars and sections downloaded successfully!");
-
 		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 
 		List<Section> sections = connector.sectionDB.getSections(classroomID);
 		
 		List<Person> studentsWithoutSeminar = connector.studentDB.getStudentsWithoutSeminar(classroomID);
 		List<Person> studentsWithoutSection = connector.studentDB.getStudentsWithoutSection(classroomID);
-		
-		System.out.println("seminars, active seminars and sections downloaded successfully!");
-		
-		System.out.println("studentsWithoutSeminar ARE:");
-		for (Person p : studentsWithoutSeminar){
-			System.out.println(p.getEmail());
-		}
-		
-		System.out.println("studentsWithoutSection ARE:");
-		for (Person p : studentsWithoutSection){
-			System.out.println(p.getEmail());
-		}
-		
-		
 
 	%>
 	<input type="hidden" value = <%= classroomID %> id = "classroom-id" >

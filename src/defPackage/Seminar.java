@@ -15,8 +15,9 @@ public class Seminar {
 	private SeminaristDB seminaristDB;
 	private SeminarDB seminarDB;
 	private StudentDB studentDB;
+	private int seminarSize;
 
-	public Seminar(int seminarN, String classroomId){
+	public Seminar(int seminarN, String classroomId, int seminarSize){
 
 		this.seminarN = seminarN;
 		this.classroomId = classroomId;
@@ -24,8 +25,12 @@ public class Seminar {
 		seminaristDB = new SeminaristDB();
 		seminarDB = new SeminarDB();
 		studentDB = new StudentDB();
+		this.seminarSize = seminarSize;
 	}
 	
+	public Seminar(int seminarN, String classroomId) {
+		this(seminarN, classroomId, 0);
+	}
 
 	/**
 	 * Returns name of this current seminar.
@@ -74,6 +79,24 @@ public class Seminar {
 		String seminarId = getSeminarId();
 		return studentDB.getSeminarStudents(seminarId);
 	}
+	
+	/**
+	 * 
+	 * @return current size of seminar
+	 */
+
+	public int getSeminarSize() {
+		return seminarSize;
+	}
+
+	/**
+	 * updates seminarSize by n
+	 * @param n
+	 */
+	public void updateSeminarSize(int n) {
+		seminarSize += n;
+	}
+
 	
 	/**
 	 * Returns true if seminarist was removed from the seminar, false otherwise 
@@ -154,7 +177,4 @@ public class Seminar {
 			return false;
 		return true;
 	}
-
-	
-	
 }
