@@ -105,8 +105,7 @@ public class AssignmentDB {
 		//if (assignmentName.isEmpty()) return false;
 		
 		String query = String.format("insert into `classroom_assignments`(`classroom_id`,`assignment_title`,`assignment_instructions`) "
-				+ "values (%s,'%s','%s');",
-						classroomID, assignmentTitle, assignmentInstructions);
+				+ "values (%s,'%s','%s');", classroomID, assignmentTitle, assignmentInstructions);
 		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);

@@ -203,22 +203,23 @@ CREATE TABLE `seminar-seminarists` (
 );
 
 CREATE TABLE `student_assignments` (
-	`student_assignmenmt_id` int NOT NULL AUTO_INCREMENT,
+	`student_assignment_id` int NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`assignment_title` VARCHAR(100) NOT NULL,
 	`file_name` VARCHAR(100) NULL,
-	PRIMARY KEY (`student_assignmenmt_id`), 
+	`assignment_grade` int,
+	PRIMARY KEY (`student_assignment_id`), 
 	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),
 	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`)
 );
 
-CREATE TABLE `assignmenmt_comment` (
-	`student_assignmenmt_id` INT NOT NULL,
+CREATE TABLE `assignment_comment` (
+	`student_assignment_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`comment_date` DATETIME NOT NULL,
 	`comment_text` TEXT NOT NULL,
-	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignmenmt_id`) REFERENCES `student_assignments` (`student_assignmenmt_id`),
+	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
 	CONSTRAINT `FK__persons` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
 );
 

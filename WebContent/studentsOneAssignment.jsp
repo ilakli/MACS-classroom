@@ -21,8 +21,11 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/style.css">
+<% 	
+	String studentEmail = request.getParameter("studentEmail");
 
-<title>assignment title</title>
+	String assignmentTitle = request.getParameter("assignmentTitle"); %>
+<title>assignmentTitle</title>
 
 
 
@@ -57,6 +60,7 @@
 
 	<%
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+	
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 		
@@ -69,10 +73,8 @@
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
 		
-		String studentEmail = request.getParameter("studentEmail");
-		System.out.println(studentEmail);
-		String assignmentTitle = request.getParameter("assignmentTitle");
-		System.out.println(assignmentTitle);
+
+
 		
 		
 	%>
@@ -120,65 +122,8 @@
 	</div>
 	</nav>
 	
-	<%if (isAdmin || isLecturer){ %>
-		<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
 	
-		<div id="myModal" class="modal">
 	
-			<!-- Modal content -->
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<span class="close">&times;</span>
-					<h2>Add New Assignment</h2>
-				</div>
-				
-				<div class="modal-body">
-	
-					<div class="form-group">
-						<form action="AddNewAssignmentServlet"  enctype="multipart/form-data" method="POST">
-							
-							<h6> Title </h6>
-							
-							<textarea
-								class="form-control"
-								rows="1" 
-								name="assignmentTitle">
-						</textarea>
-							
-							<h6> Instructions </h6>
-							<textarea 
-								class="form-control" 
-								rows="5" 
-								name="assignmentInstructions">
-						</textarea>
-							
-
-						
-
-						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
-							value=<%=classroomID%>>
-						
-						<h6> Deadline </h6>	
-						<input name="deadline" type="date" value=""/>	
-						
-						<h6> Upload File </h6>
-						
-						<input type="file" name="file" size="30" />
-						
-						</br>
-						
-						<input type="submit"/ value = "Submit" class="btn btn-success">
-					</form>
-					
-		</div>
-	
-
-				</div>
-			
-			</div>
-		</div>
-	<%}%>
 	<!-- -------------------------------------------------------------------- -->
 	<%
 		
@@ -188,8 +133,26 @@
 			out.println(htmlCode);
 		
 	%>
+	
+	<%
+		if(isStudent){
+			%>
+			<form action="AddNewAssignmentServlet"
+						enctype="multipart/form-data" method="POST">
+				<h6>Upload File</h6>
+	
+				<input type="file" name="file" size="30" /> </br> <input type="submit"
+					/ value="Submit" class="btn btn-success">
+			</form>	
+				
+	<%
+			
+		}
+	%>
+	
+	
 	<!-- -------------------------------------------------------------------- -->
-	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>2
+	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 
