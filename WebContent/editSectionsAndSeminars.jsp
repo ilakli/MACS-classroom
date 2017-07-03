@@ -34,7 +34,7 @@
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
 
-		
+
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
@@ -44,7 +44,6 @@
 
 		
 		System.out.println("seminars and sections downloaded successfully!");
-
 
 		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 
@@ -68,7 +67,7 @@
 			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li class="active"><a
+			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			
 			<%if (isAdmin || isLecturer || isSeminarist){%>
@@ -92,7 +91,7 @@
 			<li><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
 			
-			<li><a
+			<li class="active"><a
 				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Edit Sections And Seminars</a></li>
 			<%}%>
