@@ -24,13 +24,13 @@ public class MaterialDB {
 	 *            name of the material which is added in classroom
 	 * @return returns booelan (whether it added succesfully or not).
 	 */
-	public boolean addMaterial(String classroomId, String materialName) {
+	public boolean addMaterial(String classroomId,String categoryId, String materialName) {
 
 		if (materialName.equals("")) {
 			return false;
 		}
 
-		String query = String.format("insert into `classroom_materials` values (%s,'%s');", classroomId, materialName);
+		String query = String.format("insert into `classroom_materials` values (%s,%s,'%s');", classroomId,categoryId, materialName);
 
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);

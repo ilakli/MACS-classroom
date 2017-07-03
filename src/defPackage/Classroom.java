@@ -379,8 +379,8 @@ public class Classroom {
 	 * @return booelan (whether the material added to classroom successfully or
 	 *         not).
 	 */
-	public boolean classroomAddMaterial(String materialName) {
-		return db.materialDB.addMaterial(this.classroomID, materialName);
+	public boolean classroomAddMaterial(String categoryName,String materialName) {
+		return db.materialDB.addMaterial(this.classroomID,categoryName, materialName);
 	}
 
 	/**

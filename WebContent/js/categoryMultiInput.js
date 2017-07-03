@@ -1,5 +1,5 @@
 $(document).ready(function() { 
-	alert("Here Biatch");
+	
 	$(".categories input").on({
 		focusout : function() {
 			var txt = this.value;

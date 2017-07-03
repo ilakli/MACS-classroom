@@ -1,3 +1,8 @@
+<%@page import="database.MaterialDB"%>
+<%@page import="defPackage.Category"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="Listeners.ContextListener"%>
+<%@page import="database.CategoryDB"%>
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
 <%@page import="java.util.List"%>
@@ -47,6 +52,9 @@
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
+		
+		CategoryDB categoryDB = ((AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).categoryDB;
+		ArrayList<Category> allCategories = categoryDB.getCategorys(classroomID);
 	%>
 
 	<div class="jumbotron">
@@ -90,19 +98,48 @@
 	<form action="UploadServlet" method="POST"
 		enctype="multipart/form-data">
 		<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
-			value=<%=classroomID%> id="classroomID" /> <input type="file"
-			name="file" size="30" /> <input type="submit"
-			/ class="btn btn-success">
+			value=<%=classroomID%> id="classroomID" /> 
+			
+  	
+		<input type="file" name="file" size="30" />
+		<select name="materialCategory">
+  			<option value="" disabled selected>Select Category</option>
+ 			<%
+  				for(int i=0;i<allCategories.size();i++){
+  					
+  					Category currentCategory = allCategories.get(i);
+  					String currentCategoryName = currentCategory.getCategoryName();
+  					String currentCategoryId = currentCategory.getCategoryId();
+  					
+  					out.println("<option value='" + currentCategoryId +"'>" + currentCategoryName+ "</option>");
+  				}
+  			%>
+  		</select>
+  		<br> 
+		<input type="submit"  class="btn btn-success">
 	</form>
-
 	<%
-		List<Material> materials = currentClassroom.getMaterials();
-		for (int i = 0; i < materials.size(); i++) {
-			String materialName = materials.get(i).getMaterialName();
+	MaterialDB materialDB = ((AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).materialDB;
+	
+
+	
+	for(int i=0;i<allCategories.size();i++){
+		Category currentCategory = allCategories.get(i);
+		
+		out.print("<h1 class=\"category-title\">" + currentCategory.getCategoryName() + "</h1>");
+		
+		List<Material> associatedMaterials = materialDB.getMaterialsForCategory(classroomID,currentCategory.getCategoryId());
+		
+		for (int j = 0; j < associatedMaterials.size(); j++) {
+			String materialName = associatedMaterials.get(j).getMaterialName();
 			String htmlMaterial = generateMaterial(materialName);
+			
 			out.print(htmlMaterial);
 		}
+	}
 	%>
+	
+	
 
 
 
