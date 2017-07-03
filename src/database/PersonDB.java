@@ -10,10 +10,16 @@ import defPackage.Person;
 public class PersonDB {
 	
 	private DBConnection db;
+	private LecturerDB lecturerDB;
+	private SeminaristDB seminaristDB;
+	private SectionLeaderDB sectionLeaderDB;
+	private StudentDB studentDB;
 	
 	public PersonDB() {
 		db = new DBConnection();
 		
+		
+	
 	}
 	
 	/**
@@ -152,6 +158,20 @@ public class PersonDB {
 		}
 		return personId;
 	}
+	
+
+	/**
+	 * checks if person with given email exists in given classroom
+	 * 
+	 * @param email
+	 * @param classroomId
+	 * @return
+	 */
+	public boolean personExistsInClassroom(String email, String classroomId) {
+		System.out.println("mail: " + email + " id:"+classroomId);
+		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
+				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
+	}
 
 	/**
 	 * sets name and surname of the person with given email
@@ -170,4 +190,28 @@ public class PersonDB {
 		return db.executeUpdate(myConnection);
 		
 	}
+	
+	
+	public boolean isAdmin(Person p) {
+		
+		boolean ret = false;
+		String query = String.format("select * from `admins` where `person_id`=\"%s\"", p.getPersonID());
+		MyConnection myConnection = db.getMyConnection(query);
+		
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			if (rs.next()) ret = true;				
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally { 
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		
+		return ret;
+	}
+	
+	
+	
 }
