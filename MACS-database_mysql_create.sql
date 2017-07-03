@@ -250,5 +250,3 @@ insert into admins values(
 	(select `person_id` from persons 
 		where person_email = 'admin@admin.admin')
 );
-
-
