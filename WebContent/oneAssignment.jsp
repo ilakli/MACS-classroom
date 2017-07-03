@@ -1,6 +1,7 @@
 <%@page import="database.PersonDB"%>
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
+<%@page import="defPackage.Section"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.List"%>
 <%@page import="defPackage.Classroom"%>
@@ -51,6 +52,14 @@
 						result+= " <div class=\"panel-footer\"></div> " 
 								
 						+ "</div>";
+		
+		return result;
+	}%>
+	
+	<%!private String generateStudentHTML(Person p, String classroomID, Assignment a) {
+		
+		String result = "<li><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+ 
+				"&studentEmail="+p.getEmail()+ "&assignmentTitle=" + a.getTitle() +"\"> " + p.getEmail() + "</a></li>"; 
 		
 		return result;
 	}%>
@@ -127,13 +136,25 @@
 		out.println(htmlCode);
 	%>
 	
-	<%if (isStudent){%>
-	<%}%>	
-	
-	<%if (isSectionLeader){%>
-	<%}%>
+	<%if (isSectionLeader){
+		
+		Section section = connector.sectionDB.getSectionByLeader(currentPerson, classroomID);
+		if (section != null) {
+			List <Person> sectionStudents = section.getSectionStudents();
+			
+			out.println("<h2>Students:</h2>");
+			out.println("<ul>");
+			for (Person p : sectionStudents) {
+				out.println(generateStudentHTML(p, classroomID, assignment));
+			}
+			out.println("</ul>");
+		} else {
+			out.println("you have no section yet...");
+		}
+	}%>
 	
 	<%if (isSeminarist){%>
+		<!-- TODO -->
 	<%} %>
 	
 	
