@@ -18,20 +18,12 @@ import database.AllConnections;
 @WebServlet("/CommentServlet")
 public class CommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CommentServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
@@ -45,7 +37,7 @@ public class CommentServlet extends HttpServlet {
 		String postId = request.getParameter("postId");
 		String personId = request.getParameter("personId");
 		String commentText = request.getParameter("commentText");
-		
+		System.out.println("Person ID is: " + personId);
 		System.out.println("They look like this: " + postId + personId + commentText);
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);

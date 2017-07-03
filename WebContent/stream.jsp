@@ -158,11 +158,15 @@
 		}
 		
 	%>
-	
-	
+	<%
+		
+	%>
+	<input type="hidden" id="currentPerson" value='<%=currentPerson.getPersonID() %>'>
+  	<input type="hidden" id="currentPersonName" value='<%= currentPerson.getName() + " "  + currentPerson.getSurname() %>'>
+  		
 
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
-	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
+	<script type="text/javascript" src='js/addComments.js' type="text/javascript"></script>
 </body>
 </html>
