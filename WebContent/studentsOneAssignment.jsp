@@ -1,3 +1,4 @@
+<%@page import="defPackage.StudentAssignment"%>
 <%@page import="database.PersonDB"%>
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
@@ -24,7 +25,9 @@
 <% 	
 	String studentEmail = request.getParameter("studentEmail");
 
-	String assignmentTitle = request.getParameter("assignmentTitle"); %>
+	String assignmentTitle = request.getParameter("assignmentTitle"); 
+	String status = request.getParameter("status");
+	%>
 <title>assignmentTitle</title>
 
 
@@ -73,7 +76,10 @@
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
 		
-
+		String personID = connector.personDB.getPersonId(studentEmail);
+		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
+				classroomID, personID, assignmentTitle);
+		if(assignment!=null) status = "done";
 
 		
 		
@@ -135,17 +141,25 @@
 	%>
 	
 	<%
-		if(isStudent){
+		if(isStudent && status==null){
 			%>
-			<form action="AddNewAssignmentServlet"
+			<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle%>
 						enctype="multipart/form-data" method="POST">
 				<h6>Upload File</h6>
 	
 				<input type="file" name="file" size="30" /> </br> <input type="submit"
-					/ value="Submit" class="btn btn-success">
+					/ value="Turn In" class="btn btn-success">
 			</form>	
 				
 	<%
+			
+		}else if(status.equals("done")){
+			
+			
+				out.println(" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
+						+ "=" + assignment.getFileName()+ "\">" + assignment.getFileName() + "</a>");
+			
 			
 		}
 	%>
