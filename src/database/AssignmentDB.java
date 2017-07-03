@@ -61,8 +61,8 @@ public class AssignmentDB {
 	
 	public Assignment getAssignment(String assignmentTitle,String classroomID){
 		String query = String.format("select * from `classroom_assignments` where `classroom_id` = %s and "
-				+ "`assignment_title` = `%s`;", classroomID, assignmentTitle );
-
+				+ "`assignment_title` = '%s';", classroomID, assignmentTitle );
+		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		Assignment assignment = null;
 		try {
