@@ -1,5 +1,6 @@
 <%@page import="database.PersonDB"%>
 <%@page import="defPackage.Comment"%>
+<%@page import="defPackage.Person"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.List"%>
 <%@page import="defPackage.Classroom"%>
@@ -59,6 +60,15 @@
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 		
+		
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
+		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
+		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
+		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		
+		
 		PersonDB personConnector = new PersonDB();
 		
 	%>
@@ -76,56 +86,72 @@
 		<ul class="nav navbar-nav">
 			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
+			
+			<%if (isAdmin || isLecturer || isSeminarist){%>
 			<li><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
+			<%}%>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li><a
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
+			<%}%>
+			
 			<li><a
 				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
+			
 			<li class="active"><a
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
+			
 			<li><a
 				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Edit Sections And Seminars</a></li>
+			<%}%>
 		</ul>
 	</div>
 	</nav>
-
-	<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
-
-	<div id="myModal" class="modal">
-
-		<!-- Modal content -->
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<span class="close">&times;</span>
-				<h2>Add New Assignment</h2>
-			</div>
-			
-			<div class="modal-body">
-
-				<div class="form-group">
-					<form action="AddNewAssignmentServlet"  enctype="multipart/form-data" method="POST">
-						
-						<h6> Title </h6>
-						
-						<textarea
-							class="form-control"
-							rows="1" 
-							name="assignmentTitle">
+	
+	<%if (isAdmin || isLecturer){ %>
+		<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
+	
+		<div id="myModal" class="modal">
+	
+			<!-- Modal content -->
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Add New Assignment</h2>
+				</div>
+				
+				<div class="modal-body">
+	
+					<div class="form-group">
+						<form action="AddNewAssignmentServlet"  enctype="multipart/form-data" method="POST">
+							
+							<h6> Title </h6>
+							
+							<textarea
+								class="form-control"
+								rows="1" 
+								name="assignmentTitle">
 						</textarea>
-						
-						<h6> Instructions </h6>
-						<textarea 
-							class="form-control" 
-							rows="5" 
-							name="assignmentInstructions">
+							
+							<h6> Instructions </h6>
+							<textarea 
+								class="form-control" 
+								rows="5" 
+								name="assignmentInstructions">
 						</textarea>
+							
+
 						
+
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 							value=<%=classroomID%>>
 						
@@ -141,14 +167,14 @@
 						<input type="submit"/ value = "Submit" class="btn btn-success">
 					</form>
 					
-				</div>
-
-			</div>
-		
 		</div>
-
 	
-	</div>
+
+				</div>
+			
+			</div>
+		</div>
+	<%}%>
 	<!-- -------------------------------------------------------------------- -->
 	<%
 		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);

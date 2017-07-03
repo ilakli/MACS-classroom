@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import database.DBConnection.MyConnection;
+import defPackage.Person;
 import defPackage.Seminar;
 
 public class SeminarDB {
@@ -49,6 +50,34 @@ public class SeminarDB {
 		String query = String.format(
 				"insert into `student-seminar` (`classroom_id`, `person_id`, `seminar_id`) values(%s, %s, %s);",
 				classroomId, personId, seminarId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
+
+	/**
+	 * adds given students to given seminar
+	 * @param i
+	 * @param arrayList
+	 * @param classroomID
+	 */
+	
+	public boolean addStudentsToSeminar(int seminarN, ArrayList<Person> students, String classroomId) {
+		String seminarId = getSeminarId(seminarN, classroomId);
+		if (seminarId.equals("")) {
+			return false;
+		}
+		if (students.isEmpty()) {
+			return true;
+		}
+		
+		String query = "insert into `student-seminar` (`classroom_id`, `person_id`, `seminar_id`) values\n";
+		
+		for (int i = 0; i < students.size(); i++){
+			Person p = students.get(i);
+			query += "(" + classroomId + ", " + p.getPersonID() + ", " + seminarId + ")";
+			if (i + 1 < students.size()) query += ",\n";
+		}
+		
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -198,7 +227,7 @@ public class SeminarDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				seminars.add(new Seminar(rs.getInt("seminar_n"), classroomId));
+				seminars.add(new Seminar(rs.getInt("seminar_n"), classroomId, rs.getInt("seminar_size")));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -234,5 +263,20 @@ public class SeminarDB {
 			}
 		}
 		return seminar;
+	}
+
+	/**
+	 * updates seminar_size in database
+	 * @param seminarN
+	 * @param classroomID
+	 * @param seminarSize
+	 */
+	public void updateSeminarSize(int seminarN, String classroomId, int seminarSize) {
+		String seminarId = getSeminarId(seminarN, classroomId);
+		String query = String.format(
+				"update `seminars` set `seminar_size` = %s where `seminar_id` = %s and `classroom_id` = %s",
+				seminarSize, seminarId, classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		db.executeUpdate(myConnection);
 	}
 }

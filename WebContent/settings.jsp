@@ -1,7 +1,7 @@
-
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
 <%@page import="defPackage.Function"%>
+<%@page import="defPackage.Person"%>
 <%@page import="defPackage.Position"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="defPackage.Classroom"%>
@@ -50,6 +50,13 @@
 		int numberOfReschedulings = currentClassroom.getNumberOfReschedulings();
 		int reschedulingLength = currentClassroom.getReschedulingLength();
 		
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
+		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
+		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
+		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		
 		ArrayList<Function> functions = connector.functionDB.getAllFunctions();
 		ArrayList<Position> positions = connector.positionDB.getAllPositions();
 	%>
@@ -67,20 +74,32 @@
 		<ul class="nav navbar-nav">
 			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
+			
+			<%if (isAdmin || isLecturer || isSeminarist){%>
 			<li><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
+			<%}%>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li><a
 				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
+			<%}%>
+			
 			<li><a
 				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
+			
 			<li><a
 				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
+			
+			<%if (isAdmin || isLecturer){%>
 			<li class="active"><a
 				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
+			
 			<li><a
 				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Edit Sections And Seminars</a></li>
+			<%}%>
 		</ul>
 	</div>
 	</nav>

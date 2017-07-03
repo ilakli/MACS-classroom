@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import database.DBConnection.MyConnection;
 import defPackage.Classroom;
+import defPackage.Person;
 
 public class ClassroomDB {
 	
@@ -108,6 +109,40 @@ public class ClassroomDB {
 
 		return classrooms;
 	}
+	
+	/**
+	 * returns person`s all classrooms
+	 * @param p - person
+	 * @return person's classrooms
+	 */
+	public ArrayList<Classroom> getPersonsClassrooms(Person p) {
+		ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
+		String classroomsQuery = "select * from classrooms;";
+		MyConnection stmnt = db.getMyConnection(classroomsQuery);
+		try {
+			ResultSet classroomsTable = stmnt.executeQuery();
+			while (classroomsTable.next()) {
+				String classroomID = classroomsTable.getString("classroom_id");
+				String classroomName = classroomsTable.getString("classroom_name");
+				
+				Classroom classroom = new Classroom(classroomName, classroomID);
+				System.out.println("class name: " + classroomName + "id: " + classroomID);
+				if (classroom.classroomPersonExists(p.getEmail())){
+					classrooms.add(classroom);
+				}
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally {
+			if (stmnt != null) {				
+				stmnt.closeConnection();
+			}
+		}
+
+		return classrooms;
+	}
+	
+	
 	/**
 	 * returns classroom arraylist associated with given person's email
 	 * @param email

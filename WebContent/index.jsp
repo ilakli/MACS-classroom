@@ -35,6 +35,17 @@
 
 </head>
 <body>
+	<%
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		LecturerDB lecturerDB = connector.lecturerDB;
+		ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
+		
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isGlobalLecturer = globalLecturers.contains(currentPerson);
+		
+	%>
+
 	<div class="jumbotron">
 		<h2>
 			<a href="index.jsp" id="header-name">Macs Classroom</a>
@@ -42,47 +53,51 @@
 	</div>
 
 
-
+	<%if (isAdmin || isGlobalLecturer) { %>
 	<button id="create" type="submit" class="btn btn-danger"
 		onclick="redirectClassroom()">Create New Classroom</button>
-
-	<button id="create" type="submit" class="btn btn-danger"
-		onclick="redirectLecturer()">Add New Lecturer</button>
-
-
+	<%}%>
+	
+	<%if (isAdmin){ %>
+		<button id="create" type="submit" class="btn btn-danger"
+			onclick="redirectLecturer()">Add New Lecturer</button>
+			<%
+		
+		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
+		
+		
+		System.out.println("Globals are: " + globalLecturers);
+		
+		out.println("<div id=\"global-lecturers\">");
+		out.println("<h4>Lecturers</h4>");
+		out.println("<ul>");
+		for (int i = 0; i < globalLecturers.size(); i++) {
+			Person currentLecturer = globalLecturers.get(i);
+			out.println(printPersonInfo(currentLecturer));
+		}
+		
+		out.println("</ul>");
+		out.println("</div>");
+	%>
+	<%}%>
+	
 	<!--  Given a person generates list item containing persons name, surname and email -->
-	<%!private String printPersonInfo(Person currentPerson) {
+	<%!
+		private String printPersonInfo(Person currentPerson) {
 		String result = "<li><h5>";
 		result = result + currentPerson.getEmail() + " " + currentPerson.getName() + " " + currentPerson.getSurname();
 		result = result + "</h5></li>";
-
+		
 		return result;
-	}%> <%
- 	System.out.println("First Step");
+	}
+	%>
+	
+	
 
- 	AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
+	
 
- 	System.out.println("Middle Step");
 
- 	LecturerDB lecturerDB = connection.lecturerDB;
-
- 	System.out.println("Second Step");
-
- 	ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
-
- 	System.out.println("Globals are: " + globalLecturers);
-
- 	out.println("<div id=\"global-lecturers\">");
- 	out.println("<h4>Lecturers</h4>");
- 	out.println("<ul>");
- 	for (int i = 0; i < globalLecturers.size(); i++) {
- 		Person currentPerson = globalLecturers.get(i);
- 		out.println(printPersonInfo(currentPerson));
- 	}
-
- 	out.println("</ul>");
- 	out.println("</div>");
- %> <%-- 
+	<%-- 
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a classroom display.
 	 --%> <%!private String generateNameHTML(String name, String classroomId) {
@@ -93,13 +108,19 @@
 	}%> <%-- 
 		Takes DBConnector from servlet context and pulls list of classrooms out of it. 
 		Then displays every classroom on the page.
-	--%> <%
- 	AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
- 	ArrayList<Classroom> classrooms = connector.classroomDB.getClassrooms();
- 	for (Classroom classroom : classrooms) {
- 		out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
- 	}
- %>
+	--%>
+	<%
+		ArrayList<Classroom> classrooms;
+		if (isAdmin) classrooms = connector.classroomDB.getClassrooms(); else
+					 classrooms = connector.classroomDB.getPersonsClassrooms(currentPerson);
+		
+		System.out.println("person was: " + currentPerson.getEmail());
+		
+		for (Classroom classroom : classrooms) {
+			out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
+		}
+	%>
+
   <script>
     function signOut() {
       var auth2 = gapi.auth2.getAuthInstance();
@@ -116,5 +137,6 @@
   </script>
   <a href="homepage.html" onclick="signOut();">Sign out</a>
 	<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
 </body>
 </html>

@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS `lecturers`;
 DROP TABLE IF EXISTS `persons`;
 DROP TABLE IF EXISTS `positions`;
 DROP TABLE IF EXISTS `functions`;
+DROP TABLE IF EXISTS `admins`;
 DROP TABLE IF EXISTS `position_function`;
 
 CREATE TABLE `persons` (
@@ -31,6 +32,12 @@ CREATE TABLE `persons` (
 	`person_email` varchar(100) NOT NULL,
 	UNIQUE (`person_email`),
 	PRIMARY KEY (`person_id`)
+);
+
+CREATE TABLE `admins` (
+	`person_id` INT NOT NULL,
+	UNIQUE (`person_id`),
+	CONSTRAINT `admins_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
 );
 
 CREATE TABLE `lecturers` (
@@ -138,8 +145,9 @@ CREATE TABLE `classroom_section_leaders` (
 CREATE TABLE `sections` (
 	`section_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
-    `section_n` INT NOT NULL,
-    
+   `section_n` INT NOT NULL,
+   `section_size` INT NOT NULL DEFAULT 0,
+
 	PRIMARY KEY (`section_id`, `classroom_id`),
 	UNIQUE KEY `seminars_uk0` (`section_n`, `classroom_id`),
 	CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
@@ -149,6 +157,7 @@ CREATE TABLE `seminars` (
 	`seminar_id` INT NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
    `seminar_n` INT NOT NULL,
+   `seminar_size` INT NOT NULL DEFAULT 0,
 
 	PRIMARY KEY (`seminar_id`, `classroom_id`),
 	UNIQUE KEY `seminars_uk0` (`seminar_n`, `classroom_id`),
@@ -237,3 +246,11 @@ insert into `functions` (`function_name`) values
 	('add new assignments'),
 	('review assignments of students from their group'),
 	('add classroom materials'); 
+
+insert into `persons` (`person_name`, `person_surname`, `person_email`) values
+	('admin', 'admin', 'admin@admin.admin');
+
+insert into admins values(
+	(select `person_id` from persons 
+		where person_email = 'admin@admin.admin')
+);

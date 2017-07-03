@@ -114,6 +114,35 @@ public class SectionDB {
 	}
 
 	/**
+	 * adds given students to given section
+	 * @param sectionN
+	 * @param students
+	 * @param classroomId
+	 * @return
+	 */
+	
+	public boolean addStudentsToSection(int sectionN, ArrayList<Person> students, String classroomId) {
+		String sectionId = getSectionId(sectionN, classroomId);
+		if (sectionId.equals("")) {
+			return false;
+		}
+		if (students.isEmpty()) {
+			return true;
+		}
+		
+		String query = "insert into `student-section` (`classroom_id`, `person_id`, `section_id`) values\n";
+		
+		for (int i = 0; i < students.size(); i++){
+			Person p = students.get(i);
+			query += "(" + classroomId + ", " + p.getPersonID() + ", " + sectionId + ")";
+			if (i + 1 < students.size()) query += ",\n";
+		}
+		
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
+
+	/**
 	 * checks if section with given n(index) exists in given classroom
 	 * 
 	 * @param sectionN
@@ -198,7 +227,7 @@ public class SectionDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				sections.add(new Section( rs.getInt("section_n"), classroomId));
+				sections.add(new Section(rs.getInt("section_n"), classroomId, rs.getInt("section_size")));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -233,4 +262,20 @@ public class SectionDB {
 		}
 		return section;
 	}
+	
+	/**
+	 * updates section_size in database
+	 * @param sectionN
+	 * @param classroomId
+	 * @param sectionSize
+	 */
+	public void updateSectionSize(int sectionN, String classroomId, int sectionSize) {
+		String sectionId = getSectionId(sectionN, classroomId);
+		String query = String.format(
+				"update `sections` set `section_size` = %s where `section_id` = %s and `classroom_id` = %s",
+				sectionSize, sectionId, classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		db.executeUpdate(myConnection);
+	}
+
 }
