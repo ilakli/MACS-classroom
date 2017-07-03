@@ -24,13 +24,13 @@ public class MaterialDB {
 	 *            name of the material which is added in classroom
 	 * @return returns booelan (whether it added succesfully or not).
 	 */
-	public boolean addMaterial(String classroomId, String materialName) {
+	public boolean addMaterial(String classroomId,String categoryId, String materialName) {
 
 		if (materialName.equals("")) {
 			return false;
 		}
 
-		String query = String.format("insert into `classroom_materials` values (%s,'%s');", classroomId, materialName);
+		String query = String.format("insert into `classroom_materials` values (%s,%s,'%s');", classroomId,categoryId, materialName);
 
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
@@ -63,5 +63,51 @@ public class MaterialDB {
 		}
 
 		return materials;
+	}
+	/**
+	 * Returns all the material from classroom within some category
+	 * @param classroomId - id of the given classroom
+	 * @param categoryId - id of the given category
+	 * @return - All the material from classroom within some category
+	 */
+	public ArrayList<Material> getMaterialsForCategory(String classroomId, String categoryId){
+		String query = String.format("select * from `classroom_materials` where `classroom_id` = %s and `category_id` = %s;", 
+				classroomId, categoryId);
+		System.out.println(query);
+		MyConnection myConnection = db.getMyConnection(query);
+		ArrayList<Material> materials = new ArrayList<Material>();
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			while (rs != null && rs.next()) {
+				materials.add(new Material(rs.getString("classroom_id"), rs.getString("material_name")));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {				
+				myConnection.closeConnection();
+			}
+		}
+
+		return materials;
+	}
+	
+	/**
+	 * This method deletes material from the classroom;
+	 * @param classroomId - id of the classroom
+	 * @param materialName - name of the material;
+	 * @param categoryId - id of the category where this material is; 
+	 * @return - true if deleted false otherwise;
+	 */
+	public boolean deleteMaterial(String classroomId, String materialName, String categoryId) {
+		if (materialName.equals("")) {
+			return false;
+		}
+		String query = String.format("delete from `classroom_materials` where `classroom_id =  %s and material_name = '%s' and category_id = %s;", 
+				classroomId, materialName, categoryId);
+		System.out.println(query);
+		
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
 	}
 }

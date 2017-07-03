@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import EditingServlets.EditStatusConstants;
 import Listeners.ContextListener;
 import database.AllConnections;
+import database.MaterialDB;
 import defPackage.Classroom;
 
 /**
@@ -70,7 +71,7 @@ public class UploadServlet extends HttpServlet {
 		filePath = request.getServletContext().getRealPath("/");
 		System.out.println(filePath + " Is the filepath");
 		String classroomId = "";
-
+		String categoryId = "";
 		isMultipart = ServletFileUpload.isMultipartContent(request);
 
 		if (!isMultipart) {
@@ -101,7 +102,13 @@ public class UploadServlet extends HttpServlet {
 					}
 					item.write(file);
 				} else {
-					classroomId = item.getString();
+					String fieldName = item.getFieldName();
+					
+					if (fieldName.equals("classroomID")){
+						classroomId = item.getString();
+					} else if (fieldName.equals("materialCategory")){
+						categoryId = item.getString();
+					}
 				}
 			}
 
@@ -114,11 +121,12 @@ public class UploadServlet extends HttpServlet {
 
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 
-		System.out.println(fileName + " is fileName");
+		System.out.println(fileName + " is fileName And classroomId is: " + classroomId + " And categoryId is: " + categoryId);
 
-		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		currentClassroom.classroomAddMaterial(fileName);
-
+		MaterialDB materialDB = connection.materialDB;
+		
+		materialDB.addMaterial(classroomId,categoryId,fileName);
+		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		response.sendRedirect(address);
