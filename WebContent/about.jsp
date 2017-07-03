@@ -109,36 +109,38 @@
 	</div>
 	</nav>
 
-
-	<div class="categories">
-		<input type="text" value="" placeholder="Add Category" />
-		<button class="categoryAddButton btn btn-success">Submit</button>
-		<input type="hidden" value="AddNewCategoryServlet">
-	</div>
-
-	<form action="UploadServlet" method="POST"
-		enctype="multipart/form-data">
-		<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
-			value=<%=classroomID%> id="classroomID" /> 
-			
-  	
-		<input type="file" name="file" size="30" />
-		<select name="materialCategory">
-  			<option value="" disabled selected>Select Category</option>
- 			<%
-  				for(int i=0;i<allCategories.size();i++){
-  					
-  					Category currentCategory = allCategories.get(i);
-  					String currentCategoryName = currentCategory.getCategoryName();
-  					String currentCategoryId = currentCategory.getCategoryId();
-  					
-  					out.println("<option value='" + currentCategoryId +"'>" + currentCategoryName+ "</option>");
-  				}
-  			%>
-  		</select>
-  		<br> 
-		<input type="submit"  class="btn btn-success">
-	</form>
+	<%if (isAdmin || isLecturer || isSeminarist) {%>
+		<div class="categories">
+			<input type="text" value="" placeholder="Add Category" />
+			<button class="categoryAddButton btn btn-success">Submit</button>
+			<input type="hidden" value="AddNewCategoryServlet">
+		</div>
+	
+		<form action="UploadServlet" method="POST"
+			enctype="multipart/form-data">
+			<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
+				value=<%=classroomID%> id="classroomID" /> 
+				
+	  	
+			<input type="file" name="file" size="30" />
+			<select name="materialCategory">
+	  			<option value="" disabled selected>Select Category</option>
+	 			<%
+	  				for(int i=0;i<allCategories.size();i++){
+	  					
+	  					Category currentCategory = allCategories.get(i);
+	  					String currentCategoryName = currentCategory.getCategoryName();
+	  					String currentCategoryId = currentCategory.getCategoryId();
+	  					
+	  					out.println("<option value='" + currentCategoryId +"'>" + currentCategoryName+ "</option>");
+	  				}
+	  			%>
+	  		</select>
+	  		<br> 
+			<input type="submit"  class="btn btn-success">
+		</form>
+	<%}%>
+	
 	<%
 	MaterialDB materialDB = ((AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).materialDB;
 	

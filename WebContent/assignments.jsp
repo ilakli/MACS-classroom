@@ -107,59 +107,59 @@
 		</ul>
 	</div>
 	</nav>
-
-	<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
-
-	<div id="myModal" class="modal">
-
-		<!-- Modal content -->
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<span class="close">&times;</span>
-				<h2>Add New Assignment</h2>
-			</div>
-			
-			<div class="modal-body">
-
-				<div class="form-group">
-					<form action="AddNewAssignmentServlet"  enctype="multipart/form-data" method="POST">
-						
-						<h6> Title </h6>
-						
-						<textarea
-							class="form-control"
-							rows="1" 
-							name="assignmentTitle">
-						</textarea>
-						
-						<h6> Instructions </h6>
-						<textarea 
-							class="form-control" 
-							rows="5" 
-							name="assignmentInstructions">
-						</textarea>
-						
-						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
-							value=<%=classroomID%>>
-						
-						<h6> Upload File </h6>
-						
-						<input type="file" name="file" size="30" />
-						
-						</br>
-						
-						<input type="submit"/ value = "Submit" class="btn btn-success">
-					</form>
-					
-				</div>
-
-			</div>
-		
-		</div>
-
 	
-	</div>
+	<%if (isAdmin || isLecturer){ %>
+		<button type="button" class="w3-button w3-teal" id="myBtn">Add New Assignment</button>
+	
+		<div id="myModal" class="modal">
+	
+			<!-- Modal content -->
+			<div class="modal-content">
+				
+				<div class="modal-header">
+					<span class="close">&times;</span>
+					<h2>Add New Assignment</h2>
+				</div>
+				
+				<div class="modal-body">
+	
+					<div class="form-group">
+						<form action="AddNewAssignmentServlet"  enctype="multipart/form-data" method="POST">
+							
+							<h6> Title </h6>
+							
+							<textarea
+								class="form-control"
+								rows="1" 
+								name="assignmentTitle">
+						</textarea>
+							
+							<h6> Instructions </h6>
+							<textarea 
+								class="form-control" 
+								rows="5" 
+								name="assignmentInstructions">
+						</textarea>
+							
+							<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
+								value=<%=classroomID%>>
+							
+							<h6> Upload File </h6>
+							
+							<input type="file" name="file" size="30" />
+							
+							</br>
+							
+							<input type="submit"/ value = "Submit" class="btn btn-success">
+						</form>
+						
+					</div>
+	
+				</div>
+			
+			</div>
+		</div>
+	<%}%>
 	<!-- -------------------------------------------------------------------- -->
 	<%
 		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
