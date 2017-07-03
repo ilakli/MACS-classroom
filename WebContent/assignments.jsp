@@ -29,14 +29,37 @@
 
 </head>
 <body>
+	<%
+		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
+		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
+		
+		
+		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
+		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
+		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
+		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
+		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		
+		
+		PersonDB personConnector = new PersonDB();
+		
+	%>
 
-
-	<%!private String generateAssignmentHTML(Assignment a) {
+	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, String classroomID, Person currentPerson) {
 		
 		String result = "<div class=\"panel panel-default\"> " + 
-						" <div class=\"panel-body\"> " + 
-						"<h1>" + a.getTitle() + "</h1>" + 
-						"<p> " + a.getInstructions() + "</p>";
+						" <div class=\"panel-body\"> ";
+						if(isStudent){ 
+							result+="<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
+								+"	\"> " + a.getTitle() + "</a></h1>";
+						}else{
+							result+="<h1>" + a.getTitle() + "</h1>";
+						}
+						// + 
+						//"<p> " + a.getInstructions() + "</p>";
 						
 						if( a.getDeadline()!= null){
 							result+="<p> Deadline:" + a.getDeadline() + "</p>";
@@ -55,23 +78,7 @@
 		return result;
 	}%>
 
-	<%
-		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
-		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
-		
-		
-		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
-		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
-		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
-		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
-		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
-		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
-		
-		PersonDB personConnector = new PersonDB();
-		
-	%>
+
 
 	<div class="jumbotron">
 		<h2>
@@ -180,7 +187,7 @@
 		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
 		
 		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a);
+			String htmlCode = generateAssignmentHTML(a, isStudent,classroomID, currentPerson);
 			out.println(htmlCode);
 		}
 	%>
