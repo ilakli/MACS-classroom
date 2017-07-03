@@ -2,6 +2,9 @@ package WorkingServlets;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,7 +41,9 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		String classroomID = "";
 		String assignmentTitle = "";
 		String assignmentInstructions = "";
-		
+	
+		String assignmentDeadline = "";
+
 		filePath = request.getServletContext().getRealPath("/");
 		
 		System.out.println(filePath + " Is the filepath");
@@ -61,8 +66,9 @@ public class AddNewAssignmentServlet extends HttpServlet {
 			for (FileItem item : fileItems) {
 
 				if (!item.isFormField()) {
+					System.out.println("file not null");
 					fileName = item.getName();
-
+					
 					if (fileName.lastIndexOf("\\") >= 0) {
 						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
 					} else {
@@ -78,6 +84,9 @@ public class AddNewAssignmentServlet extends HttpServlet {
 						assignmentTitle = item.getString();
 					} else if (fieldName.equals("assignmentInstructions")){
 						assignmentInstructions = item.getString();
+					} else if (fieldName.equals("deadline")){
+						assignmentDeadline = item.getString();
+		
 					}
 				}
 			}
@@ -87,9 +96,8 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
-		connection.assignmentDB.addAssignment(classroomID, fileName, assignmentTitle, assignmentInstructions);
-		
-		//connection.postDB.addPost(classroomId, personId, postText);
+		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
+
 		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}
 	

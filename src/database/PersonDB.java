@@ -163,8 +163,6 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean setNameAndSurname(String email, String name, String surname) {
-		String query1 = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`)"
-				+ " values ('%s', '%s', '%s');", name, surname, email);
 		String query = String.format("update `persons` set `person_name` = '%s', `person_surname` = '%s' "
 				+ "where `person_email` = '%s'; ", name, surname, email);
 		MyConnection myConnection = db.getMyConnection(query);

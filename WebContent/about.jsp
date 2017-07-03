@@ -29,7 +29,7 @@
 
 		String result = "<div class=\"panel panel-default\"> " + " <div class=\"panel-body\"> " + "<h1>" + a.getTitle()
 				+ "</h1>" + "<p> " + a.getInstructions() + "</p>" + " <a href=\"DownloadServlet?"
-				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + a.getName() + "\">" + a.getName() + "</a></div>"
+				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>"
 
 				+ " <div class=\"panel-footer\"></div> "
 

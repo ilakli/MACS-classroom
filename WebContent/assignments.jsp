@@ -35,11 +35,19 @@
 		String result = "<div class=\"panel panel-default\"> " + 
 						" <div class=\"panel-body\"> " + 
 						"<h1>" + a.getTitle() + "</h1>" + 
-						"<p> " + a.getInstructions() + "</p>" +
-						" <a href=\"DownloadServlet?"
-						+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + a.getName() + "\">" + a.getName() + "</a></div>"
+						"<p> " + a.getInstructions() + "</p>";
 						
-						+ " <div class=\"panel-footer\"></div> " 
+						if( a.getDeadline()!= null){
+							result+="<p> Deadline:" + a.getDeadline() + "</p>";
+						}
+						
+						if(a.getFileName() != null){
+							result +=" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
+									+ "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>";
+						}
+						
+						
+						result+= " <div class=\"panel-footer\"></div> " 
 								
 						+ "</div>";
 		
@@ -120,6 +128,9 @@
 						
 						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 							value=<%=classroomID%>>
+						
+						<h6> Deadline </h6>	
+						<input name="deadline" type="date" value=""/>	
 						
 						<h6> Upload File </h6>
 						

@@ -72,10 +72,12 @@ CREATE TABLE `post_comments` (
 
 CREATE TABLE `classroom_assignments` (
 	`classroom_id` INT NOT NULL,
-	`assignment_name` varchar(100) NOT NULL,
-	`assignment_title` TEXT NOT NULL,
+	`assignment_title` varchar(100) NOT NULL,
 	`assignment_instructions` TEXT NOT NULL,
-	PRIMARY KEY (`classroom_id`,`assignment_name`),
+	`assignment_deadline` date, 
+	`file_name` varchar(100),
+	
+	PRIMARY KEY (`classroom_id`,`assignment_title`),
 	CONSTRAINT `classroom_assignments_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
 

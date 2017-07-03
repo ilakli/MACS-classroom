@@ -2,7 +2,11 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import database.DBConnection.MyConnection;
 import defPackage.Assignment;
@@ -16,28 +20,7 @@ public class AssignmentDB {
 		db = new DBConnection();
 	}
 	
-	/**
-	 * adds new assignment to database with given parameters
-	 * 
-	 * @param classroomID
-	 * @param assignmentName
-	 * @param assignmentTitle
-	 * @param assignmentInstructions
-	 * @return - true if assignment was added successfully, false otherwise
-	 */
-	public boolean addAssignment(String classroomID, String assignmentName,
-								String assignmentTitle, String assignmentInstructions){
-		
-		if (assignmentName.isEmpty()) return false;
-		
-		String query = String.format("insert into `classroom_assignments` values (%s,'%s','%s','%s');",
-						classroomID, assignmentName, assignmentTitle, assignmentInstructions);
-		
-		System.out.println("DOING: " + query);
-		
-		MyConnection myConnection = db.getMyConnection(query);
-		return db.executeUpdate(myConnection);
-	}
+
 	
 	/**
 	 * @param classroomID - ID of classroom
@@ -51,8 +34,19 @@ public class AssignmentDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				assignments.add(new Assignment(rs.getString("classroom_id"), rs.getString("assignment_name"),
-						rs.getString("assignment_title"), rs.getString("assignment_instructions")));
+				
+				String assignmentTitle = rs.getString("assignment_title");
+				String assignmentInstructions = rs.getString("assignment_instructions");
+				Date assignmentDeadline = null;
+				java.sql.Date sqlDate =rs.getDate("assignment_deadline");
+				System.out.println(sqlDate);
+				if(sqlDate!=null) {
+					assignmentDeadline = new java.util.Date(sqlDate.getTime());
+					System.out.println(assignmentDeadline);
+				}
+				String fileName = rs.getString("file_name");
+				assignments.add(new Assignment(classroomID,assignmentTitle, 
+						assignmentInstructions,assignmentDeadline, fileName) );
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -63,6 +57,51 @@ public class AssignmentDB {
 		}
 
 		return assignments;
+	}
+
+	/**
+	 * adds new assignment to database with given parameters
+	 * @param classroomID
+	 * @param assignmentTitle
+	 * @param assignmentInstructions
+	 * @param assignmentDeadline
+	 * @param fileName
+	 */
+	public boolean addAssignment(String classroomID, String assignmentTitle, String assignmentInstructions,
+			String assignmentDeadline, String fileName) {
+		//if (assignmentName.isEmpty()) return false;
+		
+		String query = String.format("insert into `classroom_assignments`(`classroom_id`,`assignment_title`,`assignment_instructions`) "
+				+ "values (%s,'%s','%s');",
+						classroomID, assignmentTitle, assignmentInstructions);
+		System.out.println("DOING: " + query);
+		
+		MyConnection myConnection = db.getMyConnection(query);
+		if( db.executeUpdate(myConnection)==false) return false;
+		
+
+		if(!fileName.equals("")){
+			System.out.println("fileName not null");
+			String query2 = String.format("update `classroom_assignments` set `file_name` = '%s' "
+					+ "where `classroom_id` = '%s' and `assignment_title` = '%s'; ", fileName, classroomID, assignmentTitle);
+			myConnection = db.getMyConnection(query2);
+			if( db.executeUpdate(myConnection)==false) return false;
+		}
+		
+		if(!assignmentDeadline.equals("") ){
+			System.out.println(assignmentDeadline);
+
+			System.out.println("deadline not null");
+			String query1 = String.format("update `classroom_assignments` set `assignment_deadline` = '%s' "
+					+ "where `classroom_id` = '%s' and `assignment_title` = '%s'; ", assignmentDeadline, classroomID, assignmentTitle);
+			myConnection = db.getMyConnection(query1);
+			System.out.println(query1);
+			if( db.executeUpdate(myConnection)==false) return false;
+		}
+		return true;
+		
+		
+		
 	}
 	
 }
