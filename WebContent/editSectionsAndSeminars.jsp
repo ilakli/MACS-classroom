@@ -33,8 +33,7 @@
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		String status = request.getParameter(EditStatusConstants.STATUS);
-<<<<<<< HEAD
-=======
+
 		
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
@@ -45,7 +44,7 @@
 
 		
 		System.out.println("seminars and sections downloaded successfully!");
->>>>>>> 9235e0c04d17d247abded3796d145c1fcd3aece3
+
 
 		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 
