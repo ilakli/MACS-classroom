@@ -1,16 +1,20 @@
 package defPackage;
 
+import java.util.Date;
+
 public class Post {
 	private String postId;
 	private String classroomId;
 	private String personId;
 	private String postText;
+	private Date postDate;
 
-	public Post(String postId, String classroomId, String personId, String postText) {
+	public Post(String postId, String classroomId, String personId, String postText, Date postDate) {
 		this.postId = postId;
 		this.classroomId = classroomId;
 		this.personId = personId;
 		this.postText = postText;
+		this.postDate = postDate;
 	}
 
 	/**
@@ -47,5 +51,14 @@ public class Post {
 	 */
 	public String getPostText() {
 		return this.postText;
+	}
+	
+	/**
+	 * This method gets time when the post was added
+	 * 
+	 * @return date of the post.
+	 */
+	public Date getPostDate() {
+		return this.postDate;
 	}
 }
