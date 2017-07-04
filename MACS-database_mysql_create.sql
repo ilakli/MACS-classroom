@@ -169,6 +169,7 @@ CREATE TABLE `seminars` (
 CREATE TABLE `classroom_students` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
+	`reschedulings_used` INT NOT NULL DEFAULT 0,
 	PRIMARY KEY (`classroom_id`,`person_id`),
 	CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
 	CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
