@@ -9,8 +9,8 @@
 <%@page import="database.AllConnections"%>
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
-
-
+<%@page import="java.time.LocalDateTime"%>
+<%@page import="java.util.Date"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -140,8 +140,13 @@
 		
 	%>
 	
+	
 	<%
 		if(isStudent && status==null){
+			
+			Date now = new Date();
+			if(now.before(a.getDeadline())){
+			
 			%>
 			<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle%>
@@ -151,9 +156,19 @@
 				<input type="file" name="file" size="30" /> </br> <input type="submit"
 					/ value="Turn In" class="btn btn-success">
 			</form>	
-				
-	<%
 			
+			
+				
+			<%
+			} else{
+				
+				%>
+				<h2 style = " color: red">Late</h2>
+				
+				
+				<%
+				
+			}
 		}else if(status.equals("done")){
 			
 			
