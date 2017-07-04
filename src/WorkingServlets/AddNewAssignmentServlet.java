@@ -86,7 +86,6 @@ public class AddNewAssignmentServlet extends HttpServlet {
 						assignmentInstructions = item.getString();
 					} else if (fieldName.equals("deadline")){
 						assignmentDeadline = item.getString();
-		
 					}
 				}
 			}

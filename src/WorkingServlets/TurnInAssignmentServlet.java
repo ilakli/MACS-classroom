@@ -41,7 +41,13 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String studentEmail = request.getParameter("studentEmail");
 		String fileName = "";
 		String numreschedulings = request.getParameter("numreschedulings");
-
+		
+		System.out.println("==============================");
+		System.out.println("assignment title: " + assignmentTitle);
+		System.out.println("==============================");
+		
+		
+		
 		filePath = request.getServletContext().getRealPath("/");
 		
 		System.out.println(filePath + " Is the filepath");
@@ -81,6 +87,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 						System.out.println(classroomID + "  classroomID");
 					} else if (fieldName.equals("assignmentTitle")){
 						assignmentTitle = item.getString();
+						System.out.println(assignmentTitle + "  assignmentTitle");
 					} else if (fieldName.equals("studentEmail")){
 						studentEmail = item.getString();
 					} 
@@ -88,6 +95,11 @@ public class TurnInAssignmentServlet extends HttpServlet {
 			}
 
 		} catch (Exception ex) {}
+		
+		System.out.println("==============================");
+		System.out.println("assignment title: " + assignmentTitle);
+		System.out.println("==============================");
+		
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);

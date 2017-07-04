@@ -27,6 +27,10 @@
 	String studentEmail = request.getParameter("studentEmail");
 
 	String assignmentTitle = request.getParameter("assignmentTitle"); 
+	System.out.println("+++++++++++++++++++");
+	System.out.println("title now: " + assignmentTitle);
+	System.out.println("+++++++++++++++++++");
+	
 	String status = request.getParameter("status");
 	%>
 <title>assignmentTitle</title>
@@ -162,15 +166,17 @@
 			if(now.before(a.getDeadline() )){	
 				
 			%>
-			<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle%>
+			<form action=<%="TurnInAssignmentServlet"%>
 						enctype="multipart/form-data" method="POST">
 				<h6>Upload File</h6>
-	
+				
+				<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
+				<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
+				<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
+				
 				<input type="file" name="file" size="30" /> </br> <input type="submit"
 					/ value="Turn In" class="btn btn-success">
 			</form>	
-			
 			
 				
 			<%
@@ -195,7 +201,11 @@
 					"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle + 
 					"&numreschedulings="+ mustUsereschedulings%> enctype="multipart/form-data" method="POST">
 					<h6>Upload File</h6>
-		
+					
+					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
+					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
+					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
+					
 					<input type="file" name="file" size="30" /> </br> <input type="submit"
 						/ value="Turn In" class="btn btn-success">
 				</form>	
