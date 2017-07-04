@@ -104,7 +104,7 @@
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 
 			<%
-				if (isAdmin || isLecturer || isSeminarist) {
+				if (isAdmin || isLecturer || isSeminarist || isSectionLeader) {
 			%>
 			<li><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>

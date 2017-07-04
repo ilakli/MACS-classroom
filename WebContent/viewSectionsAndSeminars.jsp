@@ -81,7 +81,7 @@
 			<li><a
 				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
 			
-			<%if (isAdmin || isLecturer || isSeminarist){%>
+			<%if (isAdmin || isLecturer || isSeminarist || isSectionLeader){%>
 			<li class="active"><a
 				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				Sections And Seminars</a></li>
@@ -195,7 +195,7 @@
                 
                 String sectionLeaderName = "Section Leader Is Not Added Yet";
                 Person p = section.getSectionLeader();
-                if(p!= null) sectionLeaderName = p.getName();
+                if(p!= null) sectionLeaderName = p.getName() + " " + p.getSurname();
                 
                 %>
                 <p style = " margin: 10px 10px; "><%=sectionLeaderName %> </p>
