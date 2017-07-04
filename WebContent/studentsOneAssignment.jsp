@@ -11,6 +11,7 @@
 <%@page import="defPackage.Material"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.util.Date"%>
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -36,6 +37,14 @@
 </head>
 <body>
 
+	<%!public Date addDays(Date dt, int days){
+		Calendar c = Calendar.getInstance();
+		c.setTime(dt);
+		c.add(Calendar.DATE, days);  // number of days to add
+		return c.getTime();
+	}	
+	%>
+	
 
 	<%!private String generateAssignmentHTML(Assignment a) {
 		
@@ -145,8 +154,13 @@
 		if(isStudent && status==null){
 			
 			Date now = new Date();
-			if(now.before(a.getDeadline())){
+			Date availableDate = a.getDeadline();
+			boolean canTurnIn = false;
+			int mustUsereschedulings = 0;
 			
+			
+			if(now.before(a.getDeadline() )){	
+				
 			%>
 			<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle%>
@@ -160,7 +174,37 @@
 			
 				
 			<%
-			} else{
+			}else{
+				int maxAvailableRes = currentClassroom.getNumberOfReschedulings() - 
+						connector.studentDB.reschedulingsUsed(studentEmail, classroomID) ;
+				System.out.println(maxAvailableRes + " maxAvRes");
+				for(int i = 1; i <= maxAvailableRes; i++){
+					availableDate = addDays(availableDate, currentClassroom.getReschedulingLength());
+					System.out.println(availableDate + " avDate " + i);
+					if(now.before(availableDate)){
+						canTurnIn = true;
+						mustUsereschedulings = i;
+						break;
+					}
+				}
+			
+			
+			if(canTurnIn){
+				%>
+				<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+					"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle + 
+					"&numreschedulings="+ mustUsereschedulings%> enctype="multipart/form-data" method="POST">
+					<h6>Upload File</h6>
+		
+					<input type="file" name="file" size="30" /> </br> <input type="submit"
+						/ value="Turn In" class="btn btn-success">
+				</form>	
+				
+				
+					
+				<%
+			
+			}else{
 				
 				%>
 				<h2 style = " color: red">Late</h2>
@@ -169,6 +213,11 @@
 				<%
 				
 			}
+			
+			
+			}	
+		
+		
 		}else if(status.equals("done")){
 			
 			

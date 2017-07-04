@@ -40,7 +40,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String assignmentTitle = request.getParameter("assignmentTitle");
 		String studentEmail = request.getParameter("studentEmail");
 		String fileName = "";
-		
+		String numreschedulings = request.getParameter("numreschedulings");
 
 		filePath = request.getServletContext().getRealPath("/");
 		
@@ -93,8 +93,17 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
 		String personID = connection.personDB.getPersonId(studentEmail);
+		
 		connection.studentAssignmentDB.turnInAssignment(classroomID, personID, assignmentTitle, fileName);
-
+		
+		if(numreschedulings!=null && !numreschedulings.equals("")){
+			int nRes = Integer.parseInt(numreschedulings);
+			System.out.println(nRes + " nRes");
+			for(int i = 0; i < nRes; i++){
+				connection.studentDB.useRescheduling(studentEmail, classroomID);
+			}
+		}
+		
 		response.sendRedirect("studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle+"&status=done");
 	}
