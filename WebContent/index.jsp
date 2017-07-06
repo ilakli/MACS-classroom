@@ -51,7 +51,7 @@
 			<a href="index.jsp" id="header-name">Macs Classroom</a>
 		</h2>
 	</div>
-
+	  <a href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
 
 	<%if (isAdmin || isGlobalLecturer) { %>
 	<button id="create" type="submit" class="btn btn-danger"
@@ -135,7 +135,7 @@
       });
     }
   </script>
-  <a href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+
 	<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </body>

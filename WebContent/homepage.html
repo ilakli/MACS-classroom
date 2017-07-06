@@ -16,13 +16,29 @@
 
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 <script type="text/javascript" src='js/gmail.js'></script>
+<style>
+	.g-signin2{
+		margin: auto;
+		padding: auto;
+		display: table;
+		margin-top: 1px;
+	}
+	.wrapper{
+		margin-bottom: 1%;
+	}
+	.wrapper input {
+		margin: 2%;
+	}
+</style>
 </head>
 <body>
 	<div class="wrapper">
 		<form class="form-signin" method = "POST" action = "AdminLoginServlet">
 			<h2 class="form-signin-heading">Please login</h2>
 			<input type="text" class="form-control email-field" name="username"
-				placeholder="Email Address" /> <input type="password"
+				placeholder="Email Address" /> 
+				
+				<input type="password"
 				class="form-control password-field" name="password" placeholder="Password" /> <br>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
 		</form>
