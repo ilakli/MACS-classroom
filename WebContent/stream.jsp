@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="css/style.css">
 
 <link rel="stylesheet" href="css/comments.css" type="text/css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <title>Stream</title>
 <style>
 
