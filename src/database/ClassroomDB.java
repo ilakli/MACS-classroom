@@ -11,21 +11,24 @@ import defPackage.Classroom;
 import defPackage.Person;
 
 public class ClassroomDB {
-	
+
 	private DBConnection db;
 	private LecturerDB lecturerDB;
 	private SeminaristDB seminaristDB;
 	private SectionLeaderDB sectionLeaderDB;
 	private StudentDB studentDB;
-	
+	private PersonDB personDB;
+
 	public ClassroomDB(AllConnections allConnections) {
 		db = allConnections.db;
 		lecturerDB = allConnections.lecturerDB;
 		seminaristDB = allConnections.seminaristDB;
 		sectionLeaderDB = allConnections.sectionLeaderDB;
 		studentDB = allConnections.studentDB;
+		personDB = allConnections.personDB;
+
 	}
-	
+
 	/**
 	 * returns classroom object based on classroomId
 	 * 
@@ -72,7 +75,7 @@ public class ClassroomDB {
 			PreparedStatement selectLastIndex = con.prepareStatement("select last_insert_id();");
 			ResultSet rs = selectLastIndex.executeQuery();
 
-			if (rs.next()) {				
+			if (rs.next()) {
 				classroomId = rs.getString(1);
 			}
 			con.commit();
@@ -82,7 +85,7 @@ public class ClassroomDB {
 
 		return classroomId;
 	}
-	
+
 	/**
 	 * 
 	 * @return returns ArrayList of current classrooms
@@ -102,17 +105,19 @@ public class ClassroomDB {
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally {
-			if (stmnt != null) {				
+			if (stmnt != null) {
 				stmnt.closeConnection();
 			}
 		}
 
 		return classrooms;
 	}
-	
+
 	/**
 	 * returns person`s all classrooms
-	 * @param p - person
+	 * 
+	 * @param p
+	 *            - person
 	 * @return person's classrooms
 	 */
 	public ArrayList<Classroom> getPersonsClassrooms(Person p) {
@@ -124,36 +129,36 @@ public class ClassroomDB {
 			while (classroomsTable.next()) {
 				String classroomID = classroomsTable.getString("classroom_id");
 				String classroomName = classroomsTable.getString("classroom_name");
-				
+
 				Classroom classroom = new Classroom(classroomName, classroomID);
 				System.out.println("class name: " + classroomName + "id: " + classroomID);
-				if (classroom.classroomPersonExists(p.getEmail())){
+				if (classroom.classroomPersonExists(p.getEmail())) {
 					classrooms.add(classroom);
 				}
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		} finally {
-			if (stmnt != null) {				
+			if (stmnt != null) {
 				stmnt.closeConnection();
 			}
 		}
 
 		return classrooms;
 	}
-	
-	
+
 	/**
 	 * returns classroom arraylist associated with given person's email
+	 * 
 	 * @param email
 	 * @return classroom arraylist
 	 */
-	public ArrayList <Classroom> getClassroomsByPerson(String email) {
-		ArrayList <Classroom> classrooms = new ArrayList <Classroom>();
-		String query = String.format(
-				"select classrooms.classroom_name, classrooms.classroom_id from classroom_students inner join persons on persons.person_email = '%s' "
-				+ "and persons.person_id = classroom_students.person_id inner join classrooms on classrooms.classroom_id = "
-				+ "classroom_students.classroom_id", email);
+	public ArrayList<Classroom> getClassroomsByPerson(String email) {
+		ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
+		String query = String
+				.format("select classrooms.classroom_name, classrooms.classroom_id from classroom_students inner join persons on persons.person_email = '%s' "
+						+ "and persons.person_id = classroom_students.person_id inner join classrooms on classrooms.classroom_id = "
+						+ "classroom_students.classroom_id", email);
 		MyConnection myConnection = db.getMyConnection(query);
 		try {
 			ResultSet rs = myConnection.executeQuery();
@@ -161,7 +166,7 @@ public class ClassroomDB {
 				classrooms.add(new Classroom(rs.getString("classroom_name"), rs.getString("classroom_id")));
 			}
 		} catch (SQLException | NullPointerException e) {
-			
+
 		} finally {
 			if (myConnection != null) {
 				myConnection.closeConnection();
@@ -171,38 +176,46 @@ public class ClassroomDB {
 	}
 
 	/**
-	 * sets new value to distribution of students into sections
-	 * for classroom with given ID 
-	 * @param newValue - new value for this parameter
+	 * sets new value to distribution of students into sections for classroom
+	 * with given ID
+	 * 
+	 * @param newValue
+	 *            - new value for this parameter
 	 */
 	public void setClassroomSectionDistribution(String classroomID, boolean newValue) {
-		String sqlCode = String.format("update `classrooms` set classroom_section_auto_distribution = %s"
-				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
-		
+		String sqlCode = String.format(
+				"update `classrooms` set classroom_section_auto_distribution = %s" + " where classroom_id = %s",
+				Boolean.toString(newValue), classroomID);
+
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
-	
+
 	/**
-	 * sets new value to distribution of students into 
-	 * seminars for classroom with given ID 
-	 * @param newValue - new value for this parameter
+	 * sets new value to distribution of students into seminars for classroom
+	 * with given ID
+	 * 
+	 * @param newValue
+	 *            - new value for this parameter
 	 */
 	public void setClassroomSeminarDistribution(String classroomID, boolean newValue) {
-		String sqlCode = String.format("update `classrooms` set classroom_seminar_auto_distribution = %s"
-				+ " where classroom_id = %s", Boolean.toString(newValue), classroomID);
-		
+		String sqlCode = String.format(
+				"update `classrooms` set classroom_seminar_auto_distribution = %s" + " where classroom_id = %s",
+				Boolean.toString(newValue), classroomID);
+
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
-	
+
 	/**
 	 * returns if classroom with given ID is auto distributed to seminars
-	 * @param classroomID - ID of classroom
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
 	 */
 	public boolean getClassroomSeminarDistribution(String classroomID) {
-		String sqlCode = "select classroom_seminar_auto_distribution from classrooms "
-				+ "where classroom_id = " + classroomID + ";";
+		String sqlCode = "select classroom_seminar_auto_distribution from classrooms " + "where classroom_id = "
+				+ classroomID + ";";
 		MyConnection myConnection = db.getMyConnection(sqlCode);
 		boolean result;
 		try {
@@ -213,20 +226,22 @@ public class ClassroomDB {
 			e.printStackTrace();
 			result = false;
 		} finally {
-			if (myConnection != null) {				
+			if (myConnection != null) {
 				myConnection.closeConnection();
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * returns if classroom with given ID is auto distributed to sections
-	 * @param classroomID - ID of classroom
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
 	 */
 	public boolean getClassroomSectionDistribution(String classroomID) {
-		String sqlCode = "select classroom_section_auto_distribution from classrooms "
-				+ "where classroom_id = " + classroomID + ";";
+		String sqlCode = "select classroom_section_auto_distribution from classrooms " + "where classroom_id = "
+				+ classroomID + ";";
 		MyConnection myConnection = db.getMyConnection(sqlCode);
 		boolean result;
 		try {
@@ -246,25 +261,29 @@ public class ClassroomDB {
 
 	/**
 	 * sets the number of reschedulings allowed in this classroom to new value
-	 * @param classroomID - ID of classroom
-	 * @param newValue - new value
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
+	 * @param newValue
+	 *            - new value
 	 */
 	public void setClassroomsNumberOfReschedulings(String classroomID, int newValue) {
 		String sqlCode = String.format(
-				"update `classrooms` set classroom_reschedulings_num = %s where classroom_id = %s", 
-				newValue, classroomID);
-		
+				"update `classrooms` set classroom_reschedulings_num = %s where classroom_id = %s", newValue,
+				classroomID);
+
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
-	
+
 	/**
-	 * @param classroomID - ID of classroom
+	 * @param classroomID
+	 *            - ID of classroom
 	 * @return - number of reschedulings allowed in this classroom
 	 */
 	public int getClassroomsNumberOfReshcedulings(String classroomID) {
-		String sqlCode = "select classroom_reschedulings_num from classrooms "
-				+ "where classroom_id = " + classroomID + ";";
+		String sqlCode = "select classroom_reschedulings_num from classrooms " + "where classroom_id = " + classroomID
+				+ ";";
 		MyConnection myConnection = db.getMyConnection(sqlCode);
 		int result;
 		try {
@@ -281,16 +300,20 @@ public class ClassroomDB {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * sets length of rescheduling allowed in classroom to new value 
-	 * @param classroomID - ID of classroom
-	 * @param newValue - new value
+	 * sets length of rescheduling allowed in classroom to new value
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
+	 * @param newValue
+	 *            - new value
 	 */
 	public void setClassroomsReschedulingLength(String classroomID, int newValue) {
-		String sqlCode = String.format("update `classrooms` set classroom_reschedulings_length = %s"
-				+ " where classroom_id = %s", newValue, classroomID);
-		
+		String sqlCode = String.format(
+				"update `classrooms` set classroom_reschedulings_length = %s" + " where classroom_id = %s", newValue,
+				classroomID);
+
 		MyConnection update = db.getMyConnection(sqlCode);
 		this.db.executeUpdate(update);
 	}
@@ -303,21 +326,22 @@ public class ClassroomDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
-		System.out.println("Lecturer DB IS: " + lecturerDB + " OTHERS ARE: " + seminaristDB + " " + sectionLeaderDB + " " + studentDB);
-		return lecturerDB.lecturerExists(email, classroomId) || 
-				seminaristDB.seminaristExists(email, classroomId)
-				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || 
-				studentDB.studentExists(email, classroomId);
+		System.out.println("Lecturer DB IS: " + lecturerDB + " OTHERS ARE: " + seminaristDB + " " + sectionLeaderDB
+				+ " " + studentDB);
+		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
+				|| sectionLeaderDB.sectionLeaderExists(email, classroomId)
+				|| studentDB.studentExists(email, classroomId);
 	}
-	
+
 	/**
-	 * @param classroomID - ID of classroom
+	 * @param classroomID
+	 *            - ID of classroom
 	 * @return - length of rescheduling allowed in classroom with given ID
 	 */
 	public int getClassroomsReschedulingLength(String classroomID) {
-		String sqlCode = "select classroom_reschedulings_length from classrooms "
-				+ "where classroom_id = " + classroomID + ";";
-		
+		String sqlCode = "select classroom_reschedulings_length from classrooms " + "where classroom_id = "
+				+ classroomID + ";";
+
 		MyConnection myConnection = db.getMyConnection(sqlCode);
 		int result;
 		try {
@@ -333,5 +357,43 @@ public class ClassroomDB {
 			}
 		}
 		return result;
+	}
+
+	public int reschedulingsUsed(String email, String classroomID) {
+		String personId = personDB.getPersonId(email);
+		String query = String.format("select * from `classroom_students` where `classroom_id`=%s and `person_id`=%s;",
+				classroomID, personId);
+		MyConnection myConnection = db.getMyConnection(query);
+
+		ResultSet rs = myConnection.executeQuery();
+		try {
+			if (rs.next()) {
+				return rs.getInt("reschedulings_used");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		return -1;
+
+	}
+
+	public boolean useRescheduling(String email, String classroomID) {
+		String personId = personDB.getPersonId(email);
+		int reschedulingsUsed = reschedulingsUsed(email, classroomID);
+		int maxRes = getClassroomsNumberOfReshcedulings(classroomID);
+		if (maxRes <= reschedulingsUsed)
+			return false;
+		String query = String.format("update `classroom_students` set `reschedulings_used`= %s"
+				+ " where `classroom_id`=%s and `person_id`=%s;", reschedulingsUsed + 1, classroomID, personId);
+
+		System.out.println(query);
+		MyConnection myConnection = db.getMyConnection(query);
+
+		return db.executeUpdate(myConnection);
 	}
 }
