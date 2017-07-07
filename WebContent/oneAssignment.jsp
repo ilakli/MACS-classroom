@@ -77,9 +77,6 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
-		
-		PersonDB personConnector = new PersonDB();
-		
 	%>
 
 	<div class="jumbotron">
