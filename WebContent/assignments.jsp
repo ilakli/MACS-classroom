@@ -140,6 +140,12 @@
 			<%
 				}
 			%>
+			<li>
+			<a
+			href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+				People
+			</a>
+			</li>
 		</ul>
 	</div>
 	</nav>

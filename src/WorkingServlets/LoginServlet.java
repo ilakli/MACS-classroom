@@ -34,7 +34,8 @@ public class LoginServlet extends HttpServlet {
 		String firstName = request.getParameter("firstName");
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
-
+		String imgUrl = request.getParameter("image");
+		System.out.println("Img Url Is: " + imgUrl);
 		System.out.println("loginServlet");
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 
@@ -43,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 		
 		if(person == null){
 			System.out.println("person==null");
-			connection.personDB.addPerson(firstName, lastName, email);
+			connection.personDB.addPerson(firstName, lastName, email,imgUrl);
 			person = connection.personDB.getPersonByEmail(email);
 		}else {
 			System.out.println("person!=null");

@@ -34,7 +34,7 @@ public class PersonDB {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
 				currentPerson = new Person(rs.getString("person_name"), rs.getString("person_surname"), 
-						rs.getString("person_email"), rs.getString("person_id"));
+						rs.getString("person_email"), rs.getString("person_id"), rs.getString("image_url"));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -64,7 +64,7 @@ public class PersonDB {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
 				currentPerson = new Person(rs.getString("person_name"), rs.getString("person_surname"), 
-						rs.getString("person_email"), rs.getString("person_id"));
+						rs.getString("person_email"), rs.getString("person_id"), rs.getString("image_url"));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -113,9 +113,10 @@ public class PersonDB {
 	 * @param email
 	 * @return true- if update executed successfully, false - otherwise
 	 */
-	public boolean addPerson(String name, String surname, String email) {
-		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`)"
-				+ " values ('%s', '%s', '%s');", name, surname, email);
+	public boolean addPerson(String name, String surname, String email, String imgUrl) {
+		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`,`image_url`)"
+				+ " values ('%s', '%s', '%s', '%s');", name, surname, email, imgUrl);
+		System.out.println("QUERY IS: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -188,7 +189,7 @@ public class PersonDB {
 	
 	
 	public boolean isAdmin(Person p) {
-		
+		System.out.println("////////////////////////Person is: " + p);
 		boolean ret = false;
 		String query = String.format("select * from `admins` where `person_id`=\"%s\"", p.getPersonID());
 		MyConnection myConnection = db.getMyConnection(query);

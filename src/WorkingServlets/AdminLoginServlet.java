@@ -35,7 +35,7 @@ public class AdminLoginServlet extends HttpServlet {
 			
 			if(person == null){
 				System.out.println("no admin");
-				connection.personDB.addPerson("admin", "admin", "admin@admin.admin");
+				connection.personDB.addPerson("admin", "admin", "admin@admin.admin","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 				person = connection.personDB.getPersonByEmail("admin@admin.admin");
 				
 			}else {

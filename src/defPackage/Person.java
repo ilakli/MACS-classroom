@@ -13,6 +13,7 @@ public class Person {
 	private String surname;
 	private String Email;
 	private String personID;
+	String imgUrl;
 	
 	private AllConnections db;
 	
@@ -21,9 +22,17 @@ public class Person {
 		this.surname = surname;
 		this.Email = Email;
 		this.personID = personID;
+		this.imgUrl = "http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042";
 		db = new AllConnections();
 	}
-	
+	public Person (String name, String surname, String Email, String personID, String imgUrl) {
+		this.name = name;
+		this.surname = surname;
+		this.Email = Email;
+		this.personID = personID;
+		this.imgUrl = imgUrl;
+		db = new AllConnections();
+	}
 	public String getName() {
 		return name;
 	}
@@ -39,7 +48,9 @@ public class Person {
 	public String getPersonID() {
 		return personID;
 	}
-	
+	public String getPersonImgUrl(){
+		return imgUrl;
+	}
 	public boolean setNameAndSurname(String firstName, String lastName) {
 		return db.personDB.setNameAndSurname(Email, firstName, lastName);
 		
@@ -59,7 +70,6 @@ public class Person {
 		
 		return p.Email.equals(this.Email);
 	}
-
 	
 
 }

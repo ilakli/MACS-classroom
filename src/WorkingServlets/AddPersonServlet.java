@@ -49,7 +49,7 @@ public class AddPersonServlet extends HttpServlet {
 
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		//PersonDB personDb = new PersonDB();
-		connection.personDB.addPerson(firstName, lastName, email);
+		connection.personDB.addPerson(firstName, lastName, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 
 	}
 

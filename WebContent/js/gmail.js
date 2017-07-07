@@ -1,4 +1,5 @@
 function onSignIn(googleUser) {
+	alert("FUUUUUUUUUUUUUUUUUUUCK");
 	var profile = googleUser.getBasicProfile();
 
 	var firstName = profile.getGivenName();
@@ -6,6 +7,8 @@ function onSignIn(googleUser) {
 	var img = profile.getImageUrl();
 	var email = profile.getEmail();
 	
+	alert(lastName);
+	alert(img);
 	
 	$.ajax({
 		url : "LoginServlet",
@@ -13,7 +16,8 @@ function onSignIn(googleUser) {
 		data: {
 			firstName: firstName,
 			lastName: lastName,
-			email: email
+			email: email,
+			image: img
 		},
 		success : function(result) {
 			window.location = "index.jsp"
