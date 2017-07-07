@@ -63,16 +63,16 @@ public class TestDBConnection {
 
 	@Test
 	public void test1AddingPerson() {
-		assertTrue(personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge"));
+		assertTrue(personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 
-		assertFalse(personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge"));
-		assertFalse(personDB.addPerson("vigaca", "vigaca", "ipopk15@freeuni.edu.ge"));
+		assertFalse(personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertFalse(personDB.addPerson("vigaca", "vigaca", "ipopk15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 	}
 
 	@Test
@@ -135,9 +135,9 @@ public class TestDBConnection {
 		assertFalse(sectionLeaderDB.deleteSectionLeader("vigaca@freeuni.edu.ge", "2"));
 
 		PersonDB personDB = allConnections.personDB;
-		assertTrue(personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge"));
-		assertTrue(personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge"));
+		assertTrue(personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+		assertTrue(personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 		
 		StudentDB studentDB = allConnections.studentDB;
 		assertTrue(studentDB.addStudent("tpp@freeuni.edu.ge", "1"));
@@ -166,7 +166,7 @@ public class TestDBConnection {
 			String surname = String.valueOf(ch);
 			String email = String.valueOf(ch) + "@freeuni.edu.ge";
 
-			assertTrue(pr.addPerson(name, surname, email));
+			assertTrue(pr.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 			assertTrue(st.addStudent(email, currentClassroom));
 
 			realStudents.add(new Person(name, surname, email, "3"));
@@ -180,7 +180,7 @@ public class TestDBConnection {
 			String surname = "a" + String.valueOf(ch);
 			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			assertTrue(pr.addPerson(name, surname, email));
+			assertTrue(pr.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 			assertTrue(lr.addLecturer(email, currentClassroom));
 
 			realLecturers.add(new Person(name, surname, email, "2"));
@@ -194,7 +194,7 @@ public class TestDBConnection {
 			String surname = "b" + String.valueOf(ch);
 			String email = "b" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			assertTrue(pr.addPerson(name, surname, email));
+			assertTrue(pr.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 			assertTrue(sm.addSeminarist(email, currentClassroom));
 
 			realSeminarists.add(new Person(name, surname, email, "2"));
@@ -208,7 +208,7 @@ public class TestDBConnection {
 			String surname = "c" + String.valueOf(ch);
 			String email = "c" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			assertTrue(pr.addPerson(name, surname, email));
+			assertTrue(pr.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
 			assertTrue(sl.addSectionLeader(email, currentClassroom));
 
 			realSectionLeaders.add(new Person(name, surname, email, "2"));
@@ -235,10 +235,10 @@ public class TestDBConnection {
 		String classroomId = cl.addClassroom("test7");
 
 		smn.addSeminar(classroomId);
-		pr.addPerson("seminaristi1", "seminaristi", "seminaristi1@gmail.com");
-		pr.addPerson("seminaristi2", "seminaristi", "seminaristi2@gmail.com");
-		pr.addPerson("vigac", "ucnobi", "vigac@gmail.com");
-		pr.addPerson("vigacseminarist", "seminaristi", "vigacseminaristi@gmail.com");
+		pr.addPerson("seminaristi1", "seminaristi", "seminaristi1@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		pr.addPerson("seminaristi2", "seminaristi", "seminaristi2@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		pr.addPerson("vigac", "ucnobi", "vigac@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		pr.addPerson("vigacseminarist", "seminaristi", "vigacseminaristi@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 
 		sm.addSeminarist("seminaristi1@gmail.com", classroomId);
 		sm.addSeminarist("seminaristi2@gmail.com", classroomId);
@@ -273,9 +273,9 @@ public class TestDBConnection {
 	public void test9AddPersonsToSection() {
 		String classroomId = cl.addClassroom("test9");
 
-		pr.addPerson("test9per1", "test", "test9per1@gmail.com");
-		pr.addPerson("test9per2", "test", "test9per2@gmail.com");
-		pr.addPerson("test9per3", "test", "test9per3@gmail.com");
+		pr.addPerson("test9per1", "test", "test9per1@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		pr.addPerson("test9per2", "test", "test9per2@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		pr.addPerson("test9per3", "test", "test9per3@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 
 		assertTrue(scl.addSectionLeader("test9per1@gmail.com", classroomId));
 		assertFalse(scl.addSectionLeader("test9per1@gmail.com", classroomId));

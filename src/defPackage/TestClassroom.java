@@ -37,13 +37,13 @@ public class TestClassroom {
 	public void test1init() {
 		//Just add people into database so we can use them
 		
-		db.personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge");
-		db.personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge");
-		db.personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge");
-		db.personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge");
-		db.personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge");
-		db.personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge");
-		db.personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge");
+		db.personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 		
 		//check if class names are correct;
 		assertEquals(oop.getClassroomName(), "OOP");
@@ -111,9 +111,9 @@ public class TestClassroom {
 		
 		assertFalse(pp.classroomDeleteSectionLeader("vigaca@freeuni.edu.ge"));
 
-		db.personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge");
-		db.personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge");
-		db.personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge");
+		db.personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 		
 		assertTrue(oop.classroomAddStudent("tpp@freeuni.edu.ge"));
 		assertTrue(oop.classroomAddStudent("kpp@freeuni.edu.ge"));
@@ -146,7 +146,7 @@ public class TestClassroom {
 			String surname = String.valueOf(ch);
 			String email = String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.personDB.addPerson(name, surname, email);
+			db.personDB.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 			db.studentDB.addStudent(email, currentClassroom);
 			
 			realStudents.add(new Person(name, surname, email, "3"));
@@ -162,7 +162,7 @@ public class TestClassroom {
 			String surname = "a" + String.valueOf(ch);
 			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.personDB.addPerson(name, surname, email);
+			db.personDB.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 			db.lecturerDB.addLecturer(email, currentClassroom);
 			
 			realLecturers.add(new Person(name, surname, email, "2"));
@@ -177,7 +177,7 @@ public class TestClassroom {
 			String surname = "b" + String.valueOf(ch);
 			String email = "b" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.personDB.addPerson(name, surname, email);
+			db.personDB.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 			db.seminaristDB.addSeminarist(email, currentClassroom);
 			
 			realSeminarists.add(new Person(name, surname, email, "2"));
@@ -192,7 +192,7 @@ public class TestClassroom {
 			String surname = "c" + String.valueOf(ch);
 			String email = "c" + String.valueOf(ch) + "@freeuni.edu.ge";
 
-			db.personDB.addPerson(name, surname, email);
+			db.personDB.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 			db.sectionLeaderDB.addSectionLeader(email, currentClassroom);
 			
 			realSectionLeaders.add(new Person(name, surname, email, "2"));

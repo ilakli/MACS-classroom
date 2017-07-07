@@ -21,13 +21,13 @@ public class TestSection {
 	public void test0init() {
 		//Just add people into database so we can use them
 		
-		db.personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge");
-		db.personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge");
-		db.personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge");
-		db.personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge");
-		db.personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge");
-		db.personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge");
-		db.personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge");
+		db.personDB.addPerson("irakli", "popkhadze", "ipopk15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("giorgi", "khosroshvili", "gkhos15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("shota", "gvinepadze", "s.gvinepadze@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("nika", "begiashvili", "n.begiashvili@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("giorgi", "cercvadze", "gitser15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("aleko", "cxovrebovi", "acxcx15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+		db.personDB.addPerson("mari", "berishvili", "mberi15@freeuni.edu.ge","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 	}
 	
 	
