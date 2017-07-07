@@ -27,9 +27,6 @@
 	String studentEmail = request.getParameter("studentEmail");
 
 	String assignmentTitle = request.getParameter("assignmentTitle"); 
-	System.out.println("+++++++++++++++++++");
-	System.out.println("title now: " + assignmentTitle);
-	System.out.println("+++++++++++++++++++");
 	
 	String status = request.getParameter("status");
 	%>
