@@ -17,7 +17,13 @@ private DBConnection db;
 	public StudentAssignmentDB() {
 		db = new DBConnection();
 	}
-	
+	/**
+	 * This method gets id of the connection between student and assignment;
+	 * @param classroomID - id of the classroom;
+	 * @param personID - id of the person;
+	 * @param assignmentTitle - title of the assignment;
+	 * @return - id from the connection between student and assignment;
+	 */
 	private int getStudentAssignmentID(String classroomID, String personID, String assignmentTitle){
 		String query = String.format("select * from `student_assignments` where `classroom_id` = %s and "
 				+ "person_id = %s and `assignment_title` = '%s';", classroomID, personID, assignmentTitle );
@@ -41,6 +47,13 @@ private DBConnection db;
 		
 	}
 	
+	/**
+	 * This method adds connection between student and assignment into database;
+	 * @param classroomID - id of the classroom; 
+	 * @param personID - id of the person;
+	 * @param assignmentTitle - title of the assignment;
+	 * @return - true if connection was added, false otherwise;
+	 */
 	public boolean addStudentAssignment(String classroomID, String personID, String assignmentTitle){
 		String query = String.format("insert into `student_assignments` ( `classroom_id`, `person_id`," +
 				 "`assignment_title`) values (%s, %s, '%s' );", classroomID, personID, assignmentTitle);
@@ -50,6 +63,14 @@ private DBConnection db;
 		return db.executeUpdate(myConnection);
 	}
 	
+	/**
+	 * This method adds new file for the student and assignment;
+	 * @param classroomID
+	 * @param personID
+	 * @param assignmentTitle
+	 * @param fileName
+	 * @return
+	 */
 	public boolean turnInAssignment(String classroomID, String personID, String assignmentTitle, String fileName){
 		int student_assignment_id = getStudentAssignmentID(classroomID, personID, assignmentTitle);
 		if(student_assignment_id == -1){
@@ -65,6 +86,13 @@ private DBConnection db;
 		
 	}
 	
+	/**
+	 * This method gets connection between student and assignment;
+	 * @param classroomID - id of the classroom;
+	 * @param personID - id of the person;
+	 * @param assignmentTitle - title of the assignment
+	 * @return - connection between student and assignment;
+	 */
 	public StudentAssignment getStudentAssignment(String classroomID, String personID, String assignmentTitle){
 		String query = String.format("select * from `student_assignments` where `classroom_id` = %s and "
 				+ "person_id = %s and `assignment_title` = '%s';", classroomID, personID, assignmentTitle );
@@ -92,8 +120,12 @@ private DBConnection db;
 		
 	}
 	
-	public List <String> getStudentSentFiles(String classroomID, String personID, String assignmentTitle){
-		int student_assignment_id = getStudentAssignmentID(classroomID, personID, assignmentTitle);
+	/**
+	 * This method takes all the names of the sent files from this assignment;
+	 * @param student_assignment_id - id of the connection between student and assignment;
+	 * @return - list of the names of the sent files from this assignment
+	 */
+	public List <String> getStudentSentFiles(String student_assignment_id){
 		List <String> allFiles = new ArrayList <String>();
 		
 		String query = String.format("select * from `student_uploaded_assignments` where `student_assignment_id` = %s "

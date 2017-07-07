@@ -218,6 +218,7 @@ CREATE TABLE `student_assignments` (
 CREATE TABLE `student_uploaded_assignments` (
 	`student_assignment_id` INT NOT NULL,
 	`file_name` VARCHAR(100) NOT NULL,
+	`upload_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE KEY `student_assignments_uk0` (`student_assignment_id`, `file_name`),
 	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`)
 );

@@ -234,7 +234,8 @@
 			
 		
 	
-			List<String> uploadedFiles = connector.studentAssignmentDB.getStudentSentFiles(classroomID, personID, assignmentTitle);	
+			List<String> uploadedFiles = connector.studentAssignmentDB.
+					getStudentSentFiles(assignment.getStudentAssignmentId());	
 			for(String s : uploadedFiles){
 				out.println(" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
 							+ "=" + s+ "\">" + s + "</a>");
