@@ -11,8 +11,8 @@ public class CategoryDB {
 	
 	private DBConnection db;
 	
-	public CategoryDB() {
-		db = new DBConnection();
+	public CategoryDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	/**

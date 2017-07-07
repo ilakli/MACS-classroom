@@ -14,8 +14,8 @@ public class StudentAssignmentDB {
 
 private DBConnection db;
 	
-	public StudentAssignmentDB() {
-		db = new DBConnection();
+	public StudentAssignmentDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	/**
 	 * This method gets id of the connection between student and assignment;

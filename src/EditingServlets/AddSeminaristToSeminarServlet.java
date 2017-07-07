@@ -48,7 +48,7 @@ public class AddSeminaristToSeminarServlet extends HttpServlet {
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Seminar currentSeminar = new Seminar(seminarN,classroomId);
+		Seminar currentSeminar = new Seminar(seminarN,classroomId,connection);
 		if(connection.seminaristDB.seminaristExists(seminaristEmail,classroomId) 
 				&& connection.seminarDB.seminarExists(seminarN,classroomId)
 				&& currentSeminar.setSeminarist(seminaristEmail)) {

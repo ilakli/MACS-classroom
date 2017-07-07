@@ -6,7 +6,7 @@ import defPackage.Person;
 public class PersonGeneratorDummy {
 	
 	public static Person createPersonByEmail(String email){
-		
+		/*
 		PersonDB personDB = new PersonDB();
 		Person person = personDB.getPersonByEmail(email);
 		
@@ -26,7 +26,8 @@ public class PersonGeneratorDummy {
 		}
 		
 		return person;
-		
+		*/
+		return null;
 	}
 	
 }

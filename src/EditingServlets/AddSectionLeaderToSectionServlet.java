@@ -48,7 +48,7 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 	
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Section currentSection = new Section(sectionN,classroomId);
+		Section currentSection = new Section(sectionN,classroomId,connection);
 		if(connection.sectionLeaderDB.sectionLeaderExists(sectionLeaderEmail, classroomId)
 				&& connection.sectionDB.sectionExists(sectionN, classroomId)
 				&& currentSection.setSectionLeader(sectionLeaderEmail)) {

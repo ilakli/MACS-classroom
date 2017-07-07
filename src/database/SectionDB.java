@@ -13,10 +13,11 @@ public class SectionDB {
 	
 	private DBConnection db;
 	private PersonDB personDB;
-	
-	public SectionDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	private AllConnections allConnections;
+	public SectionDB(AllConnections allConnections) {
+		this.allConnections = allConnections;
+		db = allConnections.db;
+		personDB = allConnections.personDB;
 	}
 	
 	/**
@@ -227,7 +228,7 @@ public class SectionDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				sections.add(new Section(rs.getInt("section_n"), classroomId, rs.getInt("section_size")));
+				sections.add(new Section(rs.getInt("section_n"), classroomId, rs.getInt("section_size"),allConnections));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -295,7 +296,7 @@ public class SectionDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			if (rs.next()) {
-				section = new Section(rs.getInt("section_n"), classroomID, rs.getInt("section_size"));
+				section = new Section(rs.getInt("section_n"), classroomID, rs.getInt("section_size"),allConnections);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();

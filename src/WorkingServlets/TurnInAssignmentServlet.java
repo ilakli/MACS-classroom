@@ -113,7 +113,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 			int nRes = Integer.parseInt(numreschedulings);
 			System.out.println(nRes + " nRes");
 			for(int i = 0; i < nRes; i++){
-				connection.studentDB.useRescheduling(studentEmail, classroomID);
+				connection.classroomDB.useRescheduling(studentEmail, classroomID);
 			}
 		}
 		

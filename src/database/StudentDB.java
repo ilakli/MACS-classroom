@@ -11,10 +11,11 @@ public class StudentDB {
 
 	private DBConnection db;
 	private PersonDB personDB;
-	
-	public StudentDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	private ClassroomDB classroomDB;
+	public StudentDB(AllConnections allConnections) {
+		db = allConnections.db;
+		personDB = allConnections.personDB;
+		classroomDB = allConnections.classroomDB;
 	}
 	
 
@@ -150,46 +151,5 @@ public class StudentDB {
 		
 		ArrayList<Person> students = personDB.getPersons(query);
 		return students;
-	}
-	
-	
-	public int reschedulingsUsed(String email, String classroomID){
-		String personId = personDB.getPersonId(email);
-		String query = String.format("select * from `classroom_students` where `classroom_id`=%s and `person_id`=%s;",
-				classroomID, personId);
-		MyConnection myConnection = db.getMyConnection(query);
-		
-		ResultSet rs = myConnection.executeQuery();
-		try {
-			if (rs.next()) {
-				return rs.getInt("reschedulings_used");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (myConnection != null) {
-				myConnection.closeConnection();
-			}
-		}
-		return -1;
-		
-	}
-	
-	public boolean useRescheduling(String email, String classroomID){
-		String personId = personDB.getPersonId(email);
-		int reschedulingsUsed =reschedulingsUsed(email, classroomID);
-		ClassroomDB classroomDB = new ClassroomDB();
-		int maxRes= classroomDB.getClassroomsNumberOfReshcedulings(classroomID);
-		if(maxRes<=reschedulingsUsed) return false;
-		String query = String.format("update `classroom_students` set `reschedulings_used`= %s"
-				+ " where `classroom_id`=%s and `person_id`=%s;", reschedulingsUsed+1, classroomID, personId);
-		
-		System.out.println(query);
-		MyConnection myConnection = db.getMyConnection(query);
-
-		return db.executeUpdate(myConnection);
-
-		
 	}
 }

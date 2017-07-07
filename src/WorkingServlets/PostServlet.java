@@ -46,7 +46,7 @@ public class PostServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		String postText = request.getParameter("postText");
-		String personId = PersonGeneratorDummy.createPersonByEmail("random@random.com").getPersonID();
+		String personId = ((Person)request.getSession().getAttribute("currentPerson")).getPersonID();
 		
 		AllConnections connection = (AllConnections)request.getServletContext()				
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);

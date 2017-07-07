@@ -11,8 +11,8 @@ public class PositionDB {
 	
 	private DBConnection db;
 	
-	public PositionDB() {
-		db = new DBConnection();
+	public PositionDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	public ArrayList<Position> getAllPositions(){

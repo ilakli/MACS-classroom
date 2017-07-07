@@ -2,6 +2,7 @@ package defPackage;
 
 import java.util.List;
 
+import database.AllConnections;
 import database.DBConnection;
 import database.SeminarDB;
 import database.SeminaristDB;
@@ -17,19 +18,19 @@ public class Seminar {
 	private StudentDB studentDB;
 	private int seminarSize;
 
-	public Seminar(int seminarN, String classroomId, int seminarSize){
+	public Seminar(int seminarN, String classroomId, int seminarSize, AllConnections allConnections){
 
 		this.seminarN = seminarN;
 		this.classroomId = classroomId;
-		seminarConnection = new DBConnection();
-		seminaristDB = new SeminaristDB();
-		seminarDB = new SeminarDB();
-		studentDB = new StudentDB();
+		seminarConnection = allConnections.db;
+		seminaristDB = allConnections.seminaristDB;
+		seminarDB = allConnections.seminarDB;
+		studentDB = allConnections.studentDB;
 		this.seminarSize = seminarSize;
 	}
 	
-	public Seminar(int seminarN, String classroomId) {
-		this(seminarN, classroomId, 0);
+	public Seminar(int seminarN, String classroomId, AllConnections allConnections) {
+		this(seminarN, classroomId, 0, allConnections);
 	}
 
 	/**

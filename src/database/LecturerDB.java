@@ -11,9 +11,9 @@ public class LecturerDB {
 	private DBConnection db;
 	private PersonDB personDB;
 
-	public LecturerDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	public LecturerDB(AllConnections allConnections) {
+		db = allConnections.db;
+		personDB = allConnections.personDB;
 	}
 
 	/**
@@ -33,6 +33,7 @@ public class LecturerDB {
 	 * @return all global lecturers.
 	 */
 	public ArrayList<Person> getGlobalLecturers() {
+		System.out.println("Person DB Here Is Bitch: " + personDB);
 		String query = String.format("select * from `persons` where `person_id`in(select * from `lecturers`);");
 		ArrayList<Person> globalLecturers = personDB.getPersons(query);
 		return globalLecturers;

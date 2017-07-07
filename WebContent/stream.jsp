@@ -31,7 +31,7 @@
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
-		PersonDB personConnector = new PersonDB();
+		PersonDB personConnector = connector.personDB;
 		
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
