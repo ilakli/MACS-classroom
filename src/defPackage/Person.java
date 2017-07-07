@@ -55,7 +55,9 @@ public class Person {
 		return db.personDB.setNameAndSurname(Email, firstName, lastName);
 		
 	}
-	
+	public boolean setImageUrl(String imgUrl){
+		return db.personDB.setImageUrl(Email, imgUrl);
+	}
 	public ArrayList <Classroom> getClassrooms() {
 		return db.classroomDB.getClassroomsByPerson(Email);
 	}

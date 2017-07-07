@@ -187,6 +187,19 @@ public class PersonDB {
 		
 	}
 	
+	/**
+	 * Sets image url of the sepcified person
+	 * 
+	 * @param email email of the give person
+	 * @param imgUrl image url of a given person
+	 * @return true- if update executed successfully, false - otherwise
+	 */
+	public boolean setImageUrl(String email, String imgUrl){
+		String query = String.format("update `persons` set `image_url` = '%s'"
+				+ "where `person_email` = '%s'; ", imgUrl, email);
+		MyConnection myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+	}
 	
 	public boolean isAdmin(Person p) {
 		System.out.println("////////////////////////Person is: " + p);

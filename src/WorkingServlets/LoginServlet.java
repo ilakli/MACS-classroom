@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
 			if(person.getName() == null) {
 				System.out.println("person.getName==null");
 				person.setNameAndSurname(firstName, lastName);
+				person.setImageUrl(imgUrl);
 			}
 		}
 		
