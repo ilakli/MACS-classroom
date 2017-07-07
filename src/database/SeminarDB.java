@@ -12,10 +12,11 @@ public class SeminarDB {
 
 	private DBConnection db;
 	private PersonDB personDB;
-	
-	public SeminarDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	private AllConnections allConnections;
+	public SeminarDB(AllConnections allConnections) {
+		this.allConnections = allConnections;
+		db = allConnections.db;
+		personDB = allConnections.personDB;
 	}
 
 	/**
@@ -227,7 +228,7 @@ public class SeminarDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				seminars.add(new Seminar(rs.getInt("seminar_n"), classroomId, rs.getInt("seminar_size")));
+				seminars.add(new Seminar(rs.getInt("seminar_n"), classroomId, rs.getInt("seminar_size"),allConnections));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();

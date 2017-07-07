@@ -11,10 +11,11 @@ public class StudentDB {
 
 	private DBConnection db;
 	private PersonDB personDB;
-	
-	public StudentDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	private ClassroomDB classroomDB;
+	public StudentDB(AllConnections allConnections) {
+		db = allConnections.db;
+		personDB = allConnections.personDB;
+		classroomDB = allConnections.classroomDB;
 	}
 	
 
@@ -179,7 +180,6 @@ public class StudentDB {
 	public boolean useRescheduling(String email, String classroomID){
 		String personId = personDB.getPersonId(email);
 		int reschedulingsUsed =reschedulingsUsed(email, classroomID);
-		ClassroomDB classroomDB = new ClassroomDB();
 		int maxRes= classroomDB.getClassroomsNumberOfReshcedulings(classroomID);
 		if(maxRes<=reschedulingsUsed) return false;
 		String query = String.format("update `classroom_students` set `reschedulings_used`= %s"

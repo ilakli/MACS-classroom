@@ -10,9 +10,9 @@ public class SectionLeaderDB {
 	private DBConnection db;
 	private PersonDB personDB;
 	
-	public SectionLeaderDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	public SectionLeaderDB(AllConnections allConnections) {
+		db = allConnections.db;
+		personDB = allConnections.personDB;
 	}
 
 	/**

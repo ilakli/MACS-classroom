@@ -49,7 +49,7 @@ public class AddStudentToSectionServlet extends HttpServlet {
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Section currentSection = new Section(sectionN,classroomId);
+		Section currentSection = new Section(sectionN,classroomId,connection);
 		
 		String emails[] = studentEmail.split("\\s+"); 
 		System.out.println(classroomId + " " + studentEmail + " " + sectionN +" WE ARE GOOD");

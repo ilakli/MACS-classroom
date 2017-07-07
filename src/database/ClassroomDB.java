@@ -18,12 +18,12 @@ public class ClassroomDB {
 	private SectionLeaderDB sectionLeaderDB;
 	private StudentDB studentDB;
 	
-	public ClassroomDB() {
-		db = new DBConnection();
-		lecturerDB = new LecturerDB();
-		seminaristDB = new SeminaristDB();
-		sectionLeaderDB = new SectionLeaderDB();
-		studentDB = new StudentDB();
+	public ClassroomDB(AllConnections allConnections) {
+		db = allConnections.db;
+		lecturerDB = allConnections.lecturerDB;
+		seminaristDB = allConnections.seminaristDB;
+		sectionLeaderDB = allConnections.sectionLeaderDB;
+		studentDB = allConnections.studentDB;
 	}
 	
 	/**
@@ -303,8 +303,11 @@ public class ClassroomDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
-		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
-				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
+		System.out.println("Lecturer DB IS: " + lecturerDB + " OTHERS ARE: " + seminaristDB + " " + sectionLeaderDB + " " + studentDB);
+		return lecturerDB.lecturerExists(email, classroomId) || 
+				seminaristDB.seminaristExists(email, classroomId)
+				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || 
+				studentDB.studentExists(email, classroomId);
 	}
 	
 	/**

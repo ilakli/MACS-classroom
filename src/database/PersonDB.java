@@ -15,11 +15,8 @@ public class PersonDB {
 	private SectionLeaderDB sectionLeaderDB;
 	private StudentDB studentDB;
 	
-	public PersonDB() {
-		db = new DBConnection();
-		
-		
-	
+	public PersonDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	/**

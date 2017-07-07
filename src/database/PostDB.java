@@ -14,8 +14,8 @@ public class PostDB {
 
 	private DBConnection db;
 	
-	public PostDB() {
-		db = new DBConnection();
+	public PostDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 
 	/**

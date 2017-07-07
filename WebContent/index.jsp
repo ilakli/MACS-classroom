@@ -18,7 +18,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
-
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script type="text/javascript">
@@ -51,7 +51,7 @@
 			<a href="index.jsp" id="header-name">Macs Classroom</a>
 		</h2>
 	</div>
-
+	  <a href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
 
 	<%if (isAdmin || isGlobalLecturer) { %>
 	<button id="create" type="submit" class="btn btn-danger"
@@ -135,7 +135,7 @@
       });
     }
   </script>
-  <a href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+
 	<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </body>

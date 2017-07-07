@@ -3,6 +3,7 @@ package defPackage;
 import java.util.Comparator;
 import java.util.List;
 
+import database.AllConnections;
 import database.DBConnection;
 import database.SectionDB;
 import database.SectionLeaderDB;
@@ -19,19 +20,19 @@ public class Section {
 	private StudentDB studentDB;
 	private int sectionSize;
 	
-	public Section(int sectionN, String classroomId, int sectionSize){
+	public Section(int sectionN, String classroomId, int sectionSize,AllConnections allConnections){
 		
 		this.sectionN = sectionN;
 		this.classroomId = classroomId;
-		sectionConnection = new DBConnection();
-		sectionDB = new SectionDB();
-		sectionLeaderDB = new SectionLeaderDB();
-		studentDB = new StudentDB();
+		sectionConnection = allConnections.db;
+		sectionDB = allConnections.sectionDB;
+		sectionLeaderDB = allConnections.sectionLeaderDB;
+		studentDB = allConnections.studentDB;
 		this.sectionSize = sectionSize;
 	}
 	
-	public Section (int sectionN, String classroomId) {
-		this(sectionN, classroomId, 0);
+	public Section (int sectionN, String classroomId, AllConnections allConnections) {
+		this(sectionN, classroomId, 0, allConnections);
 	}
 	
 	/**

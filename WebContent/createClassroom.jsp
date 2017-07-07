@@ -8,6 +8,7 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <title>Create Classroom</title>
 
 </head>

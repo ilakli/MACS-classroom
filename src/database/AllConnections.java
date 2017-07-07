@@ -17,23 +17,25 @@ public class AllConnections {
 	public PositionDB positionDB;
 	public CategoryDB categoryDB;
 	public StudentAssignmentDB studentAssignmentDB;
+	public DBConnection db;
 	
 	public AllConnections() {
-		classroomDB = new ClassroomDB();
-		commentDB = new CommentDB();
-		lecturerDB = new LecturerDB();
-		materialDB = new MaterialDB();
-		personDB = new PersonDB();
-		postDB = new PostDB();
-		sectionDB = new SectionDB();
-		sectionLeaderDB = new SectionLeaderDB();
-		seminarDB = new SeminarDB();
-		seminaristDB = new SeminaristDB();
-		studentDB = new StudentDB();
-		assignmentDB = new AssignmentDB();
-		functionDB = new FunctionDB();
-		positionDB = new PositionDB();
-		categoryDB = new CategoryDB();
-		studentAssignmentDB = new StudentAssignmentDB();
+		db = new DBConnection();
+		personDB = new PersonDB(this);
+		lecturerDB = new LecturerDB(this);
+		materialDB = new MaterialDB(this);
+		postDB = new PostDB(this);
+		sectionDB = new SectionDB(this);
+		sectionLeaderDB = new SectionLeaderDB(this);
+		seminarDB = new SeminarDB(this);
+		seminaristDB = new SeminaristDB(this);
+		commentDB = new CommentDB(this);
+		studentDB = new StudentDB(this);
+		assignmentDB = new AssignmentDB(this);
+		functionDB = new FunctionDB(this);
+		positionDB = new PositionDB(this);
+		categoryDB = new CategoryDB(this);
+		studentAssignmentDB = new StudentAssignmentDB(this);
+		classroomDB = new ClassroomDB(this);
 	}
 }

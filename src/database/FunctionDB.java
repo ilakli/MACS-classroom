@@ -14,8 +14,8 @@ public class FunctionDB {
 	
 	private DBConnection db;
 	
-	public FunctionDB() {
-		db = new DBConnection();
+	public FunctionDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	/**

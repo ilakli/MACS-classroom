@@ -21,7 +21,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/style.css">
-
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <title>Assignments</title>
 
 
@@ -43,7 +43,7 @@
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
 		
-		PersonDB personConnector = new PersonDB();
+		PersonDB personConnector = connector.personDB;
 		
 	%>
 
