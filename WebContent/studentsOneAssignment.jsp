@@ -181,7 +181,7 @@
 			<%
 			}else{
 				int maxAvailableRes = currentClassroom.getNumberOfReschedulings() - 
-						connector.studentDB.reschedulingsUsed(studentEmail, classroomID) ;
+						connector.classroomDB.reschedulingsUsed(studentEmail, classroomID) ;
 				System.out.println(maxAvailableRes + " maxAvRes");
 				for(int i = 1; i <= maxAvailableRes; i++){
 					availableDate = addDays(availableDate, currentClassroom.getReschedulingLength());
