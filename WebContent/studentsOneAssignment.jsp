@@ -91,6 +91,7 @@
 		
 		
 		String personID = connector.personDB.getPersonId(studentEmail);
+		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle);
 		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
 				classroomID, personID, assignmentTitle);
 		if(assignment!=null) status = "done";
@@ -160,7 +161,7 @@
 			
 			Date now = new Date();
 			Date availableDate = a.getDeadline();
-			boolean canTurnIn = false;
+			boolean canTurnIn = true;
 			int mustUsereschedulings = 0;
 			
 			
@@ -229,15 +230,31 @@
 			}	
 		
 		
-		}else if(status.equals("done")){
-			
-			
-				out.println(" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
-						+ "=" + assignment.getFileName()+ "\">" + assignment.getFileName() + "</a>");
-			
-			
 		}
+			
+		
+	
+			List<String> uploadedFiles = connector.studentAssignmentDB.getStudentSentFiles(classroomID, personID, assignmentTitle);	
+			for(String s : uploadedFiles){
+				out.println(" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
+							+ "=" + s+ "\">" + s + "</a>");
+			}
+			
+		
 	%>
+	
+	<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+					"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle + 
+					"&numreschedulings="+ 0%> enctype="multipart/form-data" method="POST">
+					<h6>Upload File</h6>
+					
+					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
+					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
+					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
+					
+					<input type="file" name="file" size="30" /> </br> <input type="submit"
+						/ value="Turn In" class="btn btn-success">
+				</form>	
 	
 	
 	<!-- -------------------------------------------------------------------- -->

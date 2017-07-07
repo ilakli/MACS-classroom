@@ -36,6 +36,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("HEREEE BROOOOOO");
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		String assignmentTitle = request.getParameter("assignmentTitle");
 		String studentEmail = request.getParameter("studentEmail");
@@ -107,7 +108,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String personID = connection.personDB.getPersonId(studentEmail);
 		
 		connection.studentAssignmentDB.turnInAssignment(classroomID, personID, assignmentTitle, fileName);
-		
+		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
 		if(numreschedulings!=null && !numreschedulings.equals("")){
 			int nRes = Integer.parseInt(numreschedulings);
 			System.out.println(nRes + " nRes");

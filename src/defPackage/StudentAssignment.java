@@ -1,22 +1,28 @@
 package defPackage;
 
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class StudentAssignment {
+	private String ID;
 	private String classroomID;
 	private String personID;
 	private String assignmentTitle;
-	private String fileName;
 	private int assignmentGrade;
 	
-	public StudentAssignment(String classroomID, String personID, String assignmentTitle, String fileName, int assignmentGrade){
+	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle, int assignmentGrade){
+		this.ID = ID;
 		this.classroomID = classroomID;
 		this.assignmentTitle = assignmentTitle;
 		this.personID = personID;
-		this.fileName = fileName;
 		this.assignmentGrade = assignmentGrade;
 	}
 	
+	public String getStudentAssignmentId(){
+		return this.ID;
+	}
 	
 	/**
 	 * @return - ID of classroom
@@ -24,14 +30,7 @@ public class StudentAssignment {
 	public String getClassroomID() {
 		return this.classroomID;
 	}
-	
-	/**
-	 * @return - name of assignment file
-	 */
-	public String getFileName() {
-		return this.fileName;
-	}
-	
+		
 	/**
 	 * @return - title of assignment
 	 */
