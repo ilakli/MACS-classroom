@@ -13,8 +13,8 @@ public class CommentDB {
 	
 	private DBConnection db;
 	
-	public CommentDB() {
-		db = new DBConnection();
+	public CommentDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	/**

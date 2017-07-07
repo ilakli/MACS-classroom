@@ -22,10 +22,11 @@ public class TestClassroom {
 	private MockClassroom oop ; 
 	private MockClassroom pp;
 	private MockClassroom meth;
-	
+	private AllConnections allConnections;
 	@Before
-	public void bla(){
+	public void bla(AllConnections allConnections){
 		//creating classes;
+		this.allConnections = allConnections;
 		oop = new MockClassroom ("OOP" , db.classroomDB.addClassroom("OOP"));
 		pp = new MockClassroom ("Paradigms", db.classroomDB.addClassroom("Paradigms"));
 		meth = new MockClassroom ("Methodologies", db.classroomDB.addClassroom("Methodologies"));
@@ -220,9 +221,9 @@ public class TestClassroom {
 		
 		ArrayList<Section> sections = new ArrayList<Section>();
 		
-		sections.add(new Section(0, classID));
-		sections.add(new Section(1, classID));
-		sections.add(new Section(2, classID));
+		sections.add(new Section(0, classID,allConnections));
+		sections.add(new Section(1, classID,allConnections));
+		sections.add(new Section(2, classID,allConnections));
 
 		db.sectionDB.addSection(classID);
 		db.sectionDB.addSection(classID);
@@ -247,9 +248,9 @@ public class TestClassroom {
 		
 		ArrayList<Seminar> seminars = new ArrayList<Seminar>();
 		
-		seminars.add(new Seminar(0, classID));
-		seminars.add(new Seminar(1, classID));
-		seminars.add(new Seminar(2, classID));
+		seminars.add(new Seminar(0, classID,allConnections));
+		seminars.add(new Seminar(1, classID,allConnections));
+		seminars.add(new Seminar(2, classID,allConnections));
 		
 		db.seminarDB.addSeminar(classID);
 		db.seminarDB.addSeminar(classID);

@@ -11,8 +11,8 @@ public class MaterialDB {
 
 	private DBConnection db;
 	
-	public MaterialDB() {
-		db = new DBConnection();
+	public MaterialDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 
 	/**

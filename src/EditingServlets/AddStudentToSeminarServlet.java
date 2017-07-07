@@ -47,7 +47,7 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 			
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
-		Seminar currentSeminar = new Seminar(seminarN,classroomId);
+		Seminar currentSeminar = new Seminar(seminarN,classroomId,connection);
 		
 String emails[] = studentEmail.split("\\s+"); 
 		

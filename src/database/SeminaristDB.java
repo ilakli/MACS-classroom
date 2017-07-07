@@ -10,9 +10,9 @@ public class SeminaristDB {
 	private DBConnection db;
 	private PersonDB personDB;
 
-	public SeminaristDB() {
-		db = new DBConnection();
-		personDB = new PersonDB();
+	public SeminaristDB(AllConnections allConnections) {
+		db = allConnections.db;
+		personDB = allConnections.personDB;
 	}
 
 	/**

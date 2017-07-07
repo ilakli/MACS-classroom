@@ -43,7 +43,7 @@
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
 		
-		PersonDB personConnector = new PersonDB();
+		PersonDB personConnector = connector.personDB;
 		
 	%>
 

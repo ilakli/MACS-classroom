@@ -12,8 +12,8 @@ public class StudentAssignmentDB {
 
 private DBConnection db;
 	
-	public StudentAssignmentDB() {
-		db = new DBConnection();
+	public StudentAssignmentDB(AllConnections allConnections) {
+		db = allConnections.db;
 	}
 	
 	

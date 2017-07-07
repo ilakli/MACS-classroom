@@ -9,6 +9,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
+import database.AllConnections;
 import database.ClassroomDB;
 import database.DBConnection;
 import database.LecturerDB;
@@ -42,21 +43,22 @@ public class TestDBConnection {
 	private SectionDB sc;
 	private SectionLeaderDB scl;
 	private MaterialDB ma;
-
+	private AllConnections allConnections;
 	@Before
 	public void initialize() {
+		allConnections = new AllConnections();
 		db = new MockDBConnection();
-		personDB = new PersonDB();
-		cl = new ClassroomDB();
-		pr = new PersonDB();
-		st = new StudentDB();
-		lr = new LecturerDB();
-		sm = new SeminaristDB();
-		sl = new SectionLeaderDB();
-		smn = new SeminarDB();
-		sc = new SectionDB();
-		scl = new SectionLeaderDB();
-		ma = new MaterialDB();
+		personDB = allConnections.personDB;
+		cl = allConnections.classroomDB;
+		pr = allConnections.personDB;
+		st = allConnections.studentDB;
+		lr = allConnections.lecturerDB;
+		sm = allConnections.seminaristDB;
+		sl = allConnections.sectionLeaderDB;
+		smn = allConnections.seminarDB;
+		sc = allConnections.sectionDB;
+		scl = allConnections.sectionLeaderDB;
+		ma = allConnections.materialDB;
 	}
 
 	@Test
@@ -75,7 +77,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test2AddingClassroom() {
-		ClassroomDB classroomDB = new ClassroomDB();
+		ClassroomDB classroomDB = allConnections.classroomDB;
 		assertEquals(classroomDB.addClassroom("OOP"), "5");
 		assertEquals(classroomDB.addClassroom("Paradigms"), "6");
 		assertEquals(classroomDB.addClassroom("Methodologies"), "7");
@@ -84,16 +86,16 @@ public class TestDBConnection {
 
 	@Test
 	public void test3AddingToClassrom() {
-		LecturerDB lecturerDB = new LecturerDB();
+		LecturerDB lecturerDB = allConnections.lecturerDB;
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "1"));
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "2"));
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "3"));
 
-		SeminaristDB seminaristDB = new SeminaristDB();
+		SeminaristDB seminaristDB = allConnections.seminaristDB;
 		assertTrue(seminaristDB.addSeminarist("n.begiashvili@freeuni.edu.ge", "1"));
 		assertTrue(seminaristDB.addSeminarist("n.begiashvili@freeuni.edu.ge", "2"));
 		
-		SectionLeaderDB sectionLeaderDB = new SectionLeaderDB();
+		SectionLeaderDB sectionLeaderDB = allConnections.sectionLeaderDB;
 		assertTrue(sectionLeaderDB.addSectionLeader("ipopk15@freeuni.edu.ge", "3"));
 		assertTrue(sectionLeaderDB.addSectionLeader("gkhos15@freeuni.edu.ge", "3"));
 		assertTrue(sectionLeaderDB.addSectionLeader("acxcx15@freeuni.edu.ge", "3"));
@@ -105,14 +107,14 @@ public class TestDBConnection {
 		assertFalse(seminaristDB.addSeminarist("baqara@freeuni.edu.ge", "2"));
 		assertFalse(sectionLeaderDB.addSectionLeader("baquna@freeuni.edu.ge", "1"));
 		
-		StudentDB studentDB = new StudentDB();
+		StudentDB studentDB = allConnections.studentDB;
 		assertFalse(studentDB.addStudent("xosrika@freeuni.edu.ge", "3"));
 	}
 
 	@Test
 	public void test4PersonsDelete() {
-		SeminaristDB seminaristDB = new SeminaristDB();
-		LecturerDB lecturerDB = new LecturerDB();
+		SeminaristDB seminaristDB = allConnections.seminaristDB;
+		LecturerDB lecturerDB = allConnections.lecturerDB;
 		assertTrue(seminaristDB.seminaristExists("n.begiashvili@freeuni.edu.ge", "1"));
 		assertFalse(seminaristDB.deleteSeminarist("ipopk15@freeuni.edu.ge", "1"));
 		assertTrue(seminaristDB.deleteSeminarist("n.begiashvili@freeuni.edu.ge", "1"));
@@ -124,7 +126,7 @@ public class TestDBConnection {
 		assertFalse(lecturerDB.lecturerExists("s.gvinepadze@freeuni.edu.ge", "1"));
 		assertTrue(lecturerDB.lecturerExists("s.gvinepadze@freeuni.edu.ge", "2"));
 
-		SectionLeaderDB sectionLeaderDB = new SectionLeaderDB();
+		SectionLeaderDB sectionLeaderDB = allConnections.sectionLeaderDB;
 		assertTrue(sectionLeaderDB.sectionLeaderExists("ipopk15@freeuni.edu.ge", "3"));
 		assertTrue(sectionLeaderDB.deleteSectionLeader("ipopk15@freeuni.edu.ge", "3"));
 		assertTrue(sectionLeaderDB.deleteSectionLeader("gkhos15@freeuni.edu.ge", "3"));
@@ -132,12 +134,12 @@ public class TestDBConnection {
 		assertFalse(sectionLeaderDB.sectionLeaderExists("ipopk15@freeuni.edu.ge", "3"));
 		assertFalse(sectionLeaderDB.deleteSectionLeader("vigaca@freeuni.edu.ge", "2"));
 
-		PersonDB personDB = new PersonDB();
+		PersonDB personDB = allConnections.personDB;
 		assertTrue(personDB.addPerson("tpp", "tpp", "tpp@freeuni.edu.ge"));
 		assertTrue(personDB.addPerson("kpp", "kpp", "kpp@freeuni.edu.ge"));
 		assertTrue(personDB.addPerson("unnamed", "unnamed", "unnamed@freeuni.edu.ge"));
 		
-		StudentDB studentDB = new StudentDB();
+		StudentDB studentDB = allConnections.studentDB;
 		assertTrue(studentDB.addStudent("tpp@freeuni.edu.ge", "1"));
 		assertTrue(studentDB.addStudent("kpp@freeuni.edu.ge", "1"));
 		assertTrue(studentDB.addStudent("unnamed@freeuni.edu.ge", "1"));
