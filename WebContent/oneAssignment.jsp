@@ -17,7 +17,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -128,7 +128,6 @@
 	</div>
 	</nav>
 	
-	
 	<!-- -------------------------------------------------------------------- -->
 	<%
 		String assignmentTitle = request.getParameter("assignmentTitle");
@@ -159,7 +158,6 @@
 	<%if (isSeminarist){%>
 		<!-- TODO -->
 	<%} %>
-	
 	
 	<!-- -------------------------------------------------------------------- -->
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>

@@ -18,6 +18,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -31,11 +34,8 @@
 	
 	String status = request.getParameter("status");
 	%>
-<title>assignmentTitle</title>
-
-
-
-
+	<title><%=assignmentTitle%></title>
+	
 </head>
 <body>
 
@@ -261,9 +261,45 @@
 				</form>	
 	
 	
-	<!-- -------------------------------------------------------------------- -->
+	<!-- COMMENTS -->
+		
+		<div class="ui comments">
+		  <h3 class="ui dividing header">Comments</h3>
+		  <div class="comment">
+		    <a class="avatar">
+		      <img src="https://ih0.redbubble.net/image.174857139.4264/flat,800x800,075,f.u4.jpg">
+		    </a>
+		    <div class="content">
+		      <a class="author"><%=currentPerson.getName()%></a>
+		      <div class="metadata">
+		        <span class="date"><%=new Date().toString() %></span>
+		      </div>
+		      <div class="text">
+		        How artistic!
+		      </div>
+		      <div class="actions">
+		        <a class="reply">Reply</a>
+		      </div>
+		    </div>
+		  </div>
+		  </div>
+		  
+		  <form class="ui reply form">
+			    <div class="field">
+			      <textarea id = "COMMENT_TEXT"></textarea>
+			    </div>
+				<div class="ui primary submit labeled icon button" id = "ADD_COMMENT_BUTTON">
+				   <textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
+				   <textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
+				   <i class="icon edit"></i> Add Comment
+			  	</div>
+  		   </form>
+	<!-- END OF COMMENTS -->
+	
+	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
+	<script type="text/javascript" src='js/studentsOneAssignmentComment.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 
 
