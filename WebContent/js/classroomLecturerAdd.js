@@ -23,7 +23,7 @@ $(document).ready(function() {
 	
 		$(this).parent().find("span").remove();
 
-		
+		$("#lecturerAddServlet").parent().find("span").remove();
 		
 		$.ajax({
 			url : servlet,
