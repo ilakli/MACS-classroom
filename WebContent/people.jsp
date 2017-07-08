@@ -48,7 +48,7 @@
 	cursor: pointer;
 	position: relative;
 	padding-top: 1.9%;
-	padding-right: 8%;
+	padding-right: 10%;
 }
 
 .head-wrapper {
@@ -221,8 +221,10 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Students</h2>
-
+			
+			<%if(isAdmin || isLecturer){%>
 			<i class="add user icon icon-student"></i>
+			<% } %>
 			<script>
 				$(".icon-student").click(function() {
 					$('.ui.modal.student').modal('show');
@@ -238,10 +240,12 @@
 			%>
 			<div class="item">
 				<div class="right floated content">
+					<% if(isAdmin || isLecturer){ %>
 					<div class="ui checkbox">
 						<input type="checkbox" name ="<%=currentStudent.getEmail() %>" value="<%=currentStudent.getEmail() %>"> 
 						<label></label>
 					</div>
+					<% } %>
 				</div>
 				<img class="ui avatar image"
 					src="<%=currentStudent.getPersonImgUrl()%>">
@@ -255,7 +259,9 @@
 			%>
 		</div>
 		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
+		<% if(isAdmin || isLecturer) {%>
 		<button type="submit" class="ui red button">Remove Marked</button>
+		<% } %>
 		</form>
 	</div>
 
@@ -263,8 +269,9 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Section Leaders</h2>
-
+			<%if(isAdmin || isLecturer){%>
 			<i class="add user icon icon-section-leader"></i>
+			<% } %>
 			<script>
 				$(".icon-section-leader").click(function() {
 					$('.ui.modal.section-leader').modal('show');
@@ -280,10 +287,12 @@
 			%>
 			<div class="item">
 				<div class="right floated content">
+				<% if(isAdmin || isLecturer) {%>
 					<div class="ui checkbox">
 						<input type="checkbox" name = "<%=currentSectionLeader.getEmail() %>" value="<%=currentSectionLeader.getEmail() %>"> 
 						<label></label>
 					</div>
+					<% } %>
 				</div>
 				<img class="ui avatar image"
 					src="<%=currentSectionLeader.getPersonImgUrl()%>">
@@ -297,7 +306,9 @@
 			%>
 		</div>
 		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
+		<% if(isAdmin || isLecturer) {%>
 		<button type="submit" class="ui red button">Remove Marked</button>
+		<% } %>
 		</form>
 	</div>
 
@@ -305,8 +316,9 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Seminarists</h2>
-
+			<%if(isAdmin || isLecturer){%>
 			<i class="add user icon icon-seminarist"></i>
+			<% } %>
 			<script>
 				$(".icon-seminarist").click(function() {
 					$('.ui.modal.seminarist').modal('show');
@@ -322,10 +334,12 @@
 			%>
 			<div class="item">
 			<div class="right floated content">
+					<% if(isAdmin || isLecturer) { %>
 					<div class="ui checkbox">
 						<input type="checkbox" name="<%=currentSeminarist.getEmail() %>" value="<%=currentSeminarist.getEmail() %>"> 
 						<label></label>
 					</div>
+					<% } %>
 				</div>
 				<img class="ui avatar image"
 					src="<%=currentSeminarist.getPersonImgUrl()%>">
@@ -339,7 +353,9 @@
 			%>
 		</div>
 		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
+		<% if(isAdmin || isLecturer) {%>
 		<button type="submit" class="ui red button">Remove Marked</button>
+		<% } %>
 		</form>
 	</div>
 
@@ -347,8 +363,9 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Lecturers</h2>
-
+			<%if(isAdmin || isLecturer){%>
 			<i class="add user icon icon-lecturer"></i>
+			<% } %>
 			<script>
 				$(".icon-lecturer").click(function() {
 					$('.ui.modal.lecturer').modal('show');
@@ -364,10 +381,12 @@
 			%>
 			<div class="item">
 			<div class="right floated content">
+					<% if(isAdmin || isLecturer){ %>
 					<div class="ui checkbox">
 						<input type="checkbox" name="<%=currentLecturer.getEmail() %>" value="<%=currentLecturer.getEmail() %>"> 
 						<label></label>
 					</div>
+					<% } %>
 				</div>
 				<img class="ui avatar image"
 					src="<%=currentLecturer.getPersonImgUrl()%>">
@@ -381,7 +400,9 @@
 			%>
 		</div>
 		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
+		<% if(isAdmin || isLecturer) {%>
 		<button type="submit" class="ui red button">Remove Marked</button>
+		<% } %>
 		</form>
 	</div>
 	<script>
