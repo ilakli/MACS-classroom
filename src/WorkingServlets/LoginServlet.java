@@ -47,8 +47,9 @@ public class LoginServlet extends HttpServlet {
 			connection.personDB.addPerson(firstName, lastName, email,imgUrl);
 			person = connection.personDB.getPersonByEmail(email);
 		}else {
-			System.out.println("person!=null");
-			if(person.getName() == null) {
+			System.out.println("person!=null" + person.getName() + " " + person.getPersonImgUrl());
+	
+			if(person.getName() == null || person.getPersonImgUrl().equals("null")) {
 				System.out.println("person.getName==null");
 				person.setNameAndSurname(firstName, lastName);
 				person.setImageUrl(imgUrl);

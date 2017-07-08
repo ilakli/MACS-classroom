@@ -85,6 +85,7 @@ public class LecturerDB {
 		}
 		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
+		System.out.println("Query is Like This: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
