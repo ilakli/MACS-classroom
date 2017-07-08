@@ -3,6 +3,7 @@
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Post"%>
+<%@page import="defPackage.AssignmentComment"%>
 <%@page import="java.util.List"%>
 <%@page import="defPackage.Classroom"%>
 <%@page import="defPackage.Assignment"%>
@@ -47,6 +48,24 @@
 	}	
 	%>
 	
+	<%!private String generateCommentHTML(AssignmentComment ac, AllConnections connector) {
+		
+		Person commentAuthor = connector.personDB.getPerson(ac.getPersonID());
+		
+		String result = "<div class = \"comment\">" +
+						"<a class = \"avatar\">" +
+						"<img src = \"" + commentAuthor.getPersonImgUrl() + "\"></a>" +
+						"<div class = \"content\">" +
+						"<a class = \"author\">" + commentAuthor.getName() + "</a>" + 
+						"<div class = \"metadata\">" +
+						"<div class = \"date\">" + ac.getCommentDate() + "</div>" +
+						"</div>" +
+						"<div class=\"text\">" + ac.getCommentText() + "</div>" +
+						"</div>" +
+						"</div>";
+		
+		return result;
+	}%>
 
 	<%!private String generateAssignmentHTML(Assignment a) {
 		
@@ -88,12 +107,14 @@
 		
 		
 		String personID = connector.personDB.getPersonId(studentEmail);
+		
 		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle);
+		
 		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
 				classroomID, personID, assignmentTitle);
 		if(assignment!=null) status = "done";
 
-		
+		List<AssignmentComment> assignmentComments = connector.commentDB.getStudentAssignmentComments(assignment.getStudentAssignmentId());
 		
 	%>
 
@@ -263,37 +284,30 @@
 	
 	<!-- COMMENTS -->
 		
-		<div class="ui comments">
+		<div class="ui comments" id="ALL_COMMENTS">
 		  <h3 class="ui dividing header">Comments</h3>
-		  <div class="comment">
-		    <a class="avatar">
-		      <img src="https://ih0.redbubble.net/image.174857139.4264/flat,800x800,075,f.u4.jpg">
-		    </a>
-		    <div class="content">
-		      <a class="author"><%=currentPerson.getName()%></a>
-		      <div class="metadata">
-		        <span class="date"><%=new Date().toString() %></span>
-		      </div>
-		      <div class="text">
-		        How artistic!
-		      </div>
-		      <div class="actions">
-		        <a class="reply">Reply</a>
-		      </div>
-		    </div>
-		  </div>
+			  
+			  <%
+			  	for (AssignmentComment ac : assignmentComments){
+			  		String commentHtml = generateCommentHTML(ac, connector);
+			  		out.println(commentHtml);
+			  	}
+			  %>
+			  
 		  </div>
 		  
-		  <form class="ui reply form">
-			    <div class="field">
-			      <textarea id = "COMMENT_TEXT"></textarea>
+		 	    <div class="field">
+			      <textarea id="COMMENT_TEXT"></textarea>
 			    </div>
+					
 				<div class="ui primary submit labeled icon button" id = "ADD_COMMENT_BUTTON">
-				   <textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
-				   <textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
-				   <i class="icon edit"></i> Add Comment
+					<textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
+					<textarea style="display:none" id=PERSON_IMG_URL><%=currentPerson.getPersonImgUrl()%></textarea>
+					<textarea style="display:none" id=PERSON_NAME><%=currentPerson.getName()%></textarea>
+					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
+					<i class="icon edit"></i> Add Comment
 			  	</div>
-  		   </form>
+  		   
 	<!-- END OF COMMENTS -->
 	
 	

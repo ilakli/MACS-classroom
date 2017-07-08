@@ -227,7 +227,7 @@ CREATE TABLE `student_uploaded_assignments` (
 CREATE TABLE `assignment_comment` (
     `student_assignment_id` INT NOT NULL,
     `person_id` INT NOT NULL,
-    `comment_date` DATETIME NOT NULL,
+    `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `comment_text` TEXT NOT NULL,
     CONSTRAINT `FK__student_assignments1` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
     CONSTRAINT `FK__persons` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
