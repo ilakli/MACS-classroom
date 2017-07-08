@@ -7,8 +7,10 @@ $(document).ready(function() {
 	
 	$(".personAddButton").on('click', function() {
 		
+		
+		
 		var str = $("#studentServlet").parent().html();
-
+		
 		str = str.substr(str.indexOf("<"));
 
 		str = str.substr(0, str.indexOf("<inp"));
@@ -16,15 +18,15 @@ $(document).ready(function() {
 		str = str.replaceAll('<span>', '');
 
 		str = str.replaceAll('</span>', ' ');
-
+		
+		
+		
 		var servlet = $("#studentServlet").val();
-	
+		
 		var classId = $("#classroomId").val();
 		
-		$(this).parent().find("span").remove();
+		$("#studentServlet").parent().find("span").remove();
 
-		
-	
 		$.ajax({
 			url : servlet,
 			type : 'POST',
