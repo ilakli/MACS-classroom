@@ -37,7 +37,7 @@ $(document).ready(function() {
 				        "<span class=\"date\">" + result + "</span>" +
 				      "</div>" +
 				      "<div class=\"text\">" +
-				      commentText +
+				      "<pre>" + commentText + "</pre>" +
 				      "</div>" +
 				      
 				    "</div>" +

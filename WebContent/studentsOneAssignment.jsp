@@ -36,7 +36,14 @@
 	String status = request.getParameter("status");
 	%>
 	<title><%=assignmentTitle%></title>
-	
+	<style type="text/css">
+	#COMMENT_TEXT {
+		white-space: pre-line;
+	}
+	pre {
+		white-space:pre-wrap;
+	}
+	</style>
 </head>
 <body>
 
@@ -60,7 +67,7 @@
 						"<div class = \"metadata\">" +
 						"<div class = \"date\">" + ac.getCommentDate() + "</div>" +
 						"</div>" +
-						"<div class=\"text\">" + ac.getCommentText() + "</div>" +
+						"<div class=\"text\">" + "<pre>" +  ac.getCommentText() + "</pre>" + "</div>" +
 						"</div>" +
 						"</div>";
 		
@@ -295,7 +302,7 @@
 			  %>
 			  
 		  </div>
-		  
+		  <form class="ui reply form">		
 		 	    <div class="field">
 			      <textarea id="COMMENT_TEXT"></textarea>
 			    </div>
@@ -307,6 +314,7 @@
 					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
 					<i class="icon edit"></i> Add Comment
 			  	</div>
+		  </form>
   		   
 	<!-- END OF COMMENTS -->
 	
