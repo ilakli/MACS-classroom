@@ -213,9 +213,11 @@ public class Classroom {
 	 *         e479ff59e7889fe12cf0fbdcc9d38be99cc3c3bd
 	 */
 	public boolean classroomAddLecturer(String email) {
+		System.out.println("Email Here is : " + email);
 		if (classroomLecturerExists(email)) {
 			return false;
 		} else {
+			System.out.println("Email Here is : " + email);
 			return db.lecturerDB.addLecturer(email, this.classroomID);
 		}
 

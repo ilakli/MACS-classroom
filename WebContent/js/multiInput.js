@@ -21,3 +21,11 @@ $(document).ready(function() {
 	});
 
 });
+
+
+/*
+<div class="emails">
+  								<input type="text" value="" placeholder="Add Email" />
+  								
+							</div>
+*/
