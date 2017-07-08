@@ -230,8 +230,18 @@ CREATE TABLE `assignment_comment` (
     `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `comment_text` TEXT NOT NULL,
     CONSTRAINT `FK__student_assignments1` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
-    CONSTRAINT `FK__persons` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
+    CONSTRAINT `FK__persons0` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
 );
+
+CREATE TABLE `assignment_staff_comment` (
+    `student_assignment_id` INT NOT NULL,
+    `person_id` INT NOT NULL,
+    `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `comment_text` TEXT NOT NULL,
+    CONSTRAINT `FK__student_assignments2` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
+    CONSTRAINT `FK__persons1` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
+);
+
  
 CREATE TABLE `section-section_leader` (
     `classroom_id` INT NOT NULL,
