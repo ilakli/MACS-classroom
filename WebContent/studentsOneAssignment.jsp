@@ -305,7 +305,7 @@
 		  <a class="item active" id = "COMMENT_MENU_BAR">
 		    Comments
 		  </a>
-		  <%if (!isStudent || 1==1){%>
+		  <%if (!isStudent){%>
 		  <a class="item" id = "STAFF_COMMENT_MENU_BAR">
 		    Staff Comments
 		  </a>
@@ -340,6 +340,7 @@
 		  </form>
   		  <!-- END OF BASIC COMMENTS -->
   		  
+  		  <%if (!isStudent){%>
   		  <!-- STAFF COMMENTS -->
 		
 		  <div class="ui comments" id="ALL_STAFF_COMMENTS">
@@ -368,7 +369,7 @@
 		  </form>  		  
   		  
   		  <!-- END OF STAFF COMMENTS -->
-
+		  <%}%>
 	<!-- END OF COMMENTS -->
 	
 	
