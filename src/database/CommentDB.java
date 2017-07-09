@@ -83,6 +83,21 @@ public class CommentDB {
 	}
 	
 	/**
+	 * adds new comment to student's assignment's staff comments page
+	 * @param studentAssignmentId - id of student's assignment
+	 * @param personId - id of comment's author
+	 * @param commentText - comment text
+	 */
+	public void addStudentAssignmentStaffComment(String studentAssignmentId, String personId, String commentText) {
+		String query = String.format(
+				"insert into `assignment_staff_comment` (`student_assignment_id`, `person_id`, `comment_text`)"
+				+ "values(%s, %s, '%s')", studentAssignmentId, personId, commentText);
+
+		MyConnection myConnection = db.getMyConnection(query);
+		db.executeUpdate(myConnection);
+	}
+	
+	/**
 	 * @param studentAssignmentId - student's assignment's id
 	 * @return - list of all its comments
 	 */
@@ -114,7 +129,42 @@ public class CommentDB {
 			}
 		}
 		
-		return assignmentComments;
+		return assignmentComments;	
+	}
+	
+	
+	/**
+	 * @param studentAssignmentId - student's assignment's id
+	 * @return - list of all its staff comments
+	 */
+	public List<AssignmentComment> getStudentAssignmentStaffComments(String studentAssignmentId){
 		
+		ArrayList<AssignmentComment> assignmentComments = new ArrayList<AssignmentComment>();
+		String query = String.format("select * from `assignment_staff_comment`"
+				+ " where student_assignment_id = %s ORDER BY comment_date;", studentAssignmentId);
+		
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			while (rs.next()){
+				Date commentDate = null;
+				Timestamp sqlDate =rs.getTimestamp("comment_date");
+				if(sqlDate!=null) {
+					commentDate = new java.util.Date(sqlDate.getTime());
+				}
+				AssignmentComment assignmentComment = new AssignmentComment(studentAssignmentId, rs.getString("person_id"),
+										rs.getString("comment_text"), commentDate);
+				
+				assignmentComments.add(assignmentComment);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		
+		return assignmentComments;	
 	}
 }

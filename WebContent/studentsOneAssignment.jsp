@@ -19,9 +19,13 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/1.11.8/semantic.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+<script
+	src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -42,6 +46,12 @@
 	}
 	pre {
 		white-space:pre-wrap;
+	}
+	#STAFF_COMMENT_ADDING_FORM{
+		display: none;
+	}
+	#ALL_STAFF_COMMENTS{
+		display: none;
 	}
 	</style>
 </head>
@@ -122,6 +132,7 @@
 		if(assignment!=null) status = "done";
 
 		List<AssignmentComment> assignmentComments = connector.commentDB.getStudentAssignmentComments(assignment.getStudentAssignmentId());
+		List<AssignmentComment> assignmentStaffComments = connector.commentDB.getStudentAssignmentStaffComments(assignment.getStudentAssignmentId());
 		
 	%>
 
@@ -290,11 +301,22 @@
 	
 	
 	<!-- COMMENTS -->
+		<div class="ui menu">
+		  <a class="item active" id = "COMMENT_MENU_BAR">
+		    Comments
+		  </a>
+		  <%if (!isStudent){%>
+		  <a class="item" id = "STAFF_COMMENT_MENU_BAR">
+		    Staff Comments
+		  </a>
+		  <%}%>
+		  
+		</div>
 		
+		<!-- BASIC COMMENTS -->
 		<div class="ui comments" id="ALL_COMMENTS">
-		  <h3 class="ui dividing header">Comments</h3>
-			  
-			  <%
+		 
+		 	  <%
 			  	for (AssignmentComment ac : assignmentComments){
 			  		String commentHtml = generateCommentHTML(ac, connector);
 			  		out.println(commentHtml);
@@ -302,7 +324,8 @@
 			  %>
 			  
 		  </div>
-		  <form class="ui reply form">		
+		  
+		  <form class="ui reply form" id = "COMMENT_ADDING_FORM">		
 		 	    <div class="field">
 			      <textarea id="COMMENT_TEXT"></textarea>
 			    </div>
@@ -315,13 +338,45 @@
 					<i class="icon edit"></i> Add Comment
 			  	</div>
 		  </form>
-  		   
+  		  <!-- END OF BASIC COMMENTS -->
+  		  
+  		  <%if (!isStudent){%>
+  		  <!-- STAFF COMMENTS -->
+		
+		  <div class="ui comments" id="ALL_STAFF_COMMENTS">
+		 
+		 	  <%
+			  	for (AssignmentComment ac : assignmentStaffComments){
+			  		String commentHtml = generateCommentHTML(ac, connector);
+			  		out.println(commentHtml);
+			  	}
+			  %>
+			  
+		  </div>
+		  
+		  <form class="ui reply form" id = "STAFF_COMMENT_ADDING_FORM">		
+		 	    <div class="field">
+			      <textarea id="STAFF_COMMENT_TEXT"></textarea>
+			    </div>
+					
+				<div class="ui primary submit labeled icon button" id = "ADD_STAFF_COMMENT_BUTTON">
+					<textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
+					<textarea style="display:none" id=PERSON_IMG_URL><%=currentPerson.getPersonImgUrl()%></textarea>
+					<textarea style="display:none" id=PERSON_NAME><%=currentPerson.getName()%></textarea>
+					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
+					<i class="icon edit"></i> Add Staff Comment
+			  	</div>
+		  </form>  		  
+  		  
+  		  <!-- END OF STAFF COMMENTS -->
+		  <%}%>
 	<!-- END OF COMMENTS -->
 	
 	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/studentsOneAssignmentComment.js'></script>
+	<script type="text/javascript" src='js/studentsOneAssignmentMenu.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 
 

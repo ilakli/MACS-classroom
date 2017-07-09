@@ -47,8 +47,14 @@ public class AssignmentCommentServlet extends HttpServlet {
 		String studentAssignmentId = request.getParameter("studentAssignmentId");
 		String personId = request.getParameter("personId");
 		String commentText = request.getParameter("commentText");
+		String isStaffComment = request.getParameter("isStaffComment"); 
 		
-		connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, commentText);
+		if (isStaffComment.equals("true")){
+			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
+		} else {
+			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, commentText);
+		}
+		
 	}
 
 }

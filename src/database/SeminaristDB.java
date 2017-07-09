@@ -121,4 +121,22 @@ public class SeminaristDB {
 		ArrayList<Person> seminarists = personDB.getPersons(query);
 		return seminarists.isEmpty() ? null : seminarists.get(0);
 	}
+	
+	
+	
+	/**
+	 * returns list of seminarists without a seminar in classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return list of seminarists that do not have a seminar
+	 */
+	public ArrayList<Person> getSeminaristsWithoutSeminar(String classroomID){
+		
+		String query = String.format("select * from `classroom_seminarists` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `seminar-seminarists` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> seminarists = personDB.getPersons(query);
+		return seminarists;
+	}
 }
