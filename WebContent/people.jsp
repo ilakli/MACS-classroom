@@ -68,6 +68,26 @@
 .ui.menu {
 	margin-top: 0;
 }
+
+.sign-out {
+	float: right;
+	margin-top: 0.8%;
+	margin-right: 0.7%;
+}
+
+.head-panel {
+	display: block;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.head-text {
+	display: inline-block;
+	border: solid;
+	padding: .78571429rem 1rem !important;
+	!
+	important;
+}
 </style>
 </head>
 <body>
@@ -88,9 +108,12 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 	%>
+	<div class="ui block header head-panel">
 	<a href="index.jsp">
-		<h3 class="ui block header">Macs Classroom</h3>
+		<h3 class="ui header head-text">Macs Classroom</h3>
 	</a>
+	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+	</div>
 	<div class="ui menu">
 		<a
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
@@ -142,8 +165,11 @@
 			<div class="ui dropdown item">
 				Groups <i class="dropdown icon"></i>
 				<div class="menu">
-					<a href=<%="sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%> class="item"> Sections </a> 
-					<a href=<%="seminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%> class="item"> Seminars </a>
+					<a
+						href=<%="sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
+						class="item"> Sections </a> <a
+						href=<%="seminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
+						class="item"> Seminars </a>
 				</div>
 			</div>
 		</div>
