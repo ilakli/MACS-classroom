@@ -96,7 +96,7 @@ private DBConnection db;
 	public StudentAssignment getStudentAssignment(String classroomID, String personID, String assignmentTitle){
 		String query = String.format("select * from `student_assignments` where `classroom_id` = %s and "
 				+ "person_id = %s and `assignment_title` = '%s';", classroomID, personID, assignmentTitle );
-		System.out.println(query);
+		
 		MyConnection myConnection = db.getMyConnection(query);
 		StudentAssignment assignment = null;
 		try {
@@ -104,9 +104,11 @@ private DBConnection db;
 			while (rs != null && rs.next()) {
 				
 				String id = rs.getString("student_assignment_id");
-				int assignmentGrade = rs.getInt("assignment_grade");
+				boolean isApproved = rs.getBoolean("assignment_approved");
+				Integer assignmentGrade = rs.getInt("assignment_grade");
+				if (rs.wasNull()) assignmentGrade = null;
 				assignment = new StudentAssignment(id,classroomID, personID,assignmentTitle, 
-						 assignmentGrade);
+						 assignmentGrade, isApproved);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

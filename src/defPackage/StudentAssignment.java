@@ -10,14 +10,17 @@ public class StudentAssignment {
 	private String classroomID;
 	private String personID;
 	private String assignmentTitle;
-	private int assignmentGrade;
+	private Integer assignmentGrade;
+	private boolean isApproved;
 	
-	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle, int assignmentGrade){
+	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle,
+			Integer assignmentGrade, boolean isApproved){
 		this.ID = ID;
 		this.classroomID = classroomID;
 		this.assignmentTitle = assignmentTitle;
 		this.personID = personID;
 		this.assignmentGrade = assignmentGrade;
+		this.isApproved = isApproved;
 	}
 	
 	public String getStudentAssignmentId(){
@@ -50,7 +53,14 @@ public class StudentAssignment {
 	 * 
 	 * @return - grade of the assignment
 	 */
-	public int getAssignmentGrade(){
+	public Integer getAssignmentGrade(){
 		return this.assignmentGrade;
+	}
+	
+	/**
+	 * @return - if grade is was already approved by seminarist
+	 */
+	public boolean getApproval() {
+		return this.isApproved;
 	}
 }
