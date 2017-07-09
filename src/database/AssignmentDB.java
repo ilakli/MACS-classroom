@@ -71,10 +71,8 @@ public class AssignmentDB {
 				String assignmentInstructions = rs.getString("assignment_instructions");
 				Date assignmentDeadline = null;
 				java.sql.Date sqlDate =rs.getDate("assignment_deadline");
-				System.out.println(sqlDate);
 				if(sqlDate!=null) {
 					assignmentDeadline = new java.util.Date(sqlDate.getTime());
-					System.out.println(assignmentDeadline);
 				}
 				String fileName = rs.getString("file_name");
 				assignment = new Assignment(classroomID,assignmentTitle, 
@@ -102,7 +100,6 @@ public class AssignmentDB {
 	 */
 	public boolean addAssignment(String classroomID, String assignmentTitle, String assignmentInstructions,
 			String assignmentDeadline, String fileName) {
-		//if (assignmentName.isEmpty()) return false;
 		
 		String query = String.format("insert into `classroom_assignments`(`classroom_id`,`assignment_title`,`assignment_instructions`) "
 				+ "values (%s,'%s','%s');", classroomID, assignmentTitle, assignmentInstructions);
@@ -113,7 +110,6 @@ public class AssignmentDB {
 		
 
 		if(!fileName.equals("")){
-			System.out.println("fileName not null");
 			String query2 = String.format("update `classroom_assignments` set `file_name` = '%s' "
 					+ "where `classroom_id` = '%s' and `assignment_title` = '%s'; ", fileName, classroomID, assignmentTitle);
 			myConnection = db.getMyConnection(query2);
@@ -121,9 +117,6 @@ public class AssignmentDB {
 		}
 		
 		if(!assignmentDeadline.equals("") ){
-			System.out.println(assignmentDeadline);
-
-			System.out.println("deadline not null");
 			String query1 = String.format("update `classroom_assignments` set `assignment_deadline` = '%s' "
 					+ "where `classroom_id` = '%s' and `assignment_title` = '%s'; ", assignmentDeadline, classroomID, assignmentTitle);
 			myConnection = db.getMyConnection(query1);

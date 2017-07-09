@@ -54,13 +54,24 @@ private DBConnection db;
 	 * @param assignmentTitle - title of the assignment;
 	 * @return - true if connection was added, false otherwise;
 	 */
-	public boolean addStudentAssignment(String classroomID, String personID, String assignmentTitle){
+	public boolean addStudentAssignment(String classroomID, String personID, String assignmentTitle, 
+			String deadlineWithReschedulings){
 		String query = String.format("insert into `student_assignments` ( `classroom_id`, `person_id`," +
-				 "`assignment_title`) values (%s, %s, '%s' );", classroomID, personID, assignmentTitle);
+				 "`assignment_title` ) values (%s, %s, '%s' );", 
+				 classroomID, personID, assignmentTitle, deadlineWithReschedulings);
 		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
-		return db.executeUpdate(myConnection);
+		
+		
+		if(!db.executeUpdate(myConnection)) return false;
+		if(!deadlineWithReschedulings.equals("")) {
+			return changeDeadlineWithReschedulings(deadlineWithReschedulings, classroomID, personID, assignmentTitle);
+		}
+		return true;
+		
+		
+
 	}
 	
 	/**
@@ -79,7 +90,6 @@ private DBConnection db;
 		String query = String.format("insert into `student_uploaded_assignments`( `student_assignment_id`, "
 				+ " `file_name`) "
 				+ "values (%s, '%s');", student_assignment_id, fileName);
-		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
@@ -102,13 +112,18 @@ private DBConnection db;
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				
+				Date deadlineWithReschedulings = null;
+				java.sql.Date sqlDate =rs.getDate("deadline_with_reschedulings");
+
+				if(sqlDate!=null) {
+				}
 				String id = rs.getString("student_assignment_id");
 				boolean isApproved = rs.getBoolean("assignment_approved");
 				Integer assignmentGrade = rs.getInt("assignment_grade");
 				if (rs.wasNull()) assignmentGrade = null;
+				
 				assignment = new StudentAssignment(id,classroomID, personID,assignmentTitle, 
-						 assignmentGrade, isApproved);
+						 assignmentGrade, isApproved, deadlineWithReschedulings);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -149,4 +164,23 @@ private DBConnection db;
 		return allFiles;
 	}
 	
+	/**
+	 * 
+	 * @param deadlineWithReschedulings - string with new deadline after rescheduling
+	 * @param classroomID
+	 * @param personID
+	 * @param assignmentTitle
+	 * @return - true if deadline has been changed successfully, false otherwise
+	 */
+	public boolean changeDeadlineWithReschedulings(String deadlineWithReschedulings, String classroomID, String personID, String assignmentTitle){
+		if(deadlineWithReschedulings != null &&!deadlineWithReschedulings.equals("") ){
+				String query1 = String.format("update `student_assignments` set `deadline_with_reschedulings` = '%s' "
+						+ "where `classroom_id` = %s and `assignment_title` = '%s'  and `person_id` = %s; ", 
+						deadlineWithReschedulings, classroomID, assignmentTitle, personID);
+				MyConnection myConnection = db.getMyConnection(query1);
+				System.out.println(query1);
+				return db.executeUpdate(myConnection);
+			}
+		else return false;
+	}
 }
