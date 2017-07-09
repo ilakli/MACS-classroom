@@ -44,23 +44,9 @@ public class DeleteSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
+		currentClassroom.classroomDeleteSection();
+		response.sendRedirect("sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "="+classroomId);
 		
-		if(currentClassroom.classroomDeleteSection()) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.DEL_SECTION_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Deleted last Section: "  + "from class with id: " + classroomId);
-		}
-		else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.DEL_SECTION_REJ);	
-						 
-			view.forward(request, response);  
-			
-			System.out.println("Section Didn't Exist IN This Classroom: " 
-			+ "    class with id: " + classroomId);
-		}
 	}
 
 }

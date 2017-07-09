@@ -42,13 +42,17 @@ public class RemoveStudentsFromSectionServlet extends HttpServlet {
 		
 		if (emails != null) {
 			for (String email: emails) {
+				int currentSectionN = connection.sectionDB.getSection(classroomId, email).getSectionN();
+				System.out.print("//////////////////" +currentSectionN +  " seec/////////////////////////");
 				connection.sectionDB.removeStudent(classroomId, email);
+				connection.sectionDB.updateSectionSize(1,classroomId);
 			}			
 		}
 		
+		
 		System.out.println("movida aq");
 		
-		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
+		response.sendRedirect(String.format("sections.jsp?%s=%s", 
 				Classroom.ID_ATTRIBUTE_NAME, classroomId));
 	}
 
