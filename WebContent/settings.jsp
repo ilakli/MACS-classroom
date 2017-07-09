@@ -17,9 +17,16 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/settings.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 <title>Settings</title>
+<style>
+	pre {
+		height: 200px;
+	}
+</style>
 </head>
 <body>
 
@@ -145,46 +152,87 @@
 		}
 	</script>
 	<% response.setHeader(Classroom.ID_ATTRIBUTE_NAME, classroomID); %>
-	<form name="frm" method="post" action= "ChangeSettingsServlet" 
+	<form name="frm" method="post" action= "ChangeSettingsServlet" class="ui form"
 		  onSubmit="return validateForm()">
-		<table width="100%" border="0" cellspacing="0" cellpadding="0">
-			<tr>
-				<td width="30%"></td>
-				<td width="78%"></td>
-			</tr>
-			<tr>
-				<td height="50" >Number of Seminars</td>
-				<td height="50" ><input type="text" name="seminars" value = <%=numberOfSeminars%> /></td>
-			</tr>
-			<tr>
-				<td height="50" >Automatic distribution of students into Seminars</td>
-				<td height="50" ><input type="checkbox" name="disSeminars" <%=checkboxValue(autoSeminarDistribution)%>/></td>
-			</tr>
-			<tr>
-				<td height="50" >Number of Sections</td>
-				<td height="50" ><input type="text" name="sections" value = <%=numberOfSections%> /></td>
-			</tr>
-			
-			<tr>
-				<td height="50" >Automatic distribution of students into Sections</td>
-				<td height="50" ><input type="checkbox" name="disSSections" <%=checkboxValue(autoSectionDistribution)%>/></td>
-			</tr>
-			<tr>
-				<td height="50" >Number of Assignment Rescheduling </td>
-				<td height="50" ><input type="text" name="numResch" value = <%=numberOfReschedulings%> /></td>
-			</tr>
-			<tr>
-				<td height="50" >Length in Days of Assignment  Rescheduling </td>
-				<td height="50" ><input type="text" name="lengthResch" value = <%=reschedulingLength%> /></td>
-			</tr>
-			
-			<tr>
-				<td height="50" >Do you want to save new values for your class?</td>
-				<td height="50" ><input type="submit" name="save" value="Save"></td>
-			</tr>
-		</table>
+		<table class="ui table">
+		<tr>
+			<th></th>
+			<th></th>
+		</tr> 
+		<tr>
+			<td>
+			<div class="ui big white circular label">Number of Seminars</div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui input focus">
+				<input type="text" name="seminars" value = <%=numberOfSeminars%> />
+			</div>
+		</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="ui big white circular label">Automatic distribution of students into Seminars</div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui toggle checkbox">
+	  			<input type="checkbox" name="disSeminars" <%=checkboxValue(autoSeminarDistribution)%>/>
+	  			<label></label>
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="ui big white circular label">Number of Sections</div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui input focus">
+				<input type="text" name="sections" value = <%=numberOfSections%> />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="ui big white circular label">Automatic distribution of students into Sections</div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class = "ui toggle checkbox">
+				<input type="checkbox" name="disSSections" <%=checkboxValue(autoSectionDistribution)%>/>
+				<label></label>
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="ui big white circular label">Number of Assignment Rescheduling </div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui input focus">
+				<input type="text" name="numResch" value = <%=numberOfReschedulings%> />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+			<div class="ui big white circular label">Length in Days of Assignment  Rescheduling </div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui input focus">
+				<input type="text" name="lengthResch" value = <%=reschedulingLength%> />
+			</div>
+			</td>
+		</tr>
+		<tr>
+			<td>	
+			<div class="ui big white circular label">Do you want to save new values for your class?</div>
+			</td>
+			<td class="right aligned collapsing">
+			<div class="ui input focus">
+				<button type="submit" class="ui button" name="save" > Save</button>
+			</div>
+			</td>
+		</tr>
 		
-		<table>
+		<!--<table>
 		    <thead>
 		      <tr>
 		        <th></th>
@@ -215,9 +263,10 @@
 		      
 		     </tbody>
 		</table>
-		
-		
+		-->
+		</table>
 		<input type="hidden" name = <%= Classroom.ID_ATTRIBUTE_NAME  %> value = <%= classroomID %>>  
+		
 	</form>
 	
 	

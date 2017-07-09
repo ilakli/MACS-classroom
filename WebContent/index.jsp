@@ -114,7 +114,7 @@
 				+ "</a> </div> </section>";
 		String result = "<div class=\"card\">" +
 	    					"<div class=\"image\">" +
-	      								"<img src=\"https://upload.wikimedia.org/wikipedia/en/0/04/Class_%282016_TV_series%29.png\">" +
+	      								"<img src=\"https://krishna.org/wp-content/uploads/2010/11/Physics-Blackbord-of-Famous-Equations-620x350.png?x64805\">" +
 	   						"</div>" +
 	    					"<div class=\"content\">" +
 	      						"<div class=\"header\"> "  +  "<a href=\"stream.jsp?"
