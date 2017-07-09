@@ -33,8 +33,8 @@ public class TestSeminar {
 	
 	@Test
 	public void test1CreateSeminar(){
-		String currentClassroom = db.classroomDB.addClassroom("test seminars");
-		MockClassroom testClass = new MockClassroom("test seminars",currentClassroom);
+		String currentClassroom = db.classroomDB.addClassroom("test seminars","1");
+		MockClassroom testClass = new MockClassroom("test seminars",currentClassroom,"1");
 		testClass.classroomAddSeminar();
 		testClass.classroomAddSeminar();		
 		
@@ -55,10 +55,10 @@ public class TestSeminar {
 	
 	@Test
 	public void test2addPeople(){
-		String currentClassroom = db.classroomDB.addClassroom("add people in seminars");
-		MockClassroom testClass = new MockClassroom("add people in seminars",currentClassroom);
-		String notThisOne = db.classroomDB.addClassroom("another one");
-		MockClassroom otherOne = new MockClassroom("another one",notThisOne);
+		String currentClassroom = db.classroomDB.addClassroom("add people in seminars","1");
+		MockClassroom testClass = new MockClassroom("add people in seminars",currentClassroom,"1");
+		String notThisOne = db.classroomDB.addClassroom("another one","1");
+		MockClassroom otherOne = new MockClassroom("another one",notThisOne,"1");
 		testClass.classroomAddSeminar();
 		testClass.classroomAddSeminar();		
 		
@@ -90,8 +90,8 @@ public class TestSeminar {
 	
 	@Test
 	public void test3DeleteStudents(){
-		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars");
-		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom);
+		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars","1");
+		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom,"1");
 		
 		testClass.classroomAddSeminar();
 		
@@ -110,8 +110,8 @@ public class TestSeminar {
 	
 	@Test
 	public void test4Seminarist(){
-		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars");
-		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom);
+		String currentClassroom = db.classroomDB.addClassroom("delete students in seminars","1");
+		MockClassroom testClass = new MockClassroom("delete students in seminars",currentClassroom,"1");
 		
 		testClass.classroomAddSeminar();
 		testClass.classroomAddSeminar();

@@ -46,11 +46,12 @@ public class CreateClassroomServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String className = request.getParameter("newClassroomName");
+		String lecturerId = request.getParameter("lecturerID");
 		String lecturerEmail = request.getParameter("lecturerEmail");
-		
+		System.out.println(lecturerId);
 		AllConnections db = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		
-		String classroomID = db.classroomDB.addClassroom(className);
+		String classroomID = db.classroomDB.addClassroom(className,lecturerId);
 		
 		if(!classroomID.equals(DBConnection.DATABASE_ERROR)){
 			db.lecturerDB.addLecturer(lecturerEmail, classroomID);

@@ -9,8 +9,8 @@ public class MockClassroom extends Classroom{
 	 * 
 	 */
 	
-	public MockClassroom(String classroomName, String classroomID) {
-		super(classroomName, classroomID);
+	public MockClassroom(String classroomName, String classroomID, String creatorId) {
+		super(classroomName, classroomID, creatorId);
 		super.classroomConnection = new MockDBConnection();
 	}
 }
