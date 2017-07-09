@@ -505,7 +505,7 @@ public class Classroom {
 		}
 		
 		for (Section sec: sections) {
-			db.sectionDB.updateSectionSize(sec.getSectionN(), this.classroomID, sec.getSectionSize());
+			db.sectionDB.updateSectionSize(sec.getSectionN(), this.classroomID);
 		}
 		
 		for (int i: distributed.keySet()) {

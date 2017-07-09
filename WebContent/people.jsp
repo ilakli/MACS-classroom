@@ -13,14 +13,14 @@
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	
+
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
 <script
 	src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
-	
-	
-	
+
+
+
 <script type="text/javascript" src='js/multiInput.js'></script>
 <script type="text/javascript" src='js/studentAdd.js'></script>
 <script type="text/javascript" src='js/sectionLeaderAdd.js'></script>
@@ -28,6 +28,7 @@
 <script type="text/javascript" src='js/classroomLecturerAdd.js'></script>
 
 <link rel="stylesheet" href="css/multiInput.css" />
+
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <style>
 .list-wrapper {
@@ -138,11 +139,18 @@
 			<a class="active item"
 				href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 				People </a>
+			<div class="ui dropdown item">
+				Groups <i class="dropdown icon"></i>
+				<div class="menu">
+					<a href=<%="sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%> class="item"> Sections </a> 
+					<a href=<%="seminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%> class="item"> Seminars </a>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<input type="hidden" id="classroomId" value=<%=classroomID%>>
-	
+
 
 	<div class="ui modal student">
 		<div class="header">Add Student</div>
@@ -221,47 +229,60 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Students</h2>
-			
-			<%if(isAdmin || isLecturer){%>
+
+			<%
+				if (isAdmin || isLecturer) {
+			%>
 			<i class="add user icon icon-student"></i>
-			<% } %>
+			<%
+				}
+			%>
 			<script>
 				$(".icon-student").click(function() {
 					$('.ui.modal.student').modal('show');
 				});
 			</script>
 		</div>
-		<form method="POST" action = "DeletePersonServlet">
-		<div class="ui celled list">
-			<%
-				ArrayList<Person> students = connector.studentDB
-						.getStudents(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
-				for (Person currentStudent : students) {
-			%>
-			<div class="item">
-				<div class="right floated content">
-					<% if(isAdmin || isLecturer){ %>
-					<div class="ui checkbox">
-						<input type="checkbox" name ="<%=currentStudent.getEmail() %>" value="<%=currentStudent.getEmail() %>"> 
-						<label></label>
+		<form method="POST" action="DeletePersonServlet">
+			<div class="ui celled list">
+				<%
+					ArrayList<Person> students = connector.studentDB
+							.getStudents(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
+					for (Person currentStudent : students) {
+				%>
+				<div class="item">
+					<div class="right floated content">
+						<%
+							if (isAdmin || isLecturer) {
+						%>
+						<div class="ui checkbox">
+							<input type="checkbox" name="<%=currentStudent.getEmail()%>"
+								value="<%=currentStudent.getEmail()%>"> <label></label>
+						</div>
+						<%
+							}
+						%>
 					</div>
-					<% } %>
+					<img class="ui avatar image"
+						src="<%=currentStudent.getPersonImgUrl()%>">
+					<div class="content">
+						<div class="header"><%=currentStudent.getName() + " " + currentStudent.getSurname()%></div>
+						<%=currentStudent.getEmail()%>
+					</div>
 				</div>
-				<img class="ui avatar image"
-					src="<%=currentStudent.getPersonImgUrl()%>">
-				<div class="content">
-					<div class="header"><%=currentStudent.getName() + " " + currentStudent.getSurname()%></div>
-					<%=currentStudent.getEmail()%>
-				</div>
+				<%
+					}
+				%>
 			</div>
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=currentClassroom.getClassroomID()%>">
+			<%
+				if (isAdmin || isLecturer) {
+			%>
+			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
 				}
 			%>
-		</div>
-		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
-		<% if(isAdmin || isLecturer) {%>
-		<button type="submit" class="ui red button">Remove Marked</button>
-		<% } %>
 		</form>
 	</div>
 
@@ -269,46 +290,60 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Section Leaders</h2>
-			<%if(isAdmin || isLecturer){%>
+			<%
+				if (isAdmin || isLecturer) {
+			%>
 			<i class="add user icon icon-section-leader"></i>
-			<% } %>
+			<%
+				}
+			%>
 			<script>
 				$(".icon-section-leader").click(function() {
 					$('.ui.modal.section-leader').modal('show');
 				});
 			</script>
 		</div>
-		<form method="POST" action="DeletePersonServlet" >
-		<div class="ui celled list">
-			<%
-				ArrayList<Person> sectionLeaders = connector.sectionLeaderDB
-						.getSectionLeaders(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
-				for (Person currentSectionLeader : sectionLeaders) {
-			%>
-			<div class="item">
-				<div class="right floated content">
-				<% if(isAdmin || isLecturer) {%>
-					<div class="ui checkbox">
-						<input type="checkbox" name = "<%=currentSectionLeader.getEmail() %>" value="<%=currentSectionLeader.getEmail() %>"> 
-						<label></label>
+		<form method="POST" action="DeletePersonServlet">
+			<div class="ui celled list">
+				<%
+					ArrayList<Person> sectionLeaders = connector.sectionLeaderDB
+							.getSectionLeaders(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
+					for (Person currentSectionLeader : sectionLeaders) {
+				%>
+				<div class="item">
+					<div class="right floated content">
+						<%
+							if (isAdmin || isLecturer) {
+						%>
+						<div class="ui checkbox">
+							<input type="checkbox"
+								name="<%=currentSectionLeader.getEmail()%>"
+								value="<%=currentSectionLeader.getEmail()%>"> <label></label>
+						</div>
+						<%
+							}
+						%>
 					</div>
-					<% } %>
+					<img class="ui avatar image"
+						src="<%=currentSectionLeader.getPersonImgUrl()%>">
+					<div class="content">
+						<div class="header"><%=currentSectionLeader.getName() + " " + currentSectionLeader.getSurname()%></div>
+						<%=currentSectionLeader.getEmail()%>
+					</div>
 				</div>
-				<img class="ui avatar image"
-					src="<%=currentSectionLeader.getPersonImgUrl()%>">
-				<div class="content">
-					<div class="header"><%=currentSectionLeader.getName() + " " + currentSectionLeader.getSurname()%></div>
-					<%=currentSectionLeader.getEmail()%>
-				</div>
+				<%
+					}
+				%>
 			</div>
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=currentClassroom.getClassroomID()%>">
+			<%
+				if (isAdmin || isLecturer) {
+			%>
+			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
 				}
 			%>
-		</div>
-		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
-		<% if(isAdmin || isLecturer) {%>
-		<button type="submit" class="ui red button">Remove Marked</button>
-		<% } %>
 		</form>
 	</div>
 
@@ -316,9 +351,13 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Seminarists</h2>
-			<%if(isAdmin || isLecturer){%>
+			<%
+				if (isAdmin || isLecturer) {
+			%>
 			<i class="add user icon icon-seminarist"></i>
-			<% } %>
+			<%
+				}
+			%>
 			<script>
 				$(".icon-seminarist").click(function() {
 					$('.ui.modal.seminarist').modal('show');
@@ -326,36 +365,45 @@
 			</script>
 		</div>
 		<form method="POST" action="DeletePersonServlet">
-		<div class="ui celled list">
-			<%
-				ArrayList<Person> seminarists = connector.seminaristDB
-						.getSeminarists(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
-				for (Person currentSeminarist : seminarists) {
-			%>
-			<div class="item">
-			<div class="right floated content">
-					<% if(isAdmin || isLecturer) { %>
-					<div class="ui checkbox">
-						<input type="checkbox" name="<%=currentSeminarist.getEmail() %>" value="<%=currentSeminarist.getEmail() %>"> 
-						<label></label>
+			<div class="ui celled list">
+				<%
+					ArrayList<Person> seminarists = connector.seminaristDB
+							.getSeminarists(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
+					for (Person currentSeminarist : seminarists) {
+				%>
+				<div class="item">
+					<div class="right floated content">
+						<%
+							if (isAdmin || isLecturer) {
+						%>
+						<div class="ui checkbox">
+							<input type="checkbox" name="<%=currentSeminarist.getEmail()%>"
+								value="<%=currentSeminarist.getEmail()%>"> <label></label>
+						</div>
+						<%
+							}
+						%>
 					</div>
-					<% } %>
+					<img class="ui avatar image"
+						src="<%=currentSeminarist.getPersonImgUrl()%>">
+					<div class="content">
+						<div class="header"><%=currentSeminarist.getName() + " " + currentSeminarist.getSurname()%></div>
+						<%=currentSeminarist.getEmail()%>
+					</div>
 				</div>
-				<img class="ui avatar image"
-					src="<%=currentSeminarist.getPersonImgUrl()%>">
-				<div class="content">
-					<div class="header"><%=currentSeminarist.getName() + " " + currentSeminarist.getSurname()%></div>
-					<%=currentSeminarist.getEmail()%>
-				</div>
+				<%
+					}
+				%>
 			</div>
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=currentClassroom.getClassroomID()%>">
+			<%
+				if (isAdmin || isLecturer) {
+			%>
+			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
 				}
 			%>
-		</div>
-		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
-		<% if(isAdmin || isLecturer) {%>
-		<button type="submit" class="ui red button">Remove Marked</button>
-		<% } %>
 		</form>
 	</div>
 
@@ -363,9 +411,13 @@
 		<div class="head-wrapper">
 
 			<h2 class="ui header">Lecturers</h2>
-			<%if(isAdmin || isLecturer){%>
+			<%
+				if (isAdmin || isLecturer) {
+			%>
 			<i class="add user icon icon-lecturer"></i>
-			<% } %>
+			<%
+				}
+			%>
 			<script>
 				$(".icon-lecturer").click(function() {
 					$('.ui.modal.lecturer').modal('show');
@@ -373,42 +425,52 @@
 			</script>
 		</div>
 		<form method="POST" action="DeletePersonServlet">
-		<div class="ui celled list">
-			<%
-				ArrayList<Person> lecturers = connector.lecturerDB
-						.getLecturers(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
-				for (Person currentLecturer : lecturers) {
-			%>
-			<div class="item">
-			<div class="right floated content">
-					<% if(isAdmin || isLecturer){ %>
-					<div class="ui checkbox">
-						<input type="checkbox" name="<%=currentLecturer.getEmail() %>" value="<%=currentLecturer.getEmail() %>"> 
-						<label></label>
+			<div class="ui celled list">
+				<%
+					ArrayList<Person> lecturers = connector.lecturerDB
+							.getLecturers(request.getParameter(Classroom.ID_ATTRIBUTE_NAME));
+					for (Person currentLecturer : lecturers) {
+				%>
+				<div class="item">
+					<div class="right floated content">
+						<%
+							if (isAdmin || isLecturer) {
+						%>
+						<div class="ui checkbox">
+							<input type="checkbox" name="<%=currentLecturer.getEmail()%>"
+								value="<%=currentLecturer.getEmail()%>"> <label></label>
+						</div>
+						<%
+							}
+						%>
 					</div>
-					<% } %>
+					<img class="ui avatar image"
+						src="<%=currentLecturer.getPersonImgUrl()%>">
+					<div class="content">
+						<div class="header"><%=currentLecturer.getName() + " " + currentLecturer.getSurname()%></div>
+						<%=currentLecturer.getEmail()%>
+					</div>
 				</div>
-				<img class="ui avatar image"
-					src="<%=currentLecturer.getPersonImgUrl()%>">
-				<div class="content">
-					<div class="header"><%=currentLecturer.getName() + " " + currentLecturer.getSurname()%></div>
-					<%=currentLecturer.getEmail()%>
-				</div>
+				<%
+					}
+				%>
 			</div>
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=currentClassroom.getClassroomID()%>">
+			<%
+				if (isAdmin || isLecturer) {
+			%>
+			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
 				}
 			%>
-		</div>
-		<input type="hidden" name= "<%= Classroom.ID_ATTRIBUTE_NAME %>" value="<%= currentClassroom.getClassroomID()%>" >
-		<% if(isAdmin || isLecturer) {%>
-		<button type="submit" class="ui red button">Remove Marked</button>
-		<% } %>
 		</form>
 	</div>
 	<script>
-		$(".cancel").click(function(){
+		$(".cancel").click(function() {
 			$(this).parent().parent().find("span").remove();
 		})
+		$('.ui.dropdown').dropdown();
 	</script>
 </body>
 </html>

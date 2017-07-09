@@ -44,8 +44,6 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 
-		
-		System.out.println("seminars and sections downloaded successfully!");
 
 		List<Seminar> seminars = connector.seminarDB.getSeminars(classroomID);
 

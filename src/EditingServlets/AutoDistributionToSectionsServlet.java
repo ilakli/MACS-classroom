@@ -46,9 +46,7 @@ public class AutoDistributionToSectionsServlet extends HttpServlet {
 		
 		classroom.fillSectionsWithFreeStudents();
 		
-		RequestDispatcher view = request.getRequestDispatcher("editSectionsAndSeminars.jsp");
-		 
-		view.forward(request, response);  
+		response.sendRedirect("sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
 	}
 
 }

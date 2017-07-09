@@ -43,7 +43,7 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int sectionN = Integer.parseInt(request.getParameter("sectionN"));
 		String sectionLeaderEmail = request.getParameter("sectionLeaderEmail");
-		
+		System.out.println("Email Here Is " + sectionLeaderEmail);
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 	
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
@@ -52,21 +52,16 @@ public class AddSectionLeaderToSectionServlet extends HttpServlet {
 		if(connection.sectionLeaderDB.sectionLeaderExists(sectionLeaderEmail, classroomId)
 				&& connection.sectionDB.sectionExists(sectionN, classroomId)
 				&& currentSection.setSectionLeader(sectionLeaderEmail)) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Added sectionLeader To Section: " +currentSection.getSectionN() + " " + sectionLeaderEmail + 
-				" to class with id: " + classroomId);
+			response.sendRedirect("sections.jsp?"+Classroom.ID_ATTRIBUTE_NAME +"="
+				+ classroomId);	  
+			
 		}
 		else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_SECTION_LEADER_TO_SECTION_REJ);	
 						 
-			view.forward(request, response);  
-			
-			System.out.println("Didn't add sectionLeader to Section: " + currentSection.getSectionN() + " " + sectionLeaderEmail + 
-				" to class with id: " + classroomId);
+			response.sendRedirect("sections.jsp?"+Classroom.ID_ATTRIBUTE_NAME +"="
+					+ classroomId);	
 	
 		}
 	}
