@@ -13,6 +13,8 @@
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Calendar"%>
+
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -124,12 +126,20 @@
 		
 		
 		String personID = connector.personDB.getPersonId(studentEmail);
+		Assignment a = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
 		
-		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle);
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		String deadlineWithReschedulings = "";
+		if (a.getDeadline()!=null) deadlineWithReschedulings = format1.format(a.getDeadline());
+		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle, deadlineWithReschedulings );
 		
 		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
 				classroomID, personID, assignmentTitle);
-		if(assignment!=null) status = "done";
+		
+		if(assignment!=null) {
+			System.out.print(",,,,,,,,,,,,,,,assignment not null st jsp");
+		}else System.out.print(",,,,,,,,,,,,,,,assignment null st jsp");
+	
 
 		List<AssignmentComment> assignmentComments = connector.commentDB.getStudentAssignmentComments(assignment.getStudentAssignmentId());
 		List<AssignmentComment> assignmentStaffComments = connector.commentDB.getStudentAssignmentStaffComments(assignment.getStudentAssignmentId());
@@ -191,7 +201,7 @@
 	<%
 		
 		
-		Assignment a = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
+		
 			String htmlCode = generateAssignmentHTML(a);
 			out.println(htmlCode);
 		
@@ -199,59 +209,52 @@
 	
 	
 	<%
-		if(isStudent && status==null){
-			
+	System.out.println("......................................status"+status );
+		if(isStudent){
+
 			Date now = new Date();
-			Date availableDate = a.getDeadline();
-			boolean canTurnIn = true;
-			int mustUsereschedulings = 0;
+			Date availableDate = assignment.getDeadlineWithReschedulings();
 			
+			boolean canTurnIn = false;
+			int mustUseReschedulings = 0;
+			if(availableDate != null){
+
 			
-			if(now.before(a.getDeadline() )){	
-				
-			%>
-			<form action=<%="TurnInAssignmentServlet"%>
-						enctype="multipart/form-data" method="POST">
-				<h6>Upload File</h6>
-				
-				<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
-				<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
-				<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
-				
-				<input type="file" name="file" size="30" /> </br> <input type="submit"
-					/ value="Turn In" class="btn btn-success">
-			</form>	
-			
-				
-			<%
-			}else{
+		
 				int maxAvailableRes = currentClassroom.getNumberOfReschedulings() - 
 						connector.classroomDB.reschedulingsUsed(studentEmail, classroomID) ;
 				System.out.println(maxAvailableRes + " maxAvRes");
-				for(int i = 1; i <= maxAvailableRes; i++){
-					availableDate = addDays(availableDate, currentClassroom.getReschedulingLength());
+				for(int i = 0; i <= maxAvailableRes; i++){
+					availableDate = addDays(assignment.getDeadlineWithReschedulings(), i*currentClassroom.getReschedulingLength());
 					System.out.println(availableDate + " avDate " + i);
 					if(now.before(availableDate)){
 						canTurnIn = true;
-						mustUsereschedulings = i;
+						mustUseReschedulings = i;
 						break;
 					}
 				}
 			
+			}else canTurnIn = true;
 			
 			if(canTurnIn){
+				
+				
+				System.out.println("........................uses reschedule  " + mustUseReschedulings );
+				
+				
 				%>
-				<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-					"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle + 
-					"&numreschedulings="+ mustUsereschedulings%> enctype="multipart/form-data" method="POST">
+				<form action="TurnInAssignmentServlet" enctype="multipart/form-data" method="POST">
+					
 					<h6>Upload File</h6>
 					
 					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
 					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
 					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
 					
-					<input type="file" name="file" size="30" /> </br> <input type="submit"
-						/ value="Turn In" class="btn btn-success">
+					<textarea style="display:none;" name="numReschedulings"><%=mustUseReschedulings%></textarea>
+					
+					<input type="file" name="file" size="30" /> <br> 
+					<input type="submit" value="Turn In" class="btn btn-success">
 				</form>	
 				
 				
@@ -269,10 +272,10 @@
 			}
 			
 			
-			}	
+		}	
 		
 		
-		}
+		
 			
 		
 	
@@ -285,19 +288,6 @@
 			
 		
 	%>
-	
-	<form action=<%="TurnInAssignmentServlet?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-					"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle + 
-					"&numreschedulings="+ 0%> enctype="multipart/form-data" method="POST">
-					<h6>Upload File</h6>
-					
-					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
-					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
-					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
-					
-					<input type="file" name="file" size="30" /> </br> <input type="submit"
-						/ value="Turn In" class="btn btn-success">
-				</form>	
 	
 	
 	<!-- COMMENTS -->
