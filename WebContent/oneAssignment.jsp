@@ -2,6 +2,7 @@
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Section"%>
+<%@page import="defPackage.Seminar"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.List"%>
 <%@page import="defPackage.Classroom"%>
@@ -155,9 +156,20 @@
 		}
 	}%>
 	
-	<%if (isSeminarist){%>
-		<!-- TODO -->
-	<%} %>
+	<%if (isSeminarist){
+		
+		Seminar seminar = connector.seminarDB.getSeminarBySeminarist(currentPerson, classroomID);
+		if (seminar != null){
+			List <Person> seminarStudents = seminar.getSeminarStudents();
+			
+			out.println("<h2>Students:</h2>");
+			out.println("<ul>");
+			for (Person p : seminarStudents){
+				out.println(generateStudentHTML(p, classroomID, assignment));
+			}
+			out.println("</ul>");
+		}
+	}%>
 	
 	<!-- -------------------------------------------------------------------- -->
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>

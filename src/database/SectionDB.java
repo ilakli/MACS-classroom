@@ -280,14 +280,18 @@ public class SectionDB {
 	}
 	
 	
+	/**
+	 * finds section by its leader
+	 * @param leader - leader
+	 * @param classroomID - id of section's classroom
+	 * @return - found section
+	 */
 	public Section getSectionByLeader(Person leader, String classroomID) {
 		
 		String query = String.format("select s.section_n, s.section_size "
 				+ "from `classrooms` c,`persons` p,`classroom_section_leaders` csl,`sections` s" 
 				+ " where c.classroom_id = %s and c.classroom_id = csl.classroom_id"
 				+ " and p.person_id = %s and s.classroom_id = c.classroom_id;", classroomID, leader.getPersonID());
-		
-		System.out.println("SHIT: " + query);
 				
 				
 		Section section = null;
