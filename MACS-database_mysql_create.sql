@@ -24,6 +24,8 @@ DROP TABLE IF EXISTS `positions`;
 DROP TABLE IF EXISTS `functions`;
 DROP TABLE IF EXISTS `admins`;
 DROP TABLE IF EXISTS `position_function`;
+DROP TABLE IF EXISTS `classroom-classroom_folder`;
+DROP TABLE IF EXISTS `seminarist-seminarist_folder`;
  
 CREATE TABLE `persons` (
     `person_id` INT NOT NULL AUTO_INCREMENT,
@@ -277,6 +279,34 @@ CREATE TABLE `classroom_position_function` (
 );
  
  
+CREATE TABLE `classroom-classroom_folder` (
+	`classroom_id` INT NOT NULL,
+	`folder_id` VARCHAR (100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`),
+	CONSTRAINT `classroom-classroom_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`)
+);
+
+CREATE TABLE `seminarist-seminarist_folder` (
+	`classroom_id` INT NOT NULL,
+	`seminarist_id` INT NOT NULL,
+	`folder_id` VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`, `seminarist_id`),
+	CONSTRAINT `seminarist-seminarist_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
+	CONSTRAINT `seminarist-seminarist_folder_fk1` FOREIGN KEY (`classroom_id`, `seminarist_id`) REFERENCES `classroom_seminarists` (`classroom_id`, `person_id`)
+);
+
+CREATE TABLE `section_leader-section_leader_folder` (
+	`classroom_id` INT NOT NULL,
+	`section_leader_id` INT NOT NULL,
+	`folder_id` VARCHAR (100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`, `section_leader_id`),
+	CONSTRAINT `section_leader-section_leader_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
+	CONSTRAINT `section_leader-section_leader_folder_fk1` FOREIGN KEY (`classroom_id`, `section_leader_id`) REFERENCES `classroom_section_leaders` (`classroom_id`, `person_id`)
+);
+
 insert into `positions` (`position_name`) values
     ('lecturer'),
     ('seminarist'),
