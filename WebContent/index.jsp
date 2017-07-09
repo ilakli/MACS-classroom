@@ -33,6 +33,9 @@
 </script>
 <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 </head>
 <body>
 	<%
@@ -101,14 +104,32 @@
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a classroom display.
 	 --%> <%!private String generateNameHTML(String name, String classroomId) {
-		String result = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?"
+		String result1 = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?"
 				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" + name
 				+ "</a> </div> </section>";
+		String result = "<div class=\"card\">" +
+	    					"<div class=\"image\">" +
+	      								"<img src=\"https://s3.amazonaws.com/codecademy-content/courses/web-101/web101-image_brownbear.jpg\">" +
+	   						"</div>" +
+	    					"<div class=\"content\">" +
+	      						"<div class=\"header\"> "  +  "<a href=\"stream.jsp?"
+	      								+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + 
+	      								"\" class=\"single-classroom-text\">" + name
+	      								+ "</a>"  + "</div>" +
+	      						"<div class=\"meta\">" +
+	        						"<a>something</a>" +
+	     						"</div>" +
+	      						"<div class=\"description\">" +
+	        						"other thing bro" +
+	      						"</div>" +
+	    					"</div>" +
+						"</div>";
 		return result;
 	}%> <%-- 
 		Takes DBConnector from servlet context and pulls list of classrooms out of it. 
 		Then displays every classroom on the page.
 	--%>
+	<div class="ui link cards">	
 	<%
 		ArrayList<Classroom> classrooms;
 		if (isAdmin) classrooms = connector.classroomDB.getClassrooms(); else
@@ -120,7 +141,7 @@
 			out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID()));
 		}
 	%>
-	
+	</div>
 	<script>
     function signOut() {
       var auth2 = gapi.auth2.getAuthInstance();
