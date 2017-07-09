@@ -44,22 +44,9 @@ public class AddNewSectionServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		if(currentClassroom.classroomAddSection()) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SECTION_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Added Section: " +" to class with id: " + classroomId);
-		}
-		else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SECTION_REJ);	
-						 
-			view.forward(request, response);  
-			
-			System.out.println("Section Already Existed IN This Classroom: " 
-			+ "    class with id: " + classroomId);
-		}
+		currentClassroom.classroomAddSection();
+		response.sendRedirect("sections.jsp?"+Classroom.ID_ATTRIBUTE_NAME +"=" +classroomId);
+		
 	}
 
 }
