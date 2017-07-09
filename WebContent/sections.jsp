@@ -216,9 +216,7 @@
 			<div class="field">
 				<div class="emails">
 
-					<input type="text" value="" placeholder="Add Email" /> <input
-						type="hidden" id="seminaristAddServlet"
-						value="AddNewSeminaristServlet">
+					<input type="text" value="" placeholder="Add Email" />
 				</div>
 			</div>
 		</div>

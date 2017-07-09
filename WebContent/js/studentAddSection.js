@@ -48,7 +48,7 @@ $(document).ready(function() {
 				classroomID: classroomId
 			},
 			success : function(result) {
-				alert("Done");
+				location.reload();
 			}
 		});
 
