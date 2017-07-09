@@ -149,6 +149,7 @@
 		<%
 			}
 		%>
+		
 		<div class="right menu">
 			<a class="item"
 				href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
@@ -200,12 +201,7 @@
 			List<Person> currentSectionStudents = currentSection.getSectionStudents();
 	%>
 	<div class="ui raised segment">
-		<script>
-			$(".icon-student").click(function() {
-				var modalId = $(this).next().val();
-				$("#" + modalId).modal("show");
-			});
-		</script>
+		
 		<i class="add user icon icon-student"></i>
 		
 		<input type="hidden" value="<%=currentSection.getSectionN() %>">
@@ -228,7 +224,14 @@
 		</div>
 		</div>
 		
-		
+		<script>
+			
+			$(".icon-student").click(function() {
+				
+				var modalId = $(this).next().val();
+				$("#" + modalId).modal("show");
+			});
+		</script>
 		<h2 class="ui header"><%=currentSection.getSectionN()%></h2>
 		<div class="ui middle aligned selection list">
 
