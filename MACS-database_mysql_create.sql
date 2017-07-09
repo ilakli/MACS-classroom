@@ -98,7 +98,7 @@ CREATE TABLE `classroom_material_category` (
     `classroom_id` INT NOT NULL,
     `category_name` varchar(100) NOT NULL,
     PRIMARY KEY (`category_id`),
-    UNIQUE(category_name),
+    UNIQUE(`classroom_id`, `category_name`),
     CONSTRAINT `classroom_material_category_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
 );
  
@@ -304,6 +304,16 @@ CREATE TABLE `section_leader-section_leader_folder` (
 	PRIMARY KEY (`classroom_id`, `section_leader_id`),
 	CONSTRAINT `section_leader-section_leader_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
 	CONSTRAINT `section_leader-section_leader_folder_fk1` FOREIGN KEY (`classroom_id`, `section_leader_id`) REFERENCES `classroom_section_leaders` (`classroom_id`, `person_id`)
+);
+
+CREATE TABLE `category-category_folder` (
+	`classroom_id` INT NOT NULL,
+	`category_name` VARCHAR (100) NOT NULL,
+	`category_folder` VARCHAR (100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`, `category_name`),
+	CONSTRAINT `category-category_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
+	CONSTRAINT `category-category_folder_fk1` FOREIGN KEY (`classroom_id`, `category_name`) REFERENCES `classroom_material_category`(`classroom_id`, `category_name`)
 );
 
 insert into `positions` (`position_name`) values
