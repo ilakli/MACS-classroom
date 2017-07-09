@@ -57,7 +57,7 @@
 							result+="<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
 								+"\"> " + a.getTitle() + "</a></h1>";
-						}else if (isSectionLeader || isSeminarist){
+						} else {
 							result+="<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
 									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>";
 						}
@@ -65,16 +65,8 @@
 						if( a.getDeadline()!= null){
 							result+="<p> Deadline:" + a.getDeadline() + "</p>";
 						}
-						
-						if(a.getFileName() != null){
-							result +=" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
-									+ "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>";
-						}
-						
-						
-						result+= " <div class=\"panel-footer\"></div> " 
 								
-						+ "</div>";
+						result += "</div>";
 		
 		return result;
 	}%>

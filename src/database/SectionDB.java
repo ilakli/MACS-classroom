@@ -48,7 +48,7 @@ public class SectionDB {
 		MyConnection myConnection = db.getMyConnection(query);
 		return !db.isResultEmpty(myConnection);
 	}
-
+	
 	/**
 	 * removes given person from section of given classroom
 	 * @param classroomId
@@ -63,7 +63,30 @@ public class SectionDB {
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
-	
+	/**
+	 * Returns section according to classroom id and student Email.
+	 * @param classroomId id of classroom
+	 * @param studentEmail email of student
+	 * @return Section
+	 */
+	public Section getSection(String classroomId, String studentEmail){
+		String personId = personDB.getPersonId(studentEmail);
+		String query = String.format("select * from sections where `section_id` =( select `section_id` from `student-section` where `classroom_id` = %s and `person_id` = %s);", 
+				classroomId, personId);
+		MyConnection myConnection = db.getMyConnection(query);
+		Section result = null;
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			if (rs != null && rs.next())
+				result = new Section(Integer.parseInt(rs.getString(3)), rs.getString(2), allConnections);
+		} catch (SQLException e) {
+		} finally {
+			if (myConnection != null) {
+				myConnection.closeConnection();
+			}
+		}
+		return result;
+	}
 	/**
 	 * 
 	 * @param sectionN
@@ -270,11 +293,11 @@ public class SectionDB {
 	 * @param classroomId
 	 * @param sectionSize
 	 */
-	public void updateSectionSize(int sectionN, String classroomId, int sectionSize) {
+	public void updateSectionSize(int sectionN, String classroomId) {
 		String sectionId = getSectionId(sectionN, classroomId);
 		String query = String.format(
-				"update `sections` set `section_size` = %s where `section_id` = %s and `classroom_id` = %s",
-				sectionSize, sectionId, classroomId);
+				"update `sections` set `section_size` = (select count(*) from `student-section` where section_id = %s) where `section_id` = %s and `classroom_id` = %s",
+				sectionId,sectionId, classroomId);
 		MyConnection myConnection = db.getMyConnection(query);
 		db.executeUpdate(myConnection);
 	}

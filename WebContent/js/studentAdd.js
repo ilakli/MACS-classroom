@@ -35,7 +35,7 @@ $(document).ready(function() {
 				classroomID : classId
 			},
 			success : function(result) {
-					
+				location.reload();
 			}
 		});
 

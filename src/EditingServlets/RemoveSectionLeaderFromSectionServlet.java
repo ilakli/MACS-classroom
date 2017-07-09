@@ -47,7 +47,7 @@ public class RemoveSectionLeaderFromSectionServlet extends HttpServlet {
 		assert (p != null);
 		connection.sectionLeaderDB.deleteSectionLeaderFromSection(p.getEmail(), classroomId, sectionId);
 		
-		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
+		response.sendRedirect(String.format("sections.jsp?%s=%s", 
 				Classroom.ID_ATTRIBUTE_NAME, classroomId));
 	}
 
