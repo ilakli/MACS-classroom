@@ -18,6 +18,7 @@ public class AllConnections {
 	public CategoryDB categoryDB;
 	public StudentAssignmentDB studentAssignmentDB;
 	public DBConnection db;
+	public DriveDB driveDB;
 	
 	public AllConnections() {
 		db = new DBConnection();
@@ -37,5 +38,6 @@ public class AllConnections {
 		categoryDB = new CategoryDB(this);
 		studentAssignmentDB = new StudentAssignmentDB(this);
 		classroomDB = new ClassroomDB(this);
+		driveDB = new DriveDB(this);
 	}
 }

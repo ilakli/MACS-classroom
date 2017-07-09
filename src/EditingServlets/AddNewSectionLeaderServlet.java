@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import Dummys.PersonGeneratorDummy;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MyDrive;
 import defPackage.Person;
 
 /**
@@ -37,6 +38,7 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
+		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
@@ -49,7 +51,16 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 		for(String e:emails){
 			connection.personDB.addPersonByEmail(e);
 			status = currentClassroom.classroomAddSectionLeader(e);
-		}  
+			if (status) {
+				String folderId = connection.driveDB.getClassroomFolder(classroomId);
+
+				int atIndex = e.indexOf("@");
+				if (atIndex == -1) atIndex = e.length();
+				String mailPrefix = e.substring(0, atIndex);
+				String sectionLeaderFolder = service.createFolder(mailPrefix, folderId);
+				connection.driveDB.addSectionLeaderFolder(classroomId, e, sectionLeaderFolder);
+			}
+		}
 		
 		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="

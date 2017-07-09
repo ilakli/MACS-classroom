@@ -24,6 +24,7 @@ import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MyDrive;
 
 /**
  * Servlet implementation class AddNewAssignmentServlet
@@ -41,7 +42,7 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		String classroomID = "";
 		String assignmentTitle = "";
 		String assignmentInstructions = "";
-	
+		
 		String assignmentDeadline = "";
 
 		filePath = request.getServletContext().getRealPath("/");
@@ -93,9 +94,14 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		} catch (Exception ex) {}
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		MyDrive service = (MyDrive)request.getServletContext().getAttribute("drive");
+
+		String filePath = fileName;
+		String assignmentFolderId = service.getAssignmentFolderId(classroomID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
 		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
+		service.uploadFile(assignmentTitle, filePath, assignmentFolderId);
 
 		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}

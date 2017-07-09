@@ -1,0 +1,196 @@
+package defPackage;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files.List;
+import com.google.api.services.drive.DriveScopes;
+import com.google.api.services.drive.model.File;
+import com.google.api.services.drive.model.FileList;
+
+import database.AllConnections;
+import database.DriveDB;
+
+import javax.servlet.http.*;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+
+public class MyDrive {
+
+	private static String CLIENT_ID = "548672842662-t9cr8fb2l6288ikja6367v4ck3drlk3j.apps.googleusercontent.com";
+	private static String CLIENT_SECRET = "EMXr3ltR8h3UaHOZxeqKWs0k";
+	private Drive service;
+	private AllConnections allConnections;
+
+	public MyDrive() throws IOException {
+
+		HttpTransport httpTransport = new NetHttpTransport();
+		JsonFactory jsonFactory = new JacksonFactory();
+
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+				httpTransport, jsonFactory, CLIENT_ID, CLIENT_SECRET,
+				Arrays.asList(new String[] { DriveScopes.DRIVE }))
+				.setAccessType("online").setApprovalPrompt("auto").build();
+
+		Credential credential = new AuthorizationCodeInstalledApp(
+	            flow, new LocalServerReceiver()).authorize("ipopk15@freeuni.edu.ge");
+		
+		// Create a new authorized API client
+		Drive service = new Drive.Builder(httpTransport, jsonFactory,
+				credential).build();
+
+		this.service = service;
+		
+		allConnections = new AllConnections();
+	}
+
+	public Drive getDrive() {
+		return service;
+	}
+	
+	public String createFolder (String folderName) {
+		File fileMetaData = new File();
+		fileMetaData.setName(folderName);
+		fileMetaData.setMimeType("application/vnd.google-apps.folder");
+		File folder = null;
+		try {
+			folder = service.files().create(fileMetaData)
+					.setFields("id")
+					.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return folder != null ? folder.getId() : "";
+	}
+	
+	public String createFolder (String folderName, String parentFolderId) {
+		
+		File fileMetaData = new File();
+		fileMetaData.setName(folderName);
+		fileMetaData.setMimeType("application/vnd.google-apps.folder");
+		fileMetaData.setParents(Collections.singletonList(parentFolderId));
+		
+		File folder = null;
+		try {
+			folder = service.files().create(fileMetaData)
+					.setFields("id, parents")
+					.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return folder != null ? folder.getId() : "";
+	}
+	
+	public void uploadFile (String fileName, String filePath, String folderId) {
+		try {
+			
+			File file = new File();
+			file.setName(fileName);
+			file.setMimeType(Files.probeContentType(Paths.get(filePath)));
+			file.setParents(Collections.singletonList(folderId));
+
+			java.io.File fileToUpload = new java.io.File(filePath);
+			FileContent fileToUploadContent = new FileContent(Files.probeContentType(Paths.get(filePath)), fileToUpload);
+			File fileInFolder = service.files().create(file, fileToUploadContent)
+						.setFields("id, parents")
+						.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String getAssignmentFolderId (String classroomId) {
+		String classroomFolder = allConnections.driveDB.getClassroomFolder(classroomId);
+		String assignmentFolderId = "";
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolder)).execute();
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals("Assignments")) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return assignmentFolderId;
+	}
+
+	private void uploadAssignmentToChecker (String studentEmail, String filePath, String checkerFolderId, String assignmentName) {
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();			
+			String assignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(assignmentName)) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+			if (assignmentFolderId.equals("")) {
+				assignmentFolderId = createFolder(assignmentName, checkerFolderId);
+			}
+			
+			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
+			int atIndex = studentEmail.indexOf("@");
+			if (atIndex == -1) {
+				atIndex = studentEmail.length();
+			}
+			String studentEmailPrefix = studentEmail.substring(0, atIndex);
+			String studentFolder = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(studentEmailPrefix)) {
+					studentFolder = f.getId();
+					break;
+				}
+			}
+			if (studentFolder.equals("")) {
+				studentFolder = createFolder(studentEmailPrefix, assignmentFolderId);
+			}
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = new Date();
+			String currentTime = dateFormat.format(date);
+			
+			uploadFile(studentEmailPrefix + currentTime, filePath, studentFolder);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void uploadAssignmentToSectionLeader(String studentEmail, String filePath, String sectionLeaderEmail, String classroomId, String assignmentName) {
+		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
+		uploadAssignmentToChecker(studentEmail, filePath, sectionLeaderFolder, assignmentName);
+	}
+
+	public void uploadAssignmentToSeminarist(String studentEmail, String filePath, String seminaristEmail, String classroomId, String assignmentName) {
+		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
+		uploadAssignmentToChecker(studentEmail, filePath, seminaristFolderId, assignmentName);
+	}
+	
+	public static void main(String[] args) throws IOException {
+		MyDrive drv = new MyDrive();
+		FileList fl = drv.service.files().list()
+				.setQ("'0B5iqpMmbBKmkeHgxUUJpMWRQQ3M' in parents")
+				.execute();
+		for (File f: fl.getFiles()) {
+			System.out.println(f.getName() + " " + f.getId());
+		}
+	}
+}

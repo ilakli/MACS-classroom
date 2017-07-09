@@ -59,7 +59,9 @@ public class CreateClassroomServlet extends HttpServlet {
 			
 			String folderId = service.createFolder("Classroom#" + classroomID);
 			db.driveDB.addClassroomFolder(classroomID, folderId);
-			System.out.println("Folder ID: " + folderId);
+//			System.out.println("Folder ID: " + folderId);
+			
+			service.createFolder("Assignments", folderId);
 		}
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
@@ -70,7 +72,7 @@ public class CreateClassroomServlet extends HttpServlet {
 					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 			dispatch.forward(request, response);
 		}
-				
+		
 	}
 
 }
