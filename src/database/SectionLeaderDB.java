@@ -127,4 +127,23 @@ public class SectionLeaderDB {
 		MyConnection myConnection = db.getMyConnection(preQuery);
 		return db.executeUpdate(myConnection);
 	}
+	
+	
+	
+	/**
+	 * returns list of section leaders without a section in classroom with given ID
+	 * @param classroomID - ID of classroom
+	 * @return list of section leaders that do not have a section
+	 */
+	public ArrayList<Person> getSectionLeadersWithoutSection(String classroomID){
+		
+		String query = String.format("select * from `classroom_section_leaders` where "
+				+ "classroom_id = %s  and person_id not in ("
+				+ "select person_id from `section-section_leader` where classroom_id = %s);"
+				, classroomID, classroomID);
+		
+		ArrayList<Person> sectionLeaders = personDB.getPersons(query);
+		return sectionLeaders;
+	}
+	
 }
