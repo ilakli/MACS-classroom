@@ -26,6 +26,7 @@
 		<form action="CreateClassroomServlet" method="post">
 			<input type="text" name="newClassroomName" />
 			<input type="hidden" name="lecturerEmail" value='<%=currentPerson.getEmail()%>'>
+			<input type="hidden" name="lecturerID" value='<%=currentPerson.getPersonID()%>'>
 			<input type="submit" value = "create class" />	
 		</form>
 	</div>

@@ -27,9 +27,9 @@ public class TestClassroom {
 	public void bla(AllConnections allConnections){
 		//creating classes;
 		this.allConnections = allConnections;
-		oop = new MockClassroom ("OOP" , db.classroomDB.addClassroom("OOP"));
-		pp = new MockClassroom ("Paradigms", db.classroomDB.addClassroom("Paradigms"));
-		meth = new MockClassroom ("Methodologies", db.classroomDB.addClassroom("Methodologies"));
+		oop = new MockClassroom ("OOP" , db.classroomDB.addClassroom("OOP", "1"),"1");
+		pp = new MockClassroom ("Paradigms", db.classroomDB.addClassroom("Paradigms", "1"),"1");
+		meth = new MockClassroom ("Methodologies", db.classroomDB.addClassroom("Methodologies", "1"),"1");
 	}
 	
 	
@@ -136,8 +136,8 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test4ListGetters() {
-		String currentClassroom = db.classroomDB.addClassroom("just to test");
-		MockClassroom testClass = new MockClassroom("just to test",currentClassroom);
+		String currentClassroom = db.classroomDB.addClassroom("just to test", "1");
+		MockClassroom testClass = new MockClassroom("just to test",currentClassroom,"1");
 				
 		//Testing students' list
 		ArrayList <Person> realStudents = new ArrayList <Person>();
@@ -207,8 +207,8 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test5SectionAndSeminars(){
-		String classID = db.classroomDB.addClassroom("testGroups");
-		MockClassroom mockClass = new MockClassroom("testGoups", classID);
+		String classID = db.classroomDB.addClassroom("testGroups", "1");
+		MockClassroom mockClass = new MockClassroom("testGoups", classID,"1");
 		
 		assertTrue(mockClass.classroomAddSection());
 		assertTrue(mockClass.classroomSectionExists(0));
@@ -265,8 +265,8 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test6AddGroupsAndPeople(){
-		String classID = db.classroomDB.addClassroom("testGroupsAndPeople");
-		MockClassroom mockClass = new MockClassroom("testGoupsAndPeople", classID);
+		String classID = db.classroomDB.addClassroom("testGroupsAndPeople", "1");
+		MockClassroom mockClass = new MockClassroom("testGoupsAndPeople", classID,"1");
 		
 		mockClass.classroomAddSection();
 		mockClass.classroomAddSection();

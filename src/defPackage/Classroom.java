@@ -25,13 +25,15 @@ public class Classroom {
 
 	private String classroomName;
 	private String classroomID;
+	private String creatorID;
 	protected DBConnection classroomConnection;
 	private AllConnections db;
-	
+		
 	// Constructor;
-	public Classroom(String classroomName, String classroomID) {
+	public Classroom(String classroomName, String classroomID, String creatorId) {
 		this.classroomName = classroomName;
 		this.classroomID = classroomID;
+		this.creatorID = creatorId;
 		
 		classroomConnection = new DBConnection();
 		db = new AllConnections();
@@ -53,6 +55,10 @@ public class Classroom {
 	 */
 	public String getClassroomID() {
 		return this.classroomID;
+	}
+	
+	public String getClassroomCreatorId(){
+		return this.creatorID;
 	}
 
 	/**

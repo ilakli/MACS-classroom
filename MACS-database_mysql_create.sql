@@ -24,6 +24,8 @@ DROP TABLE IF EXISTS `positions`;
 DROP TABLE IF EXISTS `functions`;
 DROP TABLE IF EXISTS `admins`;
 DROP TABLE IF EXISTS `position_function`;
+DROP TABLE IF EXISTS `classroom-classroom_folder`;
+DROP TABLE IF EXISTS `seminarist-seminarist_folder`;
  
 CREATE TABLE `persons` (
     `person_id` INT NOT NULL AUTO_INCREMENT,
@@ -50,11 +52,12 @@ CREATE TABLE `lecturers` (
 CREATE TABLE `classrooms` (
     `classroom_id` INT NOT NULL AUTO_INCREMENT,
     `classroom_name` varchar(100) NOT NULL,
+    `classroom_creator_id` int NOT NULL,
     `classroom_reschedulings_num` INT NOT NULL DEFAULT 0,
     `classroom_reschedulings_length` INT NOT NULL DEFAULT 0,
     `classroom_seminar_auto_distribution` BOOL NOT NULL DEFAULT false,
     `classroom_section_auto_distribution` BOOL NOT NULL DEFAULT false,
-   
+    CONSTRAINT `classrooms_fk0` FOREIGN KEY (`classroom_creator_id`) REFERENCES `persons`(`person_id`),
     PRIMARY KEY (`classroom_id`)
 );
  
@@ -209,7 +212,10 @@ CREATE TABLE `student_assignments` (
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`assignment_title` VARCHAR(100) NOT NULL,	
-	`assignment_grade` int,
+	`assignment_grade` INT,
+	`assignment_approved` BOOL DEFAULT false,
+	`deadline_with_reschedulings` date,
+	
 	PRIMARY KEY (`student_assignment_id`),
 	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_title`),
 	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),
@@ -276,6 +282,34 @@ CREATE TABLE `classroom_position_function` (
 );
  
  
+CREATE TABLE `classroom-classroom_folder` (
+	`classroom_id` INT NOT NULL,
+	`folder_id` VARCHAR (100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`),
+	CONSTRAINT `classroom-classroom_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`)
+);
+
+CREATE TABLE `seminarist-seminarist_folder` (
+	`classroom_id` INT NOT NULL,
+	`seminarist_id` INT NOT NULL,
+	`folder_id` VARCHAR(100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`, `seminarist_id`),
+	CONSTRAINT `seminarist-seminarist_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
+	CONSTRAINT `seminarist-seminarist_folder_fk1` FOREIGN KEY (`classroom_id`, `seminarist_id`) REFERENCES `classroom_seminarists` (`classroom_id`, `person_id`)
+);
+
+CREATE TABLE `section_leader-section_leader_folder` (
+	`classroom_id` INT NOT NULL,
+	`section_leader_id` INT NOT NULL,
+	`folder_id` VARCHAR (100) NOT NULL,
+	
+	PRIMARY KEY (`classroom_id`, `section_leader_id`),
+	CONSTRAINT `section_leader-section_leader_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
+	CONSTRAINT `section_leader-section_leader_folder_fk1` FOREIGN KEY (`classroom_id`, `section_leader_id`) REFERENCES `classroom_section_leaders` (`classroom_id`, `person_id`)
+);
+
 insert into `positions` (`position_name`) values
     ('lecturer'),
     ('seminarist'),

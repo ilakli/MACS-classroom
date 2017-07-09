@@ -2,6 +2,8 @@ package WorkingServlets;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -17,6 +19,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import Listeners.ContextListener;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.StudentAssignment;
 
 /**
  * Servlet implementation class TurnInAssignmentServlet
@@ -37,18 +40,13 @@ public class TurnInAssignmentServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("HEREEE BROOOOOO");
-		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-		String assignmentTitle = request.getParameter("assignmentTitle");
-		String studentEmail = request.getParameter("studentEmail");
+		String classroomID = "";
+		String assignmentTitle = "";
+		String studentEmail = "";
 		String fileName = "";
-		String numreschedulings = request.getParameter("numreschedulings");
+		String numReschedulings = "";
 		
-		System.out.println("==============================");
-		System.out.println("assignment title: " + assignmentTitle);
-		System.out.println("==============================");
-		
-		
-		
+
 		filePath = request.getServletContext().getRealPath("/");
 		
 		System.out.println(filePath + " Is the filepath");
@@ -91,6 +89,11 @@ public class TurnInAssignmentServlet extends HttpServlet {
 						System.out.println(assignmentTitle + "  assignmentTitle");
 					} else if (fieldName.equals("studentEmail")){
 						studentEmail = item.getString();
+					}  else if (fieldName.equals("numReschedulings")){
+						numReschedulings = item.getString();
+						System.out.println("==============================");
+						System.out.println("numresched: " + numReschedulings);
+						System.out.println("==============================");
 					} 
 				}
 			}
@@ -108,12 +111,29 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String personID = connection.personDB.getPersonId(studentEmail);
 		
 		connection.studentAssignmentDB.turnInAssignment(classroomID, personID, assignmentTitle, fileName);
-		System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		if(numreschedulings!=null && !numreschedulings.equals("")){
-			int nRes = Integer.parseInt(numreschedulings);
+
+		if(numReschedulings!=null && !numReschedulings.equals("")){
+			int nRes = Integer.parseInt(numReschedulings);
 			System.out.println(nRes + " nRes");
-			for(int i = 0; i < nRes; i++){
-				connection.classroomDB.useRescheduling(studentEmail, classroomID);
+			
+			if(nRes != 0){
+				for(int i = 0; i < nRes; i++){
+					connection.classroomDB.useRescheduling(studentEmail, classroomID);
+				}
+				
+				Classroom currentClassroom = connection.classroomDB.getClassroom(classroomID);
+				StudentAssignment assignment = connection.studentAssignmentDB.getStudentAssignment(
+						classroomID, personID, assignmentTitle);
+				
+				Calendar c = Calendar.getInstance();
+				c.setTime(assignment.getDeadlineWithReschedulings());
+				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+				c.add(Calendar.DATE, nRes * currentClassroom.getReschedulingLength() );  
+	
+				String newDate = format1.format(c.getTime());
+				
+				assignment.changeDeadlineWithReschedulings(newDate);
+			
 			}
 		}
 		

@@ -5,19 +5,29 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import database.AllConnections;
+
 public class StudentAssignment {
 	private String ID;
 	private String classroomID;
 	private String personID;
 	private String assignmentTitle;
-	private int assignmentGrade;
+	private Integer assignmentGrade;
+	private boolean isApproved;
+	private Date deadlineWithReschedulings;
+	private AllConnections db;
 	
-	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle, int assignmentGrade){
+	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle,
+			Integer assignmentGrade, boolean isApproved, Date deadlineWithReschedulings){
+	
 		this.ID = ID;
 		this.classroomID = classroomID;
 		this.assignmentTitle = assignmentTitle;
 		this.personID = personID;
 		this.assignmentGrade = assignmentGrade;
+		this.isApproved = isApproved;
+		this.deadlineWithReschedulings = deadlineWithReschedulings;
+		db = new AllConnections();
 	}
 	
 	public String getStudentAssignmentId(){
@@ -50,7 +60,30 @@ public class StudentAssignment {
 	 * 
 	 * @return - grade of the assignment
 	 */
-	public int getAssignmentGrade(){
+	public Integer getAssignmentGrade(){
 		return this.assignmentGrade;
+	}
+	
+	/**
+	 * @return - if grade is was already approved by seminarist
+	 */
+	public boolean getApproval() {
+		return this.isApproved;
+	}
+	 /** 
+	 * @return - deadline for current student after taking rescheduling for the assignment
+	 */
+	public Date getDeadlineWithReschedulings(){
+		return this.deadlineWithReschedulings;
+	}
+	
+	
+	/**
+	 * 
+	 * @param newDeadline - string with new deadline after rescheduling
+	 * @return - true if deadline has been changed successfully, false otherwise
+	 */
+	public boolean changeDeadlineWithReschedulings(String newDeadline){
+		return db.studentAssignmentDB.changeDeadlineWithReschedulings(newDeadline, classroomID, personID, assignmentTitle);
 	}
 }

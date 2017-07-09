@@ -78,10 +78,10 @@ public class TestDBConnection {
 	@Test
 	public void test2AddingClassroom() {
 		ClassroomDB classroomDB = allConnections.classroomDB;
-		assertEquals(classroomDB.addClassroom("OOP"), "5");
-		assertEquals(classroomDB.addClassroom("Paradigms"), "6");
-		assertEquals(classroomDB.addClassroom("Methodologies"), "7");
-		assertEquals(classroomDB.addClassroom("iraklis'"), DBConnection.DATABASE_ERROR);
+		assertEquals(classroomDB.addClassroom("OOP", "1"), "5");
+		assertEquals(classroomDB.addClassroom("Paradigms", "1"), "6");
+		assertEquals(classroomDB.addClassroom("Methodologies", "1"), "7");
+		assertEquals(classroomDB.addClassroom("iraklis'", "1"), DBConnection.DATABASE_ERROR);
 	}
 
 	@Test
@@ -158,7 +158,7 @@ public class TestDBConnection {
 	@Test
 	public void test5ArrayListGetters() {
 		
-		String currentClassroom = cl.addClassroom("just to test");
+		String currentClassroom = cl.addClassroom("just to test", "1");
 
 		ArrayList<Person> realStudents = new ArrayList<Person>();
 		for (char ch = 'a'; ch <= 'z'; ch++) {
@@ -220,7 +220,7 @@ public class TestDBConnection {
 	@Test
 	public void test6AddSeminar() {
 		
-		String classroomId = cl.addClassroom("test6");
+		String classroomId = cl.addClassroom("test6", "1");
 
 		assertTrue(smn.addSeminar(classroomId));
 		assertFalse(smn.addSeminar("fakeClassroomId"));
@@ -232,7 +232,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test7AddPersonsToSeminar() {
-		String classroomId = cl.addClassroom("test7");
+		String classroomId = cl.addClassroom("test7", "1");
 
 		smn.addSeminar(classroomId);
 		pr.addPerson("seminaristi1", "seminaristi", "seminaristi1@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
@@ -252,7 +252,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test8AddSection() {
-		String classroomId = cl.addClassroom("test8");
+		String classroomId = cl.addClassroom("test8","1");
 
 		assertTrue(sc.addSection(classroomId));
 		assertTrue(sc.addSection(classroomId));
@@ -271,7 +271,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test9AddPersonsToSection() {
-		String classroomId = cl.addClassroom("test9");
+		String classroomId = cl.addClassroom("test9", "1");
 
 		pr.addPerson("test9per1", "test", "test9per1@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
 		pr.addPerson("test9per2", "test", "test9per2@gmail.com","http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
@@ -297,7 +297,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test10DeleteSeminar() {
-		String classroomId = cl.addClassroom("test9");
+		String classroomId = cl.addClassroom("test9", "1");
 
 		assertTrue(smn.addSeminar(classroomId));
 		assertTrue(smn.seminarExists(0, classroomId));
@@ -311,7 +311,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test11DeleteSection() {
-		String classroomId = cl.addClassroom("test10");
+		String classroomId = cl.addClassroom("test10", "1");
 
 		assertTrue(sc.addSection(classroomId));
 		assertTrue(sc.addSection(classroomId));
@@ -327,7 +327,7 @@ public class TestDBConnection {
 
 	@Test
 	public void test12AddMaterial() {
-		String classroomId = cl.addClassroom("test11");
+		String classroomId = cl.addClassroom("test11", "1");
 		
 		/*
 		assertTrue(ma.addMaterial(classroomId, "test1material"));

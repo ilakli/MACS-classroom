@@ -44,7 +44,8 @@ public class ClassroomDB {
 			ResultSet rs = myConnection.executeQuery();
 			if (rs.next()) {
 				String classroomName = rs.getString("classroom_name");
-				classroom = new Classroom(classroomName, classroomId);
+				String classroomCreatorId = rs.getString("classroom_creator_id");
+				classroom = new Classroom(classroomName, classroomId,classroomCreatorId);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -62,14 +63,15 @@ public class ClassroomDB {
 	 * @param classroomName
 	 * @return classromId of newly added classroom
 	 */
-	public String addClassroom(String classroomName) {
+	public String addClassroom(String classroomName, String creatorId) {
 		String classroomId = DBConnection.DATABASE_ERROR;
 		Connection con = db.getConnection();
 		try {
 			con.setAutoCommit(false);
-
-			PreparedStatement insertClassroom = con.prepareStatement(
-					String.format("insert into `classrooms` (`classroom_name`) values ('%s');", classroomName));
+			String query = String.format("insert into `classrooms` (`classroom_name`, `classroom_creator_id`) values ('%s', %s);", 
+					classroomName, creatorId);
+			System.out.println(query);
+			PreparedStatement insertClassroom = con.prepareStatement(query);
 			insertClassroom.executeUpdate();
 
 			PreparedStatement selectLastIndex = con.prepareStatement("select last_insert_id();");
@@ -99,8 +101,8 @@ public class ClassroomDB {
 			while (classroomsTable.next()) {
 				String classroomID = classroomsTable.getString("classroom_id");
 				String classroomName = classroomsTable.getString("classroom_name");
-
-				classrooms.add(new Classroom(classroomName, classroomID));
+				String classroomCreatorId = classroomsTable.getString("classroom_creator_id");
+				classrooms.add(new Classroom(classroomName, classroomID,classroomCreatorId));
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
@@ -129,8 +131,8 @@ public class ClassroomDB {
 			while (classroomsTable.next()) {
 				String classroomID = classroomsTable.getString("classroom_id");
 				String classroomName = classroomsTable.getString("classroom_name");
-
-				Classroom classroom = new Classroom(classroomName, classroomID);
+				String classroomCreatorId = classroomsTable.getString("classroom_creator_id");
+				Classroom classroom = new Classroom(classroomName, classroomID, classroomCreatorId);
 				System.out.println("class name: " + classroomName + "id: " + classroomID);
 				if (classroom.classroomPersonExists(p.getEmail())) {
 					classrooms.add(classroom);
@@ -163,7 +165,8 @@ public class ClassroomDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs.next()) {
-				classrooms.add(new Classroom(rs.getString("classroom_name"), rs.getString("classroom_id")));
+				classrooms.add(new Classroom(rs.getString("classroom_name"), rs.getString("classroom_id")
+						, rs.getString("classroom_creator_id")));
 			}
 		} catch (SQLException | NullPointerException e) {
 
