@@ -3,6 +3,7 @@
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Section"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="defPackage.Seminar"%>
 <%@page import="defPackage.Post"%>
 <%@page import="java.util.List"%>
@@ -110,6 +111,20 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
+		String assignmentTitle = request.getParameter("assignmentTitle");
+		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
+	
+		for (Person p : currentClassroom.getClassroomStudents()){
+			
+			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+			String deadlineWithReschedulings = "";
+			if (assignment.getDeadline()!=null) deadlineWithReschedulings = format1.format(assignment.getDeadline());
+			
+			
+			connector.studentAssignmentDB.addStudentAssignment(classroomID, p.getPersonID(), assignmentTitle,
+					deadlineWithReschedulings );
+		}
+		
 	%>
 
 	<div class="jumbotron">
@@ -163,10 +178,6 @@
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
-		String assignmentTitle = request.getParameter("assignmentTitle");
-								
-		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
-	
 		String htmlCode = generateAssignmentHTML(assignment);
 		out.println(htmlCode);
 	%>

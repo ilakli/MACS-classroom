@@ -59,7 +59,6 @@ private DBConnection db;
 		String query = String.format("insert into `student_assignments` ( `classroom_id`, `person_id`," +
 				 "`assignment_title` ) values (%s, %s, '%s' );", 
 				 classroomID, personID, assignmentTitle, deadlineWithReschedulings);
-		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		
@@ -116,6 +115,7 @@ private DBConnection db;
 				java.sql.Date sqlDate =rs.getDate("deadline_with_reschedulings");
 
 				if(sqlDate!=null) {
+					deadlineWithReschedulings = new java.util.Date(sqlDate.getTime());
 				}
 				String id = rs.getString("student_assignment_id");
 				boolean isApproved = rs.getBoolean("assignment_approved");

@@ -133,16 +133,12 @@
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String deadlineWithReschedulings = "";
 		if (a.getDeadline()!=null) deadlineWithReschedulings = format1.format(a.getDeadline());
+		
 		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle, deadlineWithReschedulings );
 		
 		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
 				classroomID, personID, assignmentTitle);
-		
-		if(assignment!=null) {
-			System.out.print(",,,,,,,,,,,,,,,assignment not null st jsp");
-		}else System.out.print(",,,,,,,,,,,,,,,assignment null st jsp");
 	
-
 		List<AssignmentComment> assignmentComments = connector.commentDB.getStudentAssignmentComments(assignment.getStudentAssignmentId());
 		List<AssignmentComment> assignmentStaffComments = connector.commentDB.getStudentAssignmentStaffComments(assignment.getStudentAssignmentId());
 		
