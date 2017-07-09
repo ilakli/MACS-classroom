@@ -59,7 +59,6 @@ private DBConnection db;
 		String query = String.format("insert into `student_assignments` ( `classroom_id`, `person_id`," +
 				 "`assignment_title` ) values (%s, %s, '%s' );", 
 				 classroomID, personID, assignmentTitle, deadlineWithReschedulings);
-		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		
@@ -90,7 +89,6 @@ private DBConnection db;
 		String query = String.format("insert into `student_uploaded_assignments`( `student_assignment_id`, "
 				+ " `file_name`) "
 				+ "values (%s, '%s');", student_assignment_id, fileName);
-		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
@@ -107,7 +105,7 @@ private DBConnection db;
 	public StudentAssignment getStudentAssignment(String classroomID, String personID, String assignmentTitle){
 		String query = String.format("select * from `student_assignments` where `classroom_id` = %s and "
 				+ "person_id = %s and `assignment_title` = '%s';", classroomID, personID, assignmentTitle );
-		System.out.println(query);
+		
 		MyConnection myConnection = db.getMyConnection(query);
 		StudentAssignment assignment = null;
 		try {
@@ -115,15 +113,17 @@ private DBConnection db;
 			while (rs != null && rs.next()) {
 				Date deadlineWithReschedulings = null;
 				java.sql.Date sqlDate =rs.getDate("deadline_with_reschedulings");
-				System.out.println(sqlDate);
+
 				if(sqlDate!=null) {
 					deadlineWithReschedulings = new java.util.Date(sqlDate.getTime());
-					System.out.println(deadlineWithReschedulings);
 				}
 				String id = rs.getString("student_assignment_id");
-				int assignmentGrade = rs.getInt("assignment_grade");
+				boolean isApproved = rs.getBoolean("assignment_approved");
+				Integer assignmentGrade = rs.getInt("assignment_grade");
+				if (rs.wasNull()) assignmentGrade = null;
+				
 				assignment = new StudentAssignment(id,classroomID, personID,assignmentTitle, 
-						 deadlineWithReschedulings, assignmentGrade);
+						 assignmentGrade, isApproved, deadlineWithReschedulings);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

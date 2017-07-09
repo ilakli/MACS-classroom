@@ -211,9 +211,11 @@ CREATE TABLE `student_assignments` (
 	`student_assignment_id` int NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
-	`assignment_title` VARCHAR(100) NOT NULL,
+	`assignment_title` VARCHAR(100) NOT NULL,	
+	`assignment_grade` INT,
+	`assignment_approved` BOOL DEFAULT false,
 	`deadline_with_reschedulings` date,
-	`assignment_grade` int,
+	
 	PRIMARY KEY (`student_assignment_id`),
 	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_title`),
 	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),

@@ -12,17 +12,20 @@ public class StudentAssignment {
 	private String classroomID;
 	private String personID;
 	private String assignmentTitle;
+	private Integer assignmentGrade;
+	private boolean isApproved;
 	private Date deadlineWithReschedulings;
-	private int assignmentGrade;
-	
 	private AllConnections db;
-	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle, 
-			Date deadlineWithReschedulings, int assignmentGrade){
+	
+	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle,
+			Integer assignmentGrade, boolean isApproved, Date deadlineWithReschedulings){
+	
 		this.ID = ID;
 		this.classroomID = classroomID;
 		this.assignmentTitle = assignmentTitle;
 		this.personID = personID;
 		this.assignmentGrade = assignmentGrade;
+		this.isApproved = isApproved;
 		this.deadlineWithReschedulings = deadlineWithReschedulings;
 		db = new AllConnections();
 	}
@@ -57,12 +60,17 @@ public class StudentAssignment {
 	 * 
 	 * @return - grade of the assignment
 	 */
-	public int getAssignmentGrade(){
+	public Integer getAssignmentGrade(){
 		return this.assignmentGrade;
 	}
 	
 	/**
-	 * 
+	 * @return - if grade is was already approved by seminarist
+	 */
+	public boolean getApproval() {
+		return this.isApproved;
+	}
+	 /** 
 	 * @return - deadline for current student after taking rescheduling for the assignment
 	 */
 	public Date getDeadlineWithReschedulings(){
