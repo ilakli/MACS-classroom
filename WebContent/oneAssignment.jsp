@@ -214,6 +214,8 @@
 				out.println(generateStudentHTML(p, classroomID, assignment, connector));
 			}
 			out.println("</div>");
+		} else {
+			out.println("you have no seminar group yet...");
 		}%>
 	<%}%>
 	
