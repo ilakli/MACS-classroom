@@ -121,25 +121,6 @@
 		</a> <a class="item"
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a>
 
-		<%
-			if (isAdmin || isLecturer || isSeminarist || isSectionLeader) {
-		%>
-		<a class="item"
-			href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-			Sections And Seminars</a>
-		<%
-			}
-		%>
-
-		<%
-			if (isAdmin || isLecturer) {
-		%>
-		<a class="item"
-			href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a>
-		<%
-			}
-		%>
-
 		<a class="item"
 			href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a>
 
@@ -152,9 +133,6 @@
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
 
-		<a class="item"
-			href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-			Edit Sections And Seminars</a>
 		<%
 			}
 		%>

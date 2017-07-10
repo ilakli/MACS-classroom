@@ -29,11 +29,6 @@
 <link rel="stylesheet" href="css/multiInput.css" />
 
 <style>
-
-.ui.menu {
-	margin-top: 0;
-}
-
 .raised.segment {
 	margin: 1.5% !important;
 	width: 30%;
@@ -78,6 +73,30 @@
 	bottom: 0;
     width: 100%;
 }
+.ui.menu {
+	margin-top: 0;
+}
+.block.header {
+	margin: 0;
+}
+.sign-out {
+	float: right;
+	margin-top: 0.8%;
+	margin-right: 0.7%;
+}
+.head-panel {
+	display: block;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.head-text {
+	display: inline-block;
+	border: solid;
+	padding: .78571429rem 1rem !important;
+	!
+	important;
+}
 </style>
 </head>
 <body>
@@ -103,34 +122,18 @@
 		List<Person> SeminaristsWithoutSeminar = connector.seminaristDB
 				.getSeminaristsWithoutSeminar(classroomID);
 	%>
+	<div class="ui block header head-panel">
 	<a href="index.jsp">
-		<h3 class="ui block header">Macs Classroom</h3>
+		<h3 class="ui header head-text">Macs Classroom</h3>
 	</a>
+	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+	</div>
 	<div class="ui menu">
 		<a
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
 			class="header item"> <%=currentClassroom.getClassroomName()%>
 		</a> <a class="item"
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a>
-
-		<%
-			if (isAdmin || isLecturer || isSeminarist || isSectionLeader) {
-		%>
-		<a class="item"
-			href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-			Sections And Seminars</a>
-		<%
-			}
-		%>
-
-		<%
-			if (isAdmin || isLecturer) {
-		%>
-		<a class="item"
-			href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a>
-		<%
-			}
-		%>
 
 		<a class="item"
 			href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a>
@@ -143,10 +146,6 @@
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
-
-		<a class="item"
-			href=<%="editSecionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-			Edit Sections And Seminars</a>
 		<%
 			}
 		%>
