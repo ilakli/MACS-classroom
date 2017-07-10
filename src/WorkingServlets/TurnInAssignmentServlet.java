@@ -64,6 +64,8 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
 		
+		String fileType = "";
+		
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			
@@ -72,6 +74,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 				if (!item.isFormField()) {
 					System.out.println("file not null");
 					fileName = item.getName();
+					fileType = item.getContentType();
 					
 					if (fileName.lastIndexOf("\\") >= 0) {
 						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
@@ -116,8 +119,8 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String filePath = fileName;
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
-		service.uploadAssignmentToSectionLeader(studentEmail, filePath, sectionLeaderEmail, classroomID, assignmentTitle);
-		service.uploadAssignmentToSeminarist(studentEmail, filePath, seminaristEmail, classroomID, assignmentTitle);
+		service.uploadAssignmentToSectionLeader(studentEmail, file, fileType, sectionLeaderEmail, classroomID, assignmentTitle);
+		service.uploadAssignmentToSeminarist(studentEmail, file, fileType, seminaristEmail, classroomID, assignmentTitle);
 		
 		String personID = connection.personDB.getPersonId(studentEmail);
 		

@@ -22,11 +22,18 @@ import com.google.api.services.drive.model.Permission;
 
 import database.AllConnections;
 import database.DriveDB;
+import eu.medsea.mimeutil.MimeUtil;
+import net.sf.jmimemagic.Magic;
+import net.sf.jmimemagic.MagicMatch;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -125,17 +132,19 @@ public class MyDrive {
 		}
 		return folder != null ? folder.getId() : "";
 	}
-	
-	public void uploadFile (String fileName, String filePath, String folderId) {
+
+	public void uploadFile (String fileName, java.io.File fl, String fileType, String folderId) {
 		try {
+			
+			String mimeType = fileType;
 			
 			File file = new File();
 			file.setName(fileName);
-			file.setMimeType(Files.probeContentType(Paths.get(filePath)));
+			file.setMimeType(mimeType);
 			file.setParents(Collections.singletonList(folderId));
 
-			java.io.File fileToUpload = new java.io.File(filePath);
-			FileContent fileToUploadContent = new FileContent(Files.probeContentType(Paths.get(filePath)), fileToUpload);
+			java.io.File fileToUpload = fl;
+			FileContent fileToUploadContent = new FileContent(mimeType, fileToUpload);
 			File fileInFolder = service.files().create(file, fileToUploadContent)
 						.setFields("id, parents")
 						.execute();
@@ -181,7 +190,7 @@ public class MyDrive {
 		return assignmentFolderId;
 	}
 
-	private void uploadAssignmentToChecker (String studentEmail, String filePath, String checkerFolderId, String assignmentName) {
+	private void uploadAssignmentToChecker (String studentEmail, java.io.File fileToUpload, String fileType, String checkerFolderId, String assignmentName) {
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();			
 			String assignmentFolderId = "";
@@ -216,29 +225,29 @@ public class MyDrive {
 			Date date = new Date();
 			String currentTime = dateFormat.format(date);
 			
-			uploadFile(studentEmailPrefix + " " + currentTime, filePath, studentFolder);
+			uploadFile(studentEmailPrefix + " " + currentTime, fileToUpload, fileType, studentFolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 	
-	public void uploadAssignmentToSectionLeader(String studentEmail, String filePath, String sectionLeaderEmail, String classroomId, String assignmentName) {
+	public void uploadAssignmentToSectionLeader(String studentEmail, java.io.File fileToUpload, String fileType, String sectionLeaderEmail, String classroomId, String assignmentName) {
 		System.out.println("Trying to upload assignment to section leader");
 		System.out.println("Student email: " + studentEmail);
-		System.out.println("Filepath: " + filePath);
+		System.out.println("File: " + fileToUpload);
 		System.out.println("Section Leader email: " + sectionLeaderEmail);
 		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
-		uploadAssignmentToChecker(studentEmail, filePath, sectionLeaderFolder, assignmentName);
+		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, sectionLeaderFolder, assignmentName);
 	}
 
-	public void uploadAssignmentToSeminarist(String studentEmail, String filePath, String seminaristEmail, String classroomId, String assignmentName) {
+	public void uploadAssignmentToSeminarist(String studentEmail, java.io.File fileToUpload, String fileType, String seminaristEmail, String classroomId, String assignmentName) {
 		System.out.println("Trying to upload assignment to seminarist");
 		System.out.println("Student email: " + studentEmail);
-		System.out.println("Filepath: " + filePath);
+		System.out.println("Filepath: " + fileToUpload);
 		System.out.println("Section Leader email: " + seminaristEmail);
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
-		uploadAssignmentToChecker(studentEmail, filePath, seminaristFolderId, assignmentName);
+		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, seminaristFolderId, assignmentName);
 	}
 	
 	public static void main(String[] args) throws IOException {

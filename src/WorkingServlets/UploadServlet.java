@@ -86,12 +86,22 @@ public class UploadServlet extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
 		String filePath = "";
+		String fileType = "";
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			
 			for (FileItem item : fileItems) {
 				if (!item.isFormField()) {
 					filePath = item.getName();
+					fileType = item.getContentType();
+					
+					if (filePath.lastIndexOf("\\") >= 0) {
+						file = new File(filePath + filePath.substring(filePath.lastIndexOf("\\")));
+					} else {
+						file = new File(filePath + filePath.substring(filePath.lastIndexOf("\\") + 1));
+					}
+					item.write(file);
+
 				} else {
 					String fieldName = item.getFieldName();
 					
@@ -120,7 +130,7 @@ public class UploadServlet extends HttpServlet {
 		String categoryName = connection.categoryDB.getCategoryName(classroomId, categoryId);
 		String categoryFolder = connection.driveDB.getCategoryFolder(classroomId, categoryName);
 		
-		myDrive.uploadFile(fileName, filePath, categoryFolder);
+		myDrive.uploadFile(fileName, file, fileType, categoryFolder);
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);

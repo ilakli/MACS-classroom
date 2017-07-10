@@ -12,13 +12,13 @@ public class StudentAssignment {
 	private String classroomID;
 	private String personID;
 	private String assignmentTitle;
-	private Integer assignmentGrade;
+	private String assignmentGrade;
 	private boolean isApproved;
 	private Date deadlineWithReschedulings;
 	private AllConnections db;
 	
 	public StudentAssignment(String ID,String classroomID, String personID, String assignmentTitle,
-			Integer assignmentGrade, boolean isApproved, Date deadlineWithReschedulings){
+			String assignmentGrade, boolean isApproved, Date deadlineWithReschedulings){
 	
 		this.ID = ID;
 		this.classroomID = classroomID;
@@ -60,7 +60,7 @@ public class StudentAssignment {
 	 * 
 	 * @return - grade of the assignment
 	 */
-	public Integer getAssignmentGrade(){
+	public String getAssignmentGrade(){
 		return this.assignmentGrade;
 	}
 	

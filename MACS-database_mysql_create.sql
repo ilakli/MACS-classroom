@@ -207,18 +207,25 @@ CREATE TABLE `seminar-seminarists` (
     CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`)
 );
 
+CREATE TABLE `assignment_grades` (
+	`grade_name` VARCHAR(50) NOT NULL,
+	`grade_value` INT NOT NULL,
+	PRIMARY KEY (`grade_name`)	
+);
+
 CREATE TABLE `student_assignments` (
 	`student_assignment_id` int NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
 	`assignment_title` VARCHAR(100) NOT NULL,	
-	`assignment_grade` INT,
+	`assignment_grade` VARCHAR(50) default 'Not Graded',
 	`assignment_approved` BOOL DEFAULT false,
 	`deadline_with_reschedulings` date,
-	
+
 	PRIMARY KEY (`student_assignment_id`),
 	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_title`),
 	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),
+	CONSTRAINT `FK__assignment_grades` FOREIGN KEY (`assignment_grade`) REFERENCES `assignment_grades` (`grade_name`),
 	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`)
 );
 
@@ -247,7 +254,6 @@ CREATE TABLE `assignment_staff_comment` (
     CONSTRAINT `FK__student_assignments2` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
     CONSTRAINT `FK__persons1` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
 );
-
  
 CREATE TABLE `section-section_leader` (
     `classroom_id` INT NOT NULL,
@@ -333,6 +339,17 @@ insert into `functions` (`function_name`) values
     ('add new assignments'),
     ('review assignments of students from their group'),
     ('add classroom materials');
+    
+insert into `assignment_grades` (`grade_name`, `grade_value`) values
+	 ('Not Graded', 0),
+	 ('Zero', 0), 	
+	 ('Minus Minus', 20),
+	 ('Minus', 40),
+	 ('Check Minus', 70),
+	 ('Check', 85),
+	 ('Check Plus', 100),
+	 ('Plus', 120),
+	 ('Plus Plus', 140); 
  
 insert into `persons` (`person_name`, `person_surname`, `person_email`) values
     ('admin', 'admin', 'admin@admin.admin');

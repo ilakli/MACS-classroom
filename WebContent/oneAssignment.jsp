@@ -95,10 +95,10 @@
 		StudentAssignment studentAssignment = 
 				connector.studentAssignmentDB.getStudentAssignment(classroomID, p.getPersonID(), a.getTitle());
 		boolean isApproved = studentAssignment.getApproval();
-		Integer grade = studentAssignment.getAssignmentGrade();
+		String grade = studentAssignment.getAssignmentGrade();
 		
 		String gradeCode;
-		if (grade == null)
+		if (grade == null || grade.equals("Not Graded"))
 			gradeCode = "<div class=\"ui red horizontal label\">Not Graded</div>"; else
 			gradeCode = "<div class=\"ui green horizontal label\">Graded</div>";
 		
