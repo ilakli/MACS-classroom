@@ -4,7 +4,9 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 $(document).ready(function() { 
-
+	$(".cancel").click(function(){
+		$(this).parent().parent().find("span").remove();
+	});
 	$(".categoryAddButton").on('click', function() {
 	
 		
@@ -31,10 +33,7 @@ $(document).ready(function() {
 		
 		
 		
-		$(this).parent().find("span").remove();
-		
-		
-		alert("STR IS: " + str);
+		$(this).parent().parent().find("span").remove();
 		
 		$.ajax({
 			url : servlet,
@@ -44,7 +43,7 @@ $(document).ready(function() {
 				classroomID: classroomId
 			},
 			success : function(result) {
-				alert("Done");
+				location.reload();
 			}
 		});
 

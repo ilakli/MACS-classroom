@@ -74,6 +74,10 @@
 .material-add-button {
 	margin: 0.5% !important;
 }
+.category-add-button {
+	display: block !important;
+	margin: 0.5% !important;
+}
 </style>
 
 </head>
@@ -174,7 +178,7 @@
 	<%
 		if (isAdmin || isLecturer || isSeminarist) {
 	%>
-
+	
 	<button class="positive ui button category-add-button">Add
 		Category</button>
 	<div class="ui modal">
@@ -197,8 +201,7 @@
 			$('.ui.modal').modal('show');
 		});
 	</script>
-
-
+	
 	<button class="positive ui button material-add-button">Add
 		Material</button>
 	<form action="UploadServlet" method="POST"
@@ -227,6 +230,7 @@
 		<script>
 			$(".ui.dropdown").dropdown();
 		</script>
+		
 		<div>
 			<label for="file" class="ui icon button"> <i
 				class="file icon"></i> Open File
