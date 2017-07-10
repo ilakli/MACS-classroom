@@ -167,7 +167,7 @@ public class MyDrive {
 			Date date = new Date();
 			String currentTime = dateFormat.format(date);
 			
-			uploadFile(studentEmailPrefix + currentTime, filePath, studentFolder);
+			uploadFile(studentEmailPrefix + " " + currentTime, filePath, studentFolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
