@@ -207,14 +207,13 @@
 						class="item"> Seminars </a>
 				</div>
 			</div>
-
-	
-	<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
+			<script>
+				$('.ui.dropdown').dropdown();
+			</script>
 		</div>
-	</div>
+		</div>
+			
+	
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%

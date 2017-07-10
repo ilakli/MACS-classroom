@@ -133,6 +133,9 @@ pre {
 						class="item"> Seminars </a>
 				</div>
 			</div>
+			<script>
+				$('.ui.dropdown').dropdown();
+			</script>
 		</div>
 	</div>
 

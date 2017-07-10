@@ -257,6 +257,7 @@
 				<%
 					} else {
 				%>
+				
 				<button class="positive ui button">Set Section Leader</button>
 				<form class="section-leader-add" method="post"
 					action="AddSectionLeaderToSectionServlet">
