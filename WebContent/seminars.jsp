@@ -145,7 +145,7 @@
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
 
 		<a class="item"
-			href=<%="editSeminarsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+			href=<%="editSecionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
 			Edit Sections And Seminars</a>
 		<%
 			}
