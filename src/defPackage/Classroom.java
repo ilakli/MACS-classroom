@@ -447,8 +447,8 @@ public class Classroom {
 		});
 		
 		for (int k = j; k < students.size(); k++) {
-			distributed.get(seminars.get(k - j).getSeminarN()).add(students.get(k));
-			seminars.get(k - j).updateSeminarSize(1);
+			distributed.get(seminars.get((k - j) % seminars.size()).getSeminarN()).add(students.get(k));
+			seminars.get((k - j) % seminars.size()).updateSeminarSize(1);
 		}
 		
 		for (Seminar sem: seminars) {
@@ -500,8 +500,8 @@ public class Classroom {
 		});
 		
 		for (int k = j; k < students.size(); k++) {
-			distributed.get(sections.get(k - j).getSectionN()).add(students.get(k));
-			sections.get(k - j).updateSectionSize(1);
+			distributed.get(sections.get((k - j) % sections.size()).getSectionN()).add(students.get(k));
+			sections.get((k - j) % sections.size()).updateSectionSize(1);
 		}
 		
 		for (Section sec: sections) {
