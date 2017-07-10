@@ -9,7 +9,7 @@ public class SectionLeaderDB {
 
 	private DBConnection db;
 	private PersonDB personDB;
-	
+
 	public SectionLeaderDB(AllConnections allConnections) {
 		db = allConnections.db;
 		personDB = allConnections.personDB;
@@ -26,7 +26,7 @@ public class SectionLeaderDB {
 		ArrayList<Person> sectionLeaders = personDB.getPersons(query);
 		return sectionLeaders;
 	}
-	
+
 	/**
 	 * 
 	 * @param sectionId
@@ -34,7 +34,7 @@ public class SectionLeaderDB {
 	 */
 	public Person getSectionLeader(String sectionId) {
 		String query = String.format("select * from `section-section_leader` where `section_id` = %s;", sectionId);
-		ArrayList <Person> sectionLeaders = personDB.getPersons(query);
+		ArrayList<Person> sectionLeaders = personDB.getPersons(query);
 		return sectionLeaders.isEmpty() ? null : sectionLeaders.get(0);
 	}
 
@@ -91,21 +91,28 @@ public class SectionLeaderDB {
 		}
 		String personId = personDB.getPersonId(email);
 
-		String preQuery = String.format(
+		String preQuery1 = String.format(
 				"delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s;", classroomId,
 				personId);
+
+		String preQuery2 = String.format(
+				"delete from `section_leader-section_leader_folder` where `classroom_id` = %s and `section_leader_id` = %s;",
+				classroomId, personId);
+
 		String query = String.format(
 				"delete from `classroom_section_leaders` where `classroom_id` = %s and `person_id` =%s;", classroomId,
 				personId);
 
-		MyConnection myConnection = db.getMyConnection(preQuery);
+		MyConnection myConnection = db.getMyConnection(preQuery1);
+		db.executeUpdate(myConnection);
+
+		myConnection = db.getMyConnection(preQuery2);
 		db.executeUpdate(myConnection);
 
 		myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
-	
-	
+
 	/**
 	 * deletes section leader with given email from given classroom
 	 * 
@@ -121,29 +128,30 @@ public class SectionLeaderDB {
 		String personId = personDB.getPersonId(email);
 
 		String preQuery = String.format(
-				"delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s and section_id = %s;", 
+				"delete from `section-section_leader` where `classroom_id` = %s and `person_id` =%s and section_id = %s;",
 				classroomId, personId, sectionId);
-		
+
 		MyConnection myConnection = db.getMyConnection(preQuery);
 		return db.executeUpdate(myConnection);
 	}
-	
-	
-	
+
 	/**
-	 * returns list of section leaders without a section in classroom with given ID
-	 * @param classroomID - ID of classroom
+	 * returns list of section leaders without a section in classroom with given
+	 * ID
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
 	 * @return list of section leaders that do not have a section
 	 */
-	public ArrayList<Person> getSectionLeadersWithoutSection(String classroomID){
-		
-		String query = String.format("select * from `classroom_section_leaders` where "
-				+ "classroom_id = %s  and person_id not in ("
-				+ "select person_id from `section-section_leader` where classroom_id = %s);"
-				, classroomID, classroomID);
-		
+	public ArrayList<Person> getSectionLeadersWithoutSection(String classroomID) {
+
+		String query = String.format(
+				"select * from `classroom_section_leaders` where " + "classroom_id = %s  and person_id not in ("
+						+ "select person_id from `section-section_leader` where classroom_id = %s);",
+				classroomID, classroomID);
+
 		ArrayList<Person> sectionLeaders = personDB.getPersons(query);
 		return sectionLeaders;
 	}
-	
+
 }

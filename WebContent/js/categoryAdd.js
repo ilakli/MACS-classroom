@@ -4,16 +4,16 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 $(document).ready(function() { 
-
+	$(".cancel").click(function(){
+		$(this).parent().parent().find("span").remove();
+	});
 	$(".categoryAddButton").on('click', function() {
 	
 		
 		
-		var str = $(this).parent().html();
+		var str = $(this).parent().parent().html();
 		
-		
-		
-		str = str.substr(str.indexOf("<"));
+		str = str.substr(str.indexOf("<span>"));
 		
 		str = str.substr(0,str.indexOf("<inp"));
 		
@@ -33,10 +33,7 @@ $(document).ready(function() {
 		
 		
 		
-		$(this).parent().find("span").remove();
-		
-		
-		
+		$(this).parent().parent().find("span").remove();
 		
 		$.ajax({
 			url : servlet,
@@ -46,7 +43,7 @@ $(document).ready(function() {
 				classroomID: classroomId
 			},
 			success : function(result) {
-				alert("Done");
+				location.reload();
 			}
 		});
 
