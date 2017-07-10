@@ -5,35 +5,24 @@ String.prototype.replaceAll = function(search, replacement) {
 
 $(document).ready(function() { 
 	
-	$(".lecturerAddButton").on('click', function() {
+	$(".globalLecturerAddButton").on('click', function() {
 		
-		
-		
-		var str = $(this).parent().html();
-		
-		
+		var str = $("#globalLecturerAddServlet").parent().html();
 		
 		str = str.substr(str.indexOf("<"));
 		
 		str = str.substr(0,str.indexOf("<inp"));
-		
-		
-		
 
 		str = str.replaceAll('<span>', '');
 
 		str = str.replaceAll('</span>', ' ');
-
-		
-		
-		var servlet = $(this).next().val();
-		
-		
-		
+	
+		var servlet = $("#globalLecturerAddServlet").val();
 		
 		$(this).parent().find("span").remove();
 		
-		
+
+		$("#globalLecturerAddServlet").parent().find("span").remove();
 		
 		
 		$.ajax({
@@ -43,7 +32,7 @@ $(document).ready(function() {
 				email: str
 			},
 			success : function(result) {
-				alert("Done");
+				location.reload();
 			}
 		});
 
