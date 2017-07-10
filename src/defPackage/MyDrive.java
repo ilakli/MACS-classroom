@@ -61,7 +61,7 @@ public class MyDrive {
 
 		this.service = service;
 		
-//		allConnections = new AllConnections();
+		allConnections = new AllConnections();
 	}
 
 	public Drive getDrive() {
@@ -77,8 +77,10 @@ public class MyDrive {
 			folder = service.files().create(fileMetaData)
 					.setFields("id")
 					.execute();
-			Permission userPermission = new Permission().setType("anyone");
-			service.permissions().create(folder.getId(), userPermission);
+			Permission userPermission = new Permission().setType("anyone").setRole("writer");
+			BatchRequest batch = service.batch();
+			service.permissions().create(folder.getId(), userPermission).queue(batch, null);
+			batch.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +135,6 @@ public class MyDrive {
 			        System.out.println("Permission ID: " + permission.getId());
 			    }
 			};
-//			System.out.println(fileInFolder.getId());
 			Permission userPermission = new Permission().setType("anyone").setRole("writer");
 			BatchRequest batch = service.batch();
 			service.permissions().create(fileInFolder.getId(), userPermission).queue(batch, callback);
