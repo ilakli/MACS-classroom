@@ -48,8 +48,7 @@ public class RemoveStudentsFromSeminarServlet extends HttpServlet {
 			}			
 		}
 		
-		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
-				Classroom.ID_ATTRIBUTE_NAME, classroomId));
+		response.sendRedirect(String.format("seminars.jsp?%s=%s", Classroom.ID_ATTRIBUTE_NAME, classroomId));
 	}
 
 }

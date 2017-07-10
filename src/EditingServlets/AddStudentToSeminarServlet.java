@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import defPackage.Classroom;
 import database.AllConnections;
 import defPackage.Person;
+import defPackage.Section;
 import defPackage.Seminar;
 
 /**
@@ -41,6 +42,7 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("Already Here");
 		int seminarN = Integer.parseInt(request.getParameter("seminarN"));
 		String studentEmail = request.getParameter("studentEmail");
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
@@ -49,8 +51,8 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 		
 		Seminar currentSeminar = new Seminar(seminarN,classroomId,connection);
 		
-String emails[] = studentEmail.split("\\s+"); 
-		
+		String emails[] = studentEmail.split("\\s+"); 
+		System.out.println(classroomId + " " + studentEmail + " " + seminarN +" WE ARE GOOD");
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
@@ -60,7 +62,7 @@ String emails[] = studentEmail.split("\\s+");
 					&& connection.studentDB.studentExists(e, classroomId)
 					&& currentSeminar.addStudentToSeminar(e)) {
 				
-				System.out.println("Added Student To Seminar: " + currentSeminar.getSeminarN() + " " + e + 
+				System.out.println("Added Student To Section: " + currentSeminar.getSeminarN() + " " + e + 
 					" to class with id: " + classroomId);
 			}
 			else {
@@ -73,17 +75,15 @@ String emails[] = studentEmail.split("\\s+");
 		
 		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_ACC);	
+				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
 							 
 			view.forward(request, response);     
 		} else {
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SEMINAR_REJ);	
+					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
 							 
 			view.forward(request, response);  
 		}
-	
-		
 	}
 
 }

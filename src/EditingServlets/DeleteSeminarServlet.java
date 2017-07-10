@@ -40,26 +40,13 @@ public class DeleteSeminarServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
-			
+		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		if(currentClassroom.classroomDeleteSeminar()) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.DEL_SEMINAR_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Deleted Last Seminar: " + " to class with id: " + classroomId);
-		}
-		else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.DEL_SEMINAR_REJ);	
-						 
-			view.forward(request, response);  
-			
-			System.out.println("Seminar Didn't Exist IN This Classroom: " 
-					+ "    class with id: " + classroomId);
-		}
+		currentClassroom.classroomDeleteSeminar();
+		response.sendRedirect("seminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "="+classroomId);
+		
 	}
 
 }

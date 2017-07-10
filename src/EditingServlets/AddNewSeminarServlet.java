@@ -39,27 +39,13 @@ public class AddNewSeminarServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
+		AllConnections  connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		if(currentClassroom.classroomAddSeminar()) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SEMINAR_ACC);	
-						 
-			view.forward(request, response);  
-			System.out.println("Added Seminar: "  + " to class with id: " + classroomId);
-		}
-		else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SEMINAR_REJ);	
-						 
-			view.forward(request, response);  
-			
-			System.out.println("Seminar Already Existed IN This Classroom: " 
-			 + "    class with id: " + classroomId);
-		}
+		currentClassroom.classroomAddSeminar();
+		response.sendRedirect("seminars.jsp?"+Classroom.ID_ATTRIBUTE_NAME +"=" +classroomId);
 	
 	}
 

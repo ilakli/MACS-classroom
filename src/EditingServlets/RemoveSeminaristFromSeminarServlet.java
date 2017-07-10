@@ -47,7 +47,7 @@ public class RemoveSeminaristFromSeminarServlet extends HttpServlet {
 		assert (p != null);
 		connection.seminaristDB.deleteSeminaristFromSeminar(p.getEmail(), classroomId, seminarId);
 
-		response.sendRedirect(String.format("http://localhost:8080/MACS-classroom/editSectionsAndSeminars.jsp?%s=%s", 
+		response.sendRedirect(String.format("seminars.jsp?%s=%s", 
 				Classroom.ID_ATTRIBUTE_NAME, classroomId));
 	}
 
