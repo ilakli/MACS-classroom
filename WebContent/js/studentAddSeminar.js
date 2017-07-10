@@ -4,12 +4,12 @@ String.prototype.replaceAll = function(search, replacement) {
 };
 
 $(document).ready(function() { 
-
+	
 	$(".studentAddSeminarButton").on('click', function() {
 	
 		
 		
-		var str = $(this).parent().html();
+		var str = $(this).parent().parent().html();
 		
 		
 		
@@ -26,17 +26,16 @@ $(document).ready(function() {
 
 	
 		
-		var servlet = $(this).next().next().val();
+		var servlet = $(this).next().val();
 		
-		var seminarN = $(this).next().val();
+		var seminarN = $(this).next().next().val();
 		
 		var classroomId = $("#classroom-id").val();
 	
 		
 		
 		
-		$(this).parent().find("span").remove();
-		
+		$(this).parent().parent().find("span").remove();
 		
 		
 		
@@ -49,7 +48,7 @@ $(document).ready(function() {
 				classroomID: classroomId
 			},
 			success : function(result) {
-				alert("Done");
+				location.reload();
 			}
 		});
 

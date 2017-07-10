@@ -52,7 +52,7 @@ public class AddSeminaristToSeminarServlet extends HttpServlet {
 		if(connection.seminaristDB.seminaristExists(seminaristEmail,classroomId) 
 				&& connection.seminarDB.seminarExists(seminarN,classroomId)
 				&& currentSeminar.setSeminarist(seminaristEmail)) {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
+			RequestDispatcher view = request.getRequestDispatcher("seminars.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_ACC);	
 						 
 			view.forward(request, response);  
@@ -60,7 +60,7 @@ public class AddSeminaristToSeminarServlet extends HttpServlet {
 				" to class with id: " + classroomId);
 		}
 		else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
+			RequestDispatcher view = request.getRequestDispatcher("seminars.jsp?"+EditStatusConstants.STATUS +"="
 				+ EditStatusConstants.ADD_SEMINARIST_TO_SEMINAR_REJ);	
 						 
 			view.forward(request, response);  

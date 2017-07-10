@@ -46,7 +46,7 @@ public class AutoDistributionToSeminarsServlet extends HttpServlet {
 		
 		classroom.fillSeminarsWithFreeStudents();
 		
-		RequestDispatcher view = request.getRequestDispatcher("editSectionsAndSeminars.jsp");
+		RequestDispatcher view = request.getRequestDispatcher("seminars.jsp");
 		 
 		view.forward(request, response);  
 	}
