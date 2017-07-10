@@ -61,6 +61,7 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		upload.setSizeMax(maxFileSize);
 		String fileName = "";
 		
+
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			

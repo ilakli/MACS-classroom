@@ -175,11 +175,19 @@ public class MyDrive {
 	}
 	
 	public void uploadAssignmentToSectionLeader(String studentEmail, String filePath, String sectionLeaderEmail, String classroomId, String assignmentName) {
+		System.out.println("Trying to upload assignment to section leader");
+		System.out.println("Student email: " + studentEmail);
+		System.out.println("Filepath: " + filePath);
+		System.out.println("Section Leader email: " + sectionLeaderEmail);
 		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
 		uploadAssignmentToChecker(studentEmail, filePath, sectionLeaderFolder, assignmentName);
 	}
 
 	public void uploadAssignmentToSeminarist(String studentEmail, String filePath, String seminaristEmail, String classroomId, String assignmentName) {
+		System.out.println("Trying to upload assignment to seminarist");
+		System.out.println("Student email: " + studentEmail);
+		System.out.println("Filepath: " + filePath);
+		System.out.println("Section Leader email: " + seminaristEmail);
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
 		uploadAssignmentToChecker(studentEmail, filePath, seminaristFolderId, assignmentName);
 	}

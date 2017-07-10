@@ -103,18 +103,17 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		
 		System.out.println("==============================");
 		System.out.println("assignment title: " + assignmentTitle);
+		System.out.println("student email: " + studentEmail);
 		System.out.println("==============================");
-		
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 		
 		String studentId = connection.personDB.getPersonId(studentEmail);
-		String classroomFolderId = connection.driveDB.getClassroomFolder(classroomID);
 		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(classroomID, studentId);
 		String seminaristEmail = connection.studentDB.getSeminaristEmail(classroomID, studentId);
 		
-		String filePath = fileName;		
+		String filePath = fileName;
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
 		service.uploadAssignmentToSectionLeader(studentEmail, filePath, sectionLeaderEmail, classroomID, assignmentTitle);
