@@ -201,6 +201,10 @@ public class PersonDB {
 		return db.executeUpdate(myConnection);
 	}
 	
+	/**
+	 * @param p - person
+	 * @return - true if p is admin, false otherwise
+	 */
 	public boolean isAdmin(Person p) {
 		System.out.println("////////////////////////Person is: " + p);
 		boolean ret = false;
