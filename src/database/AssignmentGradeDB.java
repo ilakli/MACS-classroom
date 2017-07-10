@@ -23,8 +23,7 @@ public class AssignmentGradeDB {
 	public List<String> getAllGrades(){
 		String query = String.format("select * from `assignment_grades`"+
 					"ORDER BY `grade_value` ASC;"	);
-		System.out.println("xs: " + query);
-			
+					
 		MyConnection myConnection = db.getMyConnection(query);
 		List<String> grades = new ArrayList<String>();
 		try {
@@ -39,9 +38,7 @@ public class AssignmentGradeDB {
 				myConnection.closeConnection();
 			}
 		}
-		for(String s: grades){
-			System.out.println(s);
-		}
+		
 		return grades;
 	}
 }
