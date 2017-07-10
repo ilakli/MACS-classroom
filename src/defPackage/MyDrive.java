@@ -22,9 +22,6 @@ import com.google.api.services.drive.model.Permission;
 
 import database.AllConnections;
 import database.DriveDB;
-import eu.medsea.mimeutil.MimeUtil;
-import net.sf.jmimemagic.Magic;
-import net.sf.jmimemagic.MagicMatch;
 
 import javax.servlet.http.*;
 
@@ -248,6 +245,25 @@ public class MyDrive {
 		System.out.println("Section Leader email: " + seminaristEmail);
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
 		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, seminaristFolderId, assignmentName);
+	}
+	
+	public String findMaterialId (String classroomId, String categoryName, String materialName) {
+		String materialId = "";
+		String categoryFolderId = allConnections.driveDB.getCategoryFolder(classroomId, categoryName);
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", categoryFolderId)).execute();
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(materialName)) {
+					materialId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return materialId;
 	}
 	
 	public static void main(String[] args) throws IOException {
