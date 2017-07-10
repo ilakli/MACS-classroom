@@ -35,6 +35,23 @@ public class CategoryDB {
 		return db.executeUpdate(myConnection);
 	}
 	
+	public String getCategoryName (String classroomId, String categoryId) {
+		String categoryName = "";
+		String query = String.format(
+				"select `category_name` from `classroom_material_category` where `classroom_id` = %s and `category_id` = %s;",
+				classroomId, categoryId);
+		try {
+			MyConnection myConnection = db.getMyConnection(query);
+			ResultSet rs = myConnection.executeQuery();
+			if (rs.next()) {
+				categoryName = rs.getString("category_name");
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+		return categoryName;
+	}
+	
 	/**
 	 * This method returns all categories for classroom;
 	 * @param classroomId - ID of the classroom

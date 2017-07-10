@@ -152,4 +152,51 @@ public class StudentDB {
 		ArrayList<Person> students = personDB.getPersons(query);
 		return students;
 	}
+
+
+	public String getSectionLeaderEmail(String classroomId, String studentId) {
+		String sectionLeaderEmail = "";
+		String query = String.format(
+				"select `persons`.person_email from `student-section`"
+				+ " inner join `section-section_leader` on `section-section_leader`.section_id = `student-section`.section_id"
+				+ " inner join `persons` on `persons`.person_id = `section-section_leader`.person_id"
+				+ " where `student-section`.person_id = %s and `student-section`.classroom_id = %s;",
+				studentId, classroomId);
+		System.out.println("trying to get section leader email");
+		System.out.println(query);
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			if (rs.next()) {
+				sectionLeaderEmail = rs.getString(1);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+		return sectionLeaderEmail;
+	}
+
+	public String getSeminaristEmail(String classroomId, String studentId) {
+		String seminaristEmail = "";
+		String query = String.format(
+				"select `persons`.person_email from `student-seminar`" 
+				+ " inner join `seminar-seminarists` on `seminar-seminarists`.seminar_id = `student-seminar`.seminar_id"
+				+ " inner join `persons` on `persons`.person_id = `seminar-seminarists`.person_id"
+				+ " where `student-seminar`.person_id = %s and `student-seminar`.`classroom_id` = %s;",
+				studentId, classroomId);
+		System.out.println("trying to get seminarist email");
+		System.out.println(query);
+		MyConnection myConnection = db.getMyConnection(query);
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			if (rs.next()) {
+				seminaristEmail = rs.getString(1);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		} finally {
+			myConnection.closeConnection();;
+		}
+		return seminaristEmail;
+	}
 }

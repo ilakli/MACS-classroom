@@ -9,10 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.model.File;
+import com.google.api.client.json.JsonFactory;
+
 import Listeners.ContextListener;
 import database.AllConnections;
 import database.DBConnection;
 import defPackage.Classroom;
+import defPackage.MyDrive;
 
 /**
  * Servlet implementation class CreateClassroomServlet
@@ -48,8 +53,15 @@ public class CreateClassroomServlet extends HttpServlet {
 		
 		String classroomID = db.classroomDB.addClassroom(className,lecturerId);
 		
-		if(!classroomID.equals( DBConnection.DATABASE_ERROR)){
+		if(!classroomID.equals(DBConnection.DATABASE_ERROR)){
 			db.lecturerDB.addLecturer(lecturerEmail, classroomID);
+			MyDrive service = ((MyDrive) request.getServletContext().getAttribute("drive"));
+			
+			String folderId = service.createFolder("Classroom#" + classroomID + "#" + className);
+			db.driveDB.addClassroomFolder(classroomID, folderId);
+//			System.out.println("Folder ID: " + folderId);
+			
+			service.createFolder("Assignments", folderId);
 		}
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
@@ -60,7 +72,7 @@ public class CreateClassroomServlet extends HttpServlet {
 					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 			dispatch.forward(request, response);
 		}
-				
+		
 	}
 
 }

@@ -127,9 +127,6 @@
 			enctype="multipart/form-data">
 			<input name=<%=Classroom.ID_ATTRIBUTE_NAME%> type="hidden"
 				value=<%=classroomID%> id="classroomID" /> 
-				
-	  	
-			<input type="file" name="file" size="30" />
 			<select name="materialCategory">
 	  			<option value="" disabled selected>Select Category</option>
 	 			<%
@@ -142,7 +139,9 @@
 	  					out.println("<option value='" + currentCategoryId +"'>" + currentCategoryName+ "</option>");
 	  				}
 	  			%>
-	  		</select>
+	  		</select>				
+	  	
+			<input type="file" name="file" size="30" />
 	  		<br> 
 			<input type="submit"  class="btn btn-success">
 		</form>
