@@ -43,9 +43,7 @@ public class GiveGradeServlet extends HttpServlet {
 		String grade = request.getParameter("newGrade");
 		String studentEmail = request.getParameter("studentEmail");
 		String isSeminaris = request.getParameter("isSeminarist");
-		
-		System.out.println(isSeminaris);
-		
+				
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		connection.studentAssignmentDB.setStudnetAssignmentGrade(classroomID, studentID, assignmentTitle, grade, isSeminaris);
