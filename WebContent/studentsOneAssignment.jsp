@@ -305,7 +305,7 @@
 		<input type="hidden" name="studentEmail"value="<%=request.getAttribute(studentEmail)%>">
 		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
 		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
-		<input type="hidden" name="isSeminarist"value="<%=!isSeminarist%>">
+		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
 				
 		<input type="submit" class="ui teal button" value="Set"></form>
 	<script>

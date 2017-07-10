@@ -48,7 +48,7 @@ public class GiveGradeServlet extends HttpServlet {
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
-		connection.studentAssignmentDB.setStudnetAssignmentGrade(classroomID, studentID, assignmentTitle, grade);
+		connection.studentAssignmentDB.setStudnetAssignmentGrade(classroomID, studentID, assignmentTitle, grade, isSeminaris);
 		
 		String link = String.format("studentsOneAssignment.jsp?classroomID=%s&studentEmail=%S&assignmentTitle=%s", 
 				classroomID, studentEmail ,assignmentTitle);

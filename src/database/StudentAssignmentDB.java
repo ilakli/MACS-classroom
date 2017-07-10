@@ -192,10 +192,10 @@ private DBConnection db;
 	 * @param grade - new grade for this assignment;
 	 * @return 
 	 */
-	public boolean setStudnetAssignmentGrade(String classroomID, String personID, String assignmentTitle, String grade){
-		String query1 = String.format("update `student_assignments` set `assignment_grade` = '%s' "
+	public boolean setStudnetAssignmentGrade(String classroomID, String personID, String assignmentTitle, String grade, String isSeminarist){
+		String query1 = String.format("update `student_assignments` set `assignment_grade` = '%s' , `assignment_approved` = %s "
 				+ "where `classroom_id` = %s and `assignment_title` = '%s'  and `person_id` = %s; ", 
-				grade, classroomID, assignmentTitle, personID);
+				grade, isSeminarist,classroomID, assignmentTitle, personID);
 		System.out.println(query1);
 		MyConnection myConnection = db.getMyConnection(query1);
 		return db.executeUpdate(myConnection);
