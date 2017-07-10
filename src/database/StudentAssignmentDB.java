@@ -119,7 +119,7 @@ private DBConnection db;
 				}
 				String id = rs.getString("student_assignment_id");
 				boolean isApproved = rs.getBoolean("assignment_approved");
-				Integer assignmentGrade = rs.getInt("assignment_grade");
+				String assignmentGrade = rs.getString("assignment_grade");
 				if (rs.wasNull()) assignmentGrade = null;
 				
 				assignment = new StudentAssignment(id,classroomID, personID,assignmentTitle, 
@@ -182,5 +182,22 @@ private DBConnection db;
 				return db.executeUpdate(myConnection);
 			}
 		else return false;
+	}
+	
+	/**
+	 * This method changed students grade in database;
+	 * @param classroomID - id of the classroom;
+	 * @param personID - id of the person;
+	 * @param assignmentTitle - title of the assignment;
+	 * @param grade - new grade for this assignment;
+	 * @return 
+	 */
+	public boolean setStudnetAssignmentGrade(String classroomID, String personID, String assignmentTitle, String grade, String isSeminarist){
+		String query1 = String.format("update `student_assignments` set `assignment_grade` = '%s' , `assignment_approved` = %s "
+				+ "where `classroom_id` = %s and `assignment_title` = '%s'  and `person_id` = %s; ", 
+				grade, isSeminarist,classroomID, assignmentTitle, personID);
+		
+		MyConnection myConnection = db.getMyConnection(query1);
+		return db.executeUpdate(myConnection);
 	}
 }

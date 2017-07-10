@@ -6,7 +6,7 @@ import database.DBConnection.MyConnection;
 import defPackage.Person;
 
 public class SeminaristDB {
-	
+
 	private DBConnection db;
 	private PersonDB personDB;
 
@@ -60,8 +60,8 @@ public class SeminaristDB {
 			return false;
 		}
 		String query = String.format(
-				"insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);", 
-				classroomId, personId);
+				"insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);", classroomId,
+				personId);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -80,20 +80,26 @@ public class SeminaristDB {
 		}
 		String personId = personDB.getPersonId(email);
 
-		String preQuery = String.format(
+		String preQuery1 = String.format(
 				"delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s;", classroomId,
 				personId);
+		String preQuery2 = String.format(
+				"delete from `seminarist-seminarist_folder` where `classroom_id` = %s and `seminarist_id` = %s;",
+				classroomId, personId);
 		String query = String.format(
 				"delete from `classroom_seminarists` where `classroom_id` = %s and `person_id` = %s;", classroomId,
 				personId);
 
-		MyConnection myConnection = db.getMyConnection(preQuery);
+		MyConnection myConnection = db.getMyConnection(preQuery1);
 		db.executeUpdate(myConnection);
-
+		
+		myConnection = db.getMyConnection(preQuery2);
+		db.executeUpdate(myConnection);
+		
 		myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
-	
+
 	/**
 	 * deletes seminarist with given email from given classroom
 	 * 
@@ -107,35 +113,34 @@ public class SeminaristDB {
 			return false;
 		String personId = personDB.getPersonId(email);
 
-		String preQuery = String.format(
-				"delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s and "
-				+ "seminar_id = %s; ", classroomId, personId, seminarId);
-		
+		String preQuery = String
+				.format("delete from `seminar-seminarists` where `classroom_id` = %s and `person_id` = %s and "
+						+ "seminar_id = %s; ", classroomId, personId, seminarId);
+
 		MyConnection myConnection = db.getMyConnection(preQuery);
 		return db.executeUpdate(myConnection);
 	}
-	
-	public Person getSeminarist (String seminarId) {
-		String query = String.format(
-				"select * from `seminar-seminarists` where `seminar_id` = %s;", seminarId);
+
+	public Person getSeminarist(String seminarId) {
+		String query = String.format("select * from `seminar-seminarists` where `seminar_id` = %s;", seminarId);
 		ArrayList<Person> seminarists = personDB.getPersons(query);
 		return seminarists.isEmpty() ? null : seminarists.get(0);
 	}
-	
-	
-	
+
 	/**
 	 * returns list of seminarists without a seminar in classroom with given ID
-	 * @param classroomID - ID of classroom
+	 * 
+	 * @param classroomID
+	 *            - ID of classroom
 	 * @return list of seminarists that do not have a seminar
 	 */
-	public ArrayList<Person> getSeminaristsWithoutSeminar(String classroomID){
-		
-		String query = String.format("select * from `classroom_seminarists` where "
-				+ "classroom_id = %s  and person_id not in ("
-				+ "select person_id from `seminar-seminarists` where classroom_id = %s);"
-				, classroomID, classroomID);
-		
+	public ArrayList<Person> getSeminaristsWithoutSeminar(String classroomID) {
+
+		String query = String.format(
+				"select * from `classroom_seminarists` where " + "classroom_id = %s  and person_id not in ("
+						+ "select person_id from `seminar-seminarists` where classroom_id = %s);",
+				classroomID, classroomID);
+
 		ArrayList<Person> seminarists = personDB.getPersons(query);
 		return seminarists;
 	}

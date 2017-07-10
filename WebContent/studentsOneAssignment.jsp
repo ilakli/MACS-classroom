@@ -1,5 +1,6 @@
 <%@page import="defPackage.StudentAssignment"%>
 <%@page import="database.PersonDB"%>
+<%@page import="database.AssignmentGradeDB"%>
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Post"%>
@@ -26,16 +27,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	
+
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
 <script
 	src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
-
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="css/style.css">
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <% 	
 	String studentEmail = request.getParameter("studentEmail");
@@ -58,6 +54,31 @@
 	#ALL_STAFF_COMMENTS{
 		display: none;
 	}
+	.ui.menu {
+		margin-top: 0;
+	}
+	.block.header {
+		margin: 0;
+	}
+	.sign-out {
+	float: right;
+	margin-top: 0.8%;
+	margin-right: 0.7%;
+}
+
+.head-panel {
+	display: block;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.head-text {
+	display: inline-block;
+	border: solid;
+	padding: .78571429rem 1rem !important;
+	!
+	important;
+}
 	</style>
 </head>
 <body>
@@ -144,55 +165,56 @@
 		
 	%>
 
-	<div class="jumbotron">
-		<h2>
-			<a href="index.jsp" id="header-name">Macs Classroom</a>
-		</h2>
+	<div class="ui block header head-panel">
+	<a href="index.jsp">
+		<h3 class="ui header head-text">Macs Classroom</h3>
+	</a>
+	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
 	</div>
 	
-	<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
+	<div class="ui menu">
+		<a
+			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
+			class="header item"> <%=currentClassroom.getClassroomName()%>
+		</a> <a class="item"
+			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a>
+
+
+		<a class="item"
+			href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a>
+
+		<a class="active item"
+			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
+
+		<%
+			if (isAdmin || isLecturer) {
+		%>
+		<a class="item"
+			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
+		<%
+			}
+		%>
+		<div class="right menu">
+			<a class="item"
+				href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
+				People </a>
+			<div class="ui dropdown item">
+				Groups <i class="dropdown icon"></i>
+				<div class="menu">
+					<a
+						href=<%="sections.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
+						class="item"> Sections </a> <a
+						href=<%="seminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
+						class="item"> Seminars </a>
+				</div>
+			</div>
+			<script>
+				$('.ui.dropdown').dropdown();
+			</script>
 		</div>
-		<ul class="nav navbar-nav">
-			<li><a
-				href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Stream</a></li>
+		</div>
 			
-			<%if (isAdmin || isLecturer || isSeminarist || isSectionLeader){%>
-			<li><a
-				href=<%="viewSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-				Sections And Seminars</a></li>
-			<%}%>
-			
-			<%if (isAdmin || isLecturer){%>
-			<li><a
-				href=<%="edit.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Edit</a></li>
-			<%}%>
-			
-			<li><a
-				href=<%="about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>About</a></li>	
-			
-			<li class="active"><a
-				href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a></li>
-			
-			<%if (isAdmin || isLecturer){%>
-			<li><a
-				href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a></li>
-			
-			<li><a
-				href=<%="editSectionsAndSeminars.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-				Edit Sections And Seminars</a></li>
-			<%}%>
-			<li>
-			<a
-			href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
-				People
-			</a>
-			</li>
-		</ul>
-	</div>
-	</nav>
+	
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
@@ -283,26 +305,38 @@
 		
 	%>
 	
+	
 	<!-- GRADING -->
-<form>	
-<div class="ui selection dropdown">
-  <input type="hidden" name="gender">
-  <i class="dropdown icon"></i>
-  <div class="default text">Genderz</div>
-  <div class="menu">
-    <div class="item" data-value="1">Male</div>
-    <div class="item" data-value="0">Female</div>
-  </div>
-</div>
+	<% if(isSectionLeader || isSeminarist ){ %>
+				<form action="GiveGradeServlet" method="post">	
+				<div class="ui selection dropdown">
+				  <input type="hidden" name="newGrade">
+				  <i class="dropdown icon"></i>
+				  <div class="default text"> <%= assignment.getAssignmentGrade() %></div>
+				  <div class="menu">
+				  	<%
+				  		List<String> allGrades = connector.assignmentGradeDB.getAllGrades();
+				  		for(String grade : allGrades ){
+				  		out.println(" <div class=\"item\" data-value=\"" + grade +"\">" +
+				  				grade+"</div> ");
+				  		}
+				  	%>
+				   </div>
+				</div>
 
-<input type="submit"
-						class="ui teal button" value="Set"></form>
+		<input type="hidden" name="studentId"value="<%=assignment.getPersonId()%>">
+		<input type="hidden" name="studentEmail"value="<%=request.getAttribute(studentEmail)%>">
+		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
+		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
+		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
+				
+		<input type="submit" class="ui teal button" value="Set"></form>
 	<script>
 		$('.ui.dropdown').dropdown();
 	</script>
 	
 	
-	
+	<% } %>
 	<!-- END OF GRADING -->
 	
 	
