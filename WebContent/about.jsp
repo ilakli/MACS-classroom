@@ -62,12 +62,15 @@
 	border: solid;
 	padding: .78571429rem 1rem !important;
 }
+
 .material-add-form {
-	display:none;
+	display: none;
 }
-.material-add-form > * {
+
+.material-add-form>* {
 	margin: 0.5% !important;
 }
+
 .material-add-button {
 	margin: 0.5% !important;
 }
@@ -118,7 +121,7 @@
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).categoryDB;
 		ArrayList<Category> allCategories = categoryDB.getCategorys(classroomID);
 	%>
-
+	<input type="hidden" id="classroomID" value="<%=classroomID %>" >
 	<div class="ui block header head-panel">
 		<a href="index.jsp"> -
 			<h3 class="ui header head-text">Macs Classroom</h3>
@@ -172,11 +175,30 @@
 		if (isAdmin || isLecturer || isSeminarist) {
 	%>
 
-	<div class="categories">
-		<input type="text" value="" placeholder="Add Category" />
-		<button class="categoryAddButton btn btn-success">Submit</button>
-		<input type="hidden" value="AddNewCategoryServlet">
+	<button class="positive ui button category-add-button">Add
+		Category</button>
+	<div class="ui modal">
+		<div class="header">Add Category</div>
+		<div class="content">
+			<div class="field">
+				<div class="categories">
+					<input type="text" value="" placeholder="Add Category" />
+				</div>
+			</div>
+		</div>
+		<div class="actions">
+			<button class="ui teal button categoryAddButton">Add</button>
+			<input type="hidden" value="AddNewCategoryServlet">
+			<button class="ui red button cancel">Cancel</button>
+		</div>
 	</div>
+	<script>
+		$(".category-add-button").click(function() {
+			$('.ui.modal').modal('show');
+		});
+	</script>
+
+
 	<button class="positive ui button material-add-button">Add
 		Material</button>
 	<form action="UploadServlet" method="POST"
@@ -243,7 +265,6 @@
 			}
 		}
 	%>
-	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 
 	<script type="text/javascript" src='js/categoryMultiInput.js'></script>
 

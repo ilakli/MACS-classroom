@@ -22,9 +22,6 @@ import com.google.api.services.drive.model.Permission;
 
 import database.AllConnections;
 import database.DriveDB;
-import eu.medsea.mimeutil.MimeUtil;
-import net.sf.jmimemagic.Magic;
-import net.sf.jmimemagic.MagicMatch;
 
 import javax.servlet.http.*;
 

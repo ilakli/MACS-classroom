@@ -9,11 +9,9 @@ $(document).ready(function() {
 	
 		
 		
-		var str = $(this).parent().html();
+		var str = $(this).parent().parent().html();
 		
-		
-		
-		str = str.substr(str.indexOf("<"));
+		str = str.substr(str.indexOf("<span>"));
 		
 		str = str.substr(0,str.indexOf("<inp"));
 		
@@ -36,7 +34,7 @@ $(document).ready(function() {
 		$(this).parent().find("span").remove();
 		
 		
-		
+		alert("STR IS: " + str);
 		
 		$.ajax({
 			url : servlet,
