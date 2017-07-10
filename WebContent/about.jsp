@@ -120,7 +120,7 @@
 	%>
 	<input type="hidden" id="classroomID" value="<%=classroomID%>">
 	<div class="ui block header head-panel">
-		<a href="index.jsp"> -
+		<a href="index.jsp">
 			<h3 class="ui header head-text">Macs Classroom</h3>
 		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
 			out</a>
