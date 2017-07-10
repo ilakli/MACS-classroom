@@ -11,6 +11,7 @@
 <%@page import="database.AllConnections"%>
 <%@page import="WorkingServlets.DownloadServlet"%>
 <%@page import="defPackage.Material"%>
+<%@page import="defPackage.MyDrive"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.util.Calendar"%>
@@ -110,7 +111,7 @@
 		return result;
 	}%>
 
-	<%!private String generateAssignmentHTML(Assignment a) {
+	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 		
 		String result = "<div class=\"panel panel-default\"> " + 
 						" <div class=\"panel-body\"> " + 
@@ -122,8 +123,7 @@
 						}
 						
 						if(a.getFileName() != null){
-							result +=" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
-									+ "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>";
+							result +=" <a href=https://drive.google.com/open?id=" + fileId + ">" + a.getFileName() + "</a></div>";
 						}
 						
 						
@@ -218,10 +218,10 @@
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
-		
-		
-		
-			String htmlCode = generateAssignmentHTML(a);
+			
+			MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
+			String assignmentFileId = service.getAssignmentFileId(classroomID, a.getTitle());
+			String htmlCode = generateAssignmentHTML(a, assignmentFileId);
 			out.println(htmlCode);
 		
 	%>
@@ -292,16 +292,25 @@
 		
 		
 		
+			String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
+			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 			
-		
-	
+			String generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
+			
+			System.out.println("======================");
+			System.out.println("I've just generated HTML");
+			System.out.println("======================");
+			System.out.println(generatedHTML);
+			
+			out.println(generatedHTML);
+/*			
 			List<String> uploadedFiles = connector.studentAssignmentDB.
-					getStudentSentFiles(assignment.getStudentAssignmentId());	
+					getStudentSentFiles(assignment.getStudentAssignmentId());
 			for(String s : uploadedFiles){
 				out.println(" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
 							+ "=" + s+ "\">" + s + "</a>");
 			}
-			
+*/			
 		
 	%>
 	

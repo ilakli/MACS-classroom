@@ -1,6 +1,7 @@
 <%@page import="database.MaterialDB"%>
 <%@page import="defPackage.Category"%>
 <%@page import="defPackage.Person"%>
+<%@page import="defPackage.MyDrive"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="Listeners.ContextListener"%>
 <%@page import="database.CategoryDB"%>
@@ -92,10 +93,10 @@
 </head>
 
 <body>
-	<%!private String generateMaterial(String materialName) {
+	<%!private String generateMaterial(String materialName, String materialId) {
 		System.out.println("Material Name is: " + materialName);
 
-		String result = "<a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER + "=" + materialName + "\">"
+		String result = "<a href=https://drive.google.com/open?id=" + materialId + ">"
 				+ materialName + "</a>";
 
 		return result;
@@ -246,6 +247,7 @@
 	<%
 		MaterialDB materialDB = ((AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).materialDB;
+		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 
 		for (int i = 0; i < allCategories.size(); i++) {
 			Category currentCategory = allCategories.get(i);
@@ -258,7 +260,8 @@
 
 			for (int j = 0; j < associatedMaterials.size(); j++) {
 				String materialName = associatedMaterials.get(j).getMaterialName();
-				String htmlMaterial = generateMaterial(materialName);
+				String materialId = service.findMaterialId(classroomID, currentCategory.getCategoryName(), materialName);
+				String htmlMaterial = generateMaterial(materialName, materialId);
 
 				out.print(htmlMaterial);
 			}
