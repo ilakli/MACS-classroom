@@ -70,41 +70,34 @@
 .material-add-form>* {
 	margin: 0.5% !important;
 }
-
 .material-add-button {
 	margin: 0.5% !important;
+	display: block !important;
 }
+
 .category-add-button {
 	display: block !important;
 	margin: 0.5% !important;
+}
+.segments {
+	display: inlin-block;
+	width: 60% !important;
+	margin: 2% auto !important;
+}
+.segment a {
+	display: block !important;
 }
 </style>
 
 </head>
 
 <body>
-
-	<%!private String generateAssignmentHTML(Assignment a) {
-
-		String result = "<div class=\"panel panel-default\"> " + " <div class=\"panel-body\"> " + "<h1>" + a.getTitle()
-				+ "</h1>" + "<p> " + a.getInstructions() + "</p>" + " <a href=\"DownloadServlet?"
-				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>"
-
-				+ " <div class=\"panel-footer\"></div> "
-
-				+ "</div>";
-
-		return result;
-	}%>
-
 	<%!private String generateMaterial(String materialName) {
 		System.out.println("Material Name is: " + materialName);
 
-		String result = "<div class=\"panel panel-default\">  <div class=\"panel-body\"> <a href=\"DownloadServlet?"
-				+ DownloadServlet.DOWNLOAD_PARAMETER + "=" + materialName + "\">" + materialName
-				+ "</a></div> <div class=\"panel-footer\"></div> </div>";
+		String result = "<a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER + "=" + materialName + "\">"
+				+ materialName + "</a>";
 
-		System.out.println(result);
 		return result;
 	}%>
 
@@ -125,7 +118,7 @@
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).categoryDB;
 		ArrayList<Category> allCategories = categoryDB.getCategorys(classroomID);
 	%>
-	<input type="hidden" id="classroomID" value="<%=classroomID %>" >
+	<input type="hidden" id="classroomID" value="<%=classroomID%>">
 	<div class="ui block header head-panel">
 		<a href="index.jsp"> -
 			<h3 class="ui header head-text">Macs Classroom</h3>
@@ -178,7 +171,7 @@
 	<%
 		if (isAdmin || isLecturer || isSeminarist) {
 	%>
-	
+
 	<button class="positive ui button category-add-button">Add
 		Category</button>
 	<div class="ui modal">
@@ -201,7 +194,7 @@
 			$('.ui.modal').modal('show');
 		});
 	</script>
-	
+
 	<button class="positive ui button material-add-button">Add
 		Material</button>
 	<form action="UploadServlet" method="POST"
@@ -227,9 +220,6 @@
 				%>
 			</div>
 		</div>
-		<script>
-			$(".ui.dropdown").dropdown();
-		</script>
 		
 		<div>
 			<label for="file" class="ui icon button"> <i
@@ -237,9 +227,13 @@
 			</label> <input type="file" id="file" name="file" size=30
 				style="display: none">
 		</div>
-
+		
 		<input type="submit" class="ui teal button" value="Add">
+		<script>
+			$(".ui.dropdown").dropdown();
+		</script>
 	</form>
+	
 	<script>
 		$(".material-add-button").click(function() {
 			$(this).next().toggle();
@@ -256,8 +250,9 @@
 		for (int i = 0; i < allCategories.size(); i++) {
 			Category currentCategory = allCategories.get(i);
 
-			out.print("<h1 class=\"category-title\">" + currentCategory.getCategoryName() + "</h1>");
-
+			out.print("<div class=\"ui segments\"> <div class=\"ui segment\"> <div class=\"ui medium header\">"
+					+ currentCategory.getCategoryName() + "</div> </div>");
+			out.print("<div class=\"ui secondary segment\">");
 			List<Material> associatedMaterials = materialDB.getMaterialsForCategory(classroomID,
 					currentCategory.getCategoryId());
 
@@ -267,6 +262,8 @@
 
 				out.print(htmlMaterial);
 			}
+			out.print("</div>");
+			out.print("</div>");
 		}
 	%>
 
