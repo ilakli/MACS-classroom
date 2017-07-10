@@ -314,7 +314,9 @@
 		
 	%>
 	
+	
 	<!-- GRADING -->
+	<% if(isSectionLeader || isSeminarist ){ %>
 				<form action="GiveGradeServlet" method="post">	
 				<div class="ui selection dropdown">
 				  <input type="hidden" name="newGrade">
@@ -343,7 +345,7 @@
 	</script>
 	
 	
-	
+	<% } %>
 	<!-- END OF GRADING -->
 	
 	

@@ -29,17 +29,16 @@ public class PostDB {
 		String query = String.format(
 				"insert into `classroom_posts` (`classroom_id`, `person_id`, `post_text`) values(%s, %s, '%s');",
 				classroomId, personId, postText);
-		System.out.println("##################################");
-		System.out.println("##################################");
-		System.out.println("##################################");
-		System.out.println("##################################");
-		System.out.println("##################################");
-		System.out.println("##################################");
+		
 		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
-
+	
+	/**
+	 * @param classroomId - id of classroom
+	 * @return ArrayList of this classroom's posts
+	 */
 	public ArrayList<Post> getPosts(String classroomId) {
 		String query = String.format("select * from `classroom_posts` where `classroom_id` = %s;", classroomId);
 
