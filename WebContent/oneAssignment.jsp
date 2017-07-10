@@ -30,6 +30,8 @@
 <style type="text/css">
 .item {
 	width: 50%;
+	maragin-left: auto;
+	
 }
 </style>
 
