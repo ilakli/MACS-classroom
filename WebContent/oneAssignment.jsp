@@ -33,6 +33,10 @@
 .ui.menu {
 	margin-top: 0;
 }
+.item {
+	width: 50%;
+	maragin-left: auto;
+}
 
 .block.header {
 	margin: 0;

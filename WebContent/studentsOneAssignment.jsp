@@ -170,6 +170,7 @@
 	</a>
 	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
 	</div>
+	
 	<div class="ui menu">
 		<a
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
@@ -206,10 +207,14 @@
 						class="item"> Seminars </a>
 				</div>
 			</div>
+
+	
+	<nav class="navbar navbar-default">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#"><%=currentClassroom.getClassroomName()%></a>
 		</div>
 	</div>
-	
-	
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
@@ -223,7 +228,7 @@
 	
 	
 	<%
-	System.out.println("......................................status"+status );
+	
 		if(isStudent){
 
 			Date now = new Date();
@@ -237,10 +242,10 @@
 		
 				int maxAvailableRes = currentClassroom.getNumberOfReschedulings() - 
 						connector.classroomDB.reschedulingsUsed(studentEmail, classroomID) ;
-				System.out.println(maxAvailableRes + " maxAvRes");
+				
 				for(int i = 0; i <= maxAvailableRes; i++){
 					availableDate = addDays(assignment.getDeadlineWithReschedulings(), i*currentClassroom.getReschedulingLength());
-					System.out.println(availableDate + " avDate " + i);
+					
 					if(now.before(availableDate)){
 						canTurnIn = true;
 						mustUseReschedulings = i;
@@ -251,9 +256,6 @@
 			}else canTurnIn = true;
 			
 			if(canTurnIn){
-				
-				
-				System.out.println("........................uses reschedule  " + mustUseReschedulings );
 				
 				
 				%>
@@ -302,6 +304,28 @@
 			
 		
 	%>
+	
+	<!-- GRADING -->
+<form>	
+<div class="ui selection dropdown">
+  <input type="hidden" name="gender">
+  <i class="dropdown icon"></i>
+  <div class="default text">Genderz</div>
+  <div class="menu">
+    <div class="item" data-value="1">Male</div>
+    <div class="item" data-value="0">Female</div>
+  </div>
+</div>
+
+<input type="submit"
+						class="ui teal button" value="Set"></form>
+	<script>
+		$('.ui.dropdown').dropdown();
+	</script>
+	
+	
+	
+	<!-- END OF GRADING -->
 	
 	
 	<!-- COMMENTS -->
@@ -382,7 +406,7 @@
 	<script type="text/javascript" src='js/studentsOneAssignmentComment.js'></script>
 	<script type="text/javascript" src='js/studentsOneAssignmentMenu.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
-
+	
 
 
 </body>

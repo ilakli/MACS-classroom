@@ -4,7 +4,11 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.batch.BatchRequest;
+import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
+import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.http.FileContent;
+import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -14,6 +18,7 @@ import com.google.api.services.drive.Drive.Files.List;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import com.google.api.services.drive.model.Permission;
 
 import database.AllConnections;
 import database.DriveDB;
@@ -67,15 +72,39 @@ public class MyDrive {
 		File fileMetaData = new File();
 		fileMetaData.setName(folderName);
 		fileMetaData.setMimeType("application/vnd.google-apps.folder");
+		System.out.println("trying to create classroom folder");
+		System.out.println(folderName);
+		
+		JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+		    @Override
+		    public void onFailure(GoogleJsonError e,
+		                          HttpHeaders responseHeaders)
+		            throws IOException {
+		        // Handle error
+		        System.err.println(e.getMessage());
+		    }
+
+		    @Override
+		    public void onSuccess(Permission permission,
+		                          HttpHeaders responseHeaders)
+		            throws IOException {
+		        System.out.println("Permission ID: " + permission.getId());
+		    }
+		};
+		
 		File folder = null;
 		try {
 			folder = service.files().create(fileMetaData)
 					.setFields("id")
 					.execute();
+			Permission userPermission = new Permission().setType("anyone").setRole("writer");
+			BatchRequest batch = service.batch();
+			service.permissions().create(folder.getId(), userPermission).queue(batch, callback);
+			batch.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		
 		return folder != null ? folder.getId() : "";
 	}
 	
@@ -110,6 +139,26 @@ public class MyDrive {
 			File fileInFolder = service.files().create(file, fileToUploadContent)
 						.setFields("id, parents")
 						.execute();
+			JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+			    @Override
+			    public void onFailure(GoogleJsonError e,
+			                          HttpHeaders responseHeaders)
+			            throws IOException {
+			        // Handle error
+			        System.err.println(e.getMessage());
+			    }
+
+			    @Override
+			    public void onSuccess(Permission permission,
+			                          HttpHeaders responseHeaders)
+			            throws IOException {
+			        System.out.println("Permission ID: " + permission.getId());
+			    }
+			};
+			Permission userPermission = new Permission().setType("anyone").setRole("writer");
+			BatchRequest batch = service.batch();
+			service.permissions().create(fileInFolder.getId(), userPermission).queue(batch, callback);
+			batch.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -194,11 +243,13 @@ public class MyDrive {
 	
 	public static void main(String[] args) throws IOException {
 		MyDrive drv = new MyDrive();
-		FileList fl = drv.service.files().list()
-				.setQ("'0B5iqpMmbBKmkeHgxUUJpMWRQQ3M' in parents")
-				.execute();
-		for (File f: fl.getFiles()) {
-			System.out.println(f.getName() + " " + f.getId());
-		}
+		drv.createFolder("rachiriginda");
+//		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
+//		FileList fl = drv.service.files().list()
+//				.setQ("'0BzefYzRpjMBPQkpVLXQtS3FDbGc' in parents")
+//				.execute();
+//		for (File f: fl.getFiles()) {
+//			System.out.println(f.getName() + " " + f.getId());
+//		}
 	}
 }

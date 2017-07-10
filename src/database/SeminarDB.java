@@ -291,17 +291,16 @@ public class SeminarDB {
 	public Seminar getSeminarBySeminarist(Person seminarist, String classroomID) {
 		
 		String query = String.format("select s.seminar_n, s.seminar_size "
-				+ "from `classrooms` c,`persons` p,`classroom_seminarists` cs, `seminars` s" 
-				+ " where c.classroom_id = %s and c.classroom_id = cs.classroom_id"
-				+ " and p.person_id = %s and s.classroom_id = c.classroom_id;", classroomID, seminarist.getPersonID());
-				
+				+ "from `seminar-seminarists` ss, `seminars` s "
+				+ "where ss.classroom_id = %s and ss.person_id = %s and s.seminar_id = ss.seminar_id"
+				, classroomID, seminarist.getPersonID()); 
 				
 		Seminar seminar = null;
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		try {
 			ResultSet rs = myConnection.executeQuery();
-			if (rs.next()) {
+			if (rs != null && rs.next()) {
 				seminar = new Seminar(rs.getInt("seminar_n"), classroomID, rs.getInt("seminar_size"), allConnections);
 			}
 		} catch (SQLException | NullPointerException e) {
