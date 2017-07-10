@@ -291,10 +291,9 @@ public class SeminarDB {
 	public Seminar getSeminarBySeminarist(Person seminarist, String classroomID) {
 		
 		String query = String.format("select s.seminar_n, s.seminar_size "
-				+ "from `seminar-seminaris` ss, `seminar` s "
+				+ "from `seminar-seminarists` ss, `seminars` s "
 				+ "where ss.classroom_id = %s and ss.person_id = %s and s.seminar_id = ss.seminar_id"
 				, classroomID, seminarist.getPersonID()); 
-				
 				
 		Seminar seminar = null;
 		
