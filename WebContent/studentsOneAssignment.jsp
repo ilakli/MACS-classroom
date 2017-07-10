@@ -1,5 +1,6 @@
 <%@page import="defPackage.StudentAssignment"%>
 <%@page import="database.PersonDB"%>
+<%@page import="database.AssignmentGradeDB"%>
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Post"%>
@@ -284,19 +285,29 @@
 	%>
 	
 	<!-- GRADING -->
-<form>	
-<div class="ui selection dropdown">
-  <input type="hidden" name="gender">
-  <i class="dropdown icon"></i>
-  <div class="default text">Genderz</div>
-  <div class="menu">
-    <div class="item" data-value="1">Male</div>
-    <div class="item" data-value="0">Female</div>
-  </div>
-</div>
+				<form action="GiveGradeServlet" method="post">	
+				<div class="ui selection dropdown">
+				  <input type="hidden" name="newGrade">
+				  <i class="dropdown icon"></i>
+				  <div class="default text"> <%= assignment.getAssignmentGrade() %></div>
+				  <div class="menu">
+				  	<%
+				  		List<String> allGrades = connector.assignmentGradeDB.getAllGrades();
+				  		for(String grade : allGrades ){
+				  		out.println(" <div class=\"item\" data-value=\"" + grade +"\">" +
+				  				grade+"</div> ");
+				  		}
+				  	%>
+				   </div>
+				</div>
 
-<input type="submit"
-						class="ui teal button" value="Set"></form>
+		<input type="hidden" name="studentId"value="<%=assignment.getPersonId()%>">
+		<input type="hidden" name="studentEmail"value="<%=request.getAttribute(studentEmail)%>">
+		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
+		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
+		<input type="hidden" name="isSeminarist"value="<%=!isSeminarist%>">
+				
+		<input type="submit" class="ui teal button" value="Set"></form>
 	<script>
 		$('.ui.dropdown').dropdown();
 	</script>
