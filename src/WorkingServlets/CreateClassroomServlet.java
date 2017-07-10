@@ -57,7 +57,7 @@ public class CreateClassroomServlet extends HttpServlet {
 			db.lecturerDB.addLecturer(lecturerEmail, classroomID);
 			MyDrive service = ((MyDrive) request.getServletContext().getAttribute("drive"));
 			
-			String folderId = service.createFolder("Classroom#" + classroomID);
+			String folderId = service.createFolder("Classroom#" + classroomID + "#" + className);
 			db.driveDB.addClassroomFolder(classroomID, folderId);
 //			System.out.println("Folder ID: " + folderId);
 			
