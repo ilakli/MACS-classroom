@@ -72,6 +72,26 @@ public class MyDrive {
 		File fileMetaData = new File();
 		fileMetaData.setName(folderName);
 		fileMetaData.setMimeType("application/vnd.google-apps.folder");
+		System.out.println("trying to create classroom folder");
+		System.out.println(folderName);
+		
+		JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+		    @Override
+		    public void onFailure(GoogleJsonError e,
+		                          HttpHeaders responseHeaders)
+		            throws IOException {
+		        // Handle error
+		        System.err.println(e.getMessage());
+		    }
+
+		    @Override
+		    public void onSuccess(Permission permission,
+		                          HttpHeaders responseHeaders)
+		            throws IOException {
+		        System.out.println("Permission ID: " + permission.getId());
+		    }
+		};
+		
 		File folder = null;
 		try {
 			folder = service.files().create(fileMetaData)
@@ -79,7 +99,7 @@ public class MyDrive {
 					.execute();
 			Permission userPermission = new Permission().setType("anyone").setRole("writer");
 			BatchRequest batch = service.batch();
-			service.permissions().create(folder.getId(), userPermission).queue(batch, null);
+			service.permissions().create(folder.getId(), userPermission).queue(batch, callback);
 			batch.execute();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -223,7 +243,8 @@ public class MyDrive {
 	
 	public static void main(String[] args) throws IOException {
 		MyDrive drv = new MyDrive();
-		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
+		drv.createFolder("rachiriginda");
+//		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
 //		FileList fl = drv.service.files().list()
 //				.setQ("'0BzefYzRpjMBPQkpVLXQtS3FDbGc' in parents")
 //				.execute();
