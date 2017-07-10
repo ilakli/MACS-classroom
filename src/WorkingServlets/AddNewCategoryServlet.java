@@ -11,6 +11,7 @@ import Listeners.ContextListener;
 import database.AllConnections;
 import database.CategoryDB;
 import defPackage.Classroom;
+import defPackage.MyDrive;
 
 /**
  * Servlet implementation class AddNewCategoryServlet
@@ -45,18 +46,24 @@ public class AddNewCategoryServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		
 		System.out.println("Atts are: " + categoriesAsString + " " + classroomId);
-	
-		CategoryDB categoryDB = ((AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).categoryDB;
+		
+		AllConnections allConnections = (AllConnections)request.getServletContext().getAttribute("connection");
+		CategoryDB categoryDB = allConnections.categoryDB;
+		MyDrive service = (MyDrive)request.getServletContext().getAttribute("drive");
+		
+		String classroomFolder = allConnections.driveDB.getClassroomFolder(classroomId);
 		
 		boolean status = true;
 		
 		for(int i=0;i<categories.length;i++){
-			categoryDB.addCategory(classroomId, categories[i]);
+			if (categoryDB.addCategory(classroomId, categories[i])) {
+				String categoryFolder = service.createFolder(categories[i], classroomFolder);
+				System.out.println("Folder was created for " + categories[i] + " -> " + categoryFolder);
+				allConnections.driveDB.addCategoryFolder(classroomId, categories[i], categoryFolder);
+			}
 		}
 		
 		response.sendRedirect("about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
-		
-		
 	}
 
 }

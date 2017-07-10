@@ -1,10 +1,15 @@
 package Listeners;
 
+import java.io.IOException;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
+import com.google.api.client.json.JsonFactory;
+
 import database.AllConnections;
+import defPackage.MyDrive;
 
 /**
  * Application Lifecycle Listener implementation class ContextListener
@@ -34,6 +39,13 @@ public class ContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg0)  { 
         AllConnections connection = new AllConnections();
         arg0.getServletContext().setAttribute(CONNECTION_ATTRIBUTE_NAME, connection);
+        
+        MyDrive drive = null;
+		try {
+			drive = new MyDrive();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        arg0.getServletContext().setAttribute("drive", drive);
     }
-	
 }

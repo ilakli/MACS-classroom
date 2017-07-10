@@ -23,6 +23,7 @@ import Listeners.ContextListener;
 import database.AllConnections;
 import database.MaterialDB;
 import defPackage.Classroom;
+import defPackage.MyDrive;
 
 /**
  * Servlet implementation class UploadServlet
@@ -84,23 +85,13 @@ public class UploadServlet extends HttpServlet {
 
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
-		String fileName = "";
+		String filePath = "";
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
-			Iterator<FileItem> i = fileItems.iterator();
 			
 			for (FileItem item : fileItems) {
-
 				if (!item.isFormField()) {
-
-					fileName = item.getName();
-
-					if (fileName.lastIndexOf("\\") >= 0) {
-						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
-					} else {
-						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
-					}
-					item.write(file);
+					filePath = item.getName();
 				} else {
 					String fieldName = item.getFieldName();
 					
@@ -111,21 +102,25 @@ public class UploadServlet extends HttpServlet {
 					}
 				}
 			}
-
 		} catch (Exception ex) {
 
 		}
 		
 		AllConnections connection = (AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
-
-		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+		MyDrive myDrive = (MyDrive) request.getServletContext().getAttribute("drive");
+		
+		String fileName = filePath.substring(filePath.lastIndexOf('\\') + 1);
 
 		System.out.println(fileName + " is fileName And classroomId is: " + classroomId + " And categoryId is: " + categoryId);
 
 		MaterialDB materialDB = connection.materialDB;
+		materialDB.addMaterial(classroomId, categoryId, fileName);
 		
-		materialDB.addMaterial(classroomId,categoryId,fileName);
+		String categoryName = connection.categoryDB.getCategoryName(classroomId, categoryId);
+		String categoryFolder = connection.driveDB.getCategoryFolder(classroomId, categoryName);
+		
+		myDrive.uploadFile(fileName, filePath, categoryFolder);
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);

@@ -19,6 +19,9 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import Listeners.ContextListener;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MyDrive;
+import defPackage.Person;
+import defPackage.Section;
 import defPackage.StudentAssignment;
 
 /**
@@ -45,7 +48,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String studentEmail = "";
 		String fileName = "";
 		String numReschedulings = "";
-		
 
 		filePath = request.getServletContext().getRealPath("/");
 		
@@ -61,7 +63,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
-		
 		
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
@@ -102,11 +103,21 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		
 		System.out.println("==============================");
 		System.out.println("assignment title: " + assignmentTitle);
+		System.out.println("student email: " + studentEmail);
 		System.out.println("==============================");
 		
-		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
+		
+		String studentId = connection.personDB.getPersonId(studentEmail);
+		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(classroomID, studentId);
+		String seminaristEmail = connection.studentDB.getSeminaristEmail(classroomID, studentId);
+		
+		String filePath = fileName;
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+		
+		service.uploadAssignmentToSectionLeader(studentEmail, filePath, sectionLeaderEmail, classroomID, assignmentTitle);
+		service.uploadAssignmentToSeminarist(studentEmail, filePath, seminaristEmail, classroomID, assignmentTitle);
 		
 		String personID = connection.personDB.getPersonId(studentEmail);
 		
