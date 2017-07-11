@@ -62,6 +62,7 @@ public class AddStudentToSectionServlet extends HttpServlet {
 					&& connection.studentDB.studentExists(e, classroomId)
 					&& currentSection.addStudentToSection(e)) {
 				
+				connection.sectionDB.updateSectionSize(sectionN, classroomId);
 				System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + e + 
 					" to class with id: " + classroomId);
 			}
