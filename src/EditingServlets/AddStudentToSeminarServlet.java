@@ -62,6 +62,7 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 					&& connection.studentDB.studentExists(e, classroomId)
 					&& currentSeminar.addStudentToSeminar(e)) {
 				
+				connection.seminarDB.updateSeminarSize(seminarN, classroomId);
 				System.out.println("Added Student To Section: " + currentSeminar.getSeminarN() + " " + e + 
 					" to class with id: " + classroomId);
 			}
