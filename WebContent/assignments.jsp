@@ -80,34 +80,6 @@
 	%>
 
 
-	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, boolean isSectionLeader, boolean isSeminarist,
-											String classroomID, Person currentPerson) {
-		
-		String result = "<div class=\"panel panel-default\"> " + 
-						" <div class=\"panel-body\"> ";
-						if(isStudent){ 
-							result+="<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
-								+"\"> " + a.getTitle() + "</a></h1>";
-						} else {
-							result+="<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>";
-						}
-
-						if( a.getDeadline()!= null){
-							result+="<p> Deadline:" + a.getDeadline() + "</p>";
-						}
-								
-						result += "</div>";
-		
-		return result;
-	}%>
-
-
-
-
-
-
 		<div class="ui block header head-panel">
 	<a href="index.jsp">
 		<h3 class="ui header head-text">Macs Classroom</h3>
@@ -212,16 +184,72 @@
 	<%
 		}
 	%>
-	<!-- -------------------------------------------------------------------- -->
-	<%
-		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
 
-		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a, isStudent, isSectionLeader, isSeminarist, classroomID, currentPerson);
-			out.println(htmlCode);
-		}
-	%>
+
+
+
+	<%
+	
+
+	List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
+	for (Assignment a : assignments) {
+		
+		 %>
+					<div class="ui segments">
+					  <div class="ui segment">
+					  			<%
+					 			if(isStudent){ 
+					 			 %>
+					 			 	<%=
+					 			 	"<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
+									+"\"> " + a.getTitle() + "</a></h1>"
+					 			 	
+					 			 	
+								 	%>
+									
+								<%
+								} else {
+								%>		
+							
+									<%= 
+									"<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>"
+									%>
+								<%		
+								}
+
+						  		%>		
+					    
+					    
+					    
+					  </div>
+					  <div class="ui secondary segment">
+
+					    <% 
+					    	if( a.getDeadline()!= null){
+					    %>
+								<p> Deadline:" <%= a.getDeadline()  %>  </p>
+								
+						<%
+							}
+					    
+					    %> 
+					  </div>
+					</div>			
+					
+					
+					
+					
+					
+			<%		
+				}
+			%>
+
+	
 	<!-- -------------------------------------------------------------------- -->
+	
+	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/comments.js'
