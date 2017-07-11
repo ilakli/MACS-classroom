@@ -66,6 +66,11 @@
 	position: relative;
 	overflow: auto;
 }
+.free-students{
+	max-height: 350px !important;
+	position: relative;
+	overflow: auto;
+}
 .fixed-position{
 	display: inline-block;
 	position: fixed;
@@ -168,14 +173,13 @@
 	
 	<div class="ui raised segment">
 		<h2 class="ui header">Students Without Section</h2>
-		
-		<div class="ui middle aligned selection list">
 			<form method="POST" action="AutoDistributionToSectionsServlet">
 				<input type="hidden" name = "<%= Classroom.ID_ATTRIBUTE_NAME %>" value= "<%= classroomID %>" >
 				<button type="submit" class="positive ui button">Auto
 					Distribution</button>
 			</form>
-
+		<div class="ui middle aligned selection list free-students">
+			
 			<%
 				for (int i = 0; i < studentsWithoutSection.size(); i++) {
 					Person currentStudent = studentsWithoutSection.get(i);

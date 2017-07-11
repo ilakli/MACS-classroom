@@ -40,13 +40,13 @@ CREATE TABLE `persons` (
 CREATE TABLE `admins` (
     `person_id` INT NOT NULL,
     UNIQUE (`person_id`),
-    CONSTRAINT `admins_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `admins_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `lecturers` (
     `person_id` INT NOT NULL,
     UNIQUE (`person_id`),
-    CONSTRAINT `lecturers_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `lecturers_fk0` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)  ON DELETE CASCADE
 );
  
 CREATE TABLE `classrooms` (
@@ -57,7 +57,7 @@ CREATE TABLE `classrooms` (
     `classroom_reschedulings_length` INT NOT NULL DEFAULT 0,
     `classroom_seminar_auto_distribution` BOOL NOT NULL DEFAULT false,
     `classroom_section_auto_distribution` BOOL NOT NULL DEFAULT false,
-    CONSTRAINT `classrooms_fk0` FOREIGN KEY (`classroom_creator_id`) REFERENCES `persons`(`person_id`),
+    CONSTRAINT `classrooms_fk0` FOREIGN KEY (`classroom_creator_id`) REFERENCES `persons`(`person_id`)  ON DELETE CASCADE,
     PRIMARY KEY (`classroom_id`)
 );
  
@@ -68,8 +68,8 @@ CREATE TABLE `classroom_posts` (
     `post_text` TEXT NOT NULL,
     `post_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`post_id`),
-    CONSTRAINT `classroom_posts_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_posts_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `classroom_posts_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_posts_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `post_comments` (
@@ -79,8 +79,8 @@ CREATE TABLE `post_comments` (
     `comment_text` TEXT NOT NULL,
     `comment_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`comment_id`),
-    CONSTRAINT `post_comments_fk0` FOREIGN KEY (`post_id`) REFERENCES `classroom_posts`(`post_id`),
-    CONSTRAINT `post_comments_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `post_comments_fk0` FOREIGN KEY (`post_id`) REFERENCES `classroom_posts`(`post_id`) ON DELETE CASCADE,
+    CONSTRAINT `post_comments_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_assignments` (
@@ -91,7 +91,7 @@ CREATE TABLE `classroom_assignments` (
     `file_name` varchar(100),
    
     PRIMARY KEY (`classroom_id`,`assignment_title`),
-    CONSTRAINT `classroom_assignments_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
+    CONSTRAINT `classroom_assignments_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_material_category` (
@@ -100,7 +100,7 @@ CREATE TABLE `classroom_material_category` (
     `category_name` varchar(100) NOT NULL,
     PRIMARY KEY (`category_id`),
     UNIQUE(`classroom_id`, `category_name`),
-    CONSTRAINT `classroom_material_category_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
+    CONSTRAINT `classroom_material_category_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_materials` (
@@ -108,16 +108,16 @@ CREATE TABLE `classroom_materials` (
     `category_id` INT NOT NULL,
     `material_name` varchar(100) NOT NULL, 
     PRIMARY KEY (`material_name`,`category_id`),
-    CONSTRAINT `classroom_materials_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_materials_fk1` FOREIGN KEY (`category_id`) REFERENCES `classroom_material_category`(`category_id`)
+    CONSTRAINT `classroom_materials_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_materials_fk1` FOREIGN KEY (`category_id`) REFERENCES `classroom_material_category`(`category_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_lecturers` (
     `classroom_id` INT NOT NULL,
     `person_id` INT NOT NULL,
     PRIMARY KEY (`classroom_id`,`person_id`),
-    CONSTRAINT `classroom_lecturers_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_lecturers_fk1` FOREIGN KEY (`person_id`) REFERENCES `lecturers`(`person_id`)
+    CONSTRAINT `classroom_lecturers_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_lecturers_fk1` FOREIGN KEY (`person_id`) REFERENCES `lecturers`(`person_id`) ON DELETE CASCADE
 );
  
  
@@ -129,23 +129,23 @@ CREATE TABLE `lectures` (
     `lecture_name`  varchar(100) NOT NULL,
    
     CONSTRAINT `lectures_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES
-                    `classroom_lecturers` (`classroom_id`, `person_id`)    
+                    `classroom_lecturers` (`classroom_id`, `person_id`)  ON DELETE CASCADE   
 );
  
 CREATE TABLE `classroom_seminarists` (
     `classroom_id` INT NOT NULL,
     `person_id` INT NOT NULL,
     PRIMARY KEY (`classroom_id`,`person_id`),
-    CONSTRAINT `classroom_seminarists_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_seminarists_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `classroom_seminarists_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_seminarists_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_section_leaders` (
     `classroom_id` INT NOT NULL,
     `person_id` INT NOT NULL,
     PRIMARY KEY (`classroom_id`,`person_id`),
-    CONSTRAINT `classroom_section_leaders_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_section_leaders_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `classroom_section_leaders_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_section_leaders_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `sections` (
@@ -156,7 +156,7 @@ CREATE TABLE `sections` (
  
     PRIMARY KEY (`section_id`, `classroom_id`),
     UNIQUE KEY `seminars_uk0` (`section_n`, `classroom_id`),
-    CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
+    CONSTRAINT `sections_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `seminars` (
@@ -167,7 +167,7 @@ CREATE TABLE `seminars` (
  
     PRIMARY KEY (`seminar_id`, `classroom_id`),
     UNIQUE KEY `seminars_uk0` (`seminar_n`, `classroom_id`),
-    CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`)
+    CONSTRAINT `seminars_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `classroom_students` (
@@ -175,8 +175,8 @@ CREATE TABLE `classroom_students` (
     `person_id` INT NOT NULL,
     `reschedulings_used` INT NOT NULL DEFAULT 0,
     PRIMARY KEY (`classroom_id`,`person_id`),
-    CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`),
-    CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`)
+    CONSTRAINT `classroom_students_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `classroom_students_fk1` FOREIGN KEY (`person_id`) REFERENCES `persons`(`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `student-seminar` (
@@ -184,8 +184,8 @@ CREATE TABLE `student-seminar` (
     `person_id` INT NOT NULL,
     `seminar_id` INT NOT NULL,
     UNIQUE KEY `unique_key_student-seminar` (`person_id`, `classroom_id`),
-    CONSTRAINT `student-seminar_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`,`classroom_id`),
-    CONSTRAINT `student-seminar_fk1` FOREIGN KEY (`seminar_id`, `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`)
+    CONSTRAINT `student-seminar_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`,`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `student-seminar_fk1` FOREIGN KEY (`seminar_id`, `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `student-section` (
@@ -193,8 +193,8 @@ CREATE TABLE `student-section` (
     `person_id` INT NOT NULL,
     `section_id` INT NOT NULL,
     UNIQUE KEY `unique_key_student-section` (`person_id`, `classroom_id`),
-    CONSTRAINT `student-section_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`, `classroom_id`),
-    CONSTRAINT `student-section_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
+    CONSTRAINT `student-section_fk0` FOREIGN KEY (`person_id`, `classroom_id`) REFERENCES `classroom_students`(`person_id`, `classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `student-section_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `seminar-seminarists` (
@@ -203,8 +203,8 @@ CREATE TABLE `seminar-seminarists` (
     `person_id` INT NOT NULL,
     UNIQUE KEY `seminar-seminarists_uk0` (`seminar_id`),
     UNIQUE KEY `seminar-seminarists_uk1` (`person_id`, `classroom_id`),
-    CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id` , `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`),
-    CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`)
+    CONSTRAINT `seminar-seminarists_fk0` FOREIGN KEY (`seminar_id` , `classroom_id`) REFERENCES `seminars`(`seminar_id`, `classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `seminar-seminarists_fk1` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_seminarists`(`classroom_id` , `person_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `assignment_grades` (
@@ -224,9 +224,9 @@ CREATE TABLE `student_assignments` (
 
 	PRIMARY KEY (`student_assignment_id`),
 	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_title`),
-	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`),
-	CONSTRAINT `FK__assignment_grades` FOREIGN KEY (`assignment_grade`) REFERENCES `assignment_grades` (`grade_name`),
-	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`)
+	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`) ON DELETE CASCADE,
+	CONSTRAINT `FK__assignment_grades` FOREIGN KEY (`assignment_grade`) REFERENCES `assignment_grades` (`grade_name`) ON DELETE CASCADE,
+	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`) ON DELETE CASCADE
 );
 
 CREATE TABLE `student_uploaded_assignments` (
@@ -234,7 +234,7 @@ CREATE TABLE `student_uploaded_assignments` (
 	`file_name` VARCHAR(100) NOT NULL,
 	`upload_date` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	UNIQUE KEY `student_assignments_uk0` (`student_assignment_id`, `file_name`),
-	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`)
+	CONSTRAINT `FK__student_assignments` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `assignment_comment` (
@@ -242,8 +242,8 @@ CREATE TABLE `assignment_comment` (
     `person_id` INT NOT NULL,
     `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `comment_text` TEXT NOT NULL,
-    CONSTRAINT `FK__student_assignments1` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
-    CONSTRAINT `FK__persons0` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
+    CONSTRAINT `FK__student_assignments1` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`) ON DELETE CASCADE,
+    CONSTRAINT `FK__persons0` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `assignment_staff_comment` (
@@ -251,8 +251,8 @@ CREATE TABLE `assignment_staff_comment` (
     `person_id` INT NOT NULL,
     `comment_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `comment_text` TEXT NOT NULL,
-    CONSTRAINT `FK__student_assignments2` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`),
-    CONSTRAINT `FK__persons1` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`)
+    CONSTRAINT `FK__student_assignments2` FOREIGN KEY (`student_assignment_id`) REFERENCES `student_assignments` (`student_assignment_id`) ON DELETE CASCADE,
+    CONSTRAINT `FK__persons1` FOREIGN KEY (`person_id`) REFERENCES `persons` (`person_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `section-section_leader` (
@@ -261,8 +261,8 @@ CREATE TABLE `section-section_leader` (
     `section_id` INT NOT NULL,
     UNIQUE KEY `section-section_leader-uk0` (`person_id`, `classroom_id`),
     UNIQUE KEY `section-section_leader-uk1` (`section_id`),
-    CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`),
-    CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`)
+    CONSTRAINT `section-section_leader_fk0` FOREIGN KEY (`classroom_id`, `person_id`) REFERENCES `classroom_section_leaders`(`classroom_id`, `person_id`) ON DELETE CASCADE,
+    CONSTRAINT `section-section_leader_fk1` FOREIGN KEY (`section_id`, `classroom_id`) REFERENCES `sections`(`section_id`, `classroom_id`) ON DELETE CASCADE
 );
  
 CREATE TABLE `functions` (
@@ -282,9 +282,9 @@ CREATE TABLE `classroom_position_function` (
     `position_id` INT NOT NULL,
     `function_id` INT NOT NULL,
     UNIQUE KEY `unique0` (`classroom_id`, `position_id`, `function_id`),
-    CONSTRAINT `FK__classrooms` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
-    CONSTRAINT `FK__positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`position_id`),
-    CONSTRAINT `FK__functions` FOREIGN KEY (`function_id`) REFERENCES `functions` (`function_id`)
+    CONSTRAINT `FK__classrooms` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`) ON DELETE CASCADE,
+    CONSTRAINT `FK__positions` FOREIGN KEY (`position_id`) REFERENCES `positions` (`position_id`) ON DELETE CASCADE,
+    CONSTRAINT `FK__functions` FOREIGN KEY (`function_id`) REFERENCES `functions` (`function_id`) ON DELETE CASCADE
 );
  
  
@@ -293,7 +293,7 @@ CREATE TABLE `classroom-classroom_folder` (
 	`folder_id` VARCHAR (100) NOT NULL,
 	
 	PRIMARY KEY (`classroom_id`),
-	CONSTRAINT `classroom-classroom_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`)
+	CONSTRAINT `classroom-classroom_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `seminarist-seminarist_folder` (
@@ -302,8 +302,8 @@ CREATE TABLE `seminarist-seminarist_folder` (
 	`folder_id` VARCHAR(100) NOT NULL,
 	
 	PRIMARY KEY (`classroom_id`, `seminarist_id`),
-	CONSTRAINT `seminarist-seminarist_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
-	CONSTRAINT `seminarist-seminarist_folder_fk1` FOREIGN KEY (`classroom_id`, `seminarist_id`) REFERENCES `classroom_seminarists` (`classroom_id`, `person_id`)
+	CONSTRAINT `seminarist-seminarist_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`) ON DELETE CASCADE,
+	CONSTRAINT `seminarist-seminarist_folder_fk1` FOREIGN KEY (`classroom_id`, `seminarist_id`) REFERENCES `classroom_seminarists` (`classroom_id`, `person_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `section_leader-section_leader_folder` (
@@ -312,8 +312,8 @@ CREATE TABLE `section_leader-section_leader_folder` (
 	`folder_id` VARCHAR (100) NOT NULL,
 	
 	PRIMARY KEY (`classroom_id`, `section_leader_id`),
-	CONSTRAINT `section_leader-section_leader_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
-	CONSTRAINT `section_leader-section_leader_folder_fk1` FOREIGN KEY (`classroom_id`, `section_leader_id`) REFERENCES `classroom_section_leaders` (`classroom_id`, `person_id`)
+	CONSTRAINT `section_leader-section_leader_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`) ON DELETE CASCADE,
+	CONSTRAINT `section_leader-section_leader_folder_fk1` FOREIGN KEY (`classroom_id`, `section_leader_id`) REFERENCES `classroom_section_leaders` (`classroom_id`, `person_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `category-category_folder` (
@@ -322,8 +322,8 @@ CREATE TABLE `category-category_folder` (
 	`category_folder` VARCHAR (100) NOT NULL,
 	
 	PRIMARY KEY (`classroom_id`, `category_name`),
-	CONSTRAINT `category-category_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`),
-	CONSTRAINT `category-category_folder_fk1` FOREIGN KEY (`classroom_id`, `category_name`) REFERENCES `classroom_material_category`(`classroom_id`, `category_name`)
+	CONSTRAINT `category-category_folder_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms` (`classroom_id`) ON DELETE CASCADE,
+	CONSTRAINT `category-category_folder_fk1` FOREIGN KEY (`classroom_id`, `category_name`) REFERENCES `classroom_material_category`(`classroom_id`, `category_name`) ON DELETE CASCADE
 );
 
 insert into `positions` (`position_name`) values

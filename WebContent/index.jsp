@@ -14,9 +14,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="google-signin-client_id"
 	content="127282049380-isld6v6lrvjeqk5nrq8o9qjquk5bp0ig.apps.googleusercontent.com">
+
+
 <title>Macs Classroom</title>
 
-<link rel="icon" href="favicon.ico" type="image/x-icon" />
 
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <script type="text/javascript">
@@ -29,14 +30,64 @@
 		window.location = "addLecturer.html"
 	}
 </script>
-<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.css">
 <script
 	src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 
+
+<script type="text/javascript" src='js/multiInput.js'></script>
+<script type="text/javascript" src='js/lecturerAdd.js'></script>
+
+<link rel="stylesheet" href="css/multiInput.css" />
+
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <style>
+
+.list-wrapper {
+	float: left;
+	display: inline-block;
+	margin-right: 0.5%;
+	margin-left: 0.5%;
+	width: 24%;
+}
+
+.checkbox {
+	margin-top: 35%;
+}
+
+.icon {
+	display: inline-block;
+	float: right;
+	cursor: pointer;
+	position: relative;
+	padding-top: 1.9%;
+	padding-right: 10%;
+}
+
+.head-wrapper {
+	text-align: center;
+}
+
+.head-wrapper h2 {
+	display: inline-block;
+	height: 25px;
+}
+
+.block.header {
+	margin: 0;
+}
+
+
+.container {
+
+    margin-top: 2%;
+ }
+
 
 .sign-out {
 	float: right;
@@ -66,12 +117,16 @@
 	width: 100%;
 	cursor: pointer;
 	z-index: 999;
+	padding-top: 0%;
 	color: red;
 }
+
+
 .single-classroom {
 	margin-left: 1% !important;
 	margin-top: 1% !important;
 }
+
 </style>
 </head>
 <body>
@@ -97,7 +152,7 @@
 	%>
 	<i class="huge add circle icon fixed-position"></i>
 	
-	<form class="ui modal global-lecturer" action="CreateClassroomServlet" method="post">
+	<form class="ui modal add-classroom" action="CreateClassroomServlet" method="post">
 		<div class="header">Add Classroom</div>
 		<div class="content">
 			<div class="field">
@@ -113,7 +168,7 @@
 			</div>
 		</div>
 		<div class="actions">
-			<input type="submit" class="ui teal button lecturerAddButton" value="Add">
+			<input type="submit" class="ui teal button classroomAddButton" value="Add">
 		</div>
 	</form>
 	
@@ -121,82 +176,202 @@
 		}
 	%>
 
-	<%
-		if (isAdmin) {
-	%>
-	<button id="create" type="submit" class="btn btn-danger"
-		onclick="redirectLecturer()">Add New Lecturer</button>
-	<%
-		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
+		
 
-			System.out.println("Globals are: " + globalLecturers);
 
-			out.println("<div id=\"global-lecturers\">");
-			out.println("<h4>Lecturers</h4>");
-			out.println("<ul>");
-			for (int i = 0; i < globalLecturers.size(); i++) {
-				Person currentLecturer = globalLecturers.get(i);
-				out.println(printPersonInfo(currentLecturer));
-			}
 
-			out.println("</ul>");
-			out.println("</div>");
-	%>
-	<%
-		}
-	%>
-
-	<!--  Given a person generates list item containing persons name, surname and email -->
-	<%!private String printPersonInfo(Person currentPerson) {
-		String result = "<li><h5>";
-		result = result + currentPerson.getEmail() + " " + currentPerson.getName() + " " + currentPerson.getSurname();
-		result = result + "</h5></li>";
-
-		return result;
-	}%>
+<!-- -----------------------------------------------------------------------  -->
+	
 
 
 
 
-
+<!-- -----------------------------------------------------------------------  -->
 
 	<%-- 
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a classroom display.
 	 --%>
-	<%!private String generateNameHTML(String name, String classroomId, String creatorName) {
+	 
+	 
+
+	<%!
+	private String yourPositionInClassroom(Classroom currentClassroom, Person currentPerson, AllConnections connector){
+		if(connector.personDB.isAdmin(currentPerson)){
+			return "Admin";
+		}
+		if(currentClassroom.classroomLecturerExists(currentPerson.getEmail())){
+			return "Lecturer";
+		}
+		if(currentClassroom.classroomSeminaristExists(currentPerson.getEmail())){
+			return "Seminarist";
+		}
+		if(currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail())){
+			return "Section Leader";
+		}
+		if(currentClassroom.classroomStudentExists(currentPerson.getEmail())){
+			return "Student";
+		}		
+		return "nothing";
+	}
+	
+	%>
+	 
+	<%!private String generateNameHTML(Classroom currentClassroom, Person currentPerson, AllConnections connector, String creatorName) {
 		String result1 = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?"
-				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" + name
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID() + 
+				"\" class=\"single-classroom-text\">" + currentClassroom.getClassroomName()
 				+ "</a> </div> </section>";
 		String result = "<div class=\"card single-classroom\">" + "<div class=\"image\">"
 				+ "<img src=\"https://krishna.org/wp-content/uploads/2010/11/Physics-Blackbord-of-Famous-Equations-620x350.png?x64805\">"
 				+ "</div>" + "<div class=\"content\">" + "<div class=\"header\"> " + "<a href=\"stream.jsp?"
-				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" + name
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID() 
+				+ "\" class=\"single-classroom-text\">" + currentClassroom.getClassroomName()
 				+ "</a>" + "</div>" + "<div class=\"meta\">" + "<a>" + creatorName + "</a>" + "</div>"
-				+ "<div class=\"description\">" + "other thing bro" + "</div>" + "</div>" + "</div>";
+				+ "<div class=\"description\">" + "You are "+ yourPositionInClassroom(currentClassroom, currentPerson, connector) 
+				+ "</div>" + "</div>" + "</div>";
 		return result;
 	}%>
-	<%-- 
-		Takes DBConnector from servlet context and pulls list of classrooms out of it. 
-		Then displays every classroom on the page.
-	--%>
-	<div class="ui link cards">
-		<%
-			ArrayList<Classroom> classrooms;
-			if (isAdmin)
-				classrooms = connector.classroomDB.getClassrooms();
-			else
-				classrooms = connector.classroomDB.getPersonsClassrooms(currentPerson);
 
-			System.out.println("person was: " + currentPerson.getEmail());
 
-			for (Classroom classroom : classrooms) {
-				String creatorName = connector.personDB.getPerson(classroom.getClassroomCreatorId()).getName() + " "
-						+ connector.personDB.getPerson(classroom.getClassroomCreatorId()).getSurname();
-				out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID(), creatorName));
-			}
-		%>
-	</div>
+
+	
+	
+	
+	<section class="container">
+		
+		
+		
+		<div class="one">
+		    <%
+			if (isAdmin) {		
+			%>
+			
+			<div class="ui modal global-lecturer">
+				<div class="header">Add Lecturer</div>
+				<div class="content">
+					<div class="field">
+						<div class="emails">
+		
+							<input type="text" value="" placeholder="Add Email" /> <input
+								type="hidden" id="globalLecturerAddServlet"
+								value="AddNewGlobalLecturerServlet">
+						</div>
+					</div>
+				</div>
+				<div class="actions">
+					<button class="ui teal button globalLecturerAddButton">Add</button>
+					<button class="ui red button cancel">Cancel</button>
+				</div>
+			</div>
+			
+			
+			<div class="list-wrapper">
+				<div class="head-wrapper">
+					
+					<h2 class="ui header">Lecturers</h2>
+					
+					<i class="add user icon icon-global-lecturer"></i>
+					<%
+						
+					%>
+					<script>
+						$(".icon-global-lecturer").click(function() {
+							$('.ui.modal.global-lecturer').modal('show');
+						});
+					</script>
+				</div>
+				<form method="POST" action="DeleteGlobalLecturerServlet">
+					<div class="ui celled list">
+						<%
+							for (Person currentGlobalLecturer : globalLecturers) {
+						%>
+						<div class="item">
+							<div class="right floated content">
+								<%
+									
+								%>
+								<div class="ui checkbox">
+									<input type="checkbox"
+										name="<%=currentGlobalLecturer.getEmail()%>"
+										value="<%=currentGlobalLecturer.getEmail()%>"> <label></label>
+								</div>
+								<%
+									
+								%>
+							</div>
+							<img class="ui avatar image"
+								src="<%=currentGlobalLecturer.getPersonImgUrl()%>">
+							<div class="content">
+								<div class="header"><%=currentGlobalLecturer.getName() + " " + currentGlobalLecturer.getSurname()%></div>
+								<%=currentGlobalLecturer.getEmail()%>
+							</div>
+						</div>
+						<%
+							}
+						%>
+					</div>
+				
+					<%
+						
+					%>
+					<button type="submit" class="ui red button">Remove Marked</button>
+					
+				</form>
+			</div>
+		
+			<%
+			}		
+			%>
+				    
+		</div>
+		    
+		    
+		    
+		<div class="two">
+		    
+		    <%-- 
+				Takes DBConnector from servlet context and pulls list of classrooms out of it. 
+				Then displays every classroom on the page.
+			--%>
+			<div class="ui link cards">
+				<%
+					ArrayList<Classroom> classrooms;
+					if (isAdmin)
+						classrooms = connector.classroomDB.getClassrooms();
+					else
+						classrooms = connector.classroomDB.getPersonsClassrooms(currentPerson);
+		
+					System.out.println("person was: " + currentPerson.getEmail());
+		
+					for (Classroom classroom : classrooms) {
+						String creatorName = connector.personDB.getPerson(classroom.getClassroomCreatorId()).getName() + " "
+								+ connector.personDB.getPerson(classroom.getClassroomCreatorId()).getSurname();
+						out.print(generateNameHTML(classroom, currentPerson, connector, creatorName));
+					}
+				%>
+			</div>
+		    
+		    
+		    
+		    
+		    
+		</div>
+	</section>
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
 	<script>
 		function signOut() {
 			var auth2 = gapi.auth2.getAuthInstance();
@@ -216,13 +391,16 @@
 		async defer></script>
 	<script>
 		$(".fixed-position").click(function() {
-			$(".ui.modal.global-lecturer").modal("show");
+			$(".ui.modal.add-classroom").modal("show");
 		});
 		$(".classroomAddButton").click(function(){
-			alert("Hey");
 			$(this).parent().parent().parent().submit();
 		});
 	</script>
+	
+	
+
+
 
 </body>
 </html>

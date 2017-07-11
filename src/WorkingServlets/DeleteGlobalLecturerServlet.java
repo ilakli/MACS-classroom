@@ -1,6 +1,8 @@
 package WorkingServlets;
 
 import java.io.IOException;
+import java.util.Enumeration;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +13,16 @@ import database.AllConnections;
 import defPackage.Classroom;
 
 /**
- * Servlet implementation class GiveGradeServlet
+ * Servlet implementation class DeleteGlobalLecturerServlet
  */
-@WebServlet("/GiveGradeServlet")
-public class GiveGradeServlet extends HttpServlet {
+@WebServlet("/DeleteGlobalLecturerServlet")
+public class DeleteGlobalLecturerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GiveGradeServlet() {
+    public DeleteGlobalLecturerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,20 +39,28 @@ public class GiveGradeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String studentID = request.getParameter("studentId");
-		String classroomID = request.getParameter("classroomId");
-		String assignmentTitle = request.getParameter("assignmentTitle");
-		String grade = request.getParameter("newGrade");
-		String studentEmail = request.getParameter("studentEmail");
-		String isSeminaris = request.getParameter("isSeminarist");
-				
-		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
+		System.out.println("Deleting");
 		
-		connection.studentAssignmentDB.setStudnetAssignmentGrade(classroomID, studentID, assignmentTitle, grade, isSeminaris);
-		
-		String link = String.format("studentsOneAssignment.jsp?classroomID=%s&studentEmail=%S&assignmentTitle=%s", 
-				classroomID, studentEmail ,assignmentTitle);
-		response.sendRedirect(link);
+
+		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");
+
+		Enumeration<String> emails = request.getParameterNames();
+
+		System.out.println("Deleting5 " + emails.hasMoreElements());
+		while (emails.hasMoreElements()) {
+			System.out.print("Here");
+			String nextParameterName = emails.nextElement();
+			System.out.println("Param: " + nextParameterName);
+
+			String e = request.getParameter(nextParameterName);
+			System.out.println("E is: " + e);
+			
+			
+			connection.lecturerDB.deleteGlobalLecturer(e);
+		}
+		System.out.println("Deleting6");
+		response.sendRedirect("index.jsp");
+
 	}
 
 }

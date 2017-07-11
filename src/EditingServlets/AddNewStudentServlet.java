@@ -55,7 +55,15 @@ public class AddNewStudentServlet extends HttpServlet {
 		for(String e:emails){
 			connection.personDB.addPersonByEmail(e);
 			status = currentClassroom.classroomAddStudent(e);
-		} 
+		}
+		
+		if(currentClassroom.areSectionsAudoDistributed()){
+			currentClassroom.fillSectionsWithFreeStudents();
+		}
+		
+		if(currentClassroom.areSeminarsAudoDistributed()){
+			currentClassroom.fillSeminarsWithFreeStudents();
+		}
 		
 		if(status){
 			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="

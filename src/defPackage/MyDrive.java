@@ -186,6 +186,51 @@ public class MyDrive {
 		}
 		return assignmentFolderId;
 	}
+	
+	public String getHtmlForStudentUploads (String sectionLeaderFolderId, String assignmentName, String studentEmail) {
+		
+		String result = "";
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", sectionLeaderFolderId)).execute();
+			String assignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(assignmentName)) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+			if (assignmentFolderId.equals("")) {
+				return "";
+			}
+			int atIndex = studentEmail.indexOf("@");
+			if (atIndex == -1) {
+				atIndex = studentEmail.length();
+			}
+			String mailPrefix = studentEmail.substring(0, atIndex);
+			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
+			
+			String studentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(mailPrefix)) {
+					studentFolderId = f.getId();
+					break;
+				}
+			}
+			if (studentFolderId.equals("")) {
+				return "";
+			}
+			
+			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
+			for (File f: fl.getFiles()) {
+				result += String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 	private void uploadAssignmentToChecker (String studentEmail, java.io.File fileToUpload, String fileType, String checkerFolderId, String assignmentName) {
 		try {
@@ -245,6 +290,58 @@ public class MyDrive {
 		System.out.println("Section Leader email: " + seminaristEmail);
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
 		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, seminaristFolderId, assignmentName);
+	}
+	
+	public String getAssignmentFileId (String classroomId, String fileName) {
+		String assignmentFileId = "";
+		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolderId)).execute();
+			String assignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals("Assignments")) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+			
+			if (assignmentFolderId.equals("")) {
+				return "";
+			}
+			
+			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
+			
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(fileName)) {
+					assignmentFileId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return assignmentFileId;
+	}
+	
+	public String findMaterialId (String classroomId, String categoryName, String materialName) {
+		String materialId = "";
+		String categoryFolderId = allConnections.driveDB.getCategoryFolder(classroomId, categoryName);
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", categoryFolderId)).execute();
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(materialName)) {
+					materialId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return materialId;
 	}
 	
 	public static void main(String[] args) throws IOException {

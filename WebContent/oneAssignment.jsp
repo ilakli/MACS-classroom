@@ -3,6 +3,7 @@
 <%@page import="defPackage.Comment"%>
 <%@page import="defPackage.Person"%>
 <%@page import="defPackage.Section"%>
+<%@page import="defPackage.MyDrive"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="defPackage.Seminar"%>
 <%@page import="defPackage.Post"%>
@@ -66,7 +67,7 @@
 <body>
 
 
-	<%!private String generateAssignmentHTML(Assignment a) {
+	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 		
 		String result = "<div class=\"panel panel-default\"> " + 
 						" <div class=\"panel-body\"> " + 
@@ -78,8 +79,7 @@
 						}
 						
 						if(a.getFileName() != null){
-							result +=" <a href=\"DownloadServlet?" + DownloadServlet.DOWNLOAD_PARAMETER 
-									+ "=" + a.getFileName() + "\">" + a.getFileName() + "</a></div>";
+							result +=" <a href=https://drive.google.com/open?id=" + fileId + ">" + a.getFileName() + "</a></div>";
 						}
 						
 						
@@ -204,7 +204,9 @@
 	
 	<!-- -------------------------------------------------------------------- -->
 	<%
-		String htmlCode = generateAssignmentHTML(assignment);
+		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
+		String assignmentFileId = service.getAssignmentFileId(classroomID, assignment.getTitle());
+		String htmlCode = generateAssignmentHTML(assignment, assignmentFileId);
 		out.println(htmlCode);
 	%>
 	
