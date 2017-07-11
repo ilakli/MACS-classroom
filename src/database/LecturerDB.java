@@ -124,17 +124,32 @@ public class LecturerDB {
 		}
 		String personId = personDB.getPersonId(email);
 
-		String preQuery = String.format("delete from `lectures` where `classroom_id` = %s and `person_id` = %s;",
-				classroomId, personId);
-
 		String query = String.format(
 				"delete from `classroom_lecturers` where `classroom_id` = %s and `person_id` = %s;", classroomId,
 				personId);
 
-		MyConnection myConnection = db.getMyConnection(preQuery);
-		db.executeUpdate(myConnection);
-
-		myConnection = db.getMyConnection(query);
+		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
+	
+	
+	/**
+	 * deletes lecturer with given email from the list of global lecturers
+	 * @param email
+	 * @return true - if lecturer was removed successfully, false otherwise
+	 */
+	public boolean deleteGlobalLecturer(String email){
+		String personId = personDB.getPersonId(email);
+
+		String preQuery = String.format("delete from `classroom_lecturers` where `person_id` = %s;", personId);
+		String query = String.format("delete from `lecturers` where `person_id` = %s;", personId);
+		
+		MyConnection myConnection = db.getMyConnection(preQuery);
+		db.executeUpdate(myConnection);
+		
+		myConnection = db.getMyConnection(query);
+		return db.executeUpdate(myConnection);
+
+	}
 }
+
