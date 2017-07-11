@@ -322,6 +322,7 @@ public class Classroom {
 	 *         it was not a student before or some error occurred)
 	 */
 	public boolean classroomDeleteStudent(String email) {
+		
 		if (!classroomStudentExists(email)) {
 			return false;
 		} else {

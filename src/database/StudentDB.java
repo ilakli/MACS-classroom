@@ -102,21 +102,12 @@ public class StudentDB {
 			return false;
 		}
 		String personId = personDB.getPersonId(email);
-
-		String preQuery0 = String.format(
-				"delete from `student-seminar` where `classroom_id` = %s and `person_id` = %s;", classroomId, personId);
-		String preQuery1 = String.format(
-				"delete from `student-section` where `classroom_id` = %s and `person_id` = %s;", classroomId, personId);
+		
+		
 		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` = %s;",
 				classroomId, personId);
-
-		MyConnection myConnection = db.getMyConnection(preQuery0);
-		db.executeUpdate(myConnection);
-
-		myConnection = db.getMyConnection(preQuery1);
-		db.executeUpdate(myConnection);
-
-		myConnection = db.getMyConnection(query);
+		
+		MyConnection	myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
 	
