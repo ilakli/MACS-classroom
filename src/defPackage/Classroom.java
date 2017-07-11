@@ -436,12 +436,13 @@ public class Classroom {
 			for (int i = already; i < studentsInSingleSection && j < students.size(); i++) {
 				distributed.get(curSeminarN).add(students.get(j));
 				j++;
-				System.out.println(students.get(j).getEmail());
 				s.updateSeminarSize(1);
 			}
 			if (j >= students.size()) break;
 		}
 		
+		
+		System.out.println("ager akamde movida");
 		seminars.sort(new Comparator<Seminar>() {
 
 			@Override
