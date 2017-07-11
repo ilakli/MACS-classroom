@@ -60,6 +60,6 @@ public class PostServlet extends HttpServlet {
 		//mail.sendMail();
 			
 		connection.postDB.addPost(classroomId, personId, postText);
-		response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		//response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
 	}
 }

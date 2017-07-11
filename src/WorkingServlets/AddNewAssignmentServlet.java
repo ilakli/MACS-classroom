@@ -60,8 +60,8 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
 		String fileName = "";
+		String fileType = "";
 		
-
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			
@@ -70,6 +70,12 @@ public class AddNewAssignmentServlet extends HttpServlet {
 				if (!item.isFormField()) {
 					System.out.println("file not null");
 					fileName = item.getName();
+					System.out.println("=========================");
+					System.out.println("failis axels ambobs gonia echemisa");
+					System.out.println("=========================");
+					System.out.println(item.getContentType());
+					
+					fileType = item.getContentType();
 					
 					if (fileName.lastIndexOf("\\") >= 0) {
 						file = new File(filePath + fileName.substring(fileName.lastIndexOf("\\")));
@@ -97,12 +103,11 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive service = (MyDrive)request.getServletContext().getAttribute("drive");
 
-		String filePath = fileName;
 		String assignmentFolderId = service.getAssignmentFolderId(classroomID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
 		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
-		service.uploadFile(assignmentTitle, filePath, assignmentFolderId);
+		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);
 
 		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}

@@ -13,6 +13,7 @@ public class AllConnections {
 	public SeminaristDB seminaristDB;
 	public StudentDB studentDB;
 	public AssignmentDB assignmentDB;
+	public AssignmentGradeDB assignmentGradeDB;
 	public FunctionDB functionDB;
 	public PositionDB positionDB;
 	public CategoryDB categoryDB;
@@ -37,6 +38,7 @@ public class AllConnections {
 		positionDB = new PositionDB(this);
 		categoryDB = new CategoryDB(this);
 		studentAssignmentDB = new StudentAssignmentDB(this);
+		assignmentGradeDB = new AssignmentGradeDB(this);
 		classroomDB = new ClassroomDB(this);
 		driveDB = new DriveDB(this);
 	}

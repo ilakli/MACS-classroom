@@ -25,8 +25,12 @@ import database.DriveDB;
 
 import javax.servlet.http.*;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -125,17 +129,19 @@ public class MyDrive {
 		}
 		return folder != null ? folder.getId() : "";
 	}
-	
-	public void uploadFile (String fileName, String filePath, String folderId) {
+
+	public void uploadFile (String fileName, java.io.File fl, String fileType, String folderId) {
 		try {
+			
+			String mimeType = fileType;
 			
 			File file = new File();
 			file.setName(fileName);
-			file.setMimeType(Files.probeContentType(Paths.get(filePath)));
+			file.setMimeType(mimeType);
 			file.setParents(Collections.singletonList(folderId));
 
-			java.io.File fileToUpload = new java.io.File(filePath);
-			FileContent fileToUploadContent = new FileContent(Files.probeContentType(Paths.get(filePath)), fileToUpload);
+			java.io.File fileToUpload = fl;
+			FileContent fileToUploadContent = new FileContent(mimeType, fileToUpload);
 			File fileInFolder = service.files().create(file, fileToUploadContent)
 						.setFields("id, parents")
 						.execute();
@@ -180,8 +186,53 @@ public class MyDrive {
 		}
 		return assignmentFolderId;
 	}
+	
+	public String getHtmlForStudentUploads (String sectionLeaderFolderId, String assignmentName, String studentEmail) {
+		
+		String result = "";
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", sectionLeaderFolderId)).execute();
+			String assignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(assignmentName)) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+			if (assignmentFolderId.equals("")) {
+				return "";
+			}
+			int atIndex = studentEmail.indexOf("@");
+			if (atIndex == -1) {
+				atIndex = studentEmail.length();
+			}
+			String mailPrefix = studentEmail.substring(0, atIndex);
+			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
+			
+			String studentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(mailPrefix)) {
+					studentFolderId = f.getId();
+					break;
+				}
+			}
+			if (studentFolderId.equals("")) {
+				return "";
+			}
+			
+			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
+			for (File f: fl.getFiles()) {
+				result += String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
-	private void uploadAssignmentToChecker (String studentEmail, String filePath, String checkerFolderId, String assignmentName) {
+	private void uploadAssignmentToChecker (String studentEmail, java.io.File fileToUpload, String fileType, String checkerFolderId, String assignmentName) {
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();			
 			String assignmentFolderId = "";
@@ -216,29 +267,81 @@ public class MyDrive {
 			Date date = new Date();
 			String currentTime = dateFormat.format(date);
 			
-			uploadFile(studentEmailPrefix + " " + currentTime, filePath, studentFolder);
+			uploadFile(studentEmailPrefix + " " + currentTime, fileToUpload, fileType, studentFolder);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 	
-	public void uploadAssignmentToSectionLeader(String studentEmail, String filePath, String sectionLeaderEmail, String classroomId, String assignmentName) {
+	public void uploadAssignmentToSectionLeader(String studentEmail, java.io.File fileToUpload, String fileType, String sectionLeaderEmail, String classroomId, String assignmentName) {
 		System.out.println("Trying to upload assignment to section leader");
 		System.out.println("Student email: " + studentEmail);
-		System.out.println("Filepath: " + filePath);
+		System.out.println("File: " + fileToUpload);
 		System.out.println("Section Leader email: " + sectionLeaderEmail);
 		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
-		uploadAssignmentToChecker(studentEmail, filePath, sectionLeaderFolder, assignmentName);
+		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, sectionLeaderFolder, assignmentName);
 	}
 
-	public void uploadAssignmentToSeminarist(String studentEmail, String filePath, String seminaristEmail, String classroomId, String assignmentName) {
+	public void uploadAssignmentToSeminarist(String studentEmail, java.io.File fileToUpload, String fileType, String seminaristEmail, String classroomId, String assignmentName) {
 		System.out.println("Trying to upload assignment to seminarist");
 		System.out.println("Student email: " + studentEmail);
-		System.out.println("Filepath: " + filePath);
+		System.out.println("Filepath: " + fileToUpload);
 		System.out.println("Section Leader email: " + seminaristEmail);
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
-		uploadAssignmentToChecker(studentEmail, filePath, seminaristFolderId, assignmentName);
+		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, seminaristFolderId, assignmentName);
+	}
+	
+	public String getAssignmentFileId (String classroomId, String fileName) {
+		String assignmentFileId = "";
+		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolderId)).execute();
+			String assignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals("Assignments")) {
+					assignmentFolderId = f.getId();
+					break;
+				}
+			}
+			
+			if (assignmentFolderId.equals("")) {
+				return "";
+			}
+			
+			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
+			
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(fileName)) {
+					assignmentFileId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return assignmentFileId;
+	}
+	
+	public String findMaterialId (String classroomId, String categoryName, String materialName) {
+		String materialId = "";
+		String categoryFolderId = allConnections.driveDB.getCategoryFolder(classroomId, categoryName);
+		
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", categoryFolderId)).execute();
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(materialName)) {
+					materialId = f.getId();
+					break;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return materialId;
 	}
 	
 	public static void main(String[] args) throws IOException {

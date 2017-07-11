@@ -1,14 +1,12 @@
 $(document).ready(function() {
 	
-	$(".comments-form").submit(function(e) {
-		e.preventDefault();
-		
-		var postId = $(this).find('> input').val();
-		var commentText = $(this).find('> textarea').val();
-		var personId = $("#currentPerson").val();
-		var personFullname = $("#currentPersonName").val();
-		
-		var ul = $(this).prev();
+	$(".commentButton").click(function (){
+		var postId = $(this).next().val();
+		var personId = $(this).next().next().val();
+		var personImgURL = $(this).next().next().next().val();
+		var personName = $(this).next().next().next().next().val();
+		var personSurname = $(this).next().next().next().next().next().val();
+		var commentText = $(this).prev().val();
 		
 		$.ajax({
 			url : "CommentServlet",
@@ -20,15 +18,30 @@ $(document).ready(function() {
 			},
 			success : function(result) {
 				
-				var commentBody = "<div class=\"w3-card-4\"> <div class=\"w3-container\"> <img src=\"img_avatar3.png\" alt=\"Avatar\" class=\"w3-left w3-circle\" style=\"width: 10%;\"> <h4>"
-					+ personFullname + "</h4> <p style=\"padding-left: 11%;\">" + commentText
-					+ "</p> </div> </div>";
+				var toAdd = "<div class = \"comment\">" +
+									"<a class = \"avatar\">" + 
+									"<img src = \"" + personImgURL + "\">" +
+								"</a>" +
+								"<div class = \"content\">" + 
+									"<a class = \"author\">" + personName + " " + personSurname + "</a>" +
+									"<div class = \"metadata\">" +
+										"<span class = \"date\">" + result + "</span>" +
+									"</div>" +
+									"<div class = \"text\">" +
+										"<pre>" + commentText + "</pre>" +
+									"</div>" +
+								"</div>" + 
+							"</div>";
 				
-				var commentHtml = " <li class=\"list-group-item\">" + commentBody + "</li>";
-				
-				ul.append(commentHtml);
+				var commentsBox = document.getElementById(postId + "post");
+				commentsBox.innerHTML += toAdd;
+	
 			}
 		});
-		$(this).find('> textarea').val("");
+		
+		$(this).prev().val('');
+		
+		
+		
 	});
 });
