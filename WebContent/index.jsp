@@ -156,7 +156,27 @@
 	}%>
 
 
-
+	<%!
+	private String yourPositionInClassroom(Classroom currentClassroom, Person currentPerson, AllConnections connector){
+		if(connector.personDB.isAdmin(currentPerson)){
+			return "Admin";
+		}
+		if(currentClassroom.classroomLecturerExists(currentPerson.getEmail())){
+			return "Lecturer";
+		}
+		if(currentClassroom.classroomSeminaristExists(currentPerson.getEmail())){
+			return "Seminarist";
+		}
+		if(currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail())){
+			return "Section Leader";
+		}
+		if(currentClassroom.classroomStudentExists(currentPerson.getEmail())){
+			return "Student";
+		}		
+		return "nothing";
+	}
+	
+	%>
 
 
 
@@ -164,16 +184,19 @@
 		Generates HTML code according to given name. 
 		HTML code consists of section and div which together make up a classroom display.
 	 --%>
-	<%!private String generateNameHTML(String name, String classroomId, String creatorName) {
+	<%!private String generateNameHTML(Classroom currentClassroom, Person currentPerson, AllConnections connector, String creatorName) {
 		String result1 = "<section class=\"single-classroom\"> <div class=\"well\"> <a href=\"stream.jsp?"
-				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" + name
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID() + 
+				"\" class=\"single-classroom-text\">" + currentClassroom.getClassroomName()
 				+ "</a> </div> </section>";
 		String result = "<div class=\"card single-classroom\">" + "<div class=\"image\">"
 				+ "<img src=\"https://krishna.org/wp-content/uploads/2010/11/Physics-Blackbord-of-Famous-Equations-620x350.png?x64805\">"
 				+ "</div>" + "<div class=\"content\">" + "<div class=\"header\"> " + "<a href=\"stream.jsp?"
-				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId + "\" class=\"single-classroom-text\">" + name
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID() 
+				+ "\" class=\"single-classroom-text\">" + currentClassroom.getClassroomName()
 				+ "</a>" + "</div>" + "<div class=\"meta\">" + "<a>" + creatorName + "</a>" + "</div>"
-				+ "<div class=\"description\">" + "other thing bro" + "</div>" + "</div>" + "</div>";
+				+ "<div class=\"description\">" + " You are "+ yourPositionInClassroom(currentClassroom, currentPerson, connector) 
+				+ " </div>" + "</div>" + "</div>";
 		return result;
 	}%>
 	<%-- 
@@ -193,7 +216,7 @@
 			for (Classroom classroom : classrooms) {
 				String creatorName = connector.personDB.getPerson(classroom.getClassroomCreatorId()).getName() + " "
 						+ connector.personDB.getPerson(classroom.getClassroomCreatorId()).getSurname();
-				out.print(generateNameHTML(classroom.getClassroomName(), classroom.getClassroomID(), creatorName));
+				out.print(generateNameHTML(classroom, currentPerson, connector, creatorName));
 			}
 		%>
 	</div>
