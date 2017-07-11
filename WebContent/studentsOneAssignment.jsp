@@ -334,7 +334,7 @@
 				</div>
 
 		<input type="hidden" name="studentId"value="<%=assignment.getPersonId()%>">
-		<input type="hidden" name="studentEmail"value="<%=request.getAttribute(studentEmail)%>">
+		<input type="hidden" name="studentEmail"value="<%=studentEmail%>">
 		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
 		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
 		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
@@ -423,12 +423,10 @@
 	
 	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-	<script type="text/javascript" src='js/posts.js'></script>
+	
 	<script type="text/javascript" src='js/studentsOneAssignmentComment.js'></script>
 	<script type="text/javascript" src='js/studentsOneAssignmentMenu.js'></script>
-	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 	
-
 
 </body>
 </html>
