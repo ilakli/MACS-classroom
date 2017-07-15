@@ -161,6 +161,14 @@
 		String personID = connector.personDB.getPersonId(studentEmail);
 		Assignment a = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
 		
+		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
+		String seminaristEmail = connector.studentDB.getSeminaristEmail(classroomID, personID);
+		String currentPersonEmail = currentPerson.getEmail();
+		
+		if(!isLecturer && !sectionLeaderEmail.equals(currentPersonEmail) && !seminaristEmail.equals(currentPersonEmail) && !studentEmail.equals(currentPersonEmail)){
+		    response.sendError(400, "Not Permitted At All");
+		}
+		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String deadlineWithReschedulings = "";
 		if (a.getDeadline()!=null) deadlineWithReschedulings = format1.format(a.getDeadline());
@@ -316,6 +324,19 @@
 		
 		
 		
+<<<<<<< HEAD
+		
+			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
+			
+			String generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
+			
+			System.out.println("======================");
+			System.out.println("I've just generated HTML");
+			System.out.println("======================");
+			System.out.println(generatedHTML);
+			
+			out.println(generatedHTML);
+=======
 		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
 		String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 		
@@ -328,6 +349,7 @@
 			out.println("</div>");
 		}
 		out.println("</div>");
+>>>>>>> 6a46564e7e537e402caa0f27882dfc933cb15d18
 /*			
 			List<String> uploadedFiles = connector.studentAssignmentDB.
 					getStudentSentFiles(assignment.getStudentAssignmentId());
