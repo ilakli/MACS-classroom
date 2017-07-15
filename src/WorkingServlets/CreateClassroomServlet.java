@@ -1,6 +1,7 @@
 package WorkingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +18,7 @@ import Listeners.ContextListener;
 import database.AllConnections;
 import database.DBConnection;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.MyDrive;
 
 /**
@@ -71,6 +73,13 @@ public class CreateClassroomServlet extends HttpServlet {
 			RequestDispatcher dispatch = request.getRequestDispatcher("stream.jsp?" +
 					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 			dispatch.forward(request, response);
+			ArrayList<String> emails = new ArrayList<String>();
+			emails.add(lecturerEmail);
+			String subject = "Macs Classroom: You have created new classroom: " + className;
+			String mailText = "You have created new classroom " + className + ";\nYou can see link here:\n " +
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
+			MailConnector mail = new MailConnector(emails, subject, mailText);
+			mail.sendMail();
 		}
 		
 	}

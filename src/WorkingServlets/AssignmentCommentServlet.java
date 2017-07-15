@@ -2,6 +2,7 @@ package WorkingServlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -12,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import Listeners.ContextListener;
 import database.AllConnections;
+import defPackage.Classroom;
+import defPackage.MailConnector;
+import defPackage.Person;
+import defPackage.StudentAssignment;
 
 /**
  * Servlet implementation class AssignmentCommentServlet
@@ -46,15 +51,41 @@ public class AssignmentCommentServlet extends HttpServlet {
 		pw.println(new Date().toString());
 		String studentAssignmentId = request.getParameter("studentAssignmentId");
 		String personId = request.getParameter("personId");
+		Person sender = connection.personDB.getPerson(personId);
 		String commentText = request.getParameter("commentText");
-		String isStaffComment = request.getParameter("isStaffComment"); 
+		String isStaffComment = request.getParameter("isStaffComment");
 		
-		if (isStaffComment.equals("true")){
-			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
-		} else {
-			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, commentText);
+		StudentAssignment studentAssignment = connection.studentAssignmentDB.getStudentAssignment(studentAssignmentId);
+		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(studentAssignment.getClassroomID(), 
+				studentAssignment.getPersonId());
+		String seminaristEmail = connection.studentDB.getSeminaristEmail(studentAssignment.getClassroomID(), 
+				studentAssignment.getPersonId());
+		Person student = connection.personDB.getPerson(studentAssignment.getPersonId());
+		Classroom currentClass = connection.classroomDB.getClassroom(studentAssignment.getClassroomID());
+		ArrayList<String> emails  = new ArrayList <String>(); 
+		
+		if(!sectionLeaderEmail.equals(sender.getEmail())){
+			emails.add(sectionLeaderEmail);
+		}
+		if(!seminaristEmail.equals(sender.getEmail())){
+			emails.add(seminaristEmail);
 		}
 		
+		String subject = "Macs classroom: In the classroom-" + currentClass.getClassroomName() + ", assignment-" +
+				studentAssignment.getTitle() +" you have new comment.";  
+		String mailCommentText = sender.getName()+ " " +sender.getSurname() + " commented:\n"+commentText;
+		if (isStaffComment.equals("true")){			
+			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
+			MailConnector mail = new MailConnector(emails, subject, mailCommentText);
+			mail.sendMail();
+		} else {
+			if(!student.getEmail().equals(sender.getEmail())){
+				emails.add(student.getEmail());
+			}
+			MailConnector mail = new MailConnector(emails, subject, commentText);
+			mail.sendMail();
+			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, mailCommentText);
+		}		
 	}
 
 }

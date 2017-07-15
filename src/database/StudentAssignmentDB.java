@@ -138,6 +138,49 @@ private DBConnection db;
 	}
 	
 	/**
+	 * This method returns StudentAssignment object from it's id; 
+	 * @param studentAssignmentId - id of the StudentAssignment;
+	 * @return - object of StudentAssignment;
+	 */
+	public StudentAssignment getStudentAssignment(String studentAssignmentId){
+		String query = String.format("select * from `student_assignments` where  "
+				+ "`student_assignment_id` = %s ;", studentAssignmentId );
+		System.out.println(query);
+		MyConnection myConnection = db.getMyConnection(query);
+		StudentAssignment assignment = null;
+		try {
+			ResultSet rs = myConnection.executeQuery();
+			while (rs != null && rs.next()) {
+				Date deadlineWithReschedulings = null;
+				java.sql.Date sqlDate =rs.getDate("deadline_with_reschedulings");
+
+				if(sqlDate!=null) {
+					deadlineWithReschedulings = new java.util.Date(sqlDate.getTime());
+				}
+				String id = rs.getString("student_assignment_id");
+				String classroomID = rs.getString("classroom_id");
+				String personID = rs.getString("person_id");
+				String assignmentTitle = rs.getString("assignment_title");
+				boolean isApproved = rs.getBoolean("assignment_approved");
+				String assignmentGrade = rs.getString("assignment_grade");
+				if (rs.wasNull()) assignmentGrade = null;
+				
+				assignment = new StudentAssignment(id,classroomID, personID,assignmentTitle, 
+						 assignmentGrade, isApproved, deadlineWithReschedulings);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (myConnection != null) {				
+				myConnection.closeConnection();
+			}
+		}
+
+		return assignment;
+		
+	}
+	
+	/**
 	 * This method takes all the names of the sent files from this assignment;
 	 * @param student_assignment_id - id of the connection between student and assignment;
 	 * @return - list of the names of the sent files from this assignment

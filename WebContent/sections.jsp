@@ -325,11 +325,11 @@
 		}
 	%>
 	<i class="huge add circle icon fixed-position"></i>
-	<form name="add" action="AddNewSectionServlet" method="Post" onSubmit="return validateFormAdd()"> 
+	<form name="add" action="AddNewSectionServlet" method="Post" onSubmit="return validateSectionAdd()"> 
 		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	<i style="margin-left: 5%;"class="huge minus circle icon fixed-position"></i>
-	<form name="delete" action="DeleteSectionServlet" method="Post" onSubmit="return validateFormDelete()">
+	<form name="delete" action="DeleteSectionServlet" method="Post" onSubmit="return validateSectionDelete()">
 		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	

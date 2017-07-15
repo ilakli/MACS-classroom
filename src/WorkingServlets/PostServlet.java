@@ -48,18 +48,31 @@ public class PostServlet extends HttpServlet {
 		String postText = request.getParameter("postText");
 		String personId = ((Person)request.getSession().getAttribute("currentPerson")).getPersonID();
 		
-		AllConnections connection = (AllConnections)request.getServletContext()				
-				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
-		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		List<Person> allStudents = currentClassroom.getClassroomStudents();
-		ArrayList<String> emails  = new ArrayList <String>(); 
-		for(Person person : allStudents){
-			emails.add(person.getEmail());
-		}
-		//MailConnector mail = new MailConnector(emails, "subject", postText);
-		//mail.sendMail();
+		if(postText != null && !postText.equals("")){
+			AllConnections connection = (AllConnections)request.getServletContext()				
+					.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
+			Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
+			Person sender = connection.personDB.getPerson(personId);
+			List<Person> allPerosns = currentClassroom.getClassroomStudents();
+			allPerosns.addAll(currentClassroom.getClassroomSectionLeaders());
+			allPerosns.addAll(currentClassroom.getClassroomSeminarists());
+			allPerosns.addAll(currentClassroom.getClassroomLecturers());
+			ArrayList<String> emails  = new ArrayList <String>(); 
+			for(Person person : allPerosns){
+				if(!person.getEmail().equals(sender.getEmail())){
+					emails.add(person.getEmail());
+				}
+			}
 			
-		connection.postDB.addPost(classroomId, personId, postText);
+			Person currentPerson =  connection.personDB.getPerson(personId);
+			
+			String subject = "Macs Classroom: " + currentPerson.getName() + " " + currentPerson.getSurname() +
+					" Posted in Classroom - " + currentClassroom.getClassroomName();
+			MailConnector mail = new MailConnector(emails, subject, postText);
+			mail.sendMail();
+				
+			connection.postDB.addPost(classroomId, personId, postText);
 		//response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
+		}
 	}
 }

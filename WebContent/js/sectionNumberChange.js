@@ -1,4 +1,4 @@
-function validateFormAdd() {
+function validateSectionAdd() {
 	
 	var res = confirm("Do you want to add one section.");
 		
@@ -8,7 +8,7 @@ function validateFormAdd() {
 }
 
 
-function validateFormDelete() {
+function validateSectionDelete() {
 	
 	var res = confirm("Do you want to delete last section.");
 		
