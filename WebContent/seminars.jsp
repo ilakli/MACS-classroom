@@ -26,6 +26,7 @@
 
 <script type="text/javascript" src='js/multiInput.js'></script>
 <script type="text/javascript" src='js/studentAddSeminar.js'></script>
+<script type="text/javascript" src='js/seminarNumberChange.js'></script>
 <link rel="stylesheet" href="css/multiInput.css" />
 
 <style>
@@ -333,11 +334,11 @@
 	
 	
 	<i class="huge add circle icon fixed-position"></i>
-	<form action="AddNewSeminarServlet" method="Post">
+	<form action="AddNewSeminarServlet" method="Post" onSubmit="return validateSeminarAdd()">
 	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	<i style="margin-left: 5%;"class="huge minus circle icon fixed-position"></i>
-	<form action="DeleteSeminarServlet" method="Post">
+	<form action="DeleteSeminarServlet" method="Post" onSubmit="return validateSeminarDelete()">
 	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	

@@ -69,23 +69,23 @@
 
 	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 		
-		String result = "<div class=\"panel panel-default\"> " + 
-						" <div class=\"panel-body\"> " + 
-						"<h1>" + a.getTitle() + "</h1>" + 
-						"<p> " + a.getInstructions() + "</p>";
+		String result = "<div class=\"ui top attached tabular menu\"> " + 
+						"<div class=\"ui raised segment\"> <div class=\"active item\"> " + 
+						a.getTitle() + "</div>" + "<div class=\"ui bottom attached active tab segment\"> " +
+						"<p>" + a.getInstructions() + "</p>";
 						
-						if( a.getDeadline()!= null){
-							result+="<p> Deadline:" + a.getDeadline() + "</p>";
-						}
+						result+="<p></p>";								   						
 						
 						if(a.getFileName() != null){
-							result +=" <a href=https://drive.google.com/open?id=" + fileId + ">" + a.getFileName() + "</a></div>";
+							result +=" <a class=\"ui blue ribbon label\"> File: <a href=https://drive.google.com/open?id=" + 
+							fileId + ">" + a.getFileName() + "</a></p>";
 						}
+						result+="<p></p>";
+						if( a.getDeadline()!= null){
+							result+="<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
+						}						
 						
-						
-						result+= " <div class=\"panel-footer\"></div> " 
-								
-						+ "</div>";
+						result+="</div> </div> </div>";
 		
 		return result;
 	}%>

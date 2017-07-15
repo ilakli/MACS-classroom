@@ -1,31 +1,51 @@
+
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+
 $(document).ready(function() { 
+
+	$(".emails input").on('keyup', function(ev){
+		if (/(188|13|32)/.test(ev.which))
+			$(this).focusout();
+	});
+	
+	$(".emails input").on('paste', function(){
+		$(this).focusout();
+	});
+	
+	
+	
 	$(".emails input").on({
 		focusout : function() {
-			var txt = this.value.replace(/[^a-z0-9\+\-\.\#\@]/ig, '');
-																		
-			if (txt)
-				$("<span/>", {
-					text : txt.toLowerCase(),
-					insertBefore : this
-				});
-			this.value = "";
-		},
-		keyup : function(ev) {
-			if (/(188|13|32)/.test(ev.which))
-				$(this).focusout();
+			var _this = this;
+			
+			setTimeout( function() {
+				var mails = _this.value.split(/[ ,\n]+/);
+				console.log(mails);
+				_this.value = "";
+				
+				for (i = 0; i < mails.length; i++) { 
+					
+					if (validateEmail(mails[i])){
+						$("<span/>", {
+							text : mails[i].toLowerCase(),
+							insertBefore : _this
+						});
+					}
+				}
+				
+	        }, 100);
+			
 		}
 	});
-
+	
 	$('.emails').on('click', 'span', function() {
 		$(this).remove();
 	});
+	
 
 });
-
-
-/*
-<div class="emails">
-  								<input type="text" value="" placeholder="Add Email" />
-  								
-							</div>
-*/

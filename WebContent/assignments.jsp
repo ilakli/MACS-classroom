@@ -107,7 +107,6 @@
 
 		return result;
 	}%>
-
 	<div class="ui menu">
 		<a
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
