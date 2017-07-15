@@ -297,7 +297,7 @@
 					
 					<div>
 						<label for="file" class="ui icon button button-margin"> <i
-							class="file icon "></i> Chose Work File
+							class="file icon "></i> Choose Work File
 						</label> <input type="file" id="file" name="file" size=30 
 							style="display: none">
 						</div>
@@ -321,23 +321,7 @@
 			
 			
 		}	
-		
-		
-		
-<<<<<<< HEAD
-		
-			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 			
-			String generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
-			
-			System.out.println("======================");
-			System.out.println("I've just generated HTML");
-			System.out.println("======================");
-			System.out.println(generatedHTML);
-			
-			out.println(generatedHTML);
-=======
-		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
 		String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 		
 		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
@@ -349,7 +333,7 @@
 			out.println("</div>");
 		}
 		out.println("</div>");
->>>>>>> 6a46564e7e537e402caa0f27882dfc933cb15d18
+
 /*			
 			List<String> uploadedFiles = connector.studentAssignmentDB.
 					getStudentSentFiles(assignment.getStudentAssignmentId());

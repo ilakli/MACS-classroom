@@ -145,7 +145,7 @@ private DBConnection db;
 	public StudentAssignment getStudentAssignment(String studentAssignmentId){
 		String query = String.format("select * from `student_assignments` where  "
 				+ "`student_assignment_id` = %s ;", studentAssignmentId );
-		System.out.println(query);
+		
 		MyConnection myConnection = db.getMyConnection(query);
 		StudentAssignment assignment = null;
 		try {
