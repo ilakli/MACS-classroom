@@ -439,12 +439,10 @@
 	
 	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
-	<script type="text/javascript" src='js/posts.js'></script>
+	
 	<script type="text/javascript" src='js/studentsOneAssignmentComment.js'></script>
 	<script type="text/javascript" src='js/studentsOneAssignmentMenu.js'></script>
-	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
 	
-
 
 </body>
 </html>

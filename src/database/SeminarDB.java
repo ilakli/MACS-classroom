@@ -273,11 +273,11 @@ public class SeminarDB {
 	 * @param classroomID
 	 * @param seminarSize
 	 */
-	public void updateSeminarSize(int seminarN, String classroomId, int seminarSize) {
+	public void updateSeminarSize(int seminarN, String classroomId) {
 		String seminarId = getSeminarId(seminarN, classroomId);
 		String query = String.format(
-				"update `seminars` set `seminar_size` = %s where `seminar_id` = %s and `classroom_id` = %s",
-				seminarSize, seminarId, classroomId);
+				"update `seminars` set `seminar_size` = (select count(*) from `student-seminar` where seminar_id = %s) where `seminar_id` = %s and `classroom_id` = %s",
+				seminarId, seminarId, classroomId);
 		MyConnection myConnection = db.getMyConnection(query);
 		db.executeUpdate(myConnection);
 	}

@@ -31,14 +31,17 @@
 .ui.menu {
 	margin-top: 0;
 }
+
 .block.header {
 	margin: 0;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
 	margin-right: 0.7%;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
@@ -55,8 +58,9 @@
 	display: inline-block;
 	border: solid;
 	padding: .78571429rem 1rem !important;
-	!
-	important;
+}
+.assignment-add-button {
+	margin: 0 0.8% !important;
 }
 </style>
 </head>
@@ -65,41 +69,42 @@
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
-		
-		
-		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
+
+		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
-		
+
 		PersonDB personConnector = connector.personDB;
-		
 	%>
 
+		<div class="ui block header head-panel">
+	<a href="index.jsp">
+		<h3 class="ui header head-text">Macs Classroom</h3>
+	</a>
+	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+</div>
+	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, boolean isSectionLeader,
+			boolean isSeminarist, String classroomID, Person currentPerson) {
 
-	<%!private String generateAssignmentHTML(Assignment a, boolean isStudent, boolean isSectionLeader, boolean isSeminarist,
-											String classroomID, Person currentPerson) {
-		
-		String result = "<div class=\"panel panel-default\"> " + 
-						" <div class=\"panel-body\"> ";
-						if(isStudent){ 
-							result+="<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
-								+"\"> " + a.getTitle() + "</a></h1>";
-						} else {
-							result+="<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>";
-						}
+		String result = "<div class=\"panel panel-default\"> " + " <div class=\"panel-body\"> ";
+		if (isStudent) {
+			result += "<h1><a href = \"studentsOneAssignment.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+					+ "&studentEmail=" + currentPerson.getEmail() + "&assignmentTitle=" + a.getTitle() + "\"> "
+					+ a.getTitle() + "</a></h1>";
+		} else {
+			result += "<h1><a href = \"oneAssignment.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+					+ "&assignmentTitle=" + a.getTitle() + "\"> " + a.getTitle() + "</a></h1>";
+		}
 
-						if( a.getDeadline()!= null){
-							result+="<p> Deadline:" + a.getDeadline() + "</p>";
-						}
-								
-						result += "</div>";
-		
+		if (a.getDeadline() != null) {
+			result += "<p> Deadline:" + a.getDeadline() + "</p>";
+		}
+
+		result += "</div>";
+
 		return result;
 	}%>
 
@@ -108,11 +113,12 @@
 
 
 
-		<div class="ui block header head-panel">
-	<a href="index.jsp">
-		<h3 class="ui header head-text">Macs Classroom</h3>
-	</a>
-	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+	<div class="ui block header head-panel">
+		<a href="index.jsp">
+			<h3 class="ui header head-text">Macs Classroom</h3>
+		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
+			out</a>
+
 	</div>
 	<div class="ui menu">
 		<a
@@ -159,70 +165,114 @@
 	<%
 		if (isAdmin || isLecturer) {
 	%>
-	<button type="button" class="w3-button w3-teal" id="myBtn">Add
+	<button class="positive ui button assignment-add-button">Add
 		New Assignment</button>
 
-	<div id="myModal" class="modal">
-
-		<!-- Modal content -->
-		<div class="modal-content">
-
-			<div class="modal-header">
-				<span class="close">&times;</span>
-				<h2>Add New Assignment</h2>
-			</div>
-
-			<div class="modal-body">
-
-				<div class="form-group">
-					<form action="AddNewAssignmentServlet"
-						enctype="multipart/form-data" method="POST">
-
-						<h6>Title</h6>
-
-						<textarea class="form-control" rows="1" name="assignmentTitle"></textarea>
-
-						<h6>Instructions</h6>
-						<textarea class="form-control" rows="5"
-							name="assignmentInstructions"></textarea>
-
-
-
-
-						<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
-							value=<%=classroomID%>>
-
-						<h6>Deadline</h6>
-						<input name="deadline" type="date" value="" />
-
-						<h6>Upload File</h6>
-
-						<input type="file" name="file" size="30" /> </br>
-						 
-						<input type="submit" value="Submit" class="btn btn-success"/>
-					</form>
-
+	
+		<form action="AddNewAssignmentServlet" enctype="multipart/form-data"
+				method="POST" class="ui modal">
+		<i class="close icon"></i>
+		<div class="header">Add Assignment</div>
+		
+		<div class="content">
+			<div class="ui form">
+				<div class="field">
+					<label>Title</label> <input type="text" name="assignmentTitle">
+				</div>
+				<div class="field">
+					<label>Instructionst</label>
+					<textarea name="assignmentInstructions"></textarea>
 				</div>
 
+				<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
+					value=<%=classroomID%>>
 
+				<div class="field">
+					<label>Deadline</label> <input name="deadline" type="date" value="" />
+				</div>
+
+				<div>
+					<label for="file" class="ui icon button"> <i
+						class="file icon"></i> Upload File
+					</label> <input type="file" id="file" name="file" size=30
+						style="display: none">
+				</div>
 			</div>
-
 		</div>
-	</div>
+		<div class="actions">
+			<button type = "submit" class="ui teal button assignment-add-button">Add</button>
+		</div>
+	</form>
+	<script>
+		$(".assignment-add-button").click(function() {
+			$('.ui.modal').modal('show');
+		});
+	</script>
 	<%
 		}
 	%>
-	<!-- -------------------------------------------------------------------- -->
-	<%
-		List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
 
-		for (Assignment a : assignments) {
-			String htmlCode = generateAssignmentHTML(a, isStudent, isSectionLeader, isSeminarist, classroomID, currentPerson);
-			out.println(htmlCode);
-		}
-	%>
-	<!-- -------------------------------------------------------------------- -->
-	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+
+
+
+	<%
+	
+
+
+	List<Assignment> assignments = connector.assignmentDB.getAssignments(classroomID);
+	for (Assignment a : assignments) {
+		
+		 %>
+					<div class="ui segments">
+					  <div class="ui segment">
+					  			<%
+					 			if(isStudent){ 
+					 			 %>
+					 			 	<%=
+					 			 	"<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
+									+"\"> " + a.getTitle() + "</a></h1>"
+					 			 	
+					 			 	
+								 	%>
+									
+								<%
+								} else {
+								%>		
+							
+									<%= 
+									"<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
+									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>"
+									%>
+								<%		
+								}
+
+						  		%>		
+					    
+					    
+					    
+					  </div>
+					  <div class="ui secondary segment">
+
+					    <% 
+					    	if( a.getDeadline()!= null){
+					    %>
+								<p> Deadline:" <%= a.getDeadline()  %>  </p>
+								
+						<%
+							}
+					    
+					    %> 
+					  </div>
+					</div>			
+					
+					
+					
+					
+					
+			<%		
+				}
+			%>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/comments.js'
 		type="text/javascript"></script>

@@ -50,8 +50,7 @@ public class GiveGradeServlet extends HttpServlet {
 		
 		String link = String.format("studentsOneAssignment.jsp?classroomID=%s&studentEmail=%S&assignmentTitle=%s", 
 				classroomID, studentEmail ,assignmentTitle);
-		
-		response.sendRedirect("studentsOneAssignment.jsp?classroomID=1&studentEmail=a@gmail.com&assignmentTitle=123");	  
+		response.sendRedirect(link);
 	}
 
 }

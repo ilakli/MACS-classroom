@@ -322,6 +322,7 @@ public class Classroom {
 	 *         it was not a student before or some error occurred)
 	 */
 	public boolean classroomDeleteStudent(String email) {
+		
 		if (!classroomStudentExists(email)) {
 			return false;
 		} else {
@@ -426,10 +427,13 @@ public class Classroom {
 		int studentsInSingleSection = studentsToDistribute / seminars.size();
 		int j = 0;
 		
+		System.out.println("doing auto distribution=====================");
 		for (Seminar s: seminars) {
 			int already = s.getSeminarSize();
 			int curSeminarN = s.getSeminarN();
 			distributed.put(curSeminarN, new ArrayList<Person>());
+			System.out.println();
+			System.out.println(curSeminarN + " " + already);
 			for (int i = already; i < studentsInSingleSection && j < students.size(); i++) {
 				distributed.get(curSeminarN).add(students.get(j));
 				j++;
@@ -438,6 +442,8 @@ public class Classroom {
 			if (j >= students.size()) break;
 		}
 		
+		
+		System.out.println("ager akamde movida");
 		seminars.sort(new Comparator<Seminar>() {
 
 			@Override
@@ -451,12 +457,12 @@ public class Classroom {
 			seminars.get((k - j) % seminars.size()).updateSeminarSize(1);
 		}
 		
-		for (Seminar sem: seminars) {
-			db.seminarDB.updateSeminarSize(sem.getSeminarN(), this.classroomID, sem.getSeminarSize());
-		}
-		
 		for (int i: distributed.keySet()) {
 			db.seminarDB.addStudentsToSeminar(i, distributed.get(i), this.classroomID);
+		}
+		
+		for (Seminar sem: seminars) {
+			db.seminarDB.updateSeminarSize(sem.getSeminarN(), this.classroomID);
 		}
 	}
 
@@ -504,12 +510,12 @@ public class Classroom {
 			sections.get((k - j) % sections.size()).updateSectionSize(1);
 		}
 		
-		for (Section sec: sections) {
-			db.sectionDB.updateSectionSize(sec.getSectionN(), this.classroomID);
-		}
-		
 		for (int i: distributed.keySet()) {
 			db.sectionDB.addStudentsToSection(i, distributed.get(i), this.classroomID);
+		}
+		
+		for (Section sec: sections) {
+			db.sectionDB.updateSectionSize(sec.getSectionN(), this.classroomID);
 		}
 	}
 	
