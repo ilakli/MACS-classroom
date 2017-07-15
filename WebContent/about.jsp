@@ -226,7 +226,7 @@
 			<label for="file" class="ui icon button"> <i
 				class="file icon"></i> Open File
 			</label> <input type="file" id="file" name="file" size=30
-				style="display: none">
+				style="display: none" multiple>
 		</div>
 		
 		<input type="submit" class="ui teal button" value="Add">

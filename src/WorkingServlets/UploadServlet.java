@@ -2,6 +2,7 @@ package WorkingServlets;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,10 +34,8 @@ public class UploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private boolean isMultipart;
-	private String filePath;
 	private int maxFileSize = 100000 * 1024;
 	private int maxMemSize = 100000 * 1024;
-	private File file;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -48,7 +47,6 @@ public class UploadServlet extends HttpServlet {
 
 	public void init(ServletConfig config) {
 		// Get the file location where it would be stored.
-		filePath = "";
 	}
 
 	/**
@@ -69,8 +67,6 @@ public class UploadServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		
-		filePath = request.getServletContext().getRealPath("/");
-		System.out.println(filePath + " Is the filepath");
 		String classroomId = "";
 		String categoryId = "";
 		isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -85,15 +81,17 @@ public class UploadServlet extends HttpServlet {
 
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setSizeMax(maxFileSize);
-		String filePath = "";
-		String fileType = "";
+		ArrayList <FileToUpload> filesToUpload = new ArrayList <FileToUpload> ();
 		try {
 			List<FileItem> fileItems = upload.parseRequest(request);
 			
 			for (FileItem item : fileItems) {
 				if (!item.isFormField()) {
-					filePath = item.getName();
-					fileType = item.getContentType();
+					String filePath = item.getName();
+					String fileType = item.getContentType();					
+					String fileName = filePath.substring(filePath.lastIndexOf('\\') + 1);
+
+					File file;
 					
 					if (filePath.lastIndexOf("\\") >= 0) {
 						file = new File(filePath + filePath.substring(filePath.lastIndexOf("\\")));
@@ -101,6 +99,8 @@ public class UploadServlet extends HttpServlet {
 						file = new File(filePath + filePath.substring(filePath.lastIndexOf("\\") + 1));
 					}
 					item.write(file);
+					
+					filesToUpload.add(new FileToUpload(file, fileType, fileName));
 
 				} else {
 					String fieldName = item.getFieldName();
@@ -119,23 +119,45 @@ public class UploadServlet extends HttpServlet {
 		AllConnections connection = (AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive myDrive = (MyDrive) request.getServletContext().getAttribute("drive");
-		
-		String fileName = filePath.substring(filePath.lastIndexOf('\\') + 1);
 
-		System.out.println(fileName + " is fileName And classroomId is: " + classroomId + " And categoryId is: " + categoryId);
-
-		MaterialDB materialDB = connection.materialDB;
-		materialDB.addMaterial(classroomId, categoryId, fileName);
-		
+		MaterialDB materialDB = connection.materialDB;		
 		String categoryName = connection.categoryDB.getCategoryName(classroomId, categoryId);
 		String categoryFolder = connection.driveDB.getCategoryFolder(classroomId, categoryName);
 		
-		myDrive.uploadFile(fileName, file, fileType, categoryFolder);
+		for (FileToUpload fileToUpload: filesToUpload) {
+			
+			materialDB.addMaterial(classroomId, categoryId, fileToUpload.getName());
+			myDrive.uploadFile(fileToUpload.getName(), fileToUpload.getFile(), fileToUpload.getFileType(), categoryFolder);
+		}
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);
 		response.sendRedirect(address);
 		// dispatcher.forward(request, response);
+	}
+	
+	public class FileToUpload {
+		private String fileName;
+		private String fileType;
+		private File fileToUpload;
+		
+		public FileToUpload(File fileToUpload, String fileType, String fileName) {
+			this.fileName = fileName;
+			this.fileType = fileType;
+			this.fileToUpload = fileToUpload;
+		}
+		
+		private String getName() {
+			return fileName;
+		}
+		
+		private String getFileType() {
+			return fileType;
+		}
+		
+		private File getFile() {
+			return fileToUpload;
+		}
 	}
 
 }
