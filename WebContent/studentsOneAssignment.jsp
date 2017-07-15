@@ -83,6 +83,11 @@
 }
 .grade {
 	float: right;
+	margin: 0.5% !important;
+	
+}
+.button-margin{
+	margin: 0.5% !important;
 }
 
 	</style>
@@ -121,7 +126,7 @@
 		String result = "<div class=\"ui top attached tabular menu\"> " + 
 						"<div class=\"ui raised segment\"> <div class=\"active item\"> " + 
 						a.getTitle() + "</div>" + "<div class=\"ui bottom attached active tab segment\"> " +
-						"<p> " + a.getInstructions() + "</p>";
+						"<p>" + a.getInstructions() + "</p>";
 						
 						result+="<p></p>";								   						
 						
@@ -232,12 +237,15 @@
 	%>
 	<% 
 		if(assignment.getAssignmentGrade().equals("Not Graded")){
-			out.println("<div class=\"ui teal huge red label grade\">" + assignment.getAssignmentGrade() + "</div>");	
+			out.println("<div class=\"ui big red label right grade\">" + assignment.getAssignmentGrade() + "</div>");	
 		}else{
-			out.println("<div class=\"ui teal huge green label grade\">" + assignment.getAssignmentGrade() + "</div>");
+			out.println("<div class=\"ui big green label right grade\">" + assignment.getAssignmentGrade() + "</div>");
 		}
 	%>
-	
+	<br/>
+	<br/>
+	<br/>
+		
 	<div class="panel panel-default">  
 		<div class="panel-body"> 
 	<%
@@ -273,17 +281,20 @@
 				
 				%>
 				<form action="TurnInAssignmentServlet" enctype="multipart/form-data" method="POST">
-					
-					<h6>Upload File</h6>
-					
 					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
 					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
 					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
 					
 					<textarea style="display:none;" name="numReschedulings"><%=mustUseReschedulings%></textarea>
 					
-					<input type="file" name="file" size="30" /> <br> 
-					<input type="submit" value="Turn In" class="btn btn-success">
+					<div>
+						<label for="file" class="ui icon button button-margin"> <i
+							class="file icon "></i> Chose Work File
+						</label> <input type="file" id="file" name="file" size=30 
+							style="display: none">
+						</div>
+		
+						<input type="submit" class="ui teal button button-margin" value="Add">
 				</form>	
 				
 				
@@ -305,18 +316,18 @@
 		
 		
 		
-			String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
-			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
-			
-			ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
-			
-			out.println("<div class=\"ui middle aligned divided list\">");	
-			for(int i = 0; i<generatedHTML.size(); i++){
-				out.println("<div class=\"item\">");
-				out.println(generatedHTML.get(i));
-				out.println("</div>");
-			}
+		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
+		String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
+		
+		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
+		
+		out.println("<div class=\"ui middle aligned divided list\">");	
+		for(int i = 0; i<generatedHTML.size(); i++){
+			out.println("<div class=\"item\">");
+			out.println(generatedHTML.get(i));
 			out.println("</div>");
+		}
+		out.println("</div>");
 /*			
 			List<String> uploadedFiles = connector.studentAssignmentDB.
 					getStudentSentFiles(assignment.getStudentAssignmentId());
