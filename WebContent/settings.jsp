@@ -51,6 +51,11 @@ pre {
 	margin: 0.5% !important;
 	float: right;
 }
+.sign-out {
+	float: right;
+	margin-top: 0.8%;
+	margin-right: 0.7%;
+}
 </style>
 </head>
 <body>
@@ -90,7 +95,10 @@ pre {
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-
+		
+		if(!isLecturer && !isAdmin)
+			 response.sendError(400, "Not Permitted At All");
+		
 		ArrayList<Function> functions = connector.functionDB.getAllFunctions();
 		ArrayList<Position> positions = connector.positionDB.getAllPositions();
 	%>
