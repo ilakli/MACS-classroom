@@ -47,6 +47,10 @@ pre {
 	!
 	important;
 }
+.button-margin{
+	margin: 0.5% !important;
+	float: right;
+}
 </style>
 </head>
 <body>
@@ -250,19 +254,7 @@ pre {
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td>
-					<div class="ui big white circular label">Do you want to save
-						new values for your class?</div>
-				</td>
-				<td class="right aligned collapsing">
-					<div class="ui input focus">
-						<button type="submit" class="ui button" name="save">
-							Save</button>
-					</div>
-				</td>
-			</tr>
-
+			
 			<!--<table>
 		    <thead>
 		      <tr>
@@ -291,6 +283,10 @@ pre {
 		</table>
 		-->
 		</table>
+		
+		
+		
+		<input type="submit" class="ui white right button button-margin" value="Save">
 		<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 			value=<%=classroomID%>>
 

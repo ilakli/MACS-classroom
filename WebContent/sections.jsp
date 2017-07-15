@@ -25,6 +25,7 @@
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 
 <script type="text/javascript" src='js/multiInput.js'></script>
+<script type="text/javascript" src='js/sectionNumberChange.js'></script>
 <script type="text/javascript" src='js/studentAddSection.js'></script>
 <link rel="stylesheet" href="css/multiInput.css" />
 
@@ -324,12 +325,12 @@
 		}
 	%>
 	<i class="huge add circle icon fixed-position"></i>
-	<form action="AddNewSectionServlet" method="Post">
-	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<form name="add" action="AddNewSectionServlet" method="Post" onSubmit="return validateFormAdd()"> 
+		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	<i style="margin-left: 5%;"class="huge minus circle icon fixed-position"></i>
-	<form action="DeleteSectionServlet" method="Post">
-	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<form name="delete" action="DeleteSectionServlet" method="Post" onSubmit="return validateFormDelete()">
+		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
 	
 	<script>
