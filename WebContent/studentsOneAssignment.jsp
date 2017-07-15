@@ -151,6 +151,14 @@
 		String personID = connector.personDB.getPersonId(studentEmail);
 		Assignment a = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
 		
+		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
+		String seminaristEmail = connector.studentDB.getSeminaristEmail(classroomID, personID);
+		String currentPersonEmail = currentPerson.getEmail();
+		
+		if(!isLecturer && !sectionLeaderEmail.equals(currentPersonEmail) && !seminaristEmail.equals(currentPersonEmail) && !studentEmail.equals(currentPersonEmail)){
+		    response.sendError(400, "Not Permitted At All");
+		}
+		
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String deadlineWithReschedulings = "";
 		if (a.getDeadline()!=null) deadlineWithReschedulings = format1.format(a.getDeadline());
@@ -292,7 +300,7 @@
 		
 		
 		
-			String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
+		
 			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 			
 			String generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);

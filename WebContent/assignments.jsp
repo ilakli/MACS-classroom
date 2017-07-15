@@ -108,18 +108,6 @@
 		return result;
 	}%>
 
-
-
-
-
-
-	<div class="ui block header head-panel">
-		<a href="index.jsp">
-			<h3 class="ui header head-text">Macs Classroom</h3>
-		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
-			out</a>
-
-	</div>
 	<div class="ui menu">
 		<a
 			href=<%="stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>
