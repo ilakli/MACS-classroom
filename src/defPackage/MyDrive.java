@@ -35,6 +35,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -187,9 +188,9 @@ public class MyDrive {
 		return assignmentFolderId;
 	}
 	
-	public String getHtmlForStudentUploads (String sectionLeaderFolderId, String assignmentName, String studentEmail) {
+	public ArrayList<String> getHtmlForStudentUploads (String sectionLeaderFolderId, String assignmentName, String studentEmail) {
 		
-		String result = "";
+		ArrayList<String> result = new ArrayList<String>();
 		
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", sectionLeaderFolderId)).execute();
@@ -201,7 +202,7 @@ public class MyDrive {
 				}
 			}
 			if (assignmentFolderId.equals("")) {
-				return "";
+				return result;
 			}
 			int atIndex = studentEmail.indexOf("@");
 			if (atIndex == -1) {
@@ -218,12 +219,12 @@ public class MyDrive {
 				}
 			}
 			if (studentFolderId.equals("")) {
-				return "";
+				return result;
 			}
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
 			for (File f: fl.getFiles()) {
-				result += String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName());
+				result.add(String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName()));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
