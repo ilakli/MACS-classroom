@@ -14,6 +14,7 @@
 <%@page import="defPackage.MyDrive"%>
 <%@page import="java.time.LocalDateTime"%>
 <%@page import="java.util.Date"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.Calendar"%>
 
 
@@ -80,6 +81,10 @@
 	!
 	important;
 }
+.grade {
+	float: right;
+}
+
 	</style>
 </head>
 <body>
@@ -113,23 +118,23 @@
 
 	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 		
-		String result = "<div class=\"panel panel-default\"> " + 
-						" <div class=\"panel-body\"> " + 
-						"<h1>" + a.getTitle() + "</h1>" + 
+		String result = "<div class=\"ui top attached tabular menu\"> " + 
+						"<div class=\"ui raised segment\"> <div class=\"active item\"> " + 
+						a.getTitle() + "</div>" + "<div class=\"ui bottom attached active tab segment\"> " +
 						"<p> " + a.getInstructions() + "</p>";
 						
-						if( a.getDeadline()!= null){
-							result+="<p> Deadline:" + a.getDeadline() + "</p>";
-						}
+						result+="<p></p>";								   						
 						
 						if(a.getFileName() != null){
-							result +=" <a href=https://drive.google.com/open?id=" + fileId + ">" + a.getFileName() + "</a></div>";
+							result +=" <a class=\"ui blue ribbon label\"> File: <a href=https://drive.google.com/open?id=" + 
+							fileId + ">" + a.getFileName() + "</a></p>";
 						}
+						result+="<p></p>";
+						if( a.getDeadline()!= null){
+							result+="<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
+						}						
 						
-						
-						result+= " <div class=\"panel-footer\"></div> " 
-								
-						+ "</div>";
+						result+="</div> </div> </div>";
 		
 		return result;
 	}%>
@@ -225,8 +230,16 @@
 			out.println(htmlCode);
 		
 	%>
+	<% 
+		if(assignment.getAssignmentGrade().equals("Not Graded")){
+			out.println("<div class=\"ui teal huge red label grade\">" + assignment.getAssignmentGrade() + "</div>");	
+		}else{
+			out.println("<div class=\"ui teal huge green label grade\">" + assignment.getAssignmentGrade() + "</div>");
+		}
+	%>
 	
-	
+	<div class="panel panel-default">  
+		<div class="panel-body"> 
 	<%
 	
 		if(isStudent){
@@ -295,14 +308,15 @@
 			String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
 			String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 			
-			String generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
+			ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
 			
-			System.out.println("======================");
-			System.out.println("I've just generated HTML");
-			System.out.println("======================");
-			System.out.println(generatedHTML);
-			
-			out.println(generatedHTML);
+			out.println("<div class=\"ui middle aligned divided list\">");	
+			for(int i = 0; i<generatedHTML.size(); i++){
+				out.println("<div class=\"item\">");
+				out.println(generatedHTML.get(i));
+				out.println("</div>");
+			}
+			out.println("</div>");
 /*			
 			List<String> uploadedFiles = connector.studentAssignmentDB.
 					getStudentSentFiles(assignment.getStudentAssignmentId());
@@ -313,7 +327,6 @@
 */			
 		
 	%>
-	
 	
 	<!-- GRADING -->
 	<% if(isSectionLeader || isSeminarist ){ %>
@@ -334,7 +347,7 @@
 				</div>
 
 		<input type="hidden" name="studentId"value="<%=assignment.getPersonId()%>">
-		<input type="hidden" name="studentEmail"value="<%=request.getAttribute(studentEmail)%>">
+		<input type="hidden" name="studentEmail"value="<%=studentEmail%>">
 		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
 		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
 		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
@@ -420,6 +433,9 @@
   		  <!-- END OF STAFF COMMENTS -->
 		  <%}%>
 	<!-- END OF COMMENTS -->
+	
+		</div>
+	</div>
 	
 	
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
