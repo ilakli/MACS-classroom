@@ -48,48 +48,59 @@
 	padding-top: 1.4%;
 	padding-left: 1%;
 }
-.ui.header h2{
+
+.ui.header h2 {
 	display: inline;
 }
+
 .icon {
 	cursor: pointer;
 }
+
 .icon-student {
 	float: right;
 	display: inlie;
 }
+
 .remove.icon {
 	float: right;
 	margin-top: 0.8% !important;
 }
-.students{
+
+.students {
 	max-height: 250px !important;
 	position: relative;
 	overflow: auto;
 }
-.free-students{
+
+.free-students {
 	max-height: 350px !important;
 	position: relative;
 	overflow: auto;
 }
-.fixed-position{
+
+.fixed-position {
 	display: inline-block;
 	position: fixed;
 	clear: both;
 	bottom: 0;
-    width: 100%;
+	width: 100%;
 }
+
 .ui.menu {
 	margin-top: 0;
 }
+
 .block.header {
 	margin: 0;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
 	margin-right: 0.7%;
 }
+
 .head-panel {
 	display: block;
 	margin: 0 !important;
@@ -119,21 +130,21 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
-		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
-			 response.sendError(400, "Not Permitted At All");
+
+		if (!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer) {
+			response.sendError(400, "Not Permitted At All");
 		}
-		
+
 		List<Section> sections = connector.sectionDB.getSections(classroomID);
 		List<Person> studentsWithoutSection = connector.studentDB.getStudentsWithoutSection(classroomID);
 		List<Person> sectionLeadersWithoutSection = connector.sectionLeaderDB
 				.getSectionLeadersWithoutSection(classroomID);
 	%>
 	<div class="ui block header head-panel">
-	<a href="index.jsp">
-		<h3 class="ui header head-text">Macs Classroom</h3>
-	</a>
-	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+		<a href="index.jsp">
+			<h3 class="ui header head-text">Macs Classroom</h3>
+		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
+			out</a>
 	</div>
 	<div class="ui menu">
 		<a
@@ -157,7 +168,7 @@
 		<%
 			}
 		%>
-		
+
 		<div class="right menu">
 			<a class="item"
 				href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
@@ -174,20 +185,24 @@
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="classroom-id" value ="<%= classroomID %>">
-	
+	<input type="hidden" id="classroom-id" value="<%=classroomID%>">
+
+	<%
+		if (isAdmin || isLecturer) {
+	%>
 	<div class="ui raised segment">
 		<h2 class="ui header">Students Without Section</h2>
-			<form method="POST" action="AutoDistributionToSectionsServlet">
-				<input type="hidden" name = "<%= Classroom.ID_ATTRIBUTE_NAME %>" value= "<%= classroomID %>" >
-				<button type="submit" class="positive ui button">Auto
-					Distribution</button>
-			</form>
+		<form method="POST" action="AutoDistributionToSectionsServlet">
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=classroomID%>">
+			<button type="submit" class="positive ui button">Auto
+				Distribution</button>
+		</form>
 		<div class="ui middle aligned selection list free-students">
-			
+
 			<%
 				for (int i = 0; i < studentsWithoutSection.size(); i++) {
-					Person currentStudent = studentsWithoutSection.get(i);
+						Person currentStudent = studentsWithoutSection.get(i);
 			%>
 			<div class="item">
 				<img class="ui avatar image"
@@ -202,61 +217,70 @@
 		</div>
 	</div>
 	<%
+		}
 		for (int i = 0; i < sections.size(); i++) {
 			Section currentSection = sections.get(i);
 			Person sectionLeader = currentSection.getSectionLeader();
 			List<Person> currentSectionStudents = currentSection.getSectionStudents();
 	%>
 	<div class="ui raised segment">
-		
-		<i class="add user icon icon-student"></i>
-		
-		<input type="hidden" value="<%=currentSection.getSectionN() %>">
-		
-		<div class="ui modal student" id="<%= currentSection.getSectionN()%>">
-		<div class="header">Add Student</div>
-		<div class="content">
-			<div class="field">
-				<div class="emails">
+		<%
+			if (isLecturer || isAdmin) {
+		%>
+		<i class="add user icon icon-student"></i> <input type="hidden"
+			value="<%=currentSection.getSectionN()%>">
 
-					<input type="text" value="" placeholder="Add Email" />
+		<div class="ui modal student" id="<%=currentSection.getSectionN()%>">
+			<div class="header">Add Student</div>
+			<div class="content">
+				<div class="field">
+					<div class="emails">
+
+						<input type="text" value="" placeholder="Add Email" />
+					</div>
 				</div>
 			</div>
+			<div class="actions">
+				<button class="ui teal button studentAddSectionButton">Add</button>
+				<input type="hidden" value="AddStudentToSectionServlet"> <input
+					type="hidden" value="<%=currentSection.getSectionN()%>">
+				<button class="ui red button cancel">Cancel</button>
+			</div>
 		</div>
-		<div class="actions">
-			<button class="ui teal button studentAddSectionButton">Add</button>
-			<input type="hidden" value="AddStudentToSectionServlet">
-			<input type="hidden" value="<%= currentSection.getSectionN()%>">
-			<button class="ui red button cancel">Cancel</button>
-		</div>
-		</div>
-		
+
 		<script>
-			
 			$(".icon-student").click(function() {
-				
+
 				var modalId = $(this).next().val();
 				$("#" + modalId).modal("show");
 			});
 		</script>
+		<%
+			}
+		%>
 		<h2 class="ui header"><%=currentSection.getSectionN()%></h2>
 		<div class="ui middle aligned selection list">
 
 			<div class="item">
 				<%
 					if (sectionLeader != null) {
+							if (isLecturer || isAdmin) {
 				%>
+
 				<form action="RemoveSectionLeaderFromSectionServlet" method="POST">
-				<input type="hidden" name="sectionN" value="<%= currentSection.getSectionN() %>">
-				<input type="hidden" name="classroomID" value = "<%= classroomID %>">
-     			<i class="remove icon"></i>
-				 </form>
-				 <script>
-				 	$(".remove.icon").click(function(){
-				 		$(this).parent().submit();
-				 	});
-				 	
-				 </script>
+					<input type="hidden" name="sectionN"
+						value="<%=currentSection.getSectionN()%>"> <input
+						type="hidden" name="classroomID" value="<%=classroomID%>">
+					<i class="remove icon"></i>
+				</form>
+				<script>
+					$(".remove.icon").click(function() {
+						$(this).parent().submit();
+					});
+				</script>
+				<%
+					}
+				%>
 				<img class="ui avatar image"
 					src="<%=sectionLeader.getPersonImgUrl()%>">
 				<div class="content">
@@ -266,7 +290,7 @@
 				<%
 					} else {
 				%>
-				
+
 				<button class="positive ui button">Set Section Leader</button>
 				<form class="section-leader-add" method="post"
 					action="AddSectionLeaderToSectionServlet">
@@ -308,10 +332,12 @@
 					<div class="content">
 						<div class="header"><%=currentStudent.getName() + " " + currentStudent.getSurname()%></div>
 					</div>
+					<% if(isLecturer || isAdmin) {%>
 					<div class="ui checkbox">
 						<input type="checkbox" name="studentsEmails"
 							value="<%=currentStudent.getEmail()%>"> <label></label>
 					</div>
+					<% } %>
 				</div>
 				<%
 					}
@@ -321,21 +347,34 @@
 
 			</div>
 			<input type="hidden" name="classroomID" value="<%=classroomID%>">
+			<%
+				if (isLecturer || isAdmin) {
+			%>
 			<input type="submit" class="ui red button" value="Remove Marked">
+			<%
+				}
+			%>
 		</form>
 	</div>
-	
+
 	<%
 		}
+		if(isAdmin || isLecturer){
 	%>
 	<i class="huge add circle icon fixed-position"></i>
-	<form name="add" action="AddNewSectionServlet" method="Post" onSubmit="return validateSectionAdd()"> 
-		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<form name="add" action="AddNewSectionServlet" method="Post"
+		onSubmit="return validateSectionAdd()">
+		<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+			value="<%=classroomID%>">
 	</form>
-	<i style="margin-left: 5%;"class="huge minus circle icon fixed-position"></i>
-	<form name="delete" action="DeleteSectionServlet" method="Post" onSubmit="return validateSectionDelete()">
-		<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<i style="margin-left: 5%;"
+		class="huge minus circle icon fixed-position"></i>
+	<form name="delete" action="DeleteSectionServlet" method="Post"
+		onSubmit="return validateSectionDelete()">
+		<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+			value="<%=classroomID%>">
 	</form>
+	<% } %>
 	<script>
 		function signOut() {
 			var auth2 = gapi.auth2.getAuthInstance();
@@ -351,7 +390,7 @@
 		}
 	</script>
 	<script>
-		$(".fixed-position").click(function(){
+		$(".fixed-position").click(function() {
 			$(this).next().submit();
 		});
 		$(".section-leader-add").hide();
