@@ -53,10 +53,7 @@ public class PostServlet extends HttpServlet {
 					.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 			Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 			Person sender = connection.personDB.getPerson(personId);
-			List<Person> allPerosns = currentClassroom.getClassroomStudents();
-			allPerosns.addAll(currentClassroom.getClassroomSectionLeaders());
-			allPerosns.addAll(currentClassroom.getClassroomSeminarists());
-			allPerosns.addAll(currentClassroom.getClassroomLecturers());
+			List<Person> allPerosns = connection.classroomDB.ClassroomAllPersons(currentClassroom.getClassroomID());
 			ArrayList<String> emails  = new ArrayList <String>(); 
 			for(Person person : allPerosns){
 				if(!person.getEmail().equals(sender.getEmail())){
@@ -68,7 +65,9 @@ public class PostServlet extends HttpServlet {
 			
 			String subject = "Macs Classroom: " + currentPerson.getName() + " " + currentPerson.getSurname() +
 					" Posted in Classroom - " + currentClassroom.getClassroomName();
-			MailConnector mail = new MailConnector(emails, subject, postText);
+			String mailText = postText + "\nGo to the Link: \n" + 
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
+			MailConnector mail = new MailConnector(emails, subject, mailText);
 			mail.sendMail();
 				
 			connection.postDB.addPost(classroomId, personId, postText);
