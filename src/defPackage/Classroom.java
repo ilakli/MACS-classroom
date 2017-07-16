@@ -219,11 +219,9 @@ public class Classroom {
 	 *         e479ff59e7889fe12cf0fbdcc9d38be99cc3c3bd
 	 */
 	public boolean classroomAddLecturer(String email) {
-		System.out.println("Email Here is : " + email);
 		if (classroomLecturerExists(email)) {
 			return false;
 		} else {
-			System.out.println("Email Here is : " + email);
 			return db.lecturerDB.addLecturer(email, this.classroomID);
 		}
 
@@ -417,7 +415,6 @@ public class Classroom {
 		List<Seminar> seminars = db.seminarDB.getSeminars(this.classroomID);
 		
 		if (seminars.isEmpty()) {
-			System.out.println("TRIED TO FILL SEMINARS WITH FREE STUDENTS, BUT THERE ARE NO SEMINARS!!!!");
 			return;
 		}
 		
@@ -427,13 +424,10 @@ public class Classroom {
 		int studentsInSingleSection = studentsToDistribute / seminars.size();
 		int j = 0;
 		
-		System.out.println("doing auto distribution=====================");
 		for (Seminar s: seminars) {
 			int already = s.getSeminarSize();
 			int curSeminarN = s.getSeminarN();
 			distributed.put(curSeminarN, new ArrayList<Person>());
-			System.out.println();
-			System.out.println(curSeminarN + " " + already);
 			for (int i = already; i < studentsInSingleSection && j < students.size(); i++) {
 				distributed.get(curSeminarN).add(students.get(j));
 				j++;
@@ -442,8 +436,6 @@ public class Classroom {
 			if (j >= students.size()) break;
 		}
 		
-		
-		System.out.println("ager akamde movida");
 		seminars.sort(new Comparator<Seminar>() {
 
 			@Override
@@ -476,7 +468,6 @@ public class Classroom {
 		List<Section> sections = db.sectionDB.getSections(this.classroomID);
 		
 		if (sections.isEmpty()){
-			System.out.println("TRIED TO FILL SECTIONS WITH FREE STUDENTS, BUT THERE ARE NO SECTIONS!!!!");
 			return;
 		}
 		
@@ -634,7 +625,6 @@ public class Classroom {
 	public void addStudentToSmallestSection(Person p) {
 		Section section = db.sectionDB.getSmallestSection(this.classroomID);
 		if (section == null) {
-			System.out.println("THERE IS NO SECTION!!!");
 			return;
 		}
 		section.addStudentToSection(p.getEmail());
@@ -647,7 +637,6 @@ public class Classroom {
 	public void addStudentToSmallestSeminar(Person p) {
 		Seminar seminar = db.seminarDB.getSmallestSeminar(this.classroomID);
 		if (seminar == null) {
-			System.out.println("THERE IS NO SEMINAR!!!");
 			return;
 		}
 		seminar.addStudentToSeminar(p.getEmail());

@@ -24,9 +24,9 @@ public class TestClassroom {
 	private MockClassroom meth;
 	private AllConnections allConnections;
 	@Before
-	public void bla(AllConnections allConnections){
+	public void init(){
 		//creating classes;
-		this.allConnections = allConnections;
+		this.allConnections = new AllConnections();
 		oop = new MockClassroom ("OOP" , db.classroomDB.addClassroom("OOP", "1"),"1");
 		pp = new MockClassroom ("Paradigms", db.classroomDB.addClassroom("Paradigms", "1"),"1");
 		meth = new MockClassroom ("Methodologies", db.classroomDB.addClassroom("Methodologies", "1"),"1");
@@ -59,6 +59,8 @@ public class TestClassroom {
 	 */
 	@Test
 	public void test2AddingToClassrom() {
+		
+		assertTrue(allConnections.lecturerDB.addGlobalLecturer("s.gvinepadze@freeuni.edu.ge"));
 		assertTrue(oop.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
 		assertTrue(pp.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
 		assertTrue(meth.classroomAddLecturer("s.gvinepadze@freeuni.edu.ge"));
@@ -163,6 +165,7 @@ public class TestClassroom {
 			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
 
 			db.personDB.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042");
+			db.lecturerDB.addGlobalLecturer(email);
 			db.lecturerDB.addLecturer(email, currentClassroom);
 			
 			realLecturers.add(new Person(name, surname, email, "2"));
@@ -228,13 +231,6 @@ public class TestClassroom {
 		db.sectionDB.addSection(classID);
 		db.sectionDB.addSection(classID);
 		db.sectionDB.addSection(classID);
-		
-		List <Section> resSections = mockClass.getClassroomSections();
-		
-		for (Section sec: resSections) {
-			System.out.println(sec.getClassroomId() + " " + sec.getSectionN());
-			System.out.println("oeeee");
-		}
 		
 		assertEquals(mockClass.getClassroomSections(), sections);
 		

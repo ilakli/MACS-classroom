@@ -87,6 +87,7 @@ public class TestDBConnection {
 	@Test
 	public void test3AddingToClassrom() {
 		LecturerDB lecturerDB = allConnections.lecturerDB;
+		assertTrue(lecturerDB.addGlobalLecturer("s.gvinepadze@freeuni.edu.ge"));
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "1"));
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "2"));
 		assertTrue(lecturerDB.addLecturer("s.gvinepadze@freeuni.edu.ge", "3"));
@@ -181,6 +182,7 @@ public class TestDBConnection {
 			String email = "a" + String.valueOf(ch) + "@freeuni.edu.ge";
 
 			assertTrue(pr.addPerson(name, surname, email,"http://cdn.makeuseof.com/wp-content/uploads/2011/04/0-incognito-intro.jpg?x92042"));
+			assertTrue(lr.addGlobalLecturer(email));
 			assertTrue(lr.addLecturer(email, currentClassroom));
 
 			realLecturers.add(new Person(name, surname, email, "2"));
