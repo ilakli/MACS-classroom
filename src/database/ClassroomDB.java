@@ -70,7 +70,6 @@ public class ClassroomDB {
 			con.setAutoCommit(false);
 			String query = String.format("insert into `classrooms` (`classroom_name`, `classroom_creator_id`) values ('%s', %s);", 
 					classroomName, creatorId);
-			System.out.println(query);
 			PreparedStatement insertClassroom = con.prepareStatement(query);
 			insertClassroom.executeUpdate();
 
@@ -133,7 +132,6 @@ public class ClassroomDB {
 				String classroomName = classroomsTable.getString("classroom_name");
 				String classroomCreatorId = classroomsTable.getString("classroom_creator_id");
 				Classroom classroom = new Classroom(classroomName, classroomID, classroomCreatorId);
-				System.out.println("class name: " + classroomName + "id: " + classroomID);
 				if (classroom.classroomPersonExists(p.getEmail())) {
 					classrooms.add(classroom);
 				}
@@ -329,8 +327,6 @@ public class ClassroomDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
-		System.out.println("Lecturer DB IS: " + lecturerDB + " OTHERS ARE: " + seminaristDB + " " + sectionLeaderDB
-				+ " " + studentDB);
 		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
 				|| sectionLeaderDB.sectionLeaderExists(email, classroomId)
 				|| studentDB.studentExists(email, classroomId);
@@ -392,7 +388,6 @@ public class ClassroomDB {
 		String query = String.format("update `classroom_students` set `reschedulings_used`= %s"
 				+ " where `classroom_id`=%s and `person_id`=%s;", reschedulingsUsed + 1, classroomID, personId);
 
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 
 		return db.executeUpdate(myConnection);
@@ -417,7 +412,6 @@ public class ClassroomDB {
 				"where `classroom_id` = %s) as k\n"+
 					"inner join persons as p\n"+
 					"on  p.person_id = k.person_id;\n", classroomID,classroomID,classroomID,classroomID );
-		System.out.println(query);
 		ArrayList<Person> allPerosns = personDB.getPersons(query);
 		return allPerosns;
 				

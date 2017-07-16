@@ -39,10 +39,8 @@ public class AssignmentDB {
 				String assignmentInstructions = rs.getString("assignment_instructions");
 				Date assignmentDeadline = null;
 				java.sql.Date sqlDate =rs.getDate("assignment_deadline");
-				System.out.println(sqlDate);
 				if(sqlDate!=null) {
 					assignmentDeadline = new java.util.Date(sqlDate.getTime());
-					System.out.println(assignmentDeadline);
 				}
 				String fileName = rs.getString("file_name");
 				assignments.add(new Assignment(assignmetID,classroomID,assignmentTitle, 
@@ -62,7 +60,6 @@ public class AssignmentDB {
 	public Assignment getAssignment(String assignmentID){
 		String query = String.format("select * from `classroom_assignments` where "
 				+ "`assignment_id` = %s;", assignmentID );
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		Assignment assignment = null;
 		try {
@@ -105,7 +102,6 @@ public class AssignmentDB {
 		
 		String query = String.format("insert into `classroom_assignments`(`classroom_id`,`assignment_title`,`assignment_instructions`) "
 				+ "values (%s,'%s','%s');", classroomID, assignmentTitle, assignmentInstructions);
-		System.out.println("DOING: " + query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		if( db.executeUpdate(myConnection)==false) return false;
@@ -122,7 +118,6 @@ public class AssignmentDB {
 			String query1 = String.format("update `classroom_assignments` set `assignment_deadline` = '%s' "
 					+ "where `classroom_id` = '%s' and `assignment_title` = '%s'; ", assignmentDeadline, classroomID, assignmentTitle);
 			myConnection = db.getMyConnection(query1);
-			System.out.println(query1);
 			if( db.executeUpdate(myConnection)==false) return false;
 		}
 		return true;

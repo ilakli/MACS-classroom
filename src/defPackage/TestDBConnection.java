@@ -56,8 +56,8 @@ public class TestDBConnection {
 		sm = allConnections.seminaristDB;
 		sl = allConnections.sectionLeaderDB;
 		smn = allConnections.seminarDB;
-		sc = allConnections.sectionDB;
 		scl = allConnections.sectionLeaderDB;
+		sc = allConnections.sectionDB;
 		ma = allConnections.materialDB;
 	}
 
@@ -78,9 +78,9 @@ public class TestDBConnection {
 	@Test
 	public void test2AddingClassroom() {
 		ClassroomDB classroomDB = allConnections.classroomDB;
-		assertEquals(classroomDB.addClassroom("OOP", "1"), "5");
-		assertEquals(classroomDB.addClassroom("Paradigms", "1"), "6");
-		assertEquals(classroomDB.addClassroom("Methodologies", "1"), "7");
+		assertEquals(classroomDB.addClassroom("OOP", "1"), "4");
+		assertEquals(classroomDB.addClassroom("Paradigms", "1"), "5");
+		assertEquals(classroomDB.addClassroom("Methodologies", "1"), "6");
 		assertEquals(classroomDB.addClassroom("iraklis'", "1"), DBConnection.DATABASE_ERROR);
 	}
 

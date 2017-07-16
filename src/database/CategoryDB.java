@@ -30,7 +30,6 @@ public class CategoryDB {
 		String query = String.format("insert into `classroom_material_category`(classroom_id,category_name) values (%s,'%s');", 
 				classroomId, categoryName);
 		
-		System.out.println("Adding Query Is: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -59,7 +58,6 @@ public class CategoryDB {
 	 */
 	public ArrayList<Category> getCategorys(String classroomId) {
 		String query = String.format("select * from `classroom_material_category` where `classroom_id` = %s;", classroomId);
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		ArrayList<Category> categorys = new ArrayList<Category>();
 		try {
@@ -87,14 +85,12 @@ public class CategoryDB {
 	public boolean deleteCategory(String classroomId, String categoryId) {
 		String preQuery = String.format("delete from `classroom_materials` where `classroom_id` = %s and `category_id` = %s",
 				classroomId, categoryId);
-		System.out.println(preQuery);
 		MyConnection preConnection = db.getMyConnection(preQuery);
 		db.executeUpdate(preConnection);
 		
 		String query = String.format("delete from `classroom_material_category` where `classroom_id =  %s and category_id = %s;", 
 				classroomId, categoryId);
-		System.out.println(query);
-		
+
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

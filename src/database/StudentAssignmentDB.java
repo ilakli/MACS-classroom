@@ -27,7 +27,6 @@ private DBConnection db;
 	private int getStudentAssignmentID(String classroomID, String personID, String assignmentID){
 		String query = String.format("select * from `student_assignments` where `classroom_id` = %s and "
 				+ "person_id = %s and `assignment_title` = '%s';", classroomID, personID, assignmentID );
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		int studnetAssignmentID = -1;
 		try {
@@ -190,7 +189,6 @@ private DBConnection db;
 		
 		String query = String.format("select * from `student_uploaded_assignments` where `student_assignment_id` = %s "
 				, student_assignment_id);
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		try {
 			ResultSet rs = myConnection.executeQuery();
@@ -221,7 +219,6 @@ private DBConnection db;
 						+ "where `classroom_id` = %s and `assignment_id` = %s  and `person_id` = %s; ", 
 						deadlineWithReschedulings, classroomID, assignmentID, personID);
 				MyConnection myConnection = db.getMyConnection(query1);
-				System.out.println(query1);
 				return db.executeUpdate(myConnection);
 			}
 		else return false;

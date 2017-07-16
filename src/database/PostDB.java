@@ -30,7 +30,6 @@ public class PostDB {
 				"insert into `classroom_posts` (`classroom_id`, `person_id`, `post_text`) values(%s, %s, '%s');",
 				classroomId, personId, postText);
 		
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

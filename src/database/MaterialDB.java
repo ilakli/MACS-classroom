@@ -73,7 +73,6 @@ public class MaterialDB {
 	public ArrayList<Material> getMaterialsForCategory(String classroomId, String categoryId){
 		String query = String.format("select * from `classroom_materials` where `classroom_id` = %s and `category_id` = %s;", 
 				classroomId, categoryId);
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		ArrayList<Material> materials = new ArrayList<Material>();
 		try {
@@ -105,7 +104,6 @@ public class MaterialDB {
 		}
 		String query = String.format("delete from `classroom_materials` where `classroom_id =  %s and material_name = '%s' and category_id = %s;", 
 				classroomId, materialName, categoryId);
-		System.out.println(query);
 		
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);

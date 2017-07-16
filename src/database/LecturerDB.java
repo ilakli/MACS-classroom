@@ -33,7 +33,6 @@ public class LecturerDB {
 	 * @return all global lecturers.
 	 */
 	public ArrayList<Person> getGlobalLecturers() {
-		System.out.println("Person DB Here Is Bitch: " + personDB);
 		String query = String.format("select * from `persons` where `person_id`in(select * from `lecturers`);");
 		ArrayList<Person> globalLecturers = personDB.getPersons(query);
 		return globalLecturers;
@@ -85,7 +84,6 @@ public class LecturerDB {
 		}
 		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
-		System.out.println("Query is Like This: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

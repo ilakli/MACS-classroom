@@ -153,8 +153,6 @@ public class StudentDB {
 				+ " inner join `persons` on `persons`.person_id = `section-section_leader`.person_id"
 				+ " where `student-section`.person_id = %s and `student-section`.classroom_id = %s;",
 				studentId, classroomId);
-		System.out.println("trying to get section leader email");
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		try {
 			ResultSet rs = myConnection.executeQuery();
@@ -175,8 +173,6 @@ public class StudentDB {
 				+ " inner join `persons` on `persons`.person_id = `seminar-seminarists`.person_id"
 				+ " where `student-seminar`.person_id = %s and `student-seminar`.`classroom_id` = %s;",
 				studentId, classroomId);
-		System.out.println("trying to get seminarist email");
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		try {
 			ResultSet rs = myConnection.executeQuery();

@@ -30,7 +30,6 @@ public class SeminarDB {
 		int seminarN = getSeminars(classroomId).size();
 		String query = String.format("insert into `seminars` (`classroom_id`, `seminar_n`) values (%s, %s);",
 				classroomId, seminarN);
-		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}

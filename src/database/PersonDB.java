@@ -116,7 +116,6 @@ public class PersonDB {
 	public boolean addPerson(String name, String surname, String email, String imgUrl) {
 		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`,`image_url`)"
 				+ " values ('%s', '%s', '%s', '%s');", name, surname, email, imgUrl);
-		System.out.println("QUERY IS: " + query);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
 	}
@@ -166,7 +165,6 @@ public class PersonDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
-		System.out.println("mail: " + email + " id:"+classroomId);
 		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
 				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
 	}
@@ -206,7 +204,6 @@ public class PersonDB {
 	 * @return - true if p is admin, false otherwise
 	 */
 	public boolean isAdmin(Person p) {
-		System.out.println("////////////////////////Person is: " + p);
 		boolean ret = false;
 		String query = String.format("select * from `admins` where `person_id`=\"%s\"", p.getPersonID());
 		MyConnection myConnection = db.getMyConnection(query);

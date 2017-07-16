@@ -29,7 +29,6 @@ public class SectionDB {
 	 */
 	public boolean addSection(String classroomId) {
 		int sectionN = getSections(classroomId).size();
-		System.out.println("sectionN   " + sectionN);
 		String query = String.format("insert into `sections` (`section_n`, `classroom_id`) values (%s, %s);",
 				sectionN, classroomId);
 		MyConnection myConnection = db.getMyConnection(query);
