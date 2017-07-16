@@ -324,10 +324,8 @@
 			
 			
 		}	
-			
-		String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 		
-		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, a.getTitle(), studentEmail);
+		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(classroomID, a.getTitle(), studentEmail);
 		
 		out.println("<div class=\"ui middle aligned divided list\">");	
 		for(int i = 0; i<generatedHTML.size(); i++){

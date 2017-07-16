@@ -50,7 +50,7 @@ public class CreateClassroomServlet extends HttpServlet {
 		String className = request.getParameter("newClassroomName");
 		String lecturerId = request.getParameter("lecturerID");
 		String lecturerEmail = request.getParameter("lecturerEmail");
-		System.out.println(lecturerId);
+
 		AllConnections db = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		
 		String classroomID = db.classroomDB.addClassroom(className,lecturerId);
@@ -61,9 +61,9 @@ public class CreateClassroomServlet extends HttpServlet {
 			
 			String folderId = service.createFolder("Classroom#" + classroomID + "#" + className);
 			db.driveDB.addClassroomFolder(classroomID, folderId);
-//			System.out.println("Folder ID: " + folderId);
 			
 			service.createFolder("Assignments", folderId);
+			service.createFolder("Students Assignments", folderId);
 		}
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){

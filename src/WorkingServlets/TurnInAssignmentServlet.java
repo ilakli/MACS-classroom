@@ -72,7 +72,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 			for (FileItem item : fileItems) {
 
 				if (!item.isFormField()) {
-					System.out.println("file not null");
+
 					fileName = item.getName();
 					fileType = item.getContentType();
 					
@@ -109,11 +109,8 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		Assignment assignment = connection.assignmentDB.getAssignment(assignmentID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
-		service.uploadAssignmentToSectionLeader(studentEmail, file, fileType, sectionLeaderEmail, 
-				classroomID, assignment.getTitle());
-		service.uploadAssignmentToSeminarist(studentEmail, file, fileType, seminaristEmail, 
-				classroomID, assignment.getTitle());
-				
+		service.uploadAssignment(studentEmail, file, fileType, classroomID, assignment.getTitle());		
+		
 		connection.studentAssignmentDB.turnInAssignment(classroomID, studentID, assignmentID, fileName);
 
 		if(numReschedulings!=null && !numReschedulings.equals("")){

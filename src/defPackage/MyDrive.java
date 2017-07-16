@@ -46,6 +46,7 @@ public class MyDrive {
 	private static String CLIENT_SECRET = "EMXr3ltR8h3UaHOZxeqKWs0k";
 	private Drive service;
 	private AllConnections allConnections;
+	private JsonBatchCallback<Permission> callback;
 
 	public MyDrive() throws IOException {
 
@@ -67,20 +68,8 @@ public class MyDrive {
 		this.service = service;
 		
 		allConnections = new AllConnections();
-	}
-
-	public Drive getDrive() {
-		return service;
-	}
-	
-	public String createFolder (String folderName) {
-		File fileMetaData = new File();
-		fileMetaData.setName(folderName);
-		fileMetaData.setMimeType("application/vnd.google-apps.folder");
-		System.out.println("trying to create classroom folder");
-		System.out.println(folderName);
 		
-		JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
+		callback = new JsonBatchCallback<Permission>() {
 		    @Override
 		    public void onFailure(GoogleJsonError e,
 		                          HttpHeaders responseHeaders)
@@ -96,6 +85,16 @@ public class MyDrive {
 		        System.out.println("Permission ID: " + permission.getId());
 		    }
 		};
+	}
+
+	public Drive getDrive() {
+		return service;
+	}
+	
+	public String createFolder (String folderName) {
+		File fileMetaData = new File();
+		fileMetaData.setName(folderName);
+		fileMetaData.setMimeType("application/vnd.google-apps.folder");
 		
 		File folder = null;
 		try {
@@ -146,22 +145,7 @@ public class MyDrive {
 			File fileInFolder = service.files().create(file, fileToUploadContent)
 						.setFields("id, parents")
 						.execute();
-			JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
-			    @Override
-			    public void onFailure(GoogleJsonError e,
-			                          HttpHeaders responseHeaders)
-			            throws IOException {
-			        // Handle error
-			        System.err.println(e.getMessage());
-			    }
 
-			    @Override
-			    public void onSuccess(Permission permission,
-			                          HttpHeaders responseHeaders)
-			            throws IOException {
-			        System.out.println("Permission ID: " + permission.getId());
-			    }
-			};
 			Permission userPermission = new Permission().setType("anyone").setRole("writer");
 			BatchRequest batch = service.batch();
 			service.permissions().create(fileInFolder.getId(), userPermission).queue(batch, callback);
@@ -188,12 +172,13 @@ public class MyDrive {
 		return assignmentFolderId;
 	}
 	
-	public ArrayList<String> getHtmlForStudentUploads (String sectionLeaderFolderId, String assignmentName, String studentEmail) {
+	public ArrayList<String> getHtmlForStudentUploads (String classroomId, String assignmentName, String studentEmail) {
 		
 		ArrayList<String> result = new ArrayList<String>();
+		String studentsAssignmentsFolderId = getStudentsAssignmentsFolderId(classroomId);
 		
 		try {
-			FileList fl = service.files().list().setQ(String.format("'%s' in parents", sectionLeaderFolderId)).execute();
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", studentsAssignmentsFolderId)).execute();
 			String assignmentFolderId = "";
 			for (File f: fl.getFiles()) {
 				if (f.getName().equals(assignmentName)) {
@@ -232,65 +217,62 @@ public class MyDrive {
 		
 		return result;
 	}
-
-	private void uploadAssignmentToChecker (String studentEmail, java.io.File fileToUpload, String fileType, String checkerFolderId, String assignmentName) {
+	
+	private String getStudentsAssignmentsFolderId (String classroomId) {
+		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		String folderId = "";
 		try {
-			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();			
-			String assignmentFolderId = "";
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolderId)).execute();
 			for (File f: fl.getFiles()) {
-				if (f.getName().equals(assignmentName)) {
-					assignmentFolderId = f.getId();
+				if (f.getName().equals("Students Assignments")) {
+					folderId = f.getId();
 					break;
 				}
 			}
-			if (assignmentFolderId.equals("")) {
-				assignmentFolderId = createFolder(assignmentName, checkerFolderId);
+		} catch (IOException e) {
+		}
+		return folderId;
+	}
+
+	public void uploadAssignment(String studentEmail, java.io.File fileToUpload, String fileType, String classroomId, String assignmentTitle) {
+		String studentsAssignmentFolder = getStudentsAssignmentsFolderId(classroomId);
+		int atIndex = studentEmail.indexOf("@");
+		if (atIndex == -1) atIndex = studentEmail.length();
+		String studentEmailPrefix = studentEmail.substring(0, atIndex);
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", studentsAssignmentFolder)).execute();
+			String currentAssignmentFolderId = "";
+			for (File f: fl.getFiles()) {
+				if (f.getName().equals(assignmentTitle)) {
+					currentAssignmentFolderId = f.getId();
+					break;
+				}
+			}
+			if (currentAssignmentFolderId.equals("")) {
+				currentAssignmentFolderId = createFolder(assignmentTitle, studentsAssignmentFolder);
 			}
 			
-			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
-			int atIndex = studentEmail.indexOf("@");
-			if (atIndex == -1) {
-				atIndex = studentEmail.length();
-			}
-			String studentEmailPrefix = studentEmail.substring(0, atIndex);
-			String studentFolder = "";
+			fl = service.files().list().setQ(String.format("'%s' in parents", currentAssignmentFolderId)).execute();
+			String studentFolderId = "";
 			for (File f: fl.getFiles()) {
 				if (f.getName().equals(studentEmailPrefix)) {
-					studentFolder = f.getId();
+					studentFolderId = f.getId();
 					break;
 				}
 			}
-			if (studentFolder.equals("")) {
-				studentFolder = createFolder(studentEmailPrefix, assignmentFolderId);
+			if (studentFolderId.equals("")) {
+				studentFolderId = createFolder(studentEmailPrefix, currentAssignmentFolderId);
 			}
 			
 			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date date = new Date();
 			String currentTime = dateFormat.format(date);
 			
-			uploadFile(studentEmailPrefix + " " + currentTime, fileToUpload, fileType, studentFolder);
+			uploadFile(studentEmailPrefix + " " + currentTime, fileToUpload, fileType, studentFolderId);
+
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
-
-	}
 	
-	public void uploadAssignmentToSectionLeader(String studentEmail, java.io.File fileToUpload, String fileType, String sectionLeaderEmail, String classroomId, String assignmentName) {
-		System.out.println("Trying to upload assignment to section leader");
-		System.out.println("Student email: " + studentEmail);
-		System.out.println("File: " + fileToUpload);
-		System.out.println("Section Leader email: " + sectionLeaderEmail);
-		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
-		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, sectionLeaderFolder, assignmentName);
-	}
-
-	public void uploadAssignmentToSeminarist(String studentEmail, java.io.File fileToUpload, String fileType, String seminaristEmail, String classroomId, String assignmentName) {
-		System.out.println("Trying to upload assignment to seminarist");
-		System.out.println("Student email: " + studentEmail);
-		System.out.println("Filepath: " + fileToUpload);
-		System.out.println("Section Leader email: " + seminaristEmail);
-		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
-		uploadAssignmentToChecker(studentEmail, fileToUpload, fileType, seminaristFolderId, assignmentName);
 	}
 	
 	public String getAssignmentFileId (String classroomId, String fileName) {
