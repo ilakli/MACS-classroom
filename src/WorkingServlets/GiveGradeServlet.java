@@ -50,15 +50,18 @@ public class GiveGradeServlet extends HttpServlet {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		ArrayList<String> emails = new ArrayList<String>();
 		emails.add(studentEmail);
-		String classroomName = "ba";
+		String classroomName = connection.classroomDB.getClassroom(classroomID).getClassroomName();
 		String subject = "Macs classroom: Assignment " + assignmentTitle + " in Classroom " + classroomName + " was graded.";
-		String mailText = "Your grade in this assignment is " + grade;
-		MailConnector mail = new MailConnector(emails, subject, mailText);
-		mail.sendMail();
 		connection.studentAssignmentDB.setStudnetAssignmentGrade(classroomID, studentID, assignmentTitle, grade, isSeminaris);
-		
 		String link = String.format("studentsOneAssignment.jsp?classroomID=%s&studentEmail=%S&assignmentTitle=%s", 
 				classroomID, studentEmail ,assignmentTitle);
+		
+		String mailText = "Your grade in this assignment is " + grade + "\nGo to the Link:\n"+
+				"http://localhost:8080/MACS-classroom/"+link;
+		if(!emails.isEmpty()){
+			MailConnector mail = new MailConnector(emails, subject, mailText);
+			mail.sendMail();
+		}
 		response.sendRedirect(link);
 	}
 

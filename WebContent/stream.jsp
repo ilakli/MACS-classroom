@@ -220,6 +220,10 @@ body {
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		
+		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
 	%>
 	<div class="ui block header head-panel">
 	<a href="index.jsp">
@@ -303,7 +307,20 @@ body {
 		
 	<!-- END OF POSTS -->
 	
-	
+	<script>
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function() {
+				console.log('User signed out.');
+			});
+		}
+
+		function onLoad() {
+			gapi.load('auth2', function() {
+				gapi.auth2.init();
+			});
+		}
+	</script>
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/addComments.js' type="text/javascript"></script>

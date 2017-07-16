@@ -48,50 +48,59 @@
 	padding-top: 1.4%;
 	padding-left: 1%;
 }
-.ui.header h2{
+
+.ui.header h2 {
 	display: inline;
 }
+
 .icon {
 	cursor: pointer;
 }
+
 .icon-student {
 	float: right;
 	display: inlie;
 }
+
 .remove.icon {
 	float: right;
 	margin-top: 0.8% !important;
 }
-.students{
+
+.students {
 	max-height: 250px !important;
 	position: relative;
 	overflow: auto;
 }
 
-.free-students{
+.free-students {
 	max-height: 350px !important;
 	position: relative;
 	overflow: auto;
 }
 
-.fixed-position{
+.fixed-position {
 	display: inline-block;
 	position: fixed;
 	clear: both;
 	bottom: 0;
-    width: 100%;
+	width: 100%;
 }
+
 .ui.menu {
 	margin-top: 0;
 }
+
 .block.header {
 	margin: 0;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
 	margin-right: 0.7%;
 }
+
 .head-panel {
 	display: block;
 	margin: 0 !important;
@@ -124,17 +133,19 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 
+		if (!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer) {
+			response.sendError(400, "Not Permitted At All");
+		}
 
 		List<Seminar> Seminars = connector.seminarDB.getSeminars(classroomID);
 		List<Person> studentsWithoutSeminar = connector.studentDB.getStudentsWithoutSeminar(classroomID);
-		List<Person> SeminaristsWithoutSeminar = connector.seminaristDB
-				.getSeminaristsWithoutSeminar(classroomID);
+		List<Person> SeminaristsWithoutSeminar = connector.seminaristDB.getSeminaristsWithoutSeminar(classroomID);
 	%>
 	<div class="ui block header head-panel">
-	<a href="index.jsp">
-		<h3 class="ui header head-text">Macs Classroom</h3>
-	</a>
-	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+		<a href="index.jsp">
+			<h3 class="ui header head-text">Macs Classroom</h3>
+		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
+			out</a>
 	</div>
 	<div class="ui menu">
 		<a
@@ -157,7 +168,7 @@
 		<%
 			}
 		%>
-		
+
 		<div class="right menu">
 			<a class="item"
 				href=<%="people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>
@@ -174,23 +185,26 @@
 			</div>
 		</div>
 	</div>
-	<input type="hidden" id="classroom-id" value ="<%= classroomID %>">
-	
+	<input type="hidden" id="classroom-id" value="<%=classroomID%>">
+	<%
+		if (isAdmin || isLecturer) {
+	%>
 	<div class="ui raised segment">
 		<h2 class="ui header">Students Without Seminars</h2>
 		<form method="POST" action="AutoDistributionToSeminarsServlet">
-				<input type="hidden" name = "<%= Classroom.ID_ATTRIBUTE_NAME %>" value= "<%= classroomID %>" >
-				<button type="submit" class="positive ui button">Auto
-					Distribution</button>
-			</form>
-		
-		
+			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+				value="<%=classroomID%>">
+			<button type="submit" class="positive ui button">Auto
+				Distribution</button>
+		</form>
+
+
 		<div class="ui middle aligned selection list free-students">
-			
+
 
 			<%
 				for (int i = 0; i < studentsWithoutSeminar.size(); i++) {
-					Person currentStudent = studentsWithoutSeminar.get(i);
+						Person currentStudent = studentsWithoutSeminar.get(i);
 			%>
 			<div class="item">
 				<img class="ui avatar image"
@@ -205,43 +219,47 @@
 		</div>
 	</div>
 	<%
+		}
 		for (int i = 0; i < Seminars.size(); i++) {
 			Seminar currentSeminar = Seminars.get(i);
 			Person Seminarist = currentSeminar.getSeminarist();
 			List<Person> currentSeminarStudents = currentSeminar.getSeminarStudents();
 	%>
 	<div class="ui raised segment">
-		
-		<i class="add user icon icon-student"></i>
-		
-		<input type="hidden" value="<%=currentSeminar.getSeminarN() %>">
-		
-		<div class="ui modal student" id="<%= currentSeminar.getSeminarN()%>">
-		<div class="header">Add Student</div>
-		<div class="content">
-			<div class="field">
-				<div class="emails">
+		<%
+			if (isAdmin || isLecturer) {
+		%>
+		<i class="add user icon icon-student"></i> <input type="hidden"
+			value="<%=currentSeminar.getSeminarN()%>">
 
-					<input type="text" value="" placeholder="Add Email" />
+		<div class="ui modal student" id="<%=currentSeminar.getSeminarN()%>">
+			<div class="header">Add Student</div>
+			<div class="content">
+				<div class="field">
+					<div class="emails">
+
+						<input type="text" value="" placeholder="Add Email" />
+					</div>
 				</div>
 			</div>
+			<div class="actions">
+				<button class="ui teal button studentAddSeminarButton">Add</button>
+				<input type="hidden" value="AddStudentToSeminarServlet"> <input
+					type="hidden" value="<%=currentSeminar.getSeminarN()%>">
+				<button class="ui red button cancel">Cancel</button>
+			</div>
 		</div>
-		<div class="actions">
-			<button class="ui teal button studentAddSeminarButton">Add</button>
-			<input type="hidden" value="AddStudentToSeminarServlet">
-			<input type="hidden" value="<%= currentSeminar.getSeminarN()%>">
-			<button class="ui red button cancel">Cancel</button>
-		</div>
-		</div>
-		
+
 		<script>
-			
 			$(".icon-student").click(function() {
-				
+
 				var modalId = $(this).next().val();
 				$("#" + modalId).modal("show");
 			});
 		</script>
+		<%
+			}
+		%>
 		<h2 class="ui header"><%=currentSeminar.getSeminarN()%></h2>
 		<div class="ui middle aligned selection list">
 
@@ -249,19 +267,20 @@
 				<%
 					if (Seminarist != null) {
 				%>
+				<% if(isLecturer || isAdmin) {%>
 				<form action="RemoveSeminaristFromSeminarServlet" method="POST">
-				<input type="hidden" name="seminarN" value="<%= currentSeminar.getSeminarN() %>">
-				<input type="hidden" name="classroomID" value = "<%= classroomID %>">
-     			<i class="remove icon"></i>
-				 </form>
-				 <script>
-				 	$(".remove.icon").click(function(){
-				 		$(this).parent().submit();
-				 	});
-				 	
-				 </script>
-				<img class="ui avatar image"
-					src="<%=Seminarist.getPersonImgUrl()%>">
+					<input type="hidden" name="seminarN"
+						value="<%=currentSeminar.getSeminarN()%>"> <input
+						type="hidden" name="classroomID" value="<%=classroomID%>">
+					<i class="remove icon"></i>
+				</form>
+				<script>
+					$(".remove.icon").click(function() {
+						$(this).parent().submit();
+					});
+				</script>
+				<% } %>
+				<img class="ui avatar image" src="<%=Seminarist.getPersonImgUrl()%>">
 				<div class="content">
 					<h3 class="ui header"><%=Seminarist.getName() + " " + Seminarist.getSurname()%></h3>
 				</div>
@@ -281,8 +300,7 @@
 								for (int j = 0; j < SeminaristsWithoutSeminar.size(); j++) {
 											Person currentSeminarist = SeminaristsWithoutSeminar.get(j);
 							%>
-							<div class="item"
-								data-value="<%=currentSeminarist.getEmail()%>"><%=currentSeminarist.getName() + " " + currentSeminarist.getSurname()%></div>
+							<div class="item" data-value="<%=currentSeminarist.getEmail()%>"><%=currentSeminarist.getName() + " " + currentSeminarist.getSurname()%></div>
 							<%
 								}
 							%>
@@ -310,10 +328,12 @@
 					<div class="content">
 						<div class="header"><%=currentStudent.getName() + " " + currentStudent.getSurname()%></div>
 					</div>
+					<% if(isLecturer || isAdmin) {%>
 					<div class="ui checkbox">
 						<input type="checkbox" name="studentsEmails"
 							value="<%=currentStudent.getEmail()%>"> <label></label>
 					</div>
+					<% } %>
 				</div>
 				<%
 					}
@@ -322,28 +342,51 @@
 
 
 			</div>
-			<input type="hidden" name="seminarN" value="<%=currentSeminar.getSeminarN()%>">
-			<input type="hidden" name="classroomID" value="<%=classroomID%>">
-			<input type="submit" class="ui red button" value="Remove Marked">
+			<input type="hidden" name="seminarN"
+				value="<%=currentSeminar.getSeminarN()%>"> <input
+				type="hidden" name="classroomID" value="<%=classroomID%>"> 
+				<% if(isLecturer || isAdmin) {%>
+				<input type="submit" class="ui red button" value="Remove Marked">
+				<% } %>
 		</form>
 	</div>
-	
+
 	<%
 		}
+		if(isLecturer || isAdmin){
 	%>
-	
-	
+
+
 	<i class="huge add circle icon fixed-position"></i>
-	<form action="AddNewSeminarServlet" method="Post" onSubmit="return validateSeminarAdd()">
-	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<form action="AddNewSeminarServlet" method="Post"
+		onSubmit="return validateSeminarAdd()">
+		<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+			value="<%=classroomID%>">
 	</form>
-	<i style="margin-left: 5%;"class="huge minus circle icon fixed-position"></i>
-	<form action="DeleteSeminarServlet" method="Post" onSubmit="return validateSeminarDelete()">
-	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
+	<i style="margin-left: 5%;"
+		class="huge minus circle icon fixed-position"></i>
+	<form action="DeleteSeminarServlet" method="Post"
+		onSubmit="return validateSeminarDelete()">
+		<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
+			value="<%=classroomID%>">
 	</form>
-	
+	<% } %>
 	<script>
-		$(".fixed-position").click(function(){
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function() {
+				console.log('User signed out.');
+			});
+		}
+
+		function onLoad() {
+			gapi.load('auth2', function() {
+				gapi.auth2.init();
+			});
+		}
+	</script>
+	<script>
+		$(".fixed-position").click(function() {
 			$(this).next().submit();
 		});
 		$(".seminarist-add").hide();
@@ -352,6 +395,6 @@
 			$(this).next().toggle();
 		});
 	</script>
-	
+
 </body>
 </html>

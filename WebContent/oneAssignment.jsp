@@ -62,6 +62,9 @@
 	!
 	important;
 }
+body > *{
+	margin: 0.5%;
+}
 </style>
 </head>
 <body>
@@ -138,9 +141,15 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
+		if(!isAdmin && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
+		
 		String assignmentTitle = request.getParameter("assignmentTitle");
 		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
-	
+		
+		
+		
 		for (Person p : currentClassroom.getClassroomStudents()){
 			
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -251,7 +260,20 @@
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
+	<script>
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function() {
+				console.log('User signed out.');
+			});
+		}
 
+		function onLoad() {
+			gapi.load('auth2', function() {
+				gapi.auth2.init();
+			});
+		}
+	</script>
 
 
 </body>
