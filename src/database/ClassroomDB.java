@@ -362,8 +362,7 @@ public class ClassroomDB {
 		return result;
 	}
 
-	public int reschedulingsUsed(String email, String classroomID) {
-		String personId = personDB.getPersonId(email);
+	public int reschedulingsUsed(String personId, String classroomID) {
 		String query = String.format("select * from `classroom_students` where `classroom_id`=%s and `person_id`=%s;",
 				classroomID, personId);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -385,9 +384,8 @@ public class ClassroomDB {
 
 	}
 
-	public boolean useRescheduling(String email, String classroomID) {
-		String personId = personDB.getPersonId(email);
-		int reschedulingsUsed = reschedulingsUsed(email, classroomID);
+	public boolean useRescheduling(String personId, String classroomID) {
+		int reschedulingsUsed = reschedulingsUsed(personId, classroomID);
 		int maxRes = getClassroomsNumberOfReshcedulings(classroomID);
 		if (maxRes <= reschedulingsUsed)
 			return false;

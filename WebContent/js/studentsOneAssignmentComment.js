@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	$("#ADD_COMMENT_BUTTON").click(function (){
-		
+		alert("bla");
 		var commentText = $(this).prev().find('#COMMENT_TEXT').val();
 		var personId = $(this).find('#PERSON_ID').val();
 		var studentAssignmentId = $(this).find('#STUDENT_ASSIGNMENT_ID').val();
@@ -51,6 +51,7 @@ $(document).ready(function() {
 		});
 		
 		var commentTextarea = document.getElementById('COMMENT_TEXT');
+		confirm(commentTextarea);
 		commentTextarea.value = '';
 	});
 	

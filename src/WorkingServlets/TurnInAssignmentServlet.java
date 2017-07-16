@@ -18,6 +18,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import Listeners.ContextListener;
 import database.AllConnections;
+import defPackage.Assignment;
 import defPackage.Classroom;
 import defPackage.MyDrive;
 import defPackage.Person;
@@ -42,10 +43,9 @@ public class TurnInAssignmentServlet extends HttpServlet {
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("HEREEE BROOOOOO");
 		String classroomID = "";
-		String assignmentTitle = "";
-		String studentEmail = "";
+		String assignmentID = "";
+		String studentID = "";
 		String fileName = "";
 		String numReschedulings = "";
 
@@ -87,44 +87,34 @@ public class TurnInAssignmentServlet extends HttpServlet {
 					
 					if (fieldName.equals("classroomID")){
 						classroomID = item.getString();
-						System.out.println(classroomID + "  classroomID");
-					} else if (fieldName.equals("assignmentTitle")){
-						assignmentTitle = item.getString();
-						System.out.println(assignmentTitle + "  assignmentTitle");
-					} else if (fieldName.equals("studentEmail")){
-						studentEmail = item.getString();
+					} else if (fieldName.equals("assignmentID")){
+						assignmentID = item.getString();
+					} else if (fieldName.equals("studentID")){
+						studentID = item.getString();
 					}  else if (fieldName.equals("numReschedulings")){
 						numReschedulings = item.getString();
-						System.out.println("==============================");
-						System.out.println("numresched: " + numReschedulings);
-						System.out.println("==============================");
 					} 
 				}
 			}
 
 		} catch (Exception ex) {}
-		
-		System.out.println("==============================");
-		System.out.println("assignment title: " + assignmentTitle);
-		System.out.println("student email: " + studentEmail);
-		System.out.println("==============================");
-		
+				
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 		
-		String studentId = connection.personDB.getPersonId(studentEmail);
-		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(classroomID, studentId);
-		String seminaristEmail = connection.studentDB.getSeminaristEmail(classroomID, studentId);
-		
-		String filePath = fileName;
+		Person student = connection.personDB.getPerson(studentID);
+		String studentEmail = student.getEmail();
+		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(classroomID, studentID);
+		String seminaristEmail = connection.studentDB.getSeminaristEmail(classroomID, studentID);
+		Assignment assignment = connection.assignmentDB.getAssignment(assignmentID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
-		service.uploadAssignmentToSectionLeader(studentEmail, file, fileType, sectionLeaderEmail, classroomID, assignmentTitle);
-		service.uploadAssignmentToSeminarist(studentEmail, file, fileType, seminaristEmail, classroomID, assignmentTitle);
-		
-		String personID = connection.personDB.getPersonId(studentEmail);
-		
-		connection.studentAssignmentDB.turnInAssignment(classroomID, personID, assignmentTitle, fileName);
+		service.uploadAssignmentToSectionLeader(studentEmail, file, fileType, sectionLeaderEmail, 
+				classroomID, assignment.getTitle());
+		service.uploadAssignmentToSeminarist(studentEmail, file, fileType, seminaristEmail, 
+				classroomID, assignment.getTitle());
+				
+		connection.studentAssignmentDB.turnInAssignment(classroomID, studentID, assignmentID, fileName);
 
 		if(numReschedulings!=null && !numReschedulings.equals("")){
 			int nRes = Integer.parseInt(numReschedulings);
@@ -132,27 +122,27 @@ public class TurnInAssignmentServlet extends HttpServlet {
 			
 			if(nRes != 0){
 				for(int i = 0; i < nRes; i++){
-					connection.classroomDB.useRescheduling(studentEmail, classroomID);
+					connection.classroomDB.useRescheduling(studentID, classroomID);
 				}
 				
 				Classroom currentClassroom = connection.classroomDB.getClassroom(classroomID);
-				StudentAssignment assignment = connection.studentAssignmentDB.getStudentAssignment(
-						classroomID, personID, assignmentTitle);
+				StudentAssignment studentAssignment = connection.studentAssignmentDB.getStudentAssignment(
+						classroomID, studentID, assignmentID);
 				
 				Calendar c = Calendar.getInstance();
-				c.setTime(assignment.getDeadlineWithReschedulings());
+				c.setTime(studentAssignment.getDeadlineWithReschedulings());
 				SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 				c.add(Calendar.DATE, nRes * currentClassroom.getReschedulingLength() );  
 	
 				String newDate = format1.format(c.getTime());
 				
-				assignment.changeDeadlineWithReschedulings(newDate);
+				studentAssignment.changeDeadlineWithReschedulings(newDate);
 			
 			}
 		}
 		
 		response.sendRedirect("studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-				"&studentEmail="+studentEmail+"&assignmentTitle="+assignmentTitle+"&status=done");
+				"&studentID="+studentID+"&assignmentID="+assignmentID);
 	}
 
 }

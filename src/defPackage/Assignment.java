@@ -3,15 +3,17 @@ package defPackage;
 import java.util.Date;
 
 public class Assignment {
+	private String assignmentID;
 	private String classroomID;
 	private String fileName;
 	private Date assignmentDeadline;
 	private String assignmentTitle;
 	private String assignmentInstructions;
 	
-	public Assignment(String classroomID,String assignmentTitle, 
+	public Assignment(String assignmentID, String classroomID,String assignmentTitle, 
 			String assignmentInstructions, Date assignmentDeadline, String fileName) {
-
+		
+		this.assignmentID = assignmentID;
 		this.classroomID = classroomID;
 		this.assignmentTitle = assignmentTitle;
 		this.fileName = fileName;
@@ -19,6 +21,12 @@ public class Assignment {
 		this.assignmentInstructions = assignmentInstructions;
 	}
 	
+	/**
+	 * @return - ID of this assignment.
+	 */
+	public String getAssignmentID(){
+		return this.assignmentID;
+	}
 	/**
 	 * @return - ID of classroom
 	 */

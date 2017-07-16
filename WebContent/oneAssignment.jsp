@@ -93,7 +93,7 @@
 	<%!private String generateStudentHTML(Person p, String classroomID, Assignment a, AllConnections connector) {
 		
 		StudentAssignment studentAssignment = 
-				connector.studentAssignmentDB.getStudentAssignment(classroomID, p.getPersonID(), a.getTitle());
+				connector.studentAssignmentDB.getStudentAssignment(classroomID, p.getPersonID(), a.getAssignmentID());
 		boolean isApproved = studentAssignment.getApproval();
 		String grade = studentAssignment.getAssignmentGrade();
 		
@@ -108,7 +108,7 @@
 			approvalCode = "<div class=\"ui red horizontal label\">Not Yet Approved</div>";
 		
 		String hrefCode = " href = \"studentsOneAssignment.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+ 
-				"&studentEmail="+p.getEmail()+ "&assignmentTitle=" + a.getTitle() +"\"";
+				"&studentID="+p.getPersonID()+ "&assignmentID=" + a.getAssignmentID() +"\"";
 		
 		String result = "<div class=\"item\">" +
 						"<div class=\"right floated content\">" +
@@ -142,8 +142,9 @@
 			 response.sendError(400, "Not Permitted At All");
 		}
 		
-		String assignmentTitle = request.getParameter("assignmentTitle");
-		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
+		String assignmentID = request.getParameter("assignmentID");
+		System.out.println("writing:    " +assignmentID );
+		Assignment assignment = connector.assignmentDB.getAssignment(assignmentID);
 		
 		
 		
@@ -154,7 +155,7 @@
 			if (assignment.getDeadline()!=null) deadlineWithReschedulings = format1.format(assignment.getDeadline());
 			
 			
-			connector.studentAssignmentDB.addStudentAssignment(classroomID, p.getPersonID(), assignmentTitle,
+			connector.studentAssignmentDB.addStudentAssignment(classroomID, p.getPersonID(), assignmentID,
 					deadlineWithReschedulings );
 		}
 		

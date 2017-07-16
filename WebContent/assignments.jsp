@@ -221,10 +221,9 @@
 					 			 %>
 					 			 	<%=
 					 			 	"<h1><a href = \"studentsOneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&studentEmail="+currentPerson.getEmail()+"&assignmentTitle="+a.getTitle()
-									+"\"> " + a.getTitle() + "</a></h1>"
-					 			 	
-					 			 	
+									"&studentID="+currentPerson.getPersonID()+"&assignmentID="+a.getAssignmentID()
+									+"\"> " + a.getTitle() + "</a></h1>" 	
+									
 								 	%>
 									
 								<%
@@ -233,7 +232,7 @@
 							
 									<%= 
 									"<h1><a href = \"oneAssignment.jsp?"+Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+
-									"&assignmentTitle="+a.getTitle()+"\"> " + a.getTitle() + "</a></h1>"
+									"&assignmentID="+a.getAssignmentID()+"\"> " + a.getTitle() + "</a></h1>"
 									%>
 								<%		
 								}

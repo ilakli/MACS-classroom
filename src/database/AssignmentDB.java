@@ -34,7 +34,7 @@ public class AssignmentDB {
 		try {
 			ResultSet rs = myConnection.executeQuery();
 			while (rs != null && rs.next()) {
-				
+				String assignmetID = rs.getString("assignment_id");
 				String assignmentTitle = rs.getString("assignment_title");
 				String assignmentInstructions = rs.getString("assignment_instructions");
 				Date assignmentDeadline = null;
@@ -45,7 +45,7 @@ public class AssignmentDB {
 					System.out.println(assignmentDeadline);
 				}
 				String fileName = rs.getString("file_name");
-				assignments.add(new Assignment(classroomID,assignmentTitle, 
+				assignments.add(new Assignment(assignmetID,classroomID,assignmentTitle, 
 						assignmentInstructions,assignmentDeadline, fileName) );
 			}
 		} catch (SQLException e) {
@@ -59,9 +59,9 @@ public class AssignmentDB {
 		return assignments;
 	}
 	
-	public Assignment getAssignment(String assignmentTitle,String classroomID){
-		String query = String.format("select * from `classroom_assignments` where `classroom_id` = %s and "
-				+ "`assignment_title` = '%s';", classroomID, assignmentTitle );
+	public Assignment getAssignment(String assignmentID){
+		String query = String.format("select * from `classroom_assignments` where "
+				+ "`assignment_id` = %s;", assignmentID );
 		System.out.println(query);
 		MyConnection myConnection = db.getMyConnection(query);
 		Assignment assignment = null;
@@ -75,7 +75,9 @@ public class AssignmentDB {
 					assignmentDeadline = new java.util.Date(sqlDate.getTime());
 				}
 				String fileName = rs.getString("file_name");
-				assignment = new Assignment(classroomID,assignmentTitle, 
+				String classroomID = rs.getString("classroom_id");
+				String assignmentTitle = rs.getString("assignment_title");
+				assignment = new Assignment(assignmentID,classroomID,assignmentTitle, 
 						assignmentInstructions,assignmentDeadline, fileName);
 			}
 		} catch (SQLException e) {

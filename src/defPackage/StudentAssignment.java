@@ -11,7 +11,7 @@ public class StudentAssignment {
 	private String ID;
 	private String classroomID;
 	private String personID;
-	private String assignmentTitle;
+	private String assignmentID;
 	private String assignmentGrade;
 	private boolean isApproved;
 	private Date deadlineWithReschedulings;
@@ -22,7 +22,7 @@ public class StudentAssignment {
 	
 		this.ID = ID;
 		this.classroomID = classroomID;
-		this.assignmentTitle = assignmentTitle;
+		this.assignmentID = assignmentTitle;
 		this.personID = personID;
 		this.assignmentGrade = assignmentGrade;
 		this.isApproved = isApproved;
@@ -30,6 +30,9 @@ public class StudentAssignment {
 		db = new AllConnections();
 	}
 	
+	/**
+	 * @return - ID of the connection;
+	 */
 	public String getStudentAssignmentId(){
 		return this.ID;
 	}
@@ -42,10 +45,10 @@ public class StudentAssignment {
 	}
 		
 	/**
-	 * @return - title of assignment
+	 * @return - ID of assignment
 	 */
-	public String getTitle() {
-		return this.assignmentTitle;
+	public String getAssignmentID() {
+		return this.assignmentID;
 	}
 	
 	/**
@@ -84,6 +87,6 @@ public class StudentAssignment {
 	 * @return - true if deadline has been changed successfully, false otherwise
 	 */
 	public boolean changeDeadlineWithReschedulings(String newDeadline){
-		return db.studentAssignmentDB.changeDeadlineWithReschedulings(newDeadline, classroomID, personID, assignmentTitle);
+		return db.studentAssignmentDB.changeDeadlineWithReschedulings(newDeadline, classroomID, personID, assignmentID);
 	}
 }

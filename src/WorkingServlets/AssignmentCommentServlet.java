@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import Listeners.ContextListener;
 import database.AllConnections;
+import defPackage.Assignment;
 import defPackage.Classroom;
 import defPackage.MailConnector;
 import defPackage.Person;
@@ -56,6 +57,7 @@ public class AssignmentCommentServlet extends HttpServlet {
 		String isStaffComment = request.getParameter("isStaffComment");
 		
 		StudentAssignment studentAssignment = connection.studentAssignmentDB.getStudentAssignment(studentAssignmentId);
+		Assignment assignment = connection.assignmentDB.getAssignment(studentAssignment.getAssignmentID());
 		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(studentAssignment.getClassroomID(), 
 				studentAssignment.getPersonId());
 		String seminaristEmail = connection.studentDB.getSeminaristEmail(studentAssignment.getClassroomID(), 
@@ -70,12 +72,16 @@ public class AssignmentCommentServlet extends HttpServlet {
 		if(!seminaristEmail.equals(sender.getEmail())){
 			emails.add(seminaristEmail);
 		}
+		for(int i = 0; i< emails.size(); i++){
+			System.out.println(emails.get(i));
+		}
+		
 		
 		String subject = "Macs classroom: In the classroom-" + currentClass.getClassroomName() + ", assignment-" +
-				studentAssignment.getTitle() +" you have new comment."; 
+				assignment.getTitle() +" you have new comment."; 
 		String link = String.format("\nhttp://localhost:8080/MACS-classroom/studentsOneAssignment.jsp?classroomID=%s"+
-				"&studentEmail=%S&assignmentTitle=%s",
-				studentAssignment.getClassroomID(), student.getEmail() ,studentAssignment.getTitle());
+				"&studentID=%S&assignmentID=%s",
+				studentAssignment.getClassroomID(), student.getPersonID() ,studentAssignment.getAssignmentID());
 		
 		String mailCommentText = sender.getName()+ " " +sender.getSurname() + " commented:\n" +
 				commentText +"Go to the Link:\n" + link;

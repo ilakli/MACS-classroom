@@ -84,13 +84,15 @@ CREATE TABLE `post_comments` (
 );
  
 CREATE TABLE `classroom_assignments` (
-    `classroom_id` INT NOT NULL,
+    `assignment_id` INT NOT NULL AUTO_INCREMENT, 
+	 `classroom_id` INT NOT NULL,
     `assignment_title` varchar(100) NOT NULL,
     `assignment_instructions` TEXT NOT NULL,
     `assignment_deadline` date,
     `file_name` varchar(100),
    
-    PRIMARY KEY (`classroom_id`,`assignment_title`),
+    PRIMARY KEY (`assignment_id`),
+    UNIQUE (`classroom_id`,`assignment_title`),
     CONSTRAINT `classroom_assignments_fk0` FOREIGN KEY (`classroom_id`) REFERENCES `classrooms`(`classroom_id`) ON DELETE CASCADE
 );
  
@@ -217,16 +219,16 @@ CREATE TABLE `student_assignments` (
 	`student_assignment_id` int NOT NULL AUTO_INCREMENT,
 	`classroom_id` INT NOT NULL,
 	`person_id` INT NOT NULL,
-	`assignment_title` VARCHAR(100) NOT NULL,	
+	`assignment_id` int NOT NULL,	
 	`assignment_grade` VARCHAR(50) default 'Not Graded',
 	`assignment_approved` BOOL DEFAULT false,
 	`deadline_with_reschedulings` date,
 
 	PRIMARY KEY (`student_assignment_id`),
-	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_title`),
+	UNIQUE KEY `student_assignments_uk0` (`classroom_id`, `person_id`, `assignment_id`),
 	CONSTRAINT `FK__classroom_students` FOREIGN KEY (`person_id`) REFERENCES `classroom_students` (`person_id`) ON DELETE CASCADE,
 	CONSTRAINT `FK__assignment_grades` FOREIGN KEY (`assignment_grade`) REFERENCES `assignment_grades` (`grade_name`) ON DELETE CASCADE,
-	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`classroom_id`, `assignment_title`) REFERENCES `classroom_assignments` (`classroom_id`, `assignment_title`) ON DELETE CASCADE
+	CONSTRAINT `FK__classroom_assignments` FOREIGN KEY (`assignment_id`) REFERENCES `classroom_assignments` (`assignment_id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `student_uploaded_assignments` (

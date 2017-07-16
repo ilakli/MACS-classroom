@@ -36,13 +36,15 @@
 	src="https://cdn.jsdelivr.net/semantic-ui/2.2.10/semantic.min.js"></script>
 <link rel="icon" href="favicon.ico" type="image/x-icon" />
 <% 	
-	String studentEmail = request.getParameter("studentEmail");
+	String studentID = request.getParameter("studentID");
 
-	String assignmentTitle = request.getParameter("assignmentTitle"); 
+	String assignmentID = request.getParameter("assignmentID"); 
 	
 	String status = request.getParameter("status");
+	AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
+	Assignment a = connector.assignmentDB.getAssignment(assignmentID);
 	%>
-	<title><%=assignmentTitle%></title>
+	<title><%=a.getTitle()%></title>
 	<style type="text/css">
 	#COMMENT_TEXT {
 		white-space: pre-line;
@@ -146,11 +148,8 @@
 
 	<%
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
-	
-		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
-		
-		
+				
 		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
@@ -158,8 +157,10 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
-		String personID = connector.personDB.getPersonId(studentEmail);
-		Assignment a = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
+		Person student = connector.personDB.getPerson(studentID);
+		String studentEmail = student.getEmail();
+		String personID = student.getPersonID();
+		
 		
 		String sectionLeaderEmail = connector.studentDB.getSectionLeaderEmail(classroomID, personID);
 		String seminaristEmail = connector.studentDB.getSeminaristEmail(classroomID, personID);
@@ -173,13 +174,15 @@
 		String deadlineWithReschedulings = "";
 		if (a.getDeadline()!=null) deadlineWithReschedulings = format1.format(a.getDeadline());
 		
-		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentTitle, deadlineWithReschedulings );
+		connector.studentAssignmentDB.addStudentAssignment(classroomID, personID, assignmentID, deadlineWithReschedulings );
 		
-		StudentAssignment assignment = connector.studentAssignmentDB.getStudentAssignment(
-				classroomID, personID, assignmentTitle);
+		StudentAssignment studentAssignment = connector.studentAssignmentDB.getStudentAssignment(
+				classroomID, personID, assignmentID);
 	
-		List<AssignmentComment> assignmentComments = connector.commentDB.getStudentAssignmentComments(assignment.getStudentAssignmentId());
-		List<AssignmentComment> assignmentStaffComments = connector.commentDB.getStudentAssignmentStaffComments(assignment.getStudentAssignmentId());
+		List<AssignmentComment> assignmentComments = connector.commentDB.
+				getStudentAssignmentComments(studentAssignment.getStudentAssignmentId());
+		List<AssignmentComment> assignmentStaffComments = connector.commentDB.
+				getStudentAssignmentStaffComments(studentAssignment.getStudentAssignmentId());
 		
 	%>
 
@@ -244,10 +247,10 @@
 		
 	%>
 	<% 
-		if(assignment.getAssignmentGrade().equals("Not Graded")){
-			out.println("<div class=\"ui big red label right grade\">" + assignment.getAssignmentGrade() + "</div>");	
+		if(studentAssignment.getAssignmentGrade().equals("Not Graded")){
+			out.println("<div class=\"ui big red label right grade\">" + studentAssignment.getAssignmentGrade() + "</div>");	
 		}else{
-			out.println("<div class=\"ui big green label right grade\">" + assignment.getAssignmentGrade() + "</div>");
+			out.println("<div class=\"ui big green label right grade\">" + studentAssignment.getAssignmentGrade() + "</div>");
 		}
 	%>
 	<br/>
@@ -261,7 +264,7 @@
 		if(isStudent){
 
 			Date now = new Date();
-			Date availableDate = assignment.getDeadlineWithReschedulings();
+			Date availableDate = studentAssignment.getDeadlineWithReschedulings();
 			
 			boolean canTurnIn = false;
 			int mustUseReschedulings = 0;
@@ -270,10 +273,10 @@
 			
 		
 				int maxAvailableRes = currentClassroom.getNumberOfReschedulings() - 
-						connector.classroomDB.reschedulingsUsed(studentEmail, classroomID) ;
+						connector.classroomDB.reschedulingsUsed(studentID, classroomID) ;
 				
 				for(int i = 0; i <= maxAvailableRes; i++){
-					availableDate = addDays(assignment.getDeadlineWithReschedulings(), i*currentClassroom.getReschedulingLength());
+					availableDate = addDays(studentAssignment.getDeadlineWithReschedulings(), i*currentClassroom.getReschedulingLength());
 					
 					if(now.before(availableDate)){
 						canTurnIn = true;
@@ -289,9 +292,9 @@
 				
 				%>
 				<form action="TurnInAssignmentServlet" enctype="multipart/form-data" method="POST">
-					<textarea style="display:none;" name="studentEmail"><%=studentEmail%></textarea>
+					<textarea style="display:none;" name="studentID"><%=studentID%></textarea>
 					<textarea style="display:none;" name=<%=Classroom.ID_ATTRIBUTE_NAME%>><%=classroomID%></textarea>
-					<textarea style="display:none;" name="assignmentTitle"><%=assignmentTitle%></textarea>
+					<textarea style="display:none;" name="assignmentID"><%=assignmentID%></textarea>
 					
 					<textarea style="display:none;" name="numReschedulings"><%=mustUseReschedulings%></textarea>
 					
@@ -324,7 +327,7 @@
 			
 		String sectionLeaderFolder = connector.driveDB.getSectionLeaderFolder(classroomID, sectionLeaderEmail);
 		
-		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, assignment.getTitle(), studentEmail);
+		ArrayList<String> generatedHTML = service.getHtmlForStudentUploads(sectionLeaderFolder, a.getTitle(), studentEmail);
 		
 		out.println("<div class=\"ui middle aligned divided list\">");	
 		for(int i = 0; i<generatedHTML.size(); i++){
@@ -351,7 +354,7 @@
 				<div class="ui selection dropdown">
 				  <input type="hidden" name="newGrade">
 				  <i class="dropdown icon"></i>
-				  <div class="default text"> <%= assignment.getAssignmentGrade() %></div>
+				  <div class="default text"> <%= studentAssignment.getAssignmentGrade() %></div>
 				  <div class="menu">
 				  	<%
 				  		List<String> allGrades = connector.assignmentGradeDB.getAllGrades();
@@ -363,10 +366,9 @@
 				   </div>
 				</div>
 
-		<input type="hidden" name="studentId"value="<%=assignment.getPersonId()%>">
-		<input type="hidden" name="studentEmail"value="<%=studentEmail%>">
-		<input type="hidden" name="classroomId"value="<%=assignment.getClassroomID()%>">
-		<input type="hidden" name="assignmentTitle"value="<%=assignmentTitle%>">
+		<input type="hidden" name="studentID"value="<%=studentID%>">
+		<input type="hidden" name="classroomId"value="<%=classroomID%>">
+		<input type="hidden" name="assignmentID"value="<%=assignmentID%>">
 		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
 				
 		<input type="submit" class="ui teal button" value="Set"></form>
@@ -413,7 +415,7 @@
 					<textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
 					<textarea style="display:none" id=PERSON_IMG_URL><%=currentPerson.getPersonImgUrl()%></textarea>
 					<textarea style="display:none" id=PERSON_NAME><%=currentPerson.getName()%></textarea>
-					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
+					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=studentAssignment.getStudentAssignmentId()%></textarea>
 					<i class="icon edit"></i> Add Comment
 			  	</div>
 		  </form>
@@ -442,7 +444,7 @@
 					<textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
 					<textarea style="display:none" id=PERSON_IMG_URL><%=currentPerson.getPersonImgUrl()%></textarea>
 					<textarea style="display:none" id=PERSON_NAME><%=currentPerson.getName()%></textarea>
-					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=assignment.getStudentAssignmentId()%></textarea>
+					<textarea style="display:none" id=STUDENT_ASSIGNMENT_ID><%=studentAssignment.getStudentAssignmentId()%></textarea>
 					<i class="icon edit"></i> Add Staff Comment
 			  	</div>
 		  </form>  		  
