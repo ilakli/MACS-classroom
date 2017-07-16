@@ -123,7 +123,10 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-
+		
+		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
 
 		List<Seminar> Seminars = connector.seminarDB.getSeminars(classroomID);
 		List<Person> studentsWithoutSeminar = connector.studentDB.getStudentsWithoutSeminar(classroomID);
@@ -341,7 +344,20 @@
 	<form action="DeleteSeminarServlet" method="Post" onSubmit="return validateSeminarDelete()">
 	<input type="hidden" name="<%= Classroom.ID_ATTRIBUTE_NAME %>" value = "<%= classroomID %>">
 	</form>
-	
+	<script>
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function() {
+				console.log('User signed out.');
+			});
+		}
+
+		function onLoad() {
+			gapi.load('auth2', function() {
+				gapi.auth2.init();
+			});
+		}
+	</script>
 	<script>
 		$(".fixed-position").click(function(){
 			$(this).next().submit();

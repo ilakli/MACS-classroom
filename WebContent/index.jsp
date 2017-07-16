@@ -358,20 +358,7 @@
 		    
 		</div>
 	</section>
-	
-	
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
-	
 	<script>
 		function signOut() {
 			var auth2 = gapi.auth2.getAuthInstance();
@@ -398,9 +385,5 @@
 		});
 	</script>
 	
-	
-
-
-
 </body>
 </html>
