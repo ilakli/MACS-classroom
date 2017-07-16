@@ -138,9 +138,15 @@
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
+		if(!isAdmin && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
+		
 		String assignmentTitle = request.getParameter("assignmentTitle");
 		Assignment assignment = connector.assignmentDB.getAssignment(assignmentTitle, classroomID);
-	
+		
+		
+		
 		for (Person p : currentClassroom.getClassroomStudents()){
 			
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");

@@ -114,7 +114,11 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-
+		
+		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
+		
 		CategoryDB categoryDB = ((AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME)).categoryDB;
 		ArrayList<Category> allCategories = categoryDB.getCategorys(classroomID);

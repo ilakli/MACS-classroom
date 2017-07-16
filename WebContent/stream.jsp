@@ -135,6 +135,10 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		
+		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
+			 response.sendError(400, "Not Permitted At All");
+		}
 	%>
 	<div class="ui block header head-panel">
 	<a href="index.jsp">
