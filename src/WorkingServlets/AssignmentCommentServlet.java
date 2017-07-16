@@ -81,14 +81,18 @@ public class AssignmentCommentServlet extends HttpServlet {
 				commentText +"Go to the Link:\n" + link;
 		if (isStaffComment.equals("true")){			
 			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
-			MailConnector mail = new MailConnector(emails, subject, mailCommentText);
-			mail.sendMail();
+			if(!emails.isEmpty()){
+				MailConnector mail = new MailConnector(emails, subject, mailCommentText);
+				mail.sendMail();
+			}
 		} else {
 			if(!student.getEmail().equals(sender.getEmail())){
 				emails.add(student.getEmail());
 			}
-			MailConnector mail = new MailConnector(emails, subject, mailCommentText);
-			mail.sendMail();
+			if(!emails.isEmpty()){
+				MailConnector mail = new MailConnector(emails, subject, mailCommentText);
+				mail.sendMail();
+			}
 			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, commentText);
 		}		
 	}

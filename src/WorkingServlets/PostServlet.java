@@ -67,9 +67,10 @@ public class PostServlet extends HttpServlet {
 					" Posted in Classroom - " + currentClassroom.getClassroomName();
 			String mailText = postText + "\nGo to the Link: \n" + 
 					"http://localhost:8080/MACS-classroom/stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
-			MailConnector mail = new MailConnector(emails, subject, mailText);
-			mail.sendMail();
-				
+			if(!emails.isEmpty()){
+				MailConnector mail = new MailConnector(emails, subject, mailText);
+				mail.sendMail();
+			}				
 			connection.postDB.addPost(classroomId, personId, postText);
 		//response.sendRedirect("stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);
 		}

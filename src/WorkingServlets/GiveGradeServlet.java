@@ -58,8 +58,10 @@ public class GiveGradeServlet extends HttpServlet {
 		
 		String mailText = "Your grade in this assignment is " + grade + "\nGo to the Link:\n"+
 				"http://localhost:8080/MACS-classroom/"+link;
-		MailConnector mail = new MailConnector(emails, subject, mailText);
-		mail.sendMail();
+		if(!emails.isEmpty()){
+			MailConnector mail = new MailConnector(emails, subject, mailText);
+			mail.sendMail();
+		}
 		response.sendRedirect(link);
 	}
 
