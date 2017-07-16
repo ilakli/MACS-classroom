@@ -399,4 +399,29 @@ public class ClassroomDB {
 
 		return db.executeUpdate(myConnection);
 	}
+	
+	/**
+	 * This method returns all the persons from classroom;
+	 * @param classroomID - id of the classroom
+	 * @return - members from the classroom;
+	 */
+	public ArrayList<Person> ClassroomAllPersons(String classroomID){
+		String query = String.format("select * from (select `person_id`  from classroom_lecturers s\n"+
+				"where `classroom_id` = %s\n"+
+				"union\n"+
+				"select person_id  from classroom_seminarists sl\n"+
+				"where `classroom_id` = %s\n"+
+				"union\n"+
+				"select person_id  from classroom_section_leaders sl\n"+
+				"where `classroom_id` = %s\n"+
+				"union\n"+
+				"select person_id  from classroom_students sl\n"+
+				"where `classroom_id` = %s) as k\n"+
+					"inner join persons as p\n"+
+					"on  p.person_id = k.person_id;\n", classroomID,classroomID,classroomID,classroomID );
+		System.out.println(query);
+		ArrayList<Person> allPerosns = personDB.getPersons(query);
+		return allPerosns;
+				
+	}
 }

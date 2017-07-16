@@ -72,19 +72,28 @@ public class AssignmentCommentServlet extends HttpServlet {
 		}
 		
 		String subject = "Macs classroom: In the classroom-" + currentClass.getClassroomName() + ", assignment-" +
-				studentAssignment.getTitle() +" you have new comment.";  
-		String mailCommentText = sender.getName()+ " " +sender.getSurname() + " commented:\n"+commentText;
+				studentAssignment.getTitle() +" you have new comment."; 
+		String link = String.format("\nhttp://localhost:8080/MACS-classroom/studentsOneAssignment.jsp?classroomID=%s"+
+				"&studentEmail=%S&assignmentTitle=%s",
+				studentAssignment.getClassroomID(), student.getEmail() ,studentAssignment.getTitle());
+		
+		String mailCommentText = sender.getName()+ " " +sender.getSurname() + " commented:\n" +
+				commentText +"Go to the Link:\n" + link;
 		if (isStaffComment.equals("true")){			
 			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
-			MailConnector mail = new MailConnector(emails, subject, mailCommentText);
-			mail.sendMail();
+			if(!emails.isEmpty()){
+				MailConnector mail = new MailConnector(emails, subject, mailCommentText);
+				mail.sendMail();
+			}
 		} else {
 			if(!student.getEmail().equals(sender.getEmail())){
 				emails.add(student.getEmail());
 			}
-			MailConnector mail = new MailConnector(emails, subject, commentText);
-			mail.sendMail();
-			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, mailCommentText);
+			if(!emails.isEmpty()){
+				MailConnector mail = new MailConnector(emails, subject, mailCommentText);
+				mail.sendMail();
+			}
+			connection.commentDB.addStudentAssignmentComment(studentAssignmentId, personId, commentText);
 		}		
 	}
 

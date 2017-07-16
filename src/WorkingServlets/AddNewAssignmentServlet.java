@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +25,9 @@ import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.MyDrive;
+import defPackage.Person;
 
 /**
  * Servlet implementation class AddNewAssignmentServlet
@@ -106,6 +109,20 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		String assignmentFolderId = service.getAssignmentFolderId(classroomID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
+		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomID);
+		List<Person> allPerosns = connection.classroomDB.ClassroomAllPersons(currentClassroom.getClassroomID());
+		ArrayList<String> emails  = new ArrayList <String>(); 
+		for(Person person : allPerosns){
+			emails.add(person.getEmail());			
+		}
+		String subject ="Macs Classroom: New Assignment in the classroom: " + currentClassroom.getClassroomName();
+		String mailText ="New Assignment added in the classroom: " + currentClassroom.getClassroomName() +
+				"\nGo to the Link:\nhttp://localhost:8080/MACS-classroom/" + "assignments.jsp?" 
+				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
+		if(!emails.isEmpty()){
+			MailConnector mail = new MailConnector(emails, subject, mailText);
+			mail.sendMail();
+		}		
 		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
 		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);
 
