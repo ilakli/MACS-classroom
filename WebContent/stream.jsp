@@ -28,11 +28,15 @@
 <style type="text/css">
 
 .ui.button.commentButton {
-	height: 4em !important;
+	height: 2em !important;
+	width: 20% !important;
+	margin-left: 3% !important;
+	margin-top: 1.5% !important;
+	display: inline-table !important;
 }
 
 .ui.reply.form.comment textarea {
-	width: 40em !important;
+	width: 75% !important;
 	height: 5em !important;
     min-height: 5em !important;
     max-height: 30em !important;
@@ -60,6 +64,75 @@
 	border: solid;
 	padding: .78571429rem 1rem !important;
 }
+
+body {
+	background-color: #ebebe9;
+
+}
+
+#POST_ADDING_FORM {
+	margin-left: 25% !important;
+	margin-right: 25% !important;
+	margin-bottom: 12% !important;
+}
+
+#ADD_POST_BUTTON {
+	float: right !important;
+}
+
+#POST_TEXT {
+	max-height: 8em !important;
+}
+
+.postHead, .postComments {
+	
+	margin-top: 0% !impoertant;
+	max-width: 50% !important;
+	margin-left: 25% !important;
+	margin-right: 25% !important;
+}
+
+.postCommentAdding {
+	
+}
+
+.postHead{
+	border-top-left-radius: 0.3em !important;
+	border-top-right-radius: 0.3em !important;
+	background-color: white !important;
+}
+
+.postComments {
+	background-color: #f6f7f9 !important;
+	margin-top: 0% !important;
+}
+
+.comment {
+	padding-left: 2% !important;
+	padding-top: 1% !important;
+	padding-bottom: 1% !important;
+}
+
+.label {
+	margin-left: 2% !important;
+	margin-top: 2% !important;
+}
+
+.avatar > img {
+	border-radius: 50% !important;	
+}
+
+.metadata{
+	float: right !important;
+	padding-right: 2% !important;
+} 
+
+.postDate {
+	float: right !important;
+	margin-right: 2% !important;
+}
+
+
 </style>
 </head>
 <body>
@@ -68,26 +141,33 @@
 		
 		Person author = connector.personDB.getPerson(p.getPersonId());
 		
-		String result = "<div class = \"event\">" +
-							"<div class = \"label\">" +
-								"<img src =\"" + author.getPersonImgUrl() + "\">" +
-							"</div>" +
-							"<div class = \"content\">" +
-								"<div class = \"summary\">" +
-									"<a>" + author.getName() + " " + author.getSurname() + "</a>"  +
-									"<div class = \"date\"> " + p.getPostDate().toString() + "</div>" +
+		String dateString = p.getPostDate().toGMTString();
+		dateString = dateString.substring(0, dateString.lastIndexOf(':'));
+		
+		
+		String result =  "<div class = \"event postHead\">" +
+								"<div class = \"label\">" +
+									"<img src =\"" + author.getPersonImgUrl() + "\">" +
 								"</div>" +
-								"<div class = \"extra text\">" +
-									"<pre>" + p.getPostText() + "</pre>" + 
+								"<div class = \"content\">" +
+									"<div class = \"summary\">" +
+										"<a>" + author.getName() + " " + author.getSurname() + "</a>"  +
+										"<div class = \"date postDate\"> " + dateString + "</div>" +
+									"</div>" +
+									"<div class = \"extra text\">" +
+										"<pre>" + p.getPostText() + "</pre>" + 
+									"</div>" +
 								"</div>" +
-							"</div>" +
-						"</div>";
+							"</div>";
 		
 		ArrayList<Comment> comments = connector.commentDB.getPostComments(p.getPostId());
 		
-		result += "<div class = \"ui comments\" id=\"" + p.getPostId() + "post\">";
+		result += "<div class = \"ui comments postComments\" id=\"" + p.getPostId() + "post\">";
 		for (Comment comment : comments) {
 			Person commentAuthor = connector.personDB.getPerson(comment.getPersonID());
+			
+			dateString = comment.getCommentDate().toGMTString();
+			dateString = dateString.substring(0, dateString.lastIndexOf(':'));
 			
 			result += "<div class = \"comment\">" +
 						"<a class = \"avatar\">" + 
@@ -96,7 +176,7 @@
 						"<div class = \"content\">" + 
 							"<a class = \"author\">" + commentAuthor.getName() + " " + commentAuthor.getSurname() + "</a>" +
 							"<div class = \"metadata\">" +
-								"<span class = \"date\">" + comment.getCommentDate().toString() + "</span>" +
+								"<span class = \"date\">" + dateString + "</span>" +
 							"</div>" +
 							"<div class = \"text\">" +
 								"<pre>" + comment.getCommentText() + "</pre>" +
@@ -104,22 +184,27 @@
 						"</div>" + 
 					"</div>";
 		}
+		
+		
+		result +=  "<div class = \"postCommentAdding\" id =\"" + p.getPostId()  + "commentAdding\">" +
+					"<form class=\"ui reply form comment\">" +
+							    "<div class=\"field\">" +
+							      "<textarea></textarea>" +
+							      "<div class=\"ui button commentButton\">" +
+							    	  "Comment" +
+								  "</div>" +
+								  "<textarea style=\"display:none\" name = \"postId\">" + p.getPostId() + "</textarea>" +
+								  "<textarea style=\"display:none\" name = \"personId\">" + currentPerson.getPersonID() + "</textarea>" +
+								  "<textarea style=\"display:none\" name = \"personImgURL\">" + currentPerson.getPersonImgUrl() + "</textarea>" +
+								  "<textarea style=\"display:none\" name = \"personName\">" + currentPerson.getName() + "</textarea>" +
+								  "<textarea style=\"display:none\" name = \"personSurname\">" + currentPerson.getSurname() + "</textarea>" +
+								  
+							    "</div>" +
+					 "</form>" +
+					"</div>";
+		
 		result += "</div>";
 		
-		result += "<form class=\"ui reply form comment\">" +
-						    "<div class=\"field\">" +
-						      "<textarea></textarea>" +
-						      "<div class=\"ui button commentButton\">" +
-						    	  "<i class=\"icon edit\"></i> <p>Add Comment</p>" +
-							  "</div>" +
-							  "<textarea style=\"display:none\" name = \"postId\">" + p.getPostId() + "</textarea>" +
-							  "<textarea style=\"display:none\" name = \"personId\">" + currentPerson.getPersonID() + "</textarea>" +
-							  "<textarea style=\"display:none\" name = \"personImgURL\">" + currentPerson.getPersonImgUrl() + "</textarea>" +
-							  "<textarea style=\"display:none\" name = \"personName\">" + currentPerson.getName() + "</textarea>" +
-							  "<textarea style=\"display:none\" name = \"personSurname\">" + currentPerson.getSurname() + "</textarea>" +
-							  
-						    "</div>" +
-				 "</form>";
 		return result;
 	}%>	
 	
@@ -200,11 +285,13 @@
 	
 	<!-- END OF ADDING POST -->
 	
+	
 	<!-- POSTS -->
 		<%
 			ArrayList <Post> posts = connector.postDB.getPosts(currentClassroom.getClassroomID());
 			out.println("<div class=\"ui feed\">");
-			for (Post post : posts){
+			for (int i=posts.size()-1; i>=0; i--){
+				Post post = posts.get(i);
 				String htmlCode = generatePostHTML(post, connector, currentPerson);
 				out.println(htmlCode);
 

@@ -33,8 +33,12 @@ public class CommentServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		
+		
 		PrintWriter pw = response.getWriter();
-		pw.println(new Date().toString());
+		String dateString = new Date().toGMTString();
+		dateString = dateString.substring(0, dateString.lastIndexOf(':'));
+		pw.println(dateString);
 		
 		String postId = request.getParameter("postId");
 		String personId = request.getParameter("personId");
@@ -43,7 +47,6 @@ public class CommentServlet extends HttpServlet {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		
 		connection.commentDB.addPostComment(postId, personId, commentText);
-		
 		
 	}
 
