@@ -62,6 +62,9 @@
 	!
 	important;
 }
+body > *{
+	margin: 0.5%;
+}
 </style>
 </head>
 <body>

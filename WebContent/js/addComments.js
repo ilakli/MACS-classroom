@@ -8,6 +8,8 @@ $(document).ready(function() {
 		var personSurname = $(this).next().next().next().next().next().val();
 		var commentText = $(this).prev().val();
 		
+		var _this = $(this);
+		
 		$.ajax({
 			url : "CommentServlet",
 			type: 'POST',
@@ -33,8 +35,7 @@ $(document).ready(function() {
 								"</div>" + 
 							"</div>";
 				
-				var commentsBox = document.getElementById(postId + "post");
-				commentsBox.innerHTML += toAdd;
+				$("#" + postId + "commentAdding").before(toAdd);
 	
 			}
 		});

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	
 	$("#ADD_POST_BUTTON").click(function (){
-		alert(1);
+
 		var postText = $(this).prev().find('#POST_TEXT').val();
 		var classroomId = $(this).find('#CLASSROOM_ID').val();
 		var personId =  $(this).find('#PERSON_ID').val();
