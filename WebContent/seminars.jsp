@@ -299,6 +299,11 @@
 				<%
 					} else {
 				%>
+				
+				<%
+					if (!isClassroomFinished) {
+				%>
+				
 				<button class="positive ui button">Set Seminar Leader</button>
 				<form class="seminarist-add" method="post"
 					action="AddSeminaristToSeminarServlet">
@@ -323,6 +328,11 @@
 						value="<%=classroomID%>"> <input type="submit"
 						class="ui teal button" value="Set">
 				</form>
+				
+				<%
+					}
+				%>
+				
 				<%
 					}
 				%>

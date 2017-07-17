@@ -302,6 +302,10 @@
 				<%
 					} else {
 				%>
+				
+				<%
+					if (!isClassroomFinished) {
+				%>
 
 				<button class="positive ui button">Set Section Leader</button>
 				<form class="section-leader-add" method="post"
@@ -328,6 +332,9 @@
 						value="<%=classroomID%>"> <input type="submit"
 						class="ui teal button" value="Set">
 				</form>
+				<%
+					}
+				%>
 				<%
 					}
 				%>
