@@ -62,6 +62,15 @@
 .assignment-add-button {
 	margin: 0 0.8% !important;
 }
+
+.segments {
+	display: inlin-block;
+	width: 60% !important;
+	margin: 2% auto !important;
+}
+.segment a {
+	display: block !important;
+}
 </style>
 </head>
 <body>
