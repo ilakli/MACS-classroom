@@ -80,9 +80,7 @@ public class StudentDB {
 		if (personId.equals("")) {
 			return false;
 		}
-		if (studentExists(email, classroomId)) {
-			return false;
-		}
+		
 		String query = String.format("insert into `classroom_students` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -98,12 +96,8 @@ public class StudentDB {
 	 *         student or database crashed
 	 */
 	public boolean deleteStudent(String email, String classroomId) {
-		if (!studentExists(email, classroomId)) {
-			return false;
-		}
+		if(!studentExists(email, classroomId)) return false;
 		String personId = personDB.getPersonId(email);
-		
-		
 		String query = String.format("delete from `classroom_students` where `classroom_id` = %s and `person_id` = %s;",
 				classroomId, personId);
 		

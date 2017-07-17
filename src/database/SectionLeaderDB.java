@@ -67,9 +67,6 @@ public class SectionLeaderDB {
 		if (personId.equals("")) {
 			return false;
 		}
-		if (sectionLeaderExists(email, classroomId)) {
-			return false;
-		}
 		String query = String.format(
 				"insert into `classroom_section_leaders` (`classroom_id`, `person_id`) values (%s, %s);", classroomId,
 				personId);

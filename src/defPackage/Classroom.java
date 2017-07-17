@@ -3,20 +3,13 @@ package defPackage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
+
 
 import database.AllConnections;
-import database.ClassroomDB;
+
 import database.DBConnection;
-import database.LecturerDB;
-import database.MaterialDB;
-import database.SectionDB;
-import database.SeminarDB;
-import database.StudentDB;
+
 
 public class Classroom {
 
@@ -219,7 +212,8 @@ public class Classroom {
 	 *         e479ff59e7889fe12cf0fbdcc9d38be99cc3c3bd
 	 */
 	public boolean classroomAddLecturer(String email) {
-		if (classroomLecturerExists(email)) {
+		if (classroomLecturerExists(email) || classroomStudentExists(email) ||
+				classroomSectionLeaderExists(email)) {
 			return false;
 		} else {
 			return db.lecturerDB.addLecturer(email, this.classroomID);
@@ -236,7 +230,8 @@ public class Classroom {
 	 *         was a student before or some error occurred)
 	 */
 	public boolean classroomAddStudent(String email) {
-		if (classroomStudentExists(email)) {
+		if (classroomStudentExists(email) ||classroomLecturerExists(email) ||
+				classroomSectionLeaderExists(email) || classroomSeminaristExists(email)) {
 			return false;
 		} else {
 			return db.studentDB.addStudent(email, this.classroomID);
@@ -252,7 +247,8 @@ public class Classroom {
 	 *         was a section leader before or some error occurred)
 	 */
 	public boolean classroomAddSectionLeader(String email) {
-		if (classroomSectionLeaderExists(email)) {
+		if (classroomStudentExists(email) ||classroomLecturerExists(email) ||
+				classroomSectionLeaderExists(email) || classroomSeminaristExists(email)) {
 			return false;
 		} else {
 			return db.sectionLeaderDB.addSectionLeader(email, this.classroomID);
@@ -288,7 +284,8 @@ public class Classroom {
 	 *         was seminarist before or some error occurred)
 	 */
 	public boolean classroomAddSeminarist(String email) {
-		if (classroomSeminaristExists(email)) {
+		if (classroomSeminaristExists(email) || classroomStudentExists(email) ||
+				classroomSectionLeaderExists(email)) {
 			return false;
 		} else {
 			return db.seminaristDB.addSeminarist(email, this.classroomID);
