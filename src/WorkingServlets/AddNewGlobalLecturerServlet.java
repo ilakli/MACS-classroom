@@ -41,9 +41,6 @@ public class AddNewGlobalLecturerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		System.out.println("Here");
-
 		String email = request.getParameter("email");
 
 		AllConnections connection = (AllConnections) request.getServletContext().getAttribute("connection");

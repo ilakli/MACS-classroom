@@ -35,15 +35,13 @@ public class AddNewLecturerServlet extends HttpServlet {
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-		
-		System.out.println("Took It Email is: " + email + " Classroom is: " + classroomId);
+	
 		String emails[] = email.split("\\s"); 
 		
 		boolean status = true;
 		if(emails.length == 0) status = false;
 		
 		for(String e:emails){
-			System.out.println("Adding " + e);
 			status = currentClassroom.classroomAddLecturer(e);
 		}  
 		

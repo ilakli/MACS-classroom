@@ -127,6 +127,7 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean addPersonByEmail(String email) {
+		if(email == null ||email.equals("")) return false;
 		String query = String.format("insert into `persons` (`person_email`)"
 				+ " values ('%s');", email);
 		MyConnection myConnection = db.getMyConnection(query);
