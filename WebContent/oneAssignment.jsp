@@ -38,11 +38,13 @@
 .block.header {
 	margin: 0;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
 	margin-right: 0.7%;
 }
+
 .sign-out {
 	float: right;
 	margin-top: 0.8%;
@@ -62,7 +64,8 @@
 	!
 	important;
 }
-body > *{
+
+body>* {
 	margin: 0.5%;
 }
 </style>
@@ -71,60 +74,55 @@ body > *{
 
 
 	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
-		
-		String result = "<div class=\"ui top attached tabular menu\"> " + 
-						"<div class=\"ui raised segment\"> <div class=\"active item\"> " + 
-						a.getTitle() + "</div>" + "<div class=\"ui bottom attached active tab segment\"> " +
-						"<p>" + a.getInstructions() + "</p>";
-						
-						result+="<p></p>";								   						
-						
-						if(a.getFileName() != null){
-							result +=" <a class=\"ui blue ribbon label\"> File: <a href=https://drive.google.com/open?id=" + 
-							fileId + ">" + a.getFileName() + "</a></p>";
-						}
-						result+="<p></p>";
-						if( a.getDeadline()!= null){
-							result+="<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
-						}						
-						
-						result+="</div> </div> </div>";
-		
+
+		String result = "<div class=\"ui top attached tabular menu\"> "
+				+ "<div class=\"ui raised segment\"> <div class=\"active item\"> " + a.getTitle() + "</div>"
+				+ "<div class=\"ui bottom attached active tab segment\"> " + "<p>" + a.getInstructions() + "</p>";
+
+		result += "<p></p>";
+
+		if (a.getFileName() != null) {
+			result += " <a class=\"ui blue ribbon label\"> File: <a href=https://drive.google.com/open?id=" + fileId
+					+ ">" + a.getFileName() + "</a></p>";
+		}
+		result += "<p></p>";
+		if (a.getDeadline() != null) {
+			result += "<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
+		}
+
+		result += "</div> </div> </div>";
+
 		return result;
 	}%>
-	
+
 	<%!private String generateStudentHTML(Person p, String classroomID, Assignment a, AllConnections connector) {
-		
-		StudentAssignment studentAssignment = 
-				connector.studentAssignmentDB.getStudentAssignment(classroomID, p.getPersonID(), a.getAssignmentID());
+
+		StudentAssignment studentAssignment = connector.studentAssignmentDB.getStudentAssignment(classroomID,
+				p.getPersonID(), a.getAssignmentID());
 		boolean isApproved = studentAssignment.getApproval();
 		String grade = studentAssignment.getAssignmentGrade();
-		
+
 		String gradeCode;
 		if (grade == null || grade.equals("Not Graded"))
-			gradeCode = "<div class=\"ui red horizontal label\">Not Graded</div>"; else
+			gradeCode = "<div class=\"ui red horizontal label\">Not Graded</div>";
+		else
 			gradeCode = "<div class=\"ui green horizontal label\">Graded</div>";
-		
+
 		String approvalCode;
 		if (isApproved)
-			approvalCode = "<div class=\"ui green horizontal label\">Approved</div>"; else
+			approvalCode = "<div class=\"ui green horizontal label\">Approved</div>";
+		else
 			approvalCode = "<div class=\"ui red horizontal label\">Not Yet Approved</div>";
-		
-		String hrefCode = " href = \"studentsOneAssignment.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID+ 
-				"&studentID="+p.getPersonID()+ "&assignmentID=" + a.getAssignmentID() +"\"";
-		
-		String result = "<div class=\"item\">" +
-						"<div class=\"right floated content\">" +
-						gradeCode +
-						approvalCode +
-						"</div>" +
-						"<img class=\"ui avatar image\" src = \"" + p.getPersonImgUrl() + "\">" +
-						"<div class = \"content\">" +
-						"<a class =\"header\"" + hrefCode + ">" + p.getName() + " " + p.getSurname() + "</a>" +
-						"<div class = \"description\">" + p.getEmail() + "</div>" +
-						"</div>" + 
-						"</div>"; 
-		
+
+		String hrefCode = " href = \"studentsOneAssignment.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID
+				+ "&studentID=" + p.getPersonID() + "&assignmentID=" + a.getAssignmentID() + "\"";
+
+		String result = "<div class=\"item\">" + "<div class=\"right floated content\">" + gradeCode + approvalCode
+				+ "</div>" + "<img class=\"ui avatar image\" src = \"" + p.getPersonImgUrl() + "\">"
+				+ "<div class = \"content\">" + "<a class =\"header\"" + hrefCode + ">" + p.getName() + " "
+				+ p.getSurname() + "</a>" + "<div class = \"description\">" + p.getEmail() + "</div>" + "</div>"
+				+ "</div>";
+
 		return result;
 	}%>
 
@@ -132,10 +130,9 @@ body > *{
 		String classroomID = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
-		
-		
-		Person currentPerson = (Person)request.getSession().getAttribute("currentPerson");
-		if(currentPerson == null){
+
+		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
+		if (currentPerson == null) {
 			response.sendError(400, "Not Permitted At All");
 			return;
 		}
@@ -144,36 +141,33 @@ body > *{
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
-		if(!isAdmin && !isSectionLeader && !isSeminarist && !isLecturer){
-			 response.sendError(400, "Not Permitted At All");
-			 return;
+
+		if (!isAdmin && !isSectionLeader && !isSeminarist && !isLecturer) {
+			response.sendError(400, "Not Permitted At All");
+			return;
 		}
-		
+
 		String assignmentID = request.getParameter("assignmentID");
-		System.out.println("writing:    " +assignmentID );
+		System.out.println("writing:    " + assignmentID);
 		Assignment assignment = connector.assignmentDB.getAssignment(assignmentID);
-		
-		
-		
-		for (Person p : currentClassroom.getClassroomStudents()){
-			
+
+		for (Person p : currentClassroom.getClassroomStudents()) {
+
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 			String deadlineWithReschedulings = "";
-			if (assignment.getDeadline()!=null) deadlineWithReschedulings = format1.format(assignment.getDeadline());
-			
-			
+			if (assignment.getDeadline() != null)
+				deadlineWithReschedulings = format1.format(assignment.getDeadline());
+
 			connector.studentAssignmentDB.addStudentAssignment(classroomID, p.getPersonID(), assignmentID,
-					deadlineWithReschedulings );
+					deadlineWithReschedulings);
 		}
-		
 	%>
 
 	<div class="ui block header head-panel">
-	<a href="index.jsp">
-		<h3 class="ui header head-text">Macs Classroom</h3>
-	</a>
-	  <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign out</a>
+		<a href="index.jsp">
+			<h3 class="ui header head-text">Macs Classroom</h3>
+		</a> <a class="sign-out" href="DeleteSessionServlet" onclick="signOut();">Sign
+			out</a>
 	</div>
 	<div class="ui menu">
 		<a
@@ -213,10 +207,10 @@ body > *{
 			</div>
 			<script>
 				$('.ui.dropdown').dropdown();
-		</script>
+			</script>
 		</div>
 	</div>
-	
+
 	<!-- -------------------------------------------------------------------- -->
 	<%
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
@@ -224,54 +218,85 @@ body > *{
 		String htmlCode = generateAssignmentHTML(assignment, assignmentFileId);
 		out.println(htmlCode);
 	%>
-	
-	<%if (isSectionLeader){%>
-		
-		<%Section section = connector.sectionDB.getSectionByLeader(currentPerson, classroomID);
-		if (section != null) {
-			List <Person> sectionStudents = section.getSectionStudents();
-			
-			out.println("<h2>Students:</h2>");
-			out.println("<div class=\"ui relaxed list\">");
-			for (Person p : sectionStudents) {
-				out.println(generateStudentHTML(p, classroomID, assignment, connector));
+
+	<%
+		if (isSectionLeader) {
+	%>
+
+	<%
+		Section section = connector.sectionDB.getSectionByLeader(currentPerson, classroomID);
+			if (section != null) {
+				List<Person> sectionStudents = section.getSectionStudents();
+
+				out.println("<h2>Students:</h2>");
+				out.println("<div class=\"ui relaxed list\">");
+				for (Person p : sectionStudents) {
+					out.println(generateStudentHTML(p, classroomID, assignment, connector));
+				}
+				out.println("</div>");
+
+				String assignmentName = assignment.getTitle();
+				service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(),
+						classroomID);
+			} else {
+				out.println("you have no section yet...");
 			}
-			out.println("</div>");
-			
-			String assignmentName = assignment.getTitle();
-			service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(), classroomID);
-		} else {
-			out.println("you have no section yet...");
-		}%>
-		
-	<%}%>
-	
-	
-	
-	<%if (isSeminarist){%>
-		
-		<%Seminar seminar = connector.seminarDB.getSeminarBySeminarist(currentPerson, classroomID);
-		if (seminar != null){
-			List <Person> seminarStudents = seminar.getSeminarStudents();
-			
-			out.println("<h2>Students:</h2>");
-			out.println("<div class=\"ui relaxed list\">");
-			for (Person p : seminarStudents){
-				out.println(generateStudentHTML(p, classroomID, assignment, connector));
+	%>
+
+	<%
+		}
+	%>
+
+
+
+	<%
+		if (isSeminarist) {
+	%>
+
+	<%
+		Seminar seminar = connector.seminarDB.getSeminarBySeminarist(currentPerson, classroomID);
+			if (seminar != null) {
+				List<Person> seminarStudents = seminar.getSeminarStudents();
+
+				out.println("<h2>Students:</h2>");
+				out.println("<div class=\"ui relaxed list\">");
+				for (Person p : seminarStudents) {
+					out.println(generateStudentHTML(p, classroomID, assignment, connector));
+				}
+				out.println("</div>");
+
+				String assignmentName = assignment.getTitle();
+				service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(),
+						classroomID);
+			} else {
+				out.println("you have no seminar group yet...");
 			}
-			out.println("</div>");
-			
-			String assignmentName = assignment.getTitle();
-			service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(), classroomID);
-		} else {
-			out.println("you have no seminar group yet...");
-		}%>
-	<%}%>
+	%>
+	<%
+		}
+	%>
+
+	<%
+		if (isAdmin || isLecturer) {
+	%>
+	<%
+		List <Person> classroomStudents = currentClassroom.getClassroomStudents();
+		out.println("<h2>Students:</h2>");
+		out.println("<div class=\"ui relaxed list\">");
+		for (Person p : classroomStudents) {
+			out.println(generateStudentHTML(p, classroomID, assignment, connector));
+		}
+		out.println("</div>");
 	
+	%>
+	<%
+		}
+	%>
 	<!-- -------------------------------------------------------------------- -->
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
-	<script type="text/javascript" src='js/comments.js' type="text/javascript"></script>
+	<script type="text/javascript" src='js/comments.js'
+		type="text/javascript"></script>
 	<script>
 		function signOut() {
 			var auth2 = gapi.auth2.getAuthInstance();
