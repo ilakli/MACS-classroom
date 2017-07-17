@@ -428,7 +428,7 @@ public class MyDrive {
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
 			for (File f: fl.getFiles()) {
-				result.add(String.format("<a %s=%s> %s </a>\n", GOOGLE_SHAREABLE_LINK, f.getId(), f.getName()));
+				result.add(String.format("<a href=\"%s%s\"> %s </a>\n", GOOGLE_SHAREABLE_LINK, f.getId(), f.getName()));
 			}
 		} catch (IOException e) {
 		}
