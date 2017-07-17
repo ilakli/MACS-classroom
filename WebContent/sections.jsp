@@ -134,6 +134,7 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		boolean isClassroomFinished = connector.classroomDB.isClassroomFinished(classroomID);
 
 		if (!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer) {
 			response.sendError(400, "Not Permitted At All");
@@ -165,7 +166,7 @@
 			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
 
 		<%
-			if (isAdmin || isLecturer) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
@@ -193,16 +194,22 @@
 	<input type="hidden" id="classroom-id" value="<%=classroomID%>">
 
 	<%
-		if (isAdmin || isLecturer) {
+		if ((isAdmin || isLecturer)) {
 	%>
 	<div class="ui raised segment">
 		<h2 class="ui header">Students Without Section</h2>
+		<%
+			if (!isClassroomFinished) {
+		%>
 		<form method="POST" action="AutoDistributionToSectionsServlet">
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=classroomID%>">
 			<button type="submit" class="positive ui button">Auto
 				Distribution</button>
 		</form>
+		<%
+			}
+		%>
 		<div class="ui middle aligned selection list free-students">
 
 			<%
@@ -230,7 +237,7 @@
 	%>
 	<div class="ui raised segment">
 		<%
-			if (isLecturer || isAdmin) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<i class="add user icon icon-student"></i> <input type="hidden"
 			value="<%=currentSection.getSectionN()%>">
@@ -269,7 +276,7 @@
 			<div class="item">
 				<%
 					if (sectionLeader != null) {
-							if (isLecturer || isAdmin) {
+							if ((isAdmin || isLecturer) && !isClassroomFinished) {
 				%>
 
 				<form action="RemoveSectionLeaderFromSectionServlet" method="POST">
@@ -337,7 +344,7 @@
 					<div class="content">
 						<div class="header"><%=currentStudent.getName() + " " + currentStudent.getSurname()%></div>
 					</div>
-					<% if(isLecturer || isAdmin) {%>
+					<% if((isAdmin || isLecturer) && !isClassroomFinished) {%>
 					<div class="ui checkbox">
 						<input type="checkbox" name="studentsEmails"
 							value="<%=currentStudent.getEmail()%>"> <label></label>
@@ -353,7 +360,7 @@
 			</div>
 			<input type="hidden" name="classroomID" value="<%=classroomID%>">
 			<%
-				if (isLecturer || isAdmin) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<input type="submit" class="ui red button" value="Remove Marked">
 			<%
@@ -364,7 +371,7 @@
 
 	<%
 		}
-		if(isAdmin || isLecturer){
+		if((isAdmin || isLecturer) && !isClassroomFinished){
 	%>
 	<i class="huge add circle icon fixed-position"></i>
 	<form name="add" action="AddNewSectionServlet" method="Post"

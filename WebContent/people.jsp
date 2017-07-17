@@ -111,7 +111,8 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
+		boolean isClassroomFinished = connector.classroomDB.isClassroomFinished(currentClassroom.getClassroomID());
+
 		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
 			 response.sendError(400, "Not Permitted At All");
 			 return;
@@ -137,7 +138,7 @@
 			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
 
 		<%
-			if (isAdmin || isLecturer) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
@@ -244,7 +245,7 @@
 			<h2 class="ui header">Students</h2>
 
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<i class="add user icon icon-student"></i>
 			<%
@@ -266,7 +267,7 @@
 				<div class="item">
 					<div class="right floated content">
 						<%
-							if (isAdmin || isLecturer) {
+							if ((isAdmin || isLecturer) && !isClassroomFinished) {
 						%>
 						<div class="ui checkbox">
 							<input type="checkbox" name="<%=currentStudent.getEmail()%>"
@@ -290,7 +291,7 @@
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
@@ -304,7 +305,7 @@
 
 			<h2 class="ui header">Section Leaders</h2>
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<i class="add user icon icon-section-leader"></i>
 			<%
@@ -326,7 +327,7 @@
 				<div class="item">
 					<div class="right floated content">
 						<%
-							if (isAdmin || isLecturer) {
+							if ((isAdmin || isLecturer) && !isClassroomFinished) {
 						%>
 						<div class="ui checkbox">
 							<input type="checkbox"
@@ -351,7 +352,7 @@
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
@@ -365,7 +366,7 @@
 
 			<h2 class="ui header">Seminarists</h2>
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<i class="add user icon icon-seminarist"></i>
 			<%
@@ -387,7 +388,7 @@
 				<div class="item">
 					<div class="right floated content">
 						<%
-							if (isAdmin || isLecturer) {
+							if ((isAdmin || isLecturer) && !isClassroomFinished) {
 						%>
 						<div class="ui checkbox">
 							<input type="checkbox" name="<%=currentSeminarist.getEmail()%>"
@@ -411,7 +412,7 @@
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
@@ -425,7 +426,7 @@
 
 			<h2 class="ui header">Lecturers</h2>
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<i class="add user icon icon-lecturer"></i>
 			<%
@@ -447,7 +448,7 @@
 				<div class="item">
 					<div class="right floated content">
 						<%
-							if (isAdmin || isLecturer) {
+							if ((isAdmin || isLecturer) && !isClassroomFinished) {
 						%>
 						<div class="ui checkbox">
 							<input type="checkbox" name="<%=currentLecturer.getEmail()%>"
@@ -471,7 +472,7 @@
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
 			<%
-				if (isAdmin || isLecturer) {
+				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
 			<button type="submit" class="ui red button">Remove Marked</button>
 			<%
