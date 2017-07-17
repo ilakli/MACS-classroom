@@ -79,9 +79,6 @@ public class LecturerDB {
 		if (personId.equals("")) {
 			return false;
 		}
-		if (lecturerExists(email, classroomId)) {
-			return false;
-		}
 		String query = String.format("insert into `classroom_lecturers` (`classroom_id`, `person_id`) values (%s, %s);",
 				classroomId, personId);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -100,9 +97,6 @@ public class LecturerDB {
 		if (personId.equals("")) {
 			return false;
 		}
-		if (globalLecturerExists(email)) {
-			return false;
-		}
 		String query = String.format("insert into `lecturers` (`person_id`) values (%s);", personId);
 		MyConnection myConnection = db.getMyConnection(query);
 		return db.executeUpdate(myConnection);
@@ -117,9 +111,7 @@ public class LecturerDB {
 	 *         lecturer or database crashed
 	 */
 	public boolean deleteLecturer(String email, String classroomId) {
-		if (!lecturerExists(email, classroomId)) {
-			return false;
-		}
+		if(!lecturerExists(email, classroomId)) return false;
 		String personId = personDB.getPersonId(email);
 
 		String query = String.format(

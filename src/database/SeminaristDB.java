@@ -56,9 +56,6 @@ public class SeminaristDB {
 		if (personId.equals("")) {
 			return false;
 		}
-		if (seminaristExists(email, classroomId)) {
-			return false;
-		}
 		String query = String.format(
 				"insert into `classroom_seminarists` (`classroom_id`, `person_id`) values (%s, %s);", classroomId,
 				personId);
