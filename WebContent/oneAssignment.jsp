@@ -65,6 +65,9 @@
 body > *{
 	margin: 0.5%;
 }
+.to-left{
+	float: left;
+}
 </style>
 </head>
 <body>
@@ -240,6 +243,10 @@ body > *{
 			
 			String assignmentName = assignment.getTitle();
 			service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(), classroomID);
+			String link = service.getSectionLeaderFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
+			out.println("<div class=\"ui large teal label to-left\">");
+			out.println("<a href="+link+">Your Section's Students' Work</a>");
+			out.println("</div>");
 		} else {
 			out.println("you have no section yet...");
 		}%>
@@ -263,6 +270,10 @@ body > *{
 			
 			String assignmentName = assignment.getTitle();
 			service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(), classroomID);
+			String link = service.getSeminaristFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
+			out.println("<div class=\"ui large teal label to-left\">");
+			out.println("<a href="+link+">Your Seminar's Students' Work</a>");
+			out.println("</div>");
 		} else {
 			out.println("you have no seminar group yet...");
 		}%>

@@ -133,7 +133,7 @@ public class MyDrive {
 		return link;
 	}
 	
-	public String getSeminaristLink (String classroomId, String seminaristEmail, String assignmentName) {
+	public String getSeminaristFolderLink (String classroomId, String seminaristEmail, String assignmentName) {
 		String seminaristFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
 		String link = getCheckerFolderLink (seminaristFolderId, assignmentName);
 		
