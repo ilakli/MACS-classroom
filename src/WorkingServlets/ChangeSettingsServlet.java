@@ -43,21 +43,44 @@ public class ChangeSettingsServlet extends HttpServlet {
 		String sectionDis = request.getParameter("disSSections");
 		String seminarDis = request.getParameter("disSeminars");
 		
-		currentClassroom.setNumberOfSections(Integer.parseInt(numSections));
-		currentClassroom.setNumberOfSeminars(Integer.parseInt(numSeminars));
-		currentClassroom.setNumberOfReschedulings(Integer.parseInt(numResch));
-		currentClassroom.setReschedulingLength(Integer.parseInt(lenResch));
+		try{
+			int numberSec = Integer.parseInt(numSections);
+			if(numberSec >= 0){
+				currentClassroom.setNumberOfSections(numberSec);
+			}
+		} catch(NumberFormatException e){
+			
+		}
+		
+		try{
+			int numberSem = Integer.parseInt(numSeminars);
+			if(numberSem >= 0){
+				currentClassroom.setNumberOfSeminars(numberSem);
+			}
+		} catch(NumberFormatException e){
+			
+		}
+		
+		try{
+			int numberResch = Integer.parseInt(numResch);
+			if(numberResch >= 0){
+				currentClassroom.setNumberOfReschedulings(numberResch);
+			}
+		} catch(NumberFormatException e){
+			
+		}
+		
+		try{
+			int lenght = Integer.parseInt(lenResch);
+			if(lenght >= 0){
+				currentClassroom.setReschedulingLength(lenght);
+			}
+		} catch(NumberFormatException e){
+			
+		}
+				
 		currentClassroom.setSectionDistribution(sectionDis != null && sectionDis.equals("on"));
 		currentClassroom.setSeminarDistribution(seminarDis != null && seminarDis.equals("on"));
-		
-		connector.functionDB.deleteAllPermissions(classroomId);
-		String[] newPermissions = request.getParameterValues("permission");		
-		if(newPermissions != null){
-			for(String token : newPermissions){
-				String[] permissionValues = token.split("-");
-				connector.functionDB.addPermission(classroomId, permissionValues[0], permissionValues[1]);
-			}
-		}
 		
 		RequestDispatcher dispatch = request.getRequestDispatcher("settings.jsp?" + 
 				Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);

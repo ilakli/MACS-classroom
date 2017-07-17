@@ -56,7 +56,8 @@ public class PersonDB {
 	 */
 	public Person getPersonByEmail(String email) {
 		Person currentPerson = null;
-
+		
+		email = email.toLowerCase();
 		String query = String.format("select * from `persons` where `person_email`=\"%s\"", email);
 		MyConnection myConnection = null;
 		try {
@@ -114,6 +115,7 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean addPerson(String name, String surname, String email, String imgUrl) {
+		email = email.toLowerCase();
 		String query = String.format("insert into `persons` (`person_name`, `person_surname`, `person_email`,`image_url`)"
 				+ " values ('%s', '%s', '%s', '%s');", name, surname, email, imgUrl);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -127,7 +129,10 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean addPersonByEmail(String email) {
+
 		if(email == null ||email.equals("")) return false;
+		email = email.toLowerCase();
+
 		String query = String.format("insert into `persons` (`person_email`)"
 				+ " values ('%s');", email);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -140,6 +145,7 @@ public class PersonDB {
 	 * @return personId of person with given Email
 	 */
 	public String getPersonId(String email) {
+		email = email.toLowerCase();
 		String query = String.format("select `person_id` from `persons` where `person_email`='%s';", email);
 		MyConnection myConnection = db.getMyConnection(query);
 		String personId = "";
@@ -166,6 +172,7 @@ public class PersonDB {
 	 * @return
 	 */
 	public boolean personExistsInClassroom(String email, String classroomId) {
+		email = email.toLowerCase();
 		return lecturerDB.lecturerExists(email, classroomId) || seminaristDB.seminaristExists(email, classroomId)
 				|| sectionLeaderDB.sectionLeaderExists(email, classroomId) || studentDB.studentExists(email, classroomId);
 	}
@@ -179,6 +186,7 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean setNameAndSurname(String email, String name, String surname) {
+		email = email.toLowerCase();
 		String query = String.format("update `persons` set `person_name` = '%s', `person_surname` = '%s' "
 				+ "where `person_email` = '%s'; ", name, surname, email);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -194,6 +202,7 @@ public class PersonDB {
 	 * @return true- if update executed successfully, false - otherwise
 	 */
 	public boolean setImageUrl(String email, String imgUrl){
+		email = email.toLowerCase();
 		String query = String.format("update `persons` set `image_url` = '%s'"
 				+ "where `person_email` = '%s'; ", imgUrl, email);
 		MyConnection myConnection = db.getMyConnection(query);
@@ -222,7 +231,5 @@ public class PersonDB {
 		
 		return ret;
 	}
-	
-	
 	
 }

@@ -1,6 +1,8 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,6 +38,7 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
@@ -46,35 +49,23 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 		String emails[] = email.split("\\s"); 
 		
 		boolean status = true;
-		if(emails.length == 0) status = false;
-		
+				
 		for(String e:emails){
-			connection.personDB.addPersonByEmail(e);
-			status = currentClassroom.classroomAddSectionLeader(e);
-			if (status) {
-				String folderId = connection.driveDB.getClassroomFolder(classroomId);
-
-				int atIndex = e.indexOf("@");
-				if (atIndex == -1) atIndex = e.length();
-				String mailPrefix = e.substring(0, atIndex);
-				String sectionLeaderFolder = service.createFolder(mailPrefix, folderId);
-				connection.driveDB.addSectionLeaderFolder(classroomId, e, sectionLeaderFolder);
+			Matcher mathcer = pattern.matcher(e.toUpperCase());
+			if(mathcer.matches()){
+				connection.personDB.addPersonByEmail(e);
+				status = currentClassroom.classroomAddSectionLeader(e);
+				if (status) {
+					String folderId = connection.driveDB.getClassroomFolder(classroomId);
+	
+					int atIndex = e.indexOf("@");
+					if (atIndex == -1) atIndex = e.length();
+					String mailPrefix = e.substring(0, atIndex);
+					String sectionLeaderFolder = service.createFolder(mailPrefix, folderId);
+					connection.driveDB.addSectionLeaderFolder(classroomId, e, sectionLeaderFolder);
+				}
 			}
-		}
-		
-		if(status){
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_NEW_SECTION_LEADER_ACC);	
-						 
-			view.forward(request, response);  
-		} else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_NEW_SECTION_LEADER_REJ);	
-						 
-			view.forward(request, response);  
-		}
-		
-		
+		}	
 	}
 
 }

@@ -2,6 +2,8 @@ package EditingServlets;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,7 +40,7 @@ public class AddNewSeminaristServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		
+		Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");	
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 		
@@ -48,34 +50,22 @@ public class AddNewSeminaristServlet extends HttpServlet {
 		String emails[] = email.split("\\s"); 
 		
 		boolean status = true;
-		if(emails.length == 0) status = false;
-		
 		for(String e:emails){
-			connection.personDB.addPersonByEmail(e);
-			status = currentClassroom.classroomAddSeminarist(e);
-			if (status) {
-				String folderId = connection.driveDB.getClassroomFolder(classroomId);
-
-				int atIndex = e.indexOf("@");
-				if (atIndex == -1) atIndex = e.length();
-				String mailPrefix = e.substring(0, atIndex);
-				String seminaristFolderId = service.createFolder(mailPrefix, folderId);
-				connection.driveDB.addSeminaristFolder(classroomId, e, seminaristFolderId);
-			}
-		}
-		
-		if(status){
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SEMINARIST_ACC);	
-			
-			view.forward(request, response);  
-		} else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_NEW_SEMINARIST_REJ);	
-						 
-			view.forward(request, response);  
-		}
+			Matcher mathcer = pattern.matcher(e.toUpperCase());
+			if(mathcer.matches()){	
+				connection.personDB.addPersonByEmail(e);
+				status = currentClassroom.classroomAddSeminarist(e);
+				if (status) {
+					String folderId = connection.driveDB.getClassroomFolder(classroomId);
 	
+					int atIndex = e.indexOf("@");
+					if (atIndex == -1) atIndex = e.length();
+					String mailPrefix = e.substring(0, atIndex);
+					String seminaristFolderId = service.createFolder(mailPrefix, folderId);
+					connection.driveDB.addSeminaristFolder(classroomId, e, seminaristFolderId);
+				}
+			}
+		}		
 	}
 
 }
