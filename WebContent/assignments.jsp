@@ -10,7 +10,7 @@
 <%@page import="defPackage.Material"%>
 <%@page import="java.util.Date"%>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -71,6 +71,10 @@
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
+		if(currentPerson == null){
+			response.sendError(400, "Not Permitted At All");
+			return;
+		}
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
@@ -79,6 +83,7 @@
 		
 		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
 			 response.sendError(400, "Not Permitted At All");
+			 return;
 		}
 		
 		PersonDB personConnector = connector.personDB;

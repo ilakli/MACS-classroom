@@ -132,6 +132,10 @@
 <body>
 	<%
 		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
+		if(currentPerson == null){
+			response.sendError(400, "Not Permitted At All");
+			return;
+		}
 		AllConnections connector = (AllConnections) request.getServletContext().getAttribute("connection");
 		LecturerDB lecturerDB = connector.lecturerDB;
 		ArrayList<Person> globalLecturers = lecturerDB.getGlobalLecturers();
