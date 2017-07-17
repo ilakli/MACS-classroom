@@ -173,6 +173,27 @@ public class MyDrive {
 	}
 	
 	/**
+	 * 
+	 * @param classroomId
+	 * @param assignmentName
+	 * @return - shareable link of all students works on given assignment
+	 */
+	
+	public String getLecturerFolderLink (String classroomId, String assignmentName) {
+		String studentsAssignmentsFolder = getStudentsAssignmentsFolderId(classroomId);
+		String lecturerFolderLink = "";
+		try {
+			FileList fl = service.files().list()
+					.setQ(String.format("'%s' in parents", studentsAssignmentsFolder))
+					.execute();
+			String currentAssignmentFolderId = findFileId(fl, assignmentName);
+			lecturerFolderLink = GOOGLE_SHAREABLE_LINK + currentAssignmentFolderId;
+		} catch (IOException e) {
+		}
+		return lecturerFolderLink;
+	}
+	
+	/**
 	 * finds file in FileList with given name
 	 * @param fl
 	 * @param fileName
@@ -522,7 +543,7 @@ public class MyDrive {
 	public static void main(String[] args) throws IOException {
 		MyDrive drv = new MyDrive();
 		drv.createFolder("rachiriginda");
-		System.out.println(drv.getSectionLeaderFolderLink("1", "irakli.popkhadze@gmail.com", "davaleba1"));
+		System.out.println(drv.getLecturerFolderLink("1", "davaleba1"));
 //		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
 //		FileList fl = drv.service.files().list()
 //				.setQ("'0BzefYzRpjMBPQkpVLXQtS3FDbGc' in parents")
