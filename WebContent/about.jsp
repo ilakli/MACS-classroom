@@ -109,6 +109,10 @@
 		Classroom currentClassroom = connector.classroomDB.getClassroom(classroomID);
 
 		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
+		if(currentPerson == null){
+			response.sendError(400, "Not Permitted At All");
+			return;
+		}
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
@@ -117,6 +121,7 @@
 		
 		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
 			 response.sendError(400, "Not Permitted At All");
+			 return;
 		}
 		
 		CategoryDB categoryDB = ((AllConnections) request.getServletContext()

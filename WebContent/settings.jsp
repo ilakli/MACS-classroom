@@ -90,14 +90,20 @@ pre {
 		int reschedulingLength = currentClassroom.getReschedulingLength();
 
 		Person currentPerson = (Person) request.getSession().getAttribute("currentPerson");
+		if(currentPerson == null){
+			 response.sendError(400, "Not Permitted At All");
+			 return;
+		}
 		boolean isAdmin = connector.personDB.isAdmin(currentPerson);
 		boolean isStudent = currentClassroom.classroomStudentExists(currentPerson.getEmail());
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
 		
-		if(!isLecturer && !isAdmin)
+		if(!isLecturer && !isAdmin){
 			 response.sendError(400, "Not Permitted At All");
+			 return;
+		}
 		
 		ArrayList<Function> functions = connector.functionDB.getAllFunctions();
 		ArrayList<Position> positions = connector.positionDB.getAllPositions();
