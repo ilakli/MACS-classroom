@@ -165,8 +165,7 @@ public class MyDrive {
 	 * @param assignmentName
 	 * @return - seminarist shareable folder link with all its students works
 	 */
-	
-	public String getSeminaristLink (String classroomId, String seminaristEmail, String assignmentName) {
+	public String getSeminaristFolderLink (String classroomId, String seminaristEmail, String assignmentName) {
 		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
 		String link = getCheckerFolderLink (seminaristFolderId, assignmentName);
 		

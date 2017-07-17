@@ -68,6 +68,9 @@
 body>* {
 	margin: 0.5%;
 }
+.to-left{
+	float: left;
+}
 </style>
 </head>
 <body>
@@ -233,48 +236,50 @@ body>* {
 				for (Person p : sectionStudents) {
 					out.println(generateStudentHTML(p, classroomID, assignment, connector));
 				}
-				out.println("</div>");
+			
 
+				out.println("</div>");
+				
 				String assignmentName = assignment.getTitle();
-				service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(),
-						classroomID);
+				service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(), classroomID);
+				String link = service.getSectionLeaderFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
+				out.println("<div class=\"ui large teal label to-left\">");
+				out.println("<a href="+link+">Your Section's Students' Work</a>");
+				out.println("</div>");
 			} else {
 				out.println("you have no section yet...");
+			}%>
+			
+		<%}%>
+	
+	
+	
+	<%if (isSeminarist){%>
+		
+		<%Seminar seminar = connector.seminarDB.getSeminarBySeminarist(currentPerson, classroomID);
+		if (seminar != null){
+			List <Person> seminarStudents = seminar.getSeminarStudents();
+			
+			out.println("<h2>Students:</h2>");
+			out.println("<div class=\"ui relaxed list\">");
+			for (Person p : seminarStudents){
+				out.println(generateStudentHTML(p, classroomID, assignment, connector));
 			}
-	%>
+			out.println("</div>");
+			
+			String assignmentName = assignment.getTitle();
+			service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(), classroomID);
+			String link = service.getSeminaristFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
+			out.println("<div class=\"ui large teal label to-left\">");
+			out.println("<a href="+link+">Your Seminar's Students' Work</a>");
+			out.println("</div>");
+		} else {
+			out.println("you have no seminar group yet...");
+		}%>
+	<%}%>
 
-	<%
-		}
-	%>
 
 
-
-	<%
-		if (isSeminarist) {
-	%>
-
-	<%
-		Seminar seminar = connector.seminarDB.getSeminarBySeminarist(currentPerson, classroomID);
-			if (seminar != null) {
-				List<Person> seminarStudents = seminar.getSeminarStudents();
-
-				out.println("<h2>Students:</h2>");
-				out.println("<div class=\"ui relaxed list\">");
-				for (Person p : seminarStudents) {
-					out.println(generateStudentHTML(p, classroomID, assignment, connector));
-				}
-				out.println("</div>");
-
-				String assignmentName = assignment.getTitle();
-				service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(),
-						classroomID);
-			} else {
-				out.println("you have no seminar group yet...");
-			}
-	%>
-	<%
-		}
-	%>
 
 	<%
 		if (isAdmin || isLecturer) {
@@ -287,6 +292,7 @@ body>* {
 			out.println(generateStudentHTML(p, classroomID, assignment, connector));
 		}
 		out.println("</div>");
+
 	
 	%>
 	<%
