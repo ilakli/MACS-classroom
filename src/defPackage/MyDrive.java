@@ -46,6 +46,7 @@ public class MyDrive {
 
 	private static String CLIENT_ID = "548672842662-t9cr8fb2l6288ikja6367v4ck3drlk3j.apps.googleusercontent.com";
 	private static String CLIENT_SECRET = "EMXr3ltR8h3UaHOZxeqKWs0k";
+	public static final String GOOGLE_SHAREABLE_LINK = "https://drive.google.com/open?id=";
 	private Drive service;
 	private AllConnections allConnections;
 	private JsonBatchCallback<Permission> callback;
@@ -88,10 +89,21 @@ public class MyDrive {
 		    }
 		};
 	}
+	
+	/**
+	 * 
+	 * @return drive service
+	 */
 
 	public Drive getDrive() {
 		return service;
 	}
+	
+	/**
+	 * 
+	 * @param folderName
+	 * @return id of newly created folder
+	 */
 	
 	public String createFolder (String folderName) {
 		File fileMetaData = new File();
@@ -113,27 +125,60 @@ public class MyDrive {
 		
 		return folder != null ? folder.getId() : "";
 	}
+
+	/**
+	 * 
+	 * @param checkerFolderId
+	 * @param assignmentName
+	 * @return - either seminarists or section leaders given assignments folder
+	 */
 	
-	public File createFolderFile (String folderName) {
-		File fileMetaData = new File();
-		fileMetaData.setName(folderName);
-		fileMetaData.setMimeType("application/vnd.google-apps.folder");
-		
-		File folder = null;
+	private String getCheckerFolderLink (String checkerFolderId, String assignmentName) {
+		String folderLink = "";
 		try {
-			folder = service.files().create(fileMetaData)
-					.setFields("id")
-					.execute();
-			Permission userPermission = new Permission().setType("anyone").setRole("writer");
-			BatchRequest batch = service.batch();
-			service.permissions().create(folder.getId(), userPermission).queue(batch, callback);
-			batch.execute();
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();
+			folderLink = GOOGLE_SHAREABLE_LINK + findFileId(fl, assignmentName);
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
-		
-		return folder;
+		return folderLink;
 	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @param sectionLeaderEmail
+	 * @param assignmentName
+	 * @return - section leaders shareable folder link with all its students works
+	 */
+	
+	public String getSectionLeaderFolderLink (String classroomId, String sectionLeaderEmail, String assignmentName) {
+		String sectionLeaderFolderId = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
+		String link = getCheckerFolderLink (sectionLeaderFolderId, assignmentName);
+		
+		return link;
+	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @param seminaristEmail
+	 * @param assignmentName
+	 * @return - seminarist shareable folder link with all its students works
+	 */
+	
+	public String getSeminaristLink (String classroomId, String seminaristEmail, String assignmentName) {
+		String seminaristFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		String link = getCheckerFolderLink (seminaristFolderId, assignmentName);
+		
+		return link;
+	}
+	
+	/**
+	 * finds file in FileList with given name
+	 * @param fl
+	 * @param fileName
+	 * @return fileId if file is present, "" otherwise
+	 */
 	
 	private String findFileId (FileList fl, String fileName) {
 		String result = "";
@@ -146,6 +191,12 @@ public class MyDrive {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @param email
+	 * @return prefix of given mail
+	 */
+	
 	private String getMailPrefix (String email) {
 		int atIndex = email.indexOf("@");
 		if (atIndex == -1) {
@@ -153,6 +204,14 @@ public class MyDrive {
 		}
 		return email.substring(0, atIndex);
 	}
+	
+	/**
+	 * copies assignments to either seminarist or section leader
+	 * @param students
+	 * @param checkerFolder
+	 * @param classroomId
+	 * @param assignmentName
+	 */
 	
 	private void copyAssignmentsToChecker(java.util.List<Person> students, String checkerFolder, String classroomId, String assignmentName) {
 		String studentsAssignmentsFolderId = getStudentsAssignmentsFolderId(classroomId);
@@ -211,10 +270,16 @@ public class MyDrive {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Failed copying");
-			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * copies assignments to seminarist
+	 * @param seminarStudents
+	 * @param assignmentName
+	 * @param seminaristEmail
+	 * @param classroomId
+	 */
 	
 	public void copyAssignmentsToSeminarist (java.util.List<Person> seminarStudents, String assignmentName, String seminaristEmail, String classroomId) {
 		
@@ -222,11 +287,26 @@ public class MyDrive {
 		copyAssignmentsToChecker(seminarStudents, seminaristFolder, classroomId, assignmentName);
 	}
 	
+	/**
+	 * copies assignments to sectionLeader
+	 * @param sectionStudents
+	 * @param assignmentName
+	 * @param sectionLeaderEmail
+	 * @param classroomId
+	 */
+	
 	public void copyAssignmentsToSectionLeader (java.util.List<Person> sectionStudents, String assignmentName, String sectionLeaderEmail, String classroomId) {
 
 		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
 		copyAssignmentsToChecker(sectionStudents, sectionLeaderFolder, classroomId, assignmentName);		
 	}
+	
+	/**
+	 * creates folder in parentFolder 
+	 * @param folderName
+	 * @param parentFolderId
+	 * @return new folders id
+	 */
 	
 	public String createFolder (String folderName, String parentFolderId) {
 		
@@ -246,6 +326,14 @@ public class MyDrive {
 		return folder != null ? folder.getId() : "";
 	}
 
+	/**
+	 * uploads given file to given folder
+	 * @param fileName
+	 * @param fl
+	 * @param fileType
+	 * @param folderId
+	 */
+	
 	public void uploadFile (String fileName, java.io.File fl, String fileType, String folderId) {
 		try {
 			
@@ -271,6 +359,12 @@ public class MyDrive {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param classroomId
+	 * @return 'Assignments' folder id
+	 */
+	
 	public String getAssignmentFolderId (String classroomId) {
 		String classroomFolder = allConnections.driveDB.getClassroomFolder(classroomId);
 		String assignmentFolderId = "";
@@ -282,6 +376,14 @@ public class MyDrive {
 		}
 		return assignmentFolderId;
 	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @param assignmentName
+	 * @param studentEmail
+	 * @return ready html with links to students assignments
+	 */
 	
 	public ArrayList<String> getHtmlForStudentUploads (String classroomId, String assignmentName, String studentEmail) {
 		
@@ -296,7 +398,6 @@ public class MyDrive {
 				return result;
 			}
 
-
 			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
 
 			String mailPrefix = getMailPrefix(studentEmail);
@@ -307,14 +408,19 @@ public class MyDrive {
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
 			for (File f: fl.getFiles()) {
-				result.add(String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName()));
+				result.add(String.format("<a %s=%s> %s </a>\n", GOOGLE_SHAREABLE_LINK, f.getId(), f.getName()));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @return 'Students Assignments' folder id
+	 */
 	
 	private String getStudentsAssignmentsFolderId (String classroomId) {
 		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
@@ -327,6 +433,15 @@ public class MyDrive {
 		return folderId;
 	}
 
+	/**
+	 * uploads students assignment to google drive
+	 * @param studentEmail
+	 * @param fileToUpload
+	 * @param fileType
+	 * @param classroomId
+	 * @param assignmentTitle
+	 */
+	
 	public void uploadAssignment(String studentEmail, java.io.File fileToUpload, String fileType, String classroomId, String assignmentTitle) {
 		String studentsAssignmentFolder = getStudentsAssignmentsFolderId(classroomId);
 		String studentEmailPrefix = getMailPrefix(studentEmail);
@@ -356,6 +471,13 @@ public class MyDrive {
 	
 	}
 	
+	/**
+	 * gets file id of fileName in 'Assignments'
+	 * @param classroomId
+	 * @param fileName
+	 * @return fileId on google drive
+	 */
+	
 	public String getAssignmentFileId (String classroomId, String fileName) {
 		String assignmentFileId = "";
 		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
@@ -377,6 +499,14 @@ public class MyDrive {
 		return assignmentFileId;
 	}
 	
+	/**
+	 * finds material id in given category
+	 * @param classroomId
+	 * @param categoryName
+	 * @param materialName
+	 * @return materialId
+	 */
+	
 	public String findMaterialId (String classroomId, String categoryName, String materialName) {
 		String materialId = "";
 		String categoryFolderId = allConnections.driveDB.getCategoryFolder(classroomId, categoryName);
@@ -393,6 +523,7 @@ public class MyDrive {
 	public static void main(String[] args) throws IOException {
 		MyDrive drv = new MyDrive();
 		drv.createFolder("rachiriginda");
+		System.out.println(drv.getSectionLeaderFolderLink("1", "irakli.popkhadze@gmail.com", "davaleba1"));
 //		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
 //		FileList fl = drv.service.files().list()
 //				.setQ("'0BzefYzRpjMBPQkpVLXQtS3FDbGc' in parents")
