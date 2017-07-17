@@ -46,6 +46,7 @@ public class MyDrive {
 
 	private static String CLIENT_ID = "548672842662-t9cr8fb2l6288ikja6367v4ck3drlk3j.apps.googleusercontent.com";
 	private static String CLIENT_SECRET = "EMXr3ltR8h3UaHOZxeqKWs0k";
+	public static final String GOOGLE_SHAREABLE_LINK = "https://drive.google.com/open?id=";
 	private Drive service;
 	private AllConnections allConnections;
 	private JsonBatchCallback<Permission> callback;
@@ -112,6 +113,31 @@ public class MyDrive {
 		}
 		
 		return folder != null ? folder.getId() : "";
+	}
+
+	
+	private String getCheckerFolderLink (String checkerFolderId, String assignmentName) {
+		String folderLink = "";
+		try {
+			FileList fl = service.files().list().setQ(String.format("'%s' in parents", checkerFolderId)).execute();
+			folderLink = GOOGLE_SHAREABLE_LINK + findFileId(fl, assignmentName);
+		} catch (IOException e) {
+		}
+		return folderLink;
+	}
+	
+	public String getSectionLeaderFolderLink (String classroomId, String sectionLeaderEmail, String assignmentName) {
+		String sectionLeaderFolderId = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
+		String link = getCheckerFolderLink (sectionLeaderFolderId, assignmentName);
+		
+		return link;
+	}
+	
+	public String getSeminaristLink (String classroomId, String seminaristEmail, String assignmentName) {
+		String seminaristFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		String link = getCheckerFolderLink (seminaristFolderId, assignmentName);
+		
+		return link;
 	}
 	
 	public File createFolderFile (String folderName) {
@@ -211,8 +237,6 @@ public class MyDrive {
 				}
 			}
 		} catch (IOException e) {
-			System.out.println("Failed copying");
-			e.printStackTrace();
 		}
 	}
 	
@@ -296,7 +320,6 @@ public class MyDrive {
 				return result;
 			}
 
-
 			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
 
 			String mailPrefix = getMailPrefix(studentEmail);
@@ -307,10 +330,9 @@ public class MyDrive {
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", studentFolderId)).execute();
 			for (File f: fl.getFiles()) {
-				result.add(String.format("<a href=https://drive.google.com/open?id=%s> %s </a>\n", f.getId(), f.getName()));
+				result.add(String.format("<a %s=%s> %s </a>\n", GOOGLE_SHAREABLE_LINK, f.getId(), f.getName()));
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		return result;
@@ -393,6 +415,7 @@ public class MyDrive {
 	public static void main(String[] args) throws IOException {
 		MyDrive drv = new MyDrive();
 		drv.createFolder("rachiriginda");
+		System.out.println(drv.getSectionLeaderFolderLink("1", "irakli.popkhadze@gmail.com", "davaleba1"));
 //		drv.uploadFile("ragaca", "C:/Users/PC/Desktop/Pj8iWKG.jpg", "0BzefYzRpjMBPQkpVLXQtS3FDbGc");
 //		FileList fl = drv.service.files().list()
 //				.setQ("'0BzefYzRpjMBPQkpVLXQtS3FDbGc' in parents")
