@@ -1,6 +1,8 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -29,39 +31,22 @@ public class AddNewLecturerServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
-		
+		// Simple expression to find a valid e-mail address in a file
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$");
 		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
-		System.out.println("Took It Email is: " + email + " Classroom is: " + classroomId);
 		String emails[] = email.split("\\s"); 
 		
-		boolean status = true;
-		if(emails.length == 0) status = false;
-		
 		for(String e:emails){
-			System.out.println("Adding " + e);
-			status = currentClassroom.classroomAddLecturer(e);
-		}  
-		
-		if(status){
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_NEW_LECTURER_ACC);	
-						 
-			view.forward(request, response);   
-		} else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_NEW_LECTURER_REJ);	
-						 
-			view.forward(request, response);   
-		
-		}
-
-			  
-		
+			Matcher mathcer = pattern.matcher(e.toUpperCase());
+			if(mathcer.matches()){
+				currentClassroom.classroomAddLecturer(e);
+			}
+		}				
 	}
 
 }
