@@ -167,7 +167,7 @@ public class MyDrive {
 	 */
 	
 	public String getSeminaristLink (String classroomId, String seminaristEmail, String assignmentName) {
-		String seminaristFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
+		String seminaristFolderId = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
 		String link = getCheckerFolderLink (seminaristFolderId, assignmentName);
 		
 		return link;
