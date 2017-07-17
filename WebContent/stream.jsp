@@ -305,7 +305,6 @@ body {
 				String htmlCode = generatePostHTML(post, connector, currentPerson);
 				out.println(htmlCode);
 
-				out.println("</br></br></br>");
 			}
 			out.println("</div>");
 		

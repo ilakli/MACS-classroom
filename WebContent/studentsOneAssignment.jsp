@@ -92,6 +92,10 @@
 	margin: 0.5% !important;
 }
 
+.lable{
+	margin: 0.5% !important;
+}
+
 	</style>
 </head>
 <body>
@@ -141,7 +145,7 @@
 							result+="<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
 						}						
 						
-						result+="</div> </div> </div>";
+						result+="</div> </div> <br></div>";
 		
 		return result;
 	}%>
@@ -320,8 +324,8 @@
 			}else{
 				
 				%>
-				<h2 style = " color: red">Late</h2>
-				
+
+				<div class="ui big red label late">Late</div>
 				
 				<%
 				
@@ -384,6 +388,8 @@
 	<!-- END OF GRADING -->
 	
 	
+	
+	<br><br>
 	<!-- COMMENTS -->
 		<div class="ui menu">
 		  <a class="item active" id = "COMMENT_MENU_BAR">
