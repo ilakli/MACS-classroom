@@ -26,7 +26,9 @@
 pre {
 	height: 200px;
 }
-
+.finishButton {
+	margin: 0.5% !important;
+}
 .ui.menu {
 	margin-top: 0;
 }
@@ -304,8 +306,22 @@ pre {
 		<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME%>
 			value=<%=classroomID%>>
 
+	
+	
+	</form>
+	<form action="FinishClassroomServlet" method="Post"
+		onSubmit="return validateFinish()">
+		<input type="hidden" name="classroomId"
+			value="<%=classroomID%>">
+		<input type="submit" class="negative ui button finishButton" value="Finish Classroom">
 	</form>
 	<script>
+	function validateFinish() {
+		
+		var res = confirm("Do you want to finish the classroom?");
+		return res;
+		
+	}
 		function signOut() {
 			var auth2 = gapi.auth2.getAuthInstance();
 			auth2.signOut().then(function() {

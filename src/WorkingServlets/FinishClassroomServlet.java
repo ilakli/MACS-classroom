@@ -36,8 +36,8 @@ public class FinishClassroomServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String classroomId = request.getParameter("classroomId");
 		AllConnections allConnections = (AllConnections) request.getServletContext().getAttribute("connection");
-		
 		allConnections.classroomDB.finishClassroom(classroomId);
+		response.sendRedirect("index.jsp");
 	}
 
 }
