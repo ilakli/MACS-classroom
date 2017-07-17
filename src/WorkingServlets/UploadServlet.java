@@ -128,6 +128,7 @@ public class UploadServlet extends HttpServlet {
 			
 			materialDB.addMaterial(classroomId, categoryId, fileToUpload.getName());
 			myDrive.uploadFile(fileToUpload.getName(), fileToUpload.getFile(), fileToUpload.getFileType(), categoryFolder);
+			fileToUpload.getFile().delete();
 		}
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;

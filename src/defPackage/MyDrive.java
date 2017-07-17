@@ -14,6 +14,7 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.Drive.Files.Copy;
 import com.google.api.services.drive.Drive.Files.List;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
@@ -39,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 public class MyDrive {
 
@@ -112,6 +114,120 @@ public class MyDrive {
 		return folder != null ? folder.getId() : "";
 	}
 	
+	public File createFolderFile (String folderName) {
+		File fileMetaData = new File();
+		fileMetaData.setName(folderName);
+		fileMetaData.setMimeType("application/vnd.google-apps.folder");
+		
+		File folder = null;
+		try {
+			folder = service.files().create(fileMetaData)
+					.setFields("id")
+					.execute();
+			Permission userPermission = new Permission().setType("anyone").setRole("writer");
+			BatchRequest batch = service.batch();
+			service.permissions().create(folder.getId(), userPermission).queue(batch, callback);
+			batch.execute();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return folder;
+	}
+	
+	private String findFileId (FileList fl, String fileName) {
+		String result = "";
+		for (File f: fl.getFiles()) {
+			if (f.getName().equals(fileName)) {
+				result = f.getId();
+				break;
+			}
+		}
+		return result;
+	}
+	
+	private String getMailPrefix (String email) {
+		int atIndex = email.indexOf("@");
+		if (atIndex == -1) {
+			atIndex = email.length();
+		}
+		return email.substring(0, atIndex);
+	}
+	
+	private void copyAssignmentsToChecker(java.util.List<Person> students, String checkerFolder, String classroomId, String assignmentName) {
+		String studentsAssignmentsFolderId = getStudentsAssignmentsFolderId(classroomId);
+		HashSet <String> studentEmailPrefixes = new HashSet <String>();
+		for (Person student: students) {
+			String mailPrefix = getMailPrefix(student.getEmail());
+			studentEmailPrefixes.add(mailPrefix);
+		}
+		
+		try {
+			FileList fl = service.files().list()
+					.setQ(String.format("'%s' in parents", checkerFolder))
+					.execute();
+			
+			String currentAssignmentFolderId = findFileId(fl, assignmentName);
+			if (!currentAssignmentFolderId.equals("")) {
+				service.files().delete(currentAssignmentFolderId).execute();
+				service.files().emptyTrash().execute();
+			}
+			currentAssignmentFolderId = createFolder(assignmentName, checkerFolder);
+			
+			fl = service.files().list()
+					.setQ(String.format("'%s' in parents", studentsAssignmentsFolderId))
+					.execute();
+			String studentsCurrentAssignmentFolder = findFileId(fl, assignmentName);
+			
+			fl = service.files().list()
+					.setQ(String.format("'%s' in parents", studentsCurrentAssignmentFolder))
+					.execute();
+
+			for (File f: fl.getFiles()) {
+
+				if (studentEmailPrefixes.contains(f.getName())) {
+					
+					FileList fl2 = service.files().list()
+							.setQ(String.format("'%s' in parents", currentAssignmentFolderId))
+							.execute();
+					
+					String currentStudentFolder = findFileId(fl2, f.getName());
+					if (currentStudentFolder.equals("")) {
+						currentStudentFolder = createFolder(f.getName(), currentAssignmentFolderId);
+					}
+					
+					fl2 = service.files().list()
+							.setQ(String.format("'%s' in parents", f.getId()))
+							.execute();
+					
+					for (File f2: fl2.getFiles()) {
+						
+						File copiedFile = new File();
+						copiedFile.setName(f2.getName());
+						copiedFile.setParents(Collections.singletonList(currentStudentFolder));
+						
+						service.files().copy(f2.getId(), copiedFile).execute();
+					}
+				}
+			}
+		} catch (IOException e) {
+			System.out.println("Failed copying");
+			e.printStackTrace();
+		}
+	}
+	
+	public void copyAssignmentsToSeminarist (java.util.List<Person> seminarStudents, String assignmentName, String seminaristEmail, String classroomId) {
+		
+		String seminaristFolder = allConnections.driveDB.getSeminaristFolder(classroomId, seminaristEmail);
+		copyAssignmentsToChecker(seminarStudents, seminaristFolder, classroomId, assignmentName);
+	}
+	
+	public void copyAssignmentsToSectionLeader (java.util.List<Person> sectionStudents, String assignmentName, String sectionLeaderEmail, String classroomId) {
+
+		String sectionLeaderFolder = allConnections.driveDB.getSectionLeaderFolder(classroomId, sectionLeaderEmail);
+		copyAssignmentsToChecker(sectionStudents, sectionLeaderFolder, classroomId, assignmentName);		
+	}
+	
 	public String createFolder (String folderName, String parentFolderId) {
 		
 		File fileMetaData = new File();
@@ -160,12 +276,7 @@ public class MyDrive {
 		String assignmentFolderId = "";
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolder)).execute();
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals("Assignments")) {
-					assignmentFolderId = f.getId();
-					break;
-				}
-			}
+			assignmentFolderId = findFileId(fl, "Assignments");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -179,30 +290,17 @@ public class MyDrive {
 		
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", studentsAssignmentsFolderId)).execute();
-			String assignmentFolderId = "";
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(assignmentName)) {
-					assignmentFolderId = f.getId();
-					break;
-				}
-			}
+
+			String assignmentFolderId = findFileId(fl, assignmentName);
 			if (assignmentFolderId.equals("")) {
 				return result;
 			}
-			int atIndex = studentEmail.indexOf("@");
-			if (atIndex == -1) {
-				atIndex = studentEmail.length();
-			}
-			String mailPrefix = studentEmail.substring(0, atIndex);
+
+
 			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
-			
-			String studentFolderId = "";
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(mailPrefix)) {
-					studentFolderId = f.getId();
-					break;
-				}
-			}
+
+			String mailPrefix = getMailPrefix(studentEmail);
+			String studentFolderId = findFileId(fl, mailPrefix);
 			if (studentFolderId.equals("")) {
 				return result;
 			}
@@ -223,12 +321,7 @@ public class MyDrive {
 		String folderId = "";
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolderId)).execute();
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals("Students Assignments")) {
-					folderId = f.getId();
-					break;
-				}
-			}
+			folderId = findFileId(fl, "Students Assignments");
 		} catch (IOException e) {
 		}
 		return folderId;
@@ -236,30 +329,18 @@ public class MyDrive {
 
 	public void uploadAssignment(String studentEmail, java.io.File fileToUpload, String fileType, String classroomId, String assignmentTitle) {
 		String studentsAssignmentFolder = getStudentsAssignmentsFolderId(classroomId);
-		int atIndex = studentEmail.indexOf("@");
-		if (atIndex == -1) atIndex = studentEmail.length();
-		String studentEmailPrefix = studentEmail.substring(0, atIndex);
+		String studentEmailPrefix = getMailPrefix(studentEmail);
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", studentsAssignmentFolder)).execute();
-			String currentAssignmentFolderId = "";
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(assignmentTitle)) {
-					currentAssignmentFolderId = f.getId();
-					break;
-				}
-			}
+
+			String currentAssignmentFolderId = findFileId(fl, assignmentTitle);
 			if (currentAssignmentFolderId.equals("")) {
 				currentAssignmentFolderId = createFolder(assignmentTitle, studentsAssignmentFolder);
 			}
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", currentAssignmentFolderId)).execute();
-			String studentFolderId = "";
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(studentEmailPrefix)) {
-					studentFolderId = f.getId();
-					break;
-				}
-			}
+
+			String studentFolderId = findFileId(fl, studentEmailPrefix);
 			if (studentFolderId.equals("")) {
 				studentFolderId = createFolder(studentEmailPrefix, currentAssignmentFolderId);
 			}
@@ -281,26 +362,14 @@ public class MyDrive {
 		
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", classroomFolderId)).execute();
-			String assignmentFolderId = "";
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals("Assignments")) {
-					assignmentFolderId = f.getId();
-					break;
-				}
-			}
-			
+
+			String assignmentFolderId = findFileId(fl, "Assignments");
 			if (assignmentFolderId.equals("")) {
 				return "";
 			}
 			
 			fl = service.files().list().setQ(String.format("'%s' in parents", assignmentFolderId)).execute();
-			
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(fileName)) {
-					assignmentFileId = f.getId();
-					break;
-				}
-			}
+			assignmentFileId = findFileId(fl, fileName);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -314,14 +383,8 @@ public class MyDrive {
 		
 		try {
 			FileList fl = service.files().list().setQ(String.format("'%s' in parents", categoryFolderId)).execute();
-			for (File f: fl.getFiles()) {
-				if (f.getName().equals(materialName)) {
-					materialId = f.getId();
-					break;
-				}
-			}
+			materialId = findFileId(fl, materialName);
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		
 		return materialId;

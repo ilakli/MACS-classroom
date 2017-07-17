@@ -232,6 +232,9 @@ body > *{
 				out.println(generateStudentHTML(p, classroomID, assignment, connector));
 			}
 			out.println("</div>");
+			
+			String assignmentName = assignment.getTitle();
+			service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(), classroomID);
 		} else {
 			out.println("you have no section yet...");
 		}%>
@@ -252,6 +255,9 @@ body > *{
 				out.println(generateStudentHTML(p, classroomID, assignment, connector));
 			}
 			out.println("</div>");
+			
+			String assignmentName = assignment.getTitle();
+			service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(), classroomID);
 		} else {
 			out.println("you have no seminar group yet...");
 		}%>

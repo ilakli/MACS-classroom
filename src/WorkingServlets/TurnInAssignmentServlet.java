@@ -104,13 +104,11 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		
 		Person student = connection.personDB.getPerson(studentID);
 		String studentEmail = student.getEmail();
-		String sectionLeaderEmail = connection.studentDB.getSectionLeaderEmail(classroomID, studentID);
-		String seminaristEmail = connection.studentDB.getSeminaristEmail(classroomID, studentID);
 		Assignment assignment = connection.assignmentDB.getAssignment(assignmentID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
 		
 		service.uploadAssignment(studentEmail, file, fileType, classroomID, assignment.getTitle());		
-		
+		file.delete();
 		connection.studentAssignmentDB.turnInAssignment(classroomID, studentID, assignmentID, fileName);
 
 		if(numReschedulings!=null && !numReschedulings.equals("")){
