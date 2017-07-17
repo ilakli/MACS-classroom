@@ -53,22 +53,43 @@ public class DeletePersonServlet extends HttpServlet {
 		
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 
+		String position = request.getParameter("position");
 		Classroom classroom = connection.classroomDB.getClassroom(classroomId);
 		
 		Enumeration<String> emails = request.getParameterNames();
 		
-		while (emails.hasMoreElements()) {
-			String nextParameterName = emails.nextElement();
-			if (nextParameterName.equals(Classroom.ID_ATTRIBUTE_NAME))
-				continue;
-			String e = request.getParameter(nextParameterName);
-			
-			classroom.classroomDeleteLecturer(e);
-			classroom.classroomDeleteSectionLeader(e);
-			classroom.classroomDeleteSeminarist(e);
-			classroom.classroomDeleteStudent(e);
-				
-
+		if(position.equals("lecturer")){
+			while (emails.hasMoreElements()) {
+				String nextParameterName = emails.nextElement();
+				if (nextParameterName.equals(Classroom.ID_ATTRIBUTE_NAME))
+					continue;
+				String e = request.getParameter(nextParameterName);
+				classroom.classroomDeleteLecturer(e);
+			}
+		}else if(position.equals("seminarist")){
+			while (emails.hasMoreElements()) {
+				String nextParameterName = emails.nextElement();
+				if (nextParameterName.equals(Classroom.ID_ATTRIBUTE_NAME))
+					continue;
+				String e = request.getParameter(nextParameterName);
+				classroom.classroomDeleteSeminarist(e);
+			}
+		}else if(position.equals("sectionLeader")){
+			while (emails.hasMoreElements()) {
+				String nextParameterName = emails.nextElement();
+				if (nextParameterName.equals(Classroom.ID_ATTRIBUTE_NAME))
+					continue;
+				String e = request.getParameter(nextParameterName);
+				classroom.classroomDeleteSectionLeader(e);
+			}
+		}else if(position.equals("student")){
+			while (emails.hasMoreElements()) {
+				String nextParameterName = emails.nextElement();
+				if (nextParameterName.equals(Classroom.ID_ATTRIBUTE_NAME))
+					continue;
+				String e = request.getParameter(nextParameterName);
+				classroom.classroomDeleteStudent(e);
+			}
 		}
 		
 		response.sendRedirect("people.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId);

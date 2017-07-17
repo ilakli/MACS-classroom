@@ -290,6 +290,7 @@
 			</div>
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
+			<input type="hidden" name="position" value="student">
 			<%
 				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
@@ -351,6 +352,8 @@
 			</div>
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
+				
+			<input type="hidden" name="position" value="sectionLeader">
 			<%
 				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
@@ -411,6 +414,8 @@
 			</div>
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
+			<input type="hidden" name="position" value="seminarist">
+			
 			<%
 				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>
@@ -471,6 +476,7 @@
 			</div>
 			<input type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 				value="<%=currentClassroom.getClassroomID()%>">
+			<input type="hidden" name="position" value="lecturer">
 			<%
 				if ((isAdmin || isLecturer) && !isClassroomFinished) {
 			%>

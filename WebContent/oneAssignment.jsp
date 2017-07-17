@@ -237,15 +237,19 @@ body>* {
 					out.println(generateStudentHTML(p, classroomID, assignment, connector));
 				}
 			
-
-				out.println("</div>");
-				
-				String assignmentName = assignment.getTitle();
-				service.copyAssignmentsToSectionLeader(sectionStudents, assignmentName, currentPerson.getEmail(), classroomID);
-				String link = service.getSectionLeaderFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
-				out.println("<div class=\"ui large teal label to-left\">");
-				out.println("<a href="+link+">Your Section's Students' Work</a>");
-				out.println("</div>");
+				out.println("</div>");		
+		%>
+		<form action="ShowSectionAssignments" method="post">	
+			<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME %> 
+				value = <%= currentClassroom.getClassroomID() %>>
+			<input type="hidden" name="assignmentID" value=<%=assignment.getAssignmentID() %>>
+			<input type="hidden" name="personID" value=<%=currentPerson.getPersonID() %>>	
+			<input type="submit" value="Your Section's Work" class = "ui teal button"/>
+		</form>
+		
+		
+		<%
+			
 			} else {
 				out.println("you have no section yet...");
 			}%>
@@ -265,17 +269,22 @@ body>* {
 			for (Person p : seminarStudents){
 				out.println(generateStudentHTML(p, classroomID, assignment, connector));
 			}
-			out.println("</div>");
-			
-			String assignmentName = assignment.getTitle();
-			service.copyAssignmentsToSeminarist(seminarStudents, assignmentName, currentPerson.getEmail(), classroomID);
-			String link = service.getSeminaristFolderLink(classroomID, currentPerson.getEmail(), assignmentName);
-			out.println("<div class=\"ui large teal label to-left\">");
-			out.println("<a href="+link+">Your Seminar's Students' Work</a>");
-			out.println("</div>");
+			out.println("</div>");			
+		
+		%> 
+		<form action="ShowSeminarAssignments" method="post">	
+			<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME %> 
+				value = <%= currentClassroom.getClassroomID() %>>
+			<input type="hidden" name="assignmentID" value=<%=assignment.getAssignmentID() %>>
+			<input type="hidden" name="personID" value=<%=currentPerson.getPersonID() %>>	
+			<input type="submit" value="Your Seminar's Work" class = "ui teal button"/>
+		</form>
+		
+		<% 
 		} else {
 			out.println("you have no seminar group yet...");
 		}%>
+		
 	<%}%>
 
 
@@ -295,9 +304,21 @@ body>* {
 
 	
 	%>
+	<form action="ShowClassAssignments" method="post">	
+		<input type="hidden" name=<%=Classroom.ID_ATTRIBUTE_NAME %> 
+			value = <%= currentClassroom.getClassroomID() %>>
+		<input type="hidden" name="assignmentID" value=<%=assignment.getAssignmentID() %>>
+		<input type="hidden" name="personID" value=<%=currentPerson.getPersonID() %>>	
+		<input type="submit" value = "All Students' Work" class = "ui teal button"/>
+	</form>
 	<%
 		}
 	%>
+	
+
+	
+	
+	
 	<!-- -------------------------------------------------------------------- -->
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
