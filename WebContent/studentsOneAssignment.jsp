@@ -170,7 +170,7 @@
 		String seminaristEmail = connector.studentDB.getSeminaristEmail(classroomID, personID);
 		String currentPersonEmail = currentPerson.getEmail();
 		
-		if(!isLecturer && !sectionLeaderEmail.equals(currentPersonEmail) && !seminaristEmail.equals(currentPersonEmail) && !studentEmail.equals(currentPersonEmail)){
+		if(!isAdmin && !isLecturer && !sectionLeaderEmail.equals(currentPersonEmail) && !seminaristEmail.equals(currentPersonEmail) && !studentEmail.equals(currentPersonEmail)){
 		    response.sendError(400, "Not Permitted At All");
 		    return;
 		}
