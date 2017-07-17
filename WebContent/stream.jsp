@@ -316,7 +316,6 @@ body {
 				String htmlCode = generatePostHTML(post, connector, currentPerson, isClassroomFinished);
 				out.println(htmlCode);
 
-				out.println("</br></br></br>");
 			}
 			out.println("</div>");
 		

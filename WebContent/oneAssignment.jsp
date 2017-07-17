@@ -93,7 +93,7 @@ body>* {
 			result += "<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
 		}
 
-		result += "</div> </div> </div>";
+		result += "</div> </div><br> </div>";
 
 		return result;
 	}%>
