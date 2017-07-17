@@ -300,5 +300,7 @@ public class TestClassroom {
 //		assertFalse(mockClass.classroomAddStudentToSeminar(0, "gkhos15@freeuni.edu.ge"));
 //		assertFalse(mockClass.classroomAddStudentToSeminar(0, "raraca@mail.ru"));
 //		assertTrue(mockClass.classroomAddStudentToSeminar(0, "gitser15@freeuni.edu.ge"));
-	}	
+	}
+	
+	
 }

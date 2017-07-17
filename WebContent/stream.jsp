@@ -137,7 +137,7 @@ body {
 </head>
 <body>
 	
-	<%!private String generatePostHTML(Post p, AllConnections connector, Person currentPerson) {
+	<%!private String generatePostHTML(Post p, AllConnections connector, Person currentPerson, boolean isClassroomFinished) {
 		
 		Person author = connector.personDB.getPerson(p.getPersonId());
 		
@@ -185,8 +185,9 @@ body {
 					"</div>";
 		}
 		
-		
-		result +=  "<div class = \"postCommentAdding\" id =\"" + p.getPostId()  + "commentAdding\">" +
+		if (!isClassroomFinished) {
+			
+			result +=  "<div class = \"postCommentAdding\" id =\"" + p.getPostId()  + "commentAdding\">" +
 					"<form class=\"ui reply form comment\">" +
 							    "<div class=\"field\">" +
 							      "<textarea></textarea>" +
@@ -202,6 +203,7 @@ body {
 							    "</div>" +
 					 "</form>" +
 					"</div>";
+		}		
 		
 		result += "</div>";
 		
@@ -225,7 +227,8 @@ body {
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
+		boolean isClassroomFinished = connector.classroomDB.isClassroomFinished(currentClassroom.getClassroomID());
+
 		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
 			 response.sendError(400, "Not Permitted At All");
 			 return;
@@ -252,7 +255,7 @@ body {
 			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
 
 		<%
-			if (isAdmin || isLecturer) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
@@ -281,6 +284,10 @@ body {
 	
 	<!-- ADDING POST -->
 	
+	<%
+		if (!isClassroomFinished) {
+	%>
+	
 	<form class="ui reply form post" id = "POST_ADDING_FORM">		
 		 	    <div class="field">
 			      <textarea id="POST_TEXT"></textarea>
@@ -293,6 +300,10 @@ body {
 			  	</div>
 	</form>
 	
+	<%
+		}
+	%>
+	
 	<!-- END OF ADDING POST -->
 	
 	
@@ -302,7 +313,7 @@ body {
 			out.println("<div class=\"ui feed\">");
 			for (int i=posts.size()-1; i>=0; i--){
 				Post post = posts.get(i);
-				String htmlCode = generatePostHTML(post, connector, currentPerson);
+				String htmlCode = generatePostHTML(post, connector, currentPerson, isClassroomFinished);
 				out.println(htmlCode);
 
 			}

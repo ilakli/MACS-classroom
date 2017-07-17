@@ -118,7 +118,8 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
-		
+		boolean isClassroomFinished = connector.classroomDB.isClassroomFinished(classroomID);
+
 		if(!isAdmin && !isStudent && !isSectionLeader && !isSeminarist && !isLecturer){
 			 response.sendError(400, "Not Permitted At All");
 			 return;
@@ -149,7 +150,7 @@
 			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
 
 		<%
-			if (isAdmin || isLecturer) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
@@ -179,7 +180,7 @@
 	</div>
 
 	<%
-		if (isAdmin || isLecturer || isSeminarist) {
+		if ((isAdmin || isLecturer || isSeminarist) && !isClassroomFinished) {
 	%>
 
 	<button class="positive ui button category-add-button">Add

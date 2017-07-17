@@ -57,6 +57,7 @@ CREATE TABLE `classrooms` (
     `classroom_reschedulings_length` INT NOT NULL DEFAULT 0,
     `classroom_seminar_auto_distribution` BOOL NOT NULL DEFAULT false,
     `classroom_section_auto_distribution` BOOL NOT NULL DEFAULT false,
+    `classroom_is_finished` BOOL NOT NULL DEFAULT FALSE,
     CONSTRAINT `classrooms_fk0` FOREIGN KEY (`classroom_creator_id`) REFERENCES `persons`(`person_id`)  ON DELETE CASCADE,
     PRIMARY KEY (`classroom_id`)
 );

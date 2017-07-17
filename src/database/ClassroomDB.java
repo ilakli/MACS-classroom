@@ -56,6 +56,30 @@ public class ClassroomDB {
 		}
 		return classroom;
 	}
+	
+	/**
+	 * sets classroom_finished true in database
+	 * @param classroomId
+	 */
+	
+	public void finishClassroom(String classroomId) {
+		String query = String.format("update `classrooms` set `classrooms`.classroom_is_finished = TRUE where `classrooms`.classroom_id = %s", 
+				classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		db.executeUpdate(myConnection);
+	}
+	
+	/**
+	 * 
+	 * @param classroomId
+	 * @return true if classroom is finished, false otherwise
+	 */
+	public boolean isClassroomFinished (String classroomId) {
+		String query = String.format("select * from `classrooms` where `classrooms`.classroom_id = %s and `classrooms`.classroom_is_finished = true;", 
+				classroomId);
+		MyConnection myConnection = db.getMyConnection(query);
+		return !db.isResultEmpty(myConnection);
+	}
 
 	/**
 	 * adds classroom with given name to the database
