@@ -160,6 +160,7 @@
 		boolean isSectionLeader = currentClassroom.classroomSectionLeaderExists(currentPerson.getEmail());
 		boolean isSeminarist = currentClassroom.classroomSeminaristExists(currentPerson.getEmail());
 		boolean isLecturer = currentClassroom.classroomLecturerExists(currentPerson.getEmail());
+		boolean isClassroomFinished = connector.classroomDB.isClassroomFinished(classroomID);
 		
 		Person student = connector.personDB.getPerson(studentID);
 		String studentEmail = student.getEmail();
@@ -213,7 +214,7 @@
 			href=<%="assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Assignments</a>
 
 		<%
-			if (isAdmin || isLecturer) {
+			if ((isAdmin || isLecturer) && !isClassroomFinished) {
 		%>
 		<a class="item"
 			href=<%="settings.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID%>>Settings</a>
@@ -266,7 +267,7 @@
 		<div class="panel-body"> 
 	<%
 	
-		if(isStudent){
+		if(isStudent && !isClassroomFinished){
 
 			Date now = new Date();
 			Date availableDate = studentAssignment.getDeadlineWithReschedulings();
@@ -352,7 +353,7 @@
 	%>
 	
 	<!-- GRADING -->
-	<% if(isSectionLeader || isSeminarist ){ %>
+	<% if((isSectionLeader || isSeminarist) && !isClassroomFinished){ %>
 				<form action="GiveGradeServlet" method="post">	
 				<div class="ui selection dropdown">
 				  <input type="hidden" name="newGrade">
@@ -409,11 +410,15 @@
 			  
 		  </div>
 		  
+		  <%
+		  	if (!isClassroomFinished) {
+		  %>
+		  
 		  <form class="ui reply form" id = "COMMENT_ADDING_FORM">		
 		 	    <div class="field">
 			      <textarea id="COMMENT_TEXT"></textarea>
 			    </div>
-					
+				
 				<div class="ui primary submit labeled icon button" id = "ADD_COMMENT_BUTTON">
 					<textarea style="display:none" id=PERSON_ID><%=currentPerson.getPersonID()%></textarea>
 					<textarea style="display:none" id=PERSON_IMG_URL><%=currentPerson.getPersonImgUrl()%></textarea>
@@ -422,6 +427,11 @@
 					<i class="icon edit"></i> Add Comment
 			  	</div>
 		  </form>
+		  
+		  <%
+		  	}
+		  %>
+		  
   		  <!-- END OF BASIC COMMENTS -->
   		  
   		  <%if (!isStudent){%>
@@ -438,6 +448,10 @@
 			  
 		  </div>
 		  
+		  <%
+		 	if (!isClassroomFinished) {	
+		  %>
+		  
 		  <form class="ui reply form" id = "STAFF_COMMENT_ADDING_FORM">		
 		 	    <div class="field">
 			      <textarea id="STAFF_COMMENT_TEXT"></textarea>
@@ -451,6 +465,10 @@
 					<i class="icon edit"></i> Add Staff Comment
 			  	</div>
 		  </form>  		  
+		  
+		  <%
+		 	}
+		  %>
   		  
   		  <!-- END OF STAFF COMMENTS -->
 		  <%}%>
