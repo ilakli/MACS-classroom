@@ -7,7 +7,19 @@ function validateEmail(email) {
 
 
 $(document).ready(function() { 
-
+	
+	
+	$(".ui .button").click(function (){
+		
+		var _this = this;
+		
+		setTimeout( function() {
+			$(_this).prop('disabled',true);
+		}, 10);
+		
+	});
+	
+	
 	$(".emails input").on('keyup', function(ev){
 		if (/(188|13|32)/.test(ev.which))
 			$(this).focusout();
