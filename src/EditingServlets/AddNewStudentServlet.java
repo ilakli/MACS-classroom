@@ -41,8 +41,11 @@ public class AddNewStudentServlet extends HttpServlet {
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute("connection");
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
-				
+		
+		System.out.println("taken: " + email);
+		
 		String emails[] = email.split("\\s+"); 
+		
 				
 		for(String e:emails){
 			Matcher mathcer = pattern.matcher(e.toUpperCase());

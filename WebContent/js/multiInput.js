@@ -5,6 +5,29 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+function myf(nThis) {
+	
+	var _this = nThis;
+	
+	setTimeout( function() {
+		var mails = _this.value.split(/[ ,\n]+/);
+		console.log(mails);
+		_this.value = "";
+		
+		for (i = 0; i < mails.length; i++) { 
+			
+			if (validateEmail(mails[i])){
+				$("<span/>", {
+					text : mails[i].toLowerCase(),
+					insertBefore : _this
+				});
+			}
+		}
+		
+    }, 0);
+    
+}
+
 
 $(document).ready(function() { 
 	
@@ -22,36 +45,22 @@ $(document).ready(function() {
 	
 	$(".emails input").on('keyup', function(ev){
 		if (/(188|13|32)/.test(ev.which))
-			$(this).focusout();
+			myf(this);
 	});
 	
 	$(".emails input").on('paste', function(){
-		$(this).focusout();
+		var _this = this;
+		
+		setTimeout( function() {
+			myf(_this);
+		}, 0);
+		
 	});
-	
 	
 	
 	$(".emails input").on({
 		focusout : function() {
-			var _this = this;
-			
-			setTimeout( function() {
-				var mails = _this.value.split(/[ ,\n]+/);
-				console.log(mails);
-				_this.value = "";
-				
-				for (i = 0; i < mails.length; i++) { 
-					
-					if (validateEmail(mails[i])){
-						$("<span/>", {
-							text : mails[i].toLowerCase(),
-							insertBefore : _this
-						});
-					}
-				}
-				
-	        }, 100);
-			
+			myf(this);	
 		}
 	});
 	
