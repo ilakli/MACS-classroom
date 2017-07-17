@@ -29,8 +29,8 @@ DROP TABLE IF EXISTS `seminarist-seminarist_folder`;
  
 CREATE TABLE `persons` (
     `person_id` INT NOT NULL AUTO_INCREMENT,
-    `person_name` varchar(100),
-    `person_surname` varchar(100),
+    `person_name` varchar(100) DEFAULT "Name",
+    `person_surname` varchar(100) DEFAULT "Surname",
     `person_email` varchar(100) NOT NULL,
     `image_url` varchar(200),
     UNIQUE (`person_email`),
