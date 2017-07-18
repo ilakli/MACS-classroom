@@ -52,10 +52,7 @@ public class AddStudentToSectionServlet extends HttpServlet {
 		Section currentSection = new Section(sectionN,classroomId,connection);
 		
 		String emails[] = studentEmail.split("\\s+"); 
-		System.out.println(classroomId + " " + studentEmail + " " + sectionN +" WE ARE GOOD");
-		boolean status = true;
-		if(emails.length == 0) status = false;
-		
+
 		for(String e:emails){  
 			
 			if(connection.sectionDB.sectionExists(sectionN, classroomId)  
@@ -63,30 +60,13 @@ public class AddStudentToSectionServlet extends HttpServlet {
 					&& currentSection.addStudentToSection(e)) {
 				
 				connection.sectionDB.updateSectionSize(sectionN, classroomId);
-				System.out.println("Added Student To Section: " + currentSection.getSectionN() + " " + e + 
-					" to class with id: " + classroomId);
 			}
-			else {
-				status =  false;
-					
-				System.out.println("Didn't add Student to Section: " + currentSection.getSectionN() + " " + e + 
-						" to class with id: " + classroomId);
-			}
+		
 		} 
 		
-		if(status){
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
-							 
-			view.forward(request, response);     
-		} else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
-							 
-			view.forward(request, response);  
-		}
 		
-
+		RequestDispatcher view = request.getRequestDispatcher("sections.jsp?classroomID=" + classroomId);	
+		view.forward(request, response);     
 	
 	}
 

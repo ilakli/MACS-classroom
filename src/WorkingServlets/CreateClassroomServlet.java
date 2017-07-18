@@ -67,18 +67,20 @@ public class CreateClassroomServlet extends HttpServlet {
 		}
 		
 		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
-			RequestDispatcher dispatch = request.getRequestDispatcher("createClassroom.jsp");
-			dispatch.forward(request, response);
-		} else {
-			RequestDispatcher dispatch = request.getRequestDispatcher("stream.jsp?" +
+			response.sendRedirect("stream.jsp?" +
 					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
-			dispatch.forward(request, response);
+		} else {
 			ArrayList<String> emails = new ArrayList<String>();
 			emails.add(lecturerEmail);
 			String subject = "Macs Classroom: You have created new classroom: " + className;
 			String mailText = "You have created new classroom " + className + ";\nYou can see link here:\n " +
 					"http://localhost:8080/MACS-classroom/stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
-			new MailConnector(emails, subject, mailText);			
+
+			if(emails.size()>0){
+				new MailConnector(emails, subject, mailText);			
+			}
+			response.sendRedirect("stream.jsp?" +
+					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 		}
 		
 	}

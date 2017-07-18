@@ -154,7 +154,7 @@
 	<%
 		if (isAdmin || isGlobalLecturer) {
 	%>
-	<i class="huge add circle icon fixed-position"></i>
+	<i class="huge add circle icon right fixed-position "></i>
 	
 	<form class="ui modal add-classroom" action="CreateClassroomServlet" method="post">
 		<div class="header">Add Classroom</div>

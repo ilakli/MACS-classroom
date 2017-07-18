@@ -8,7 +8,7 @@ import database.ClassroomDB;
 public class Person {
 	
 	public static final String ID_ATTRIBUTE_NAME = "personID";
-
+	public static final String DEFAULT_IMG_URL = "https://s-media-cache-ak0.pinimg.com/736x/6b/70/2c/6b702c0de73e2ce734e98333566e8679--happy-faces-smiley-faces.jpg";
 	private String name;
 	private String surname;
 	private String Email;
@@ -31,6 +31,7 @@ public class Person {
 		this.Email = Email;
 		this.personID = personID;
 		this.imgUrl = imgUrl;
+		if (this.imgUrl == null) this.imgUrl = DEFAULT_IMG_URL;
 		db = new AllConnections();
 	}
 	public String getName() {

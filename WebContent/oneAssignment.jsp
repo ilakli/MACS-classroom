@@ -71,6 +71,13 @@ body>* {
 .to-left{
 	float: left;
 }
+
+	.section{
+		margin-top:2%;
+	 	margin-left:2%;
+	 	margin-right:2%;
+	 	margin-bottom:2%;
+	 }
 </style>
 </head>
 <body>
@@ -78,7 +85,7 @@ body>* {
 
 	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 
-		String result = "<div class=\"ui top attached tabular menu\"> "
+		String result = "<div class=\"ui top attached tabular menu\"><div class=\"ui section\"> "
 				+ "<div class=\"ui raised segment\"> <div class=\"active item\"> " + a.getTitle() + "</div>"
 				+ "<div class=\"ui bottom attached active tab segment\"> " + "<p>" + a.getInstructions() + "</p>";
 
@@ -93,7 +100,7 @@ body>* {
 			result += "<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
 		}
 
-		result += "</div> </div><br> </div>";
+		result += "</div> </div></div><br> </div>";
 
 		return result;
 	}%>
@@ -222,6 +229,7 @@ body>* {
 		out.println(htmlCode);
 	%>
 
+	<div class = "ui section">
 	<%
 		if (isSectionLeader) {
 	%>
@@ -244,14 +252,16 @@ body>* {
 				value = <%= currentClassroom.getClassroomID() %>>
 			<input type="hidden" name="assignmentID" value=<%=assignment.getAssignmentID() %>>
 			<input type="hidden" name="personID" value=<%=currentPerson.getPersonID() %>>	
-			<input type="submit" value="Your Section's Work" class = "ui teal button"/>
+			<input type="submit" value="Your Section's Work" class = "ui blue button"/>
 		</form>
 		
 		
 		<%
 			
 			} else {
-				out.println("you have no section yet...");
+				%>
+				<div class="ui big blue label late">you have no section yet</div>
+		<% 
 			}%>
 			
 		<%}%>
@@ -315,7 +325,7 @@ body>* {
 		}
 	%>
 	
-
+	</div>
 	
 	
 	

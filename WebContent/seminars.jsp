@@ -254,10 +254,10 @@
 				</div>
 			</div>
 			<div class="actions">
-				<button class="ui teal button studentAddSeminarButton">Add</button>
+				<button class="ui green button studentAddSeminarButton">Add</button>
 				<input type="hidden" value="AddStudentToSeminarServlet"> <input
 					type="hidden" value="<%=currentSeminar.getSeminarN()%>">
-				<button class="ui red button cancel">Cancel</button>
+				<button class="ui white button cancel">Cancel</button>
 			</div>
 		</div>
 
@@ -299,6 +299,11 @@
 				<%
 					} else {
 				%>
+				
+				<%
+					if (!isClassroomFinished) {
+				%>
+				
 				<button class="positive ui button">Set Seminar Leader</button>
 				<form class="seminarist-add" method="post"
 					action="AddSeminaristToSeminarServlet">
@@ -321,8 +326,13 @@
 						value="<%=currentSeminar.getSeminarN()%>"> <input
 						type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 						value="<%=classroomID%>"> <input type="submit"
-						class="ui teal button" value="Set">
+						class="ui green button" value="Set">
 				</form>
+				
+				<%
+					}
+				%>
+				
 				<%
 					}
 				%>

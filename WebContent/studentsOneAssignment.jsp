@@ -65,40 +65,51 @@
 		margin: 0;
 	}
 	.sign-out {
-	float: right;
-	margin-top: 0.8%;
-	margin-right: 0.7%;
-}
-
-.head-panel {
-	display: block;
-	margin: 0 !important;
-	padding: 0 !important;
-}
-
-.head-text {
-	display: inline-block;
-	border: solid;
-	padding: .78571429rem 1rem !important;
-	!
-	important;
-}
-.grade {
-	float: right;
-	margin: 0.5% !important;
+		float: right;
+		margin-top: 0.8%;
+		margin-right: 0.7%;
+	}
 	
-}
-.button-margin{
-	margin: 0.5% !important;
-}
+	.head-panel {
+		display: block;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+	
+	.head-text {
+		display: inline-block;
+		border: solid;
+		padding: .78571429rem 1rem !important;
+		!
+		important;
+	}
+	.grade {
+		float: right;
+		margin-top: 0.5% !important;
+		margin-bottom: 0.5% !important;
+		
+	}
+	.button-margin{
+		margin-top: 0.5% !important;
+		margin-bottom: 0.5% !important;
+	}
+	
+	.lable{
+		margin-top: 0.5% !important;
+		margin-bottom: 0.5% !important;
+	}
 
-.lable{
-	margin: 0.5% !important;
-}
 
+	.section{
+		margin-top:2%;
+	 	margin-left:2%;
+	 	margin-right:2%;
+	 	margin-bottom:2%;
+	 }
+	
 	</style>
 </head>
-<body>
+<body   style = "" >
 
 	<%!public Date addDays(Date dt, int days){
 		Calendar c = Calendar.getInstance();
@@ -129,7 +140,7 @@
 
 	<%!private String generateAssignmentHTML(Assignment a, String fileId) {
 		
-		String result = "<div class=\"ui top attached tabular menu\"> " + 
+		String result = "<div class=\"ui top attached tabular menu\"> <div class=\"ui section\">" + 
 						"<div class=\"ui raised segment\"> <div class=\"active item\"> " + 
 						a.getTitle() + "</div>" + "<div class=\"ui bottom attached active tab segment\"> " +
 						"<p>" + a.getInstructions() + "</p>";
@@ -145,7 +156,7 @@
 							result+="<a class=\"ui red ribbon label\"> Deadline: " + a.getDeadline() + "</a>";
 						}						
 						
-						result+="</div> </div> <br></div>";
+						result+="</div> </div></div> <br></div>";
 		
 		return result;
 	}%>
@@ -248,7 +259,9 @@
 	
 	
 	<!-- -------------------------------------------------------------------- -->
+	
 	<%
+	
 			
 			MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 			String assignmentFileId = service.getAssignmentFileId(classroomID, a.getTitle());
@@ -256,19 +269,25 @@
 			out.println(htmlCode);
 		
 	%>
+	
+		
+		<div class = "ui section">
 	<% 
+	
 		if(studentAssignment.getAssignmentGrade().equals("Not Graded")){
 			out.println("<div class=\"ui big red label right grade\">" + studentAssignment.getAssignmentGrade() + "</div>");	
 		}else{
 			out.println("<div class=\"ui big green label right grade\">" + studentAssignment.getAssignmentGrade() + "</div>");
 		}
 	%>
-	<br/>
-	<br/>
-	<br/>
+		</div>
+
 		
+	
 	<div class="panel panel-default">  
+	
 		<div class="panel-body"> 
+		<div class = "ui section">
 	<%
 	
 		if(isStudent && !isClassroomFinished){
@@ -315,7 +334,7 @@
 							style="display: none">
 						</div>
 		
-						<input type="submit" class="ui teal button button-margin" value="Add">
+						<input type="submit" class="ui blue button button-margin" value="Add">
 				</form>	
 				
 				
@@ -356,6 +375,10 @@
 		
 	%>
 	
+	</div>	
+	
+	<div class = "ui section">
+	
 	<!-- GRADING -->
 	<% if((isSectionLeader || isSeminarist) && !isClassroomFinished){ %>
 				<form action="GiveGradeServlet" method="post">	
@@ -379,18 +402,20 @@
 		<input type="hidden" name="assignmentID"value="<%=assignmentID%>">
 		<input type="hidden" name="isSeminarist"value="<%=isSeminarist%>">
 				
-		<input type="submit" class="ui teal button" value="Set"></form>
+		<input type="submit" class="ui blue button" value="Set"></form>
 	<script>
 		$('.ui.dropdown').dropdown();
 	</script>
 	
 	
 	<% } %>
+	
+	</div>
 	<!-- END OF GRADING -->
 	
 	
 	
-	<br><br>
+	
 	<!-- COMMENTS -->
 		<div class="ui menu">
 		  <a class="item active" id = "COMMENT_MENU_BAR">
@@ -403,6 +428,10 @@
 		  <%}%>
 		  
 		</div>
+		
+		
+		
+		<div class = "ui section ">
 		
 		<!-- BASIC COMMENTS -->
 		<div class="ui comments" id="ALL_COMMENTS">
@@ -478,6 +507,9 @@
   		  
   		  <!-- END OF STAFF COMMENTS -->
 		  <%}%>
+		  
+		  </div>
+		  
 	<!-- END OF COMMENTS -->
 	
 		</div>

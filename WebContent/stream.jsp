@@ -73,7 +73,7 @@ body {
 #POST_ADDING_FORM {
 	margin-left: 25% !important;
 	margin-right: 25% !important;
-	margin-bottom: 12% !important;
+	margin-bottom: 7% !important;
 }
 
 #ADD_POST_BUTTON {
@@ -340,5 +340,6 @@ body {
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/addComments.js' type="text/javascript"></script>
+	
 </body>
 </html>
