@@ -120,8 +120,7 @@ public class AddNewAssignmentServlet extends HttpServlet {
 				"\nGo to the Link:\nhttp://localhost:8080/MACS-classroom/" + "assignments.jsp?" 
 				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
 		if(!emails.isEmpty()){
-			MailConnector mail = new MailConnector(emails, subject, mailText);
-			mail.sendMail();
+			new MailConnector(emails, subject, mailText);			
 		}		
 		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
 		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);

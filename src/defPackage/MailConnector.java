@@ -65,7 +65,7 @@ public class MailConnector {
 	/**
 	 * This method send the mail to the given email;
 	 */
-	public void sendMail(){
+	private void sendMail(){
 		Properties props = makeProperties();
 		
 		SMTPAuthenticator auth = new SMTPAuthenticator();
