@@ -52,39 +52,19 @@ public class AddStudentToSeminarServlet extends HttpServlet {
 		Seminar currentSeminar = new Seminar(seminarN,classroomId,connection);
 		
 		String emails[] = studentEmail.split("\\s+"); 
-		System.out.println(classroomId + " " + studentEmail + " " + seminarN +" WE ARE GOOD");
-		boolean status = true;
-		if(emails.length == 0) status = false;
 		
-		for(String e:emails){  
+		for(String e:emails) {
 			
 			if(connection.seminarDB.seminarExists(seminarN, classroomId)  
 					&& connection.studentDB.studentExists(e, classroomId)
 					&& currentSeminar.addStudentToSeminar(e)) {
 				
 				connection.seminarDB.updateSeminarSize(seminarN, classroomId);
-				System.out.println("Added Student To Section: " + currentSeminar.getSeminarN() + " " + e + 
-					" to class with id: " + classroomId);
-			}
-			else {
-				status =  false;
-					
-				System.out.println("Didn't add Student to Section: " + currentSeminar.getSeminarN() + " " + e + 
-						" to class with id: " + classroomId);
 			}
 		} 
 		
-		if(status){
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-				+ EditStatusConstants.ADD_STUDENT_TO_SECTION_ACC);	
-							 
-			view.forward(request, response);     
-		} else {
-			RequestDispatcher view = request.getRequestDispatcher("edit.jsp?"+EditStatusConstants.STATUS +"="
-					+ EditStatusConstants.ADD_STUDENT_TO_SECTION_REJ);	
-							 
-			view.forward(request, response);  
-		}
+		RequestDispatcher view = request.getRequestDispatcher("sections.jsp?classroomID=" + classroomId);	
+		view.forward(request, response);     
+	
 	}
-
 }

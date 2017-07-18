@@ -24,7 +24,7 @@ function myf(nThis) {
 			}
 		}
 		
-    }, 0);
+    }, 100);
     
 }
 
@@ -38,7 +38,7 @@ $(document).ready(function() {
 		
 		setTimeout( function() {
 			$(_this).prop('disabled',true);
-		}, 10);
+		}, 100);
 		
 	});
 	
@@ -53,7 +53,7 @@ $(document).ready(function() {
 		
 		setTimeout( function() {
 			myf(_this);
-		}, 0);
+		}, 10);
 		
 	});
 	

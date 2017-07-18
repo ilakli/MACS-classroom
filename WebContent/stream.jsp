@@ -340,5 +340,6 @@ body {
 	<script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
 	<script type="text/javascript" src='js/posts.js'></script>
 	<script type="text/javascript" src='js/addComments.js' type="text/javascript"></script>
+	
 </body>
 </html>
