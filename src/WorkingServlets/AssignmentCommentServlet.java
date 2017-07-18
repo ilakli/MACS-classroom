@@ -66,14 +66,11 @@ public class AssignmentCommentServlet extends HttpServlet {
 		Classroom currentClass = connection.classroomDB.getClassroom(studentAssignment.getClassroomID());
 		ArrayList<String> emails  = new ArrayList <String>(); 
 		
-		if(!sectionLeaderEmail.equals(sender.getEmail())){
+		if(!sectionLeaderEmail.equals(sender.getEmail()) && !sectionLeaderEmail.equals("")){
 			emails.add(sectionLeaderEmail);
 		}
-		if(!seminaristEmail.equals(sender.getEmail())){
+		if(!seminaristEmail.equals(sender.getEmail()) && !seminaristEmail.equals("")){
 			emails.add(seminaristEmail);
-		}
-		for(int i = 0; i< emails.size(); i++){
-			System.out.println(emails.get(i));
 		}
 		
 		
@@ -85,6 +82,7 @@ public class AssignmentCommentServlet extends HttpServlet {
 		
 		String mailCommentText = sender.getName()+ " " +sender.getSurname() + " commented:\n" +
 				commentText +"Go to the Link:\n" + link;
+		
 		if (isStaffComment.equals("true")){			
 			connection.commentDB.addStudentAssignmentStaffComment(studentAssignmentId, personId, commentText);
 			if(!emails.isEmpty()){
