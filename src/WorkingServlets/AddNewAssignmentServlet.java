@@ -113,7 +113,7 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		List<Person> allPerosns = connection.classroomDB.ClassroomAllPersons(currentClassroom.getClassroomID());
 		ArrayList<String> emails  = new ArrayList <String>(); 
 		for(Person person : allPerosns){
-			emails.add(person.getEmail());			
+			emails.add(person.getEmail());
 		}
 		String subject ="Macs Classroom: New Assignment in the classroom: " + currentClassroom.getClassroomName();
 		String mailText ="New Assignment added in the classroom: " + currentClassroom.getClassroomName() +
@@ -125,6 +125,9 @@ public class AddNewAssignmentServlet extends HttpServlet {
 		}		
 		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
 		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);
+		
+		String studentsAssignmentsFolderId = service.getStudentsAssignmentsFolderId(classroomID);
+		service.createFolder(assignmentTitle, studentsAssignmentsFolderId);
 
 		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}

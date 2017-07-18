@@ -442,7 +442,7 @@ public class MyDrive {
 	 * @return 'Students Assignments' folder id
 	 */
 	
-	private String getStudentsAssignmentsFolderId (String classroomId) {
+	public String getStudentsAssignmentsFolderId (String classroomId) {
 		String classroomFolderId = allConnections.driveDB.getClassroomFolder(classroomId);
 		String folderId = "";
 		try {
