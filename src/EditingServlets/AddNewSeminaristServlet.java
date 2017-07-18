@@ -1,6 +1,7 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import com.google.api.services.drive.model.File;
 
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.MyDrive;
 import defPackage.Person;
 
@@ -48,6 +50,7 @@ public class AddNewSeminaristServlet extends HttpServlet {
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
 		String emails[] = email.split("\\s"); 
+		ArrayList<String> goodEmails = new ArrayList<String>();
 		
 		boolean status = true;
 		for(String e:emails){
@@ -63,9 +66,18 @@ public class AddNewSeminaristServlet extends HttpServlet {
 					String mailPrefix = e.substring(0, atIndex);
 					String seminaristFolderId = service.createFolder(mailPrefix, folderId);
 					connection.driveDB.addSeminaristFolder(classroomId, e, seminaristFolderId);
+					goodEmails.add(e);
 				}
 			}
-		}		
+		}
+		if(goodEmails.size()>0){
+			String subject = "Macs Classroom: You added in a classroom as a Seminarist";
+			String text ="Macs Classroom: You added in a classroom: " + currentClassroom.getClassroomName() +
+					" as a Seminarist" +"\nGo to the lick:\n" +
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + 
+					Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID();
+			new MailConnector(goodEmails, subject, text);
+		}
 	}
 
 }

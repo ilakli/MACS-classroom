@@ -1,6 +1,7 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import Dummys.PersonGeneratorDummy;
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.MyDrive;
 import defPackage.Person;
 
@@ -47,6 +49,7 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
 		String emails[] = email.split("\\s"); 
+		ArrayList<String> goodEmails = new ArrayList<String>();
 		
 		boolean status = true;
 				
@@ -63,9 +66,19 @@ public class AddNewSectionLeaderServlet extends HttpServlet {
 					String mailPrefix = e.substring(0, atIndex);
 					String sectionLeaderFolder = service.createFolder(mailPrefix, folderId);
 					connection.driveDB.addSectionLeaderFolder(classroomId, e, sectionLeaderFolder);
+					goodEmails.add(e);
 				}
 			}
-		}	
+		}
+		
+		if(goodEmails.size()>0){
+			String subject = "Macs Classroom: You added in a classroom as a Section Leader";
+			String text ="Macs Classroom: You added in a classroom: " + currentClassroom.getClassroomName() +
+					" as a Section Leader" +"\nGo to the lick:\n" +
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + 
+					Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID();
+			new MailConnector(goodEmails, subject, text);
+		}
 	}
 
 }

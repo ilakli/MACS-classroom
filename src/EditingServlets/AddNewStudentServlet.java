@@ -1,6 +1,7 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.Person;
 
 
@@ -45,14 +47,25 @@ public class AddNewStudentServlet extends HttpServlet {
 		System.out.println("taken: " + email);
 		
 		String emails[] = email.split("\\s+"); 
-		
+		ArrayList<String> goodEmails = new ArrayList<String>();
 				
 		for(String e:emails){
 			Matcher mathcer = pattern.matcher(e.toUpperCase());
 			if(mathcer.matches()){	
 				connection.personDB.addPersonByEmail(e);
-				currentClassroom.classroomAddStudent(e);
+				if(currentClassroom.classroomAddStudent(e)){
+					goodEmails.add(e);
+				}
 			}
+		}
+		
+		if(goodEmails.size()>0){
+			String subject = "Macs Classroom: You added in a classroom as a Studnet";
+			String text ="Macs Classroom: You added in a classroom: " + currentClassroom.getClassroomName() +
+					" as a Studnet" +"\nGo to the lick:\n" +
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + 
+					Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID();
+			new MailConnector(goodEmails, subject, text);
 		}
 		
 		if(currentClassroom.areSectionsAudoDistributed()){

@@ -78,8 +78,7 @@ public class CreateClassroomServlet extends HttpServlet {
 			String subject = "Macs Classroom: You have created new classroom: " + className;
 			String mailText = "You have created new classroom " + className + ";\nYou can see link here:\n " +
 					"http://localhost:8080/MACS-classroom/stream.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
-			MailConnector mail = new MailConnector(emails, subject, mailText);
-			mail.sendMail();
+			new MailConnector(emails, subject, mailText);			
 		}
 		
 	}

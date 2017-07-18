@@ -1,6 +1,7 @@
 package EditingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import database.AllConnections;
 import defPackage.Classroom;
+import defPackage.MailConnector;
 import defPackage.Person;
 
 /**
@@ -39,14 +41,26 @@ public class AddNewLecturerServlet extends HttpServlet {
 		String classroomId = request.getParameter(Classroom.ID_ATTRIBUTE_NAME);
 		Classroom currentClassroom = connection.classroomDB.getClassroom(classroomId);
 		
-		String emails[] = email.split("\\s"); 
+		String emails[] = email.split("\\s");
+		ArrayList<String> goodEmails = new ArrayList<String>();
 		
 		for(String e:emails){
 			Matcher mathcer = pattern.matcher(e.toUpperCase());
 			if(mathcer.matches()){
-				currentClassroom.classroomAddLecturer(e);
+				if(currentClassroom.classroomAddLecturer(e)){
+					goodEmails.add(e);
+				}
 			}
-		}				
+		}
+		
+		if(goodEmails.size()>0){
+			String subject = "Macs Classroom: You added in a classroom as a Lecturer";
+			String text ="Macs Classroom: You added in a classroom: " + currentClassroom.getClassroomName() +
+					" as a Lecturer" +"\nGo to the lick:\n" +
+					"http://localhost:8080/MACS-classroom/stream.jsp?" + 
+					Classroom.ID_ATTRIBUTE_NAME + "=" + currentClassroom.getClassroomID();
+			new MailConnector(goodEmails, subject, text);
+		}
 	}
 
 }

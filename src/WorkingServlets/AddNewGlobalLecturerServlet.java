@@ -1,6 +1,7 @@
 package WorkingServlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import database.AllConnections;
 import database.LecturerDB;
 import database.PersonDB;
+import defPackage.Classroom;
+import defPackage.MailConnector;
 
 /**
  * Servlet implementation class AddNewGlobalLecturerServlet
@@ -52,6 +55,7 @@ public class AddNewGlobalLecturerServlet extends HttpServlet {
 		PersonDB personDB = connection.personDB;
 		LecturerDB lecturerDB = connection.lecturerDB;
 
+		ArrayList<String> goodEmails = new ArrayList<String>();
 		String emails[] = email.split("\\s+");
 
 		for (int i = 0; i < emails.length; i++) {
@@ -59,10 +63,21 @@ public class AddNewGlobalLecturerServlet extends HttpServlet {
 			if(mathcer.matches()){
 				personDB.addPersonByEmail(emails[i]);
 				lecturerDB.addGlobalLecturer(emails[i]);
+				goodEmails.add(emails[i]);
 			}
+		}
+		
+		if(goodEmails.size()>0){
+			String subject = "Macs Classroom: You added as a Global Lecturer";
+			String text ="Macs Classroom: You added as a Global lecturer.\n" +
+					"Now you can create new classrooms" +"\nGo to the lick:\n" +
+					"http://localhost:8080/MACS-classroom/index.jsp" ;
+					
+			new MailConnector(goodEmails, subject, text);
 		}
 
 		response.sendRedirect("addLecturer.html");
+		
 	}
 
 }

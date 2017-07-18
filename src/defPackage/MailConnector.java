@@ -37,6 +37,9 @@ public class MailConnector {
 		this.m_to = email_to;
 		this.m_subject = subject;
 		this.m_text = test;
+		WorkingThread wk = new WorkingThread(this);
+		Thread thread = new Thread(wk);
+		thread.start();
 	}
 	
 	/**
@@ -58,6 +61,7 @@ public class MailConnector {
 		return props;
 	}
 	
+		
 	/**
 	 * This method send the mail to the given email;
 	 */
@@ -102,13 +106,21 @@ public class MailConnector {
 		}
 	}
 	
+	class WorkingThread implements Runnable {
+		MailConnector connection;
+		
+		public WorkingThread(MailConnector connection) {
+			super();
+			this.connection = connection;
+		}
+		
+		public void run() {
+			connection.sendMail();
+		}
+	} 
+	
 	public static void main(String[] args) {
-		ArrayList <String> mails = new ArrayList<String>(); 
-		mails.add("gitser15@freeuni.edu.ge");
-		mails.add("gkhos15@freeuni.edu.ge");
-		
-		new MailConnector(mails, " amanac tu gaweda", " mere rara vqna").sendMail();
-		
+				
 	}
 	
 
