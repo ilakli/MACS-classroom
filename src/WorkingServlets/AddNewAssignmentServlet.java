@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.eclipse.jdt.internal.compiler.ast.FieldDeclaration;
 
+import ConcurrentClasses.FileUploadConcurrent;
 import Dummys.PersonGeneratorDummy;
 import Listeners.ContextListener;
 import database.AllConnections;
@@ -71,13 +72,7 @@ public class AddNewAssignmentServlet extends HttpServlet {
 			for (FileItem item : fileItems) {
 
 				if (!item.isFormField()) {
-					System.out.println("file not null");
 					fileName = item.getName();
-					System.out.println("=========================");
-					System.out.println("failis axels ambobs gonia echemisa");
-					System.out.println("=========================");
-					System.out.println(item.getContentType());
-					
 					fileType = item.getContentType();
 					
 					if (fileName.lastIndexOf("\\") >= 0) {
@@ -121,12 +116,11 @@ public class AddNewAssignmentServlet extends HttpServlet {
 				+ Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID;
 		if(!emails.isEmpty()){
 			new MailConnector(emails, subject, mailText);			
-		}		
-		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions,assignmentDeadline, fileName);
-		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);
+		}
 		
-		String studentsAssignmentsFolderId = service.getStudentsAssignmentsFolderId(classroomID);
-		service.createFolder(assignmentTitle, studentsAssignmentsFolderId);
+		connection.assignmentDB.addAssignment(classroomID,  assignmentTitle, assignmentInstructions, assignmentDeadline, fileName);
+		new Thread(new FileUploadConcurrent(service, assignmentTitle, file, fileType, assignmentFolderId, classroomID)).start();
+//		service.uploadFile(assignmentTitle, file, fileType, assignmentFolderId);
 
 		response.sendRedirect("assignments.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 	}

@@ -16,6 +16,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import ConcurrentClasses.AssignmentUploadConcurrent;
 import Listeners.ContextListener;
 import database.AllConnections;
 import defPackage.Assignment;
@@ -35,7 +36,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 	private int maxFileSize = 800 * 1024;
 	private int maxMemSize = 500 * 1024;
 	private File file;
-       
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -50,7 +50,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String numReschedulings = "";
 
 		filePath = request.getServletContext().getRealPath("/");
-		
 
 		if (!ServletFileUpload.isMultipartContent(request)){
 			return;
@@ -97,7 +96,7 @@ public class TurnInAssignmentServlet extends HttpServlet {
 			}
 
 		} catch (Exception ex) {}
-				
+		
 		AllConnections connection = (AllConnections)request.getServletContext().getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive service = (MyDrive) request.getServletContext().getAttribute("drive");
 		
@@ -105,12 +104,12 @@ public class TurnInAssignmentServlet extends HttpServlet {
 		String studentEmail = student.getEmail();
 		Assignment assignment = connection.assignmentDB.getAssignment(assignmentID);
 		fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
-		
-		service.uploadAssignment(studentEmail, file, fileType, classroomID, assignment.getTitle());		
-		file.delete();
+
+		new Thread(new AssignmentUploadConcurrent(service, studentEmail, file, fileType, classroomID, assignment.getTitle())).start();
+
 		connection.studentAssignmentDB.turnInAssignment(classroomID, studentID, assignmentID, fileName);
 
-		if(numReschedulings!=null && !numReschedulings.equals("")){
+		if(numReschedulings != null && !numReschedulings.equals("")){
 			int nRes = Integer.parseInt(numReschedulings);
 			
 			if(nRes != 0){
@@ -130,7 +129,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 				String newDate = format1.format(c.getTime());
 				
 				studentAssignment.changeDeadlineWithReschedulings(newDate);
-			
 			}
 		}
 		

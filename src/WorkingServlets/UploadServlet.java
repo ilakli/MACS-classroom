@@ -66,14 +66,13 @@ public class UploadServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		
-		String classroomId = "";
-		String categoryId = "";
 		isMultipart = ServletFileUpload.isMultipartContent(request);
-
 		if (!isMultipart) {
 			return;
 		}
+		
+		String classroomId = "";
+		String categoryId = "";
 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(maxMemSize);
@@ -119,17 +118,25 @@ public class UploadServlet extends HttpServlet {
 		AllConnections connection = (AllConnections) request.getServletContext()
 				.getAttribute(ContextListener.CONNECTION_ATTRIBUTE_NAME);
 		MyDrive myDrive = (MyDrive) request.getServletContext().getAttribute("drive");
-
 		MaterialDB materialDB = connection.materialDB;		
-		String categoryName = connection.categoryDB.getCategoryName(classroomId, categoryId);
-		String categoryFolder = connection.driveDB.getCategoryFolder(classroomId, categoryName);
 		
-		for (FileToUpload fileToUpload: filesToUpload) {
+		final String categoryName = connection.categoryDB.getCategoryName(classroomId, categoryId);
+		final String categoryFolder = connection.driveDB.getCategoryFolder(classroomId, categoryName);
+		final String CLASSROOM_ID = classroomId;
+		final String CATEGORY_ID = categoryId;
+		
+		new Thread(new Runnable() {
 			
-			materialDB.addMaterial(classroomId, categoryId, fileToUpload.getName());
-			myDrive.uploadFile(fileToUpload.getName(), fileToUpload.getFile(), fileToUpload.getFileType(), categoryFolder);
-			fileToUpload.getFile().delete();
-		}
+			@Override
+			public void run() {
+				for (FileToUpload fileToUpload: filesToUpload) {
+					
+					materialDB.addMaterial(CLASSROOM_ID, CATEGORY_ID, fileToUpload.getName());
+					myDrive.uploadFile(fileToUpload.getName(), fileToUpload.getFile(), fileToUpload.getFileType(), categoryFolder);
+					fileToUpload.getFile().delete();
+				}				
+			}
+		}).start();
 		
 		String address = "about.jsp?" + Classroom.ID_ATTRIBUTE_NAME + "=" + classroomId;
 		// RequestDispatcher dispatcher = request.getRequestDispatcher(address);

@@ -59,14 +59,20 @@ public class CreateClassroomServlet extends HttpServlet {
 			db.lecturerDB.addLecturer(lecturerEmail, classroomID);
 			MyDrive service = ((MyDrive) request.getServletContext().getAttribute("drive"));
 			
-			String folderId = service.createFolder("Classroom#" + classroomID + "#" + className);
-			db.driveDB.addClassroomFolder(classroomID, folderId);
-			
-			service.createFolder("Assignments", folderId);
-			service.createFolder("Students Assignments", folderId);
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					String folderId = service.createFolder("Classroom#" + classroomID + "#" + className);
+					db.driveDB.addClassroomFolder(classroomID, folderId);
+					
+					service.createFolder("Assignments", folderId);
+					service.createFolder("Students Assignments", folderId);
+				}
+			}).start();
 		}
 		
-		if(classroomID.equals( DBConnection.DATABASE_ERROR)){
+		if(classroomID.equals(DBConnection.DATABASE_ERROR)){
 			response.sendRedirect("stream.jsp?" +
 					Classroom.ID_ATTRIBUTE_NAME + "=" + classroomID);
 		} else {
