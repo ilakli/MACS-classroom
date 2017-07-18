@@ -383,7 +383,7 @@
 	<% if((isSectionLeader || isSeminarist) && !isClassroomFinished){ %>
 				<form action="GiveGradeServlet" method="post">	
 				<div class="ui selection dropdown">
-				  <input type="hidden" name="newGrade">
+				  <input type="hidden" name="newGrade" value="<%=studentAssignment.getAssignmentGrade()%>">
 				  <i class="dropdown icon"></i>
 				  <div class="default text"> <%= studentAssignment.getAssignmentGrade() %></div>
 				  <div class="menu">
@@ -393,7 +393,7 @@
 				  		out.println(" <div class=\"item\" data-value=\"" + grade +"\">" +
 				  				grade+"</div> ");
 				  		}
-				  	%>
+				  	%>				  
 				   </div>
 				</div>
 

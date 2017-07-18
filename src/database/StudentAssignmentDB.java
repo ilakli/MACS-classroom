@@ -234,7 +234,7 @@ private DBConnection db;
 	 */
 	public boolean setStudnetAssignmentGrade(String classroomID, String personID, String assignmentID, String grade, String isSeminarist){
 		String query1 = String.format("update `student_assignments` set `assignment_grade` = '%s' , `assignment_approved` = %s "
-				+ "where `classroom_id` = %s and `assignment_id` = '%s'  and `person_id` = %s; ", 
+				+ "where `classroom_id` = %s and `assignment_id` = %s  and `person_id` = %s; ", 
 				grade, isSeminarist,classroomID, assignmentID, personID);
 		
 		MyConnection myConnection = db.getMyConnection(query1);

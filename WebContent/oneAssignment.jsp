@@ -119,7 +119,7 @@ body>* {
 			gradeCode = "<div class=\"ui green horizontal label\">Graded</div>";
 
 		String approvalCode;
-		if (isApproved)
+		if (grade != null && !grade.equals("Not Graded") && isApproved)
 			approvalCode = "<div class=\"ui green horizontal label\">Approved</div>";
 		else
 			approvalCode = "<div class=\"ui red horizontal label\">Not Yet Approved</div>";
