@@ -73,7 +73,7 @@ body {
 #POST_ADDING_FORM {
 	margin-left: 25% !important;
 	margin-right: 25% !important;
-	margin-bottom: 12% !important;
+	margin-bottom: 7% !important;
 }
 
 #ADD_POST_BUTTON {

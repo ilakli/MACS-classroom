@@ -253,10 +253,10 @@
 				</div>
 			</div>
 			<div class="actions">
-				<button class="ui teal button studentAddSectionButton">Add</button>
+				<button class="ui green button studentAddSectionButton">Add</button>
 				<input type="hidden" value="AddStudentToSectionServlet"> <input
 					type="hidden" value="<%=currentSection.getSectionN()%>">
-				<button class="ui red button cancel">Cancel</button>
+				<button class="ui white button cancel">Cancel</button>
 			</div>
 		</div>
 
@@ -330,7 +330,7 @@
 						value="<%=currentSection.getSectionN()%>"> <input
 						type="hidden" name="<%=Classroom.ID_ATTRIBUTE_NAME%>"
 						value="<%=classroomID%>"> <input type="submit"
-						class="ui teal button" value="Set">
+						class="ui green button" value="Set">
 				</form>
 				<%
 					}

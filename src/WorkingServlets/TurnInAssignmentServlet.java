@@ -51,7 +51,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 
 		filePath = request.getServletContext().getRealPath("/");
 		
-		System.out.println(filePath + " Is the filepath");
 
 		if (!ServletFileUpload.isMultipartContent(request)){
 			return;
@@ -113,7 +112,6 @@ public class TurnInAssignmentServlet extends HttpServlet {
 
 		if(numReschedulings!=null && !numReschedulings.equals("")){
 			int nRes = Integer.parseInt(numReschedulings);
-			System.out.println(nRes + " nRes");
 			
 			if(nRes != 0){
 				for(int i = 0; i < nRes; i++){
