@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 		}else {
 			System.out.println("person!=null" + person.getName() + " " + person.getPersonImgUrl());
 	
-			if(person.getName().equals("Name") || person.getPersonImgUrl().equals("null")) {
+			if(person.getName().equals("Name") || person.getPersonImgUrl().equals(Person.DEFAULT_IMG_URL)) {
 				System.out.println("person.getName==null");
 				person.setNameAndSurname(firstName, lastName);
 				person.setImageUrl(imgUrl);
